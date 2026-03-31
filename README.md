@@ -18,7 +18,11 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
 4. **Roundtable** 🤖
    - Zero-configuration MCP server that unifies multiple AI coding assistants (Codex, Claude Code, Cursor, Gemini).
    - Provides intelligent auto-discovery and standardized interface across AI tools.
-   - Repository: [askbudi/roundtable](https://github.com/askbudi/roundtable) | Website: [askbudi.ai/roundtable](https://askbudi.ai/roundtable)  
+   - Repository: [askbudi/roundtable](https://github.com/askbudi/roundtable) | Website: [askbudi.ai/roundtable](https://askbudi.ai/roundtable)
+
+5. **claude-node** 🐍
+   - Python subprocess bridge for Claude Code CLI, giving Python code direct access to Claude Code native capabilities via stream-json.
+   - Repository: [claw-army/claude-node](https://github.com/claw-army/claude-node)
 
 ## 🛠️ How to Use  
 
