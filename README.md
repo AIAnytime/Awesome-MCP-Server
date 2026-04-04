@@ -24,6 +24,10 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Python subprocess bridge for Claude Code CLI, giving Python code direct access to Claude Code native capabilities via stream-json.
    - Repository: [claw-army/claude-node](https://github.com/claw-army/claude-node)
 
+6. **Antigravity Link** 📱
+   - MCP server and mobile companion for Google's Antigravity IDE. Mirror active AI chat sessions on your phone, send messages, upload files, stop AI generation, and automate workflows via 9 MCP tools or a local OpenAPI HTTP API.
+   - Repository: [cafeTechne/antigravity-link-extension](https://github.com/cafeTechne/antigravity-link-extension) | MCP Registry: io.github.cafeTechne/antigravity-link
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
