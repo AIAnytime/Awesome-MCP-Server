@@ -28,6 +28,8 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - MCP server and mobile companion for Google's Antigravity IDE. Mirror active AI chat sessions on your phone, send messages, upload files, stop AI generation, and automate workflows via 9 MCP tools or a local OpenAPI HTTP API.
    - Repository: [cafeTechne/antigravity-link-extension](https://github.com/cafeTechne/antigravity-link-extension) | MCP Registry: io.github.cafeTechne/antigravity-link
 
+- 🔒 **EnigmAgent** - AES-256-GCM + Argon2id encrypted local vault MCP server. Resolves `{{PLACEHOLDER}}` secrets at runtime. GitHub: [Agnuxo1/EnigmAgent](https://github.com/Agnuxo1/EnigmAgent)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
