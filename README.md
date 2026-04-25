@@ -25,6 +25,12 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Repository: [claw-army/claude-node](https://github.com/claw-army/claude-node)
 
 6. **Antigravity Link** 📱
+
+7. **prompt-to-asset** 🎨
+   - Routes image-generation prompts to 30+ models — DALL-E, Stable Diffusion, Flux, Midjourney, and more — through a single MCP interface.
+   - Install: `npm install -g prompt-to-asset`
+   - Repository: [MohamedAbdallah-14/prompt-to-asset](https://github.com/MohamedAbdallah-14/prompt-to-asset)
+
    - MCP server and mobile companion for Google's Antigravity IDE. Mirror active AI chat sessions on your phone, send messages, upload files, stop AI generation, and automate workflows via 9 MCP tools or a local OpenAPI HTTP API.
    - Repository: [cafeTechne/antigravity-link-extension](https://github.com/cafeTechne/antigravity-link-extension) | MCP Registry: io.github.cafeTechne/antigravity-link
 
