@@ -34,6 +34,11 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - MCP server and mobile companion for Google's Antigravity IDE. Mirror active AI chat sessions on your phone, send messages, upload files, stop AI generation, and automate workflows via 9 MCP tools or a local OpenAPI HTTP API.
    - Repository: [cafeTechne/antigravity-link-extension](https://github.com/cafeTechne/antigravity-link-extension) | MCP Registry: io.github.cafeTechne/antigravity-link
 
+7. **nothumansearch** 🔎
+   - MCP server and search engine indexing 8,600+ agent-native services. Lets LLMs discover MCP-compatible services, OpenAPI providers, and llms.txt publishers by keyword, category, or minimum agentic readiness score (0-100).
+   - 6 tools: search_agents, get_site_details, get_stats, submit_site, register_monitor, verify_mcp.
+   - Endpoint: [nothumansearch.ai/mcp](https://nothumansearch.ai/mcp) | MCP Registry: ai.nothumansearch/search
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
