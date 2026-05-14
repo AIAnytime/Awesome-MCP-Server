@@ -60,3 +60,4 @@ This project is open-source under the **MIT License**.
 🔔 **Like this project?** Give it a ⭐ on GitHub!  
 
 - [EventTrader MCP Server](https://github.com/eventtrader/event-trader-mcp) — AI prediction market trading: place bets, TGE token price predictions, real-time orderbooks, AI agent cloning, due diligence scoring. Remote endpoint at `cymetica.com/.well-known/mcp.json`. [Platform](https://cymetica.com?utm_source=github&utm_medium=pr&utm_campaign=mcp-outreach) | [TGE Markets](https://cymetica.com/tge-launch?utm_source=github&utm_medium=pr&utm_campaign=mcp-outreach)
+- [NotFair MCP](https://notfair.co) — Hosted Google Ads MCP server. Lets Claude and other AI agents diagnose campaign performance (CPA, ROAS, search-term waste, quality scores), recommend optimizations (bids, budgets, negative keywords, ad copy), and execute approved changes via the official Google Ads API with a built-in human-approval gate. Free tier plus paid plans. [Product](https://notfair.co)
