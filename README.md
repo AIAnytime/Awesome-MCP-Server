@@ -39,6 +39,10 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - 6 tools: search_agents, get_site_details, get_stats, submit_site, register_monitor, verify_mcp.
    - Endpoint: [nothumansearch.ai/mcp](https://nothumansearch.ai/mcp) | MCP Registry: ai.nothumansearch/search
 
+8. **Packrift MCP** 📦
+   - Remote MCP server for packaging procurement, exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
+   - Repository: [Packrift/packrift-mcp](https://github.com/Packrift/packrift-mcp)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
