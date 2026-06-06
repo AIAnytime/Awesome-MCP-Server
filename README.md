@@ -43,6 +43,11 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Remote MCP server for packaging procurement, exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
    - Repository: [Packrift/packrift-mcp](https://github.com/Packrift/packrift-mcp)
 
+8. **TWZRD Agent Intel** 🔐
+   - Solana-native agent trust scoring via x402 micropayments. Free on-chain preflight checks (account validity, program state, token balances) + paid signed V5 trust receipts settled in <1s.
+   - Live endpoint: [intel.twzrd.xyz/mcp](https://intel.twzrd.xyz/mcp) — Streamable HTTP, no install required.
+   - Repository: [twzrd-sol/wzrd-final](https://github.com/twzrd-sol/wzrd-final/tree/main/packages/twzrd-agent-intel)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
