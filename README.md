@@ -43,6 +43,12 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Remote MCP server for packaging procurement, exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
    - Repository: [Packrift/packrift-mcp](https://github.com/Packrift/packrift-mcp)
 
+9. **Screenpipe MCP** 🖥️
+   - Local-first MCP server backed by 24/7 screen and microphone recording with OCR, accessibility-tree, and transcript indexing.
+   - Lets AI assistants search and answer questions over everything you've seen, heard, and typed on your machine.
+   - Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest`
+   - Repository: [screenpipe/screenpipe](https://github.com/screenpipe/screenpipe)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
