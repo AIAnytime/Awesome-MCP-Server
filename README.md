@@ -44,6 +44,12 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Repository: [Packrift/packrift-mcp](https://github.com/Packrift/packrift-mcp)
 - [Helium MCP](https://github.com/connerlambden/helium-mcp) — Real-time news with 37-dimension bias scoring, ML options pricing, and live market data. [Interactive demo](https://connerlambden.github.io/helium-news-explorer/) · [REST API](https://heliumtrades.com/mcp-page/)
 
+9. **Screenpipe MCP** 🖥️
+   - Local-first MCP server backed by 24/7 screen and microphone recording with OCR, accessibility-tree, and transcript indexing.
+   - Lets AI assistants search and answer questions over everything you've seen, heard, and typed on your machine.
+   - Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest`
+   - Repository: [screenpipe/screenpipe](https://github.com/screenpipe/screenpipe)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
