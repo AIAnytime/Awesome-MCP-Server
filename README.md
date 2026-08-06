@@ -50,6 +50,11 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest`
    - Repository: [screenpipe/screenpipe](https://github.com/screenpipe/screenpipe)
 
+10. **OrkasVideoStudio** 🎬
+    - Local-first MCP server and TypeScript CLI for agent-driven video composition, editing, generation, and automatic assembly.
+    - Uses editable `plan.json` timelines and includes installable skills for Codex and Claude Code.
+    - Repository: [Orkas-AI/Orkas-VideoStudio](https://github.com/Orkas-AI/Orkas-VideoStudio)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
