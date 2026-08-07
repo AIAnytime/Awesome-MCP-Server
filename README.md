@@ -50,6 +50,12 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest`
    - Repository: [screenpipe/screenpipe](https://github.com/screenpipe/screenpipe)
 
+10. **Autoposting MCP** 📣
+   - Remote MCP server for social publishing: draft, schedule and publish posts to X, LinkedIn, Instagram, Threads and YouTube, plus AI carousels and video clipping.
+   - Streamable HTTP with OAuth 2.1 Dynamic Client Registration, so there is nothing to install and no client secret to paste.
+   - Install: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`
+   - Repository: [Autoposting-ai/autoposting-mcp](https://github.com/Autoposting-ai/autoposting-mcp)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
