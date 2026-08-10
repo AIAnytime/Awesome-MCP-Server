@@ -92,3 +92,9 @@ This project is open-source under the **MIT License**.
    - Hosted remote server (Streamable HTTP + OAuth 2.1) - no install, no config file.
    - Repository: [whateverneveranywhere/aiapplyd-mcp](https://github.com/whateverneveranywhere/aiapplyd-mcp) | Website: [aiapplyd.com](https://aiapplyd.com/mcps)
 
+12. **Zopnight** ☁️
+   - Read-only cloud cost and infrastructure governance across AWS, Azure and GCP: 85 tools covering cost, resources, schedules, recommendations, budgets, governance and diagnostics.
+   - Hosted remote server (Streamable HTTP, JSON-RPC 2.0 over HTTP POST) with Bearer personal-access-token auth - nothing to install.
+   - Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"`
+   - Docs: [Zopnight MCP server](https://zop.dev/learn/mcp-server?utm_source=aianytime-awesome-mcp-server&utm_medium=listing&utm_campaign=mcp-directory) | Claude setup: [set up Zopnight MCP for Claude](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
+
