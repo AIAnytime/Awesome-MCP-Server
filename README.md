@@ -98,3 +98,7 @@ This project is open-source under the **MIT License**.
    - Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"`
    - Docs: [Zopnight MCP server](https://zop.dev/learn/mcp-server?utm_source=aianytime-awesome-mcp-server&utm_medium=listing&utm_campaign=mcp-directory) | Claude setup: [set up Zopnight MCP for Claude](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
 
+13. **Parallel Search MCP** 🔎
+   - Free remote MCP for live web search and URL fetching.
+   - Streamable HTTP with no account or API key required.
+   - Endpoint: `https://search.parallel.ai/mcp` | Tools: `web_search`, `web_fetch` | [Docs](https://docs.parallel.ai/integrations/mcp/search-mcp)
