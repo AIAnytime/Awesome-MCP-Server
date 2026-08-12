@@ -98,3 +98,9 @@ This project is open-source under the **MIT License**.
    - Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"`
    - Docs: [Zopnight MCP server](https://zop.dev/learn/mcp-server?utm_source=aianytime-awesome-mcp-server&utm_medium=listing&utm_campaign=mcp-directory) | Claude setup: [set up Zopnight MCP for Claude](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
 
+
+13. **Skillselion** 🧩
+   - On-demand skill loader: searches the Skillselion catalog (79,000+ agent skills, MCP servers, plugins and marketplaces ranked by real install counts) and materializes the matching `SKILL.md` plus its bundled scripts and references into the session mid-task.
+   - 4 tools: `load_skill`, `synthesize_skills` (merges the top ~5 matching skills into one provenance-tagged digest), `search_skillselion`, `top_skillselion`.
+   - Install: `npx -y skillselion-mcp` — stdio, read-only, no auth or API key. MCP Registry: `io.github.skillselion/skillselion-mcp`.
+   - Repository: [skillselion/skillselion-mcp](https://github.com/skillselion/skillselion-mcp) | Website: [skillselion.com](https://skillselion.com)
