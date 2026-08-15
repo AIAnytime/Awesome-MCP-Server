@@ -62,6 +62,12 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp`
    - Repository: [shibley/aisotools-mcp-server](https://github.com/shibley/aisotools-mcp-server) | Docs: [aisotools.com/mcp](https://aisotools.com/mcp) | MCP Registry: io.github.shibley/aisotools
 
+12. **SandBase CLI** 🧰
+   - Agent-first CLI and stdio MCP bridge for discovering, inspecting, and running 2,000+ AI models and APIs with one account.
+   - Covers web and social search, scraping, multimodal generation, data APIs, and sandboxes through six progressively disclosed MCP tools.
+   - Install: `npx -y @sandbaseai/cli connect`
+   - Repository: [sandbaseai/cli](https://github.com/sandbaseai/cli) | Website: [sandbase.ai](https://sandbase.ai)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
