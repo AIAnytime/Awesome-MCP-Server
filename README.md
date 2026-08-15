@@ -56,6 +56,12 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`
    - Repository: [Autoposting-ai/autoposting-mcp](https://github.com/Autoposting-ai/autoposting-mcp)
 
+11. **AISOTools MCP** 🔎
+   - Remote MCP server over a curated catalog of 1,766 AI tools: keyword/category/pricing search, full records (features, pros, cons, pricing tiers), side-by-side comparison of 2-5 products, and alternatives lookup.
+   - Streamable HTTP, read-only, no API key and no account. Every result carries a canonical citation URL, and sponsored placements are flagged with a `sponsored` boolean so an assistant can disclose them.
+   - Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp`
+   - Repository: [shibley/aisotools-mcp-server](https://github.com/shibley/aisotools-mcp-server) | Docs: [aisotools.com/mcp](https://aisotools.com/mcp) | MCP Registry: io.github.shibley/aisotools
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
