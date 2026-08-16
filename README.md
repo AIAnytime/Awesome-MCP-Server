@@ -116,3 +116,8 @@ This project is open-source under the **MIT License**.
    - 4 tools: `load_skill`, `synthesize_skills` (merges the top ~5 matching skills into one provenance-tagged digest), `search_skillselion`, `top_skillselion`.
    - Install: `npx -y skillselion-mcp` — stdio, read-only, no auth or API key. MCP Registry: `io.github.skillselion/skillselion-mcp`.
    - Repository: [skillselion/skillselion-mcp](https://github.com/skillselion/skillselion-mcp) | Website: [skillselion.com](https://skillselion.com)
+
+14. **Agent QA** 🧪
+   - Local stdio MCP server for authoring, validating, running, and inspecting natural-language web and mobile regression tests with persistent test memory.
+   - Install: `npx -y agent-qa mcp`
+   - Repository: [vostride/agent-qa](https://github.com/vostride/agent-qa)
