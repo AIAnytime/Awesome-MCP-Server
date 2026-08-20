@@ -121,3 +121,13 @@ This project is open-source under the **MIT License**.
    - Local stdio MCP server for authoring, validating, running, and inspecting natural-language web and mobile regression tests with persistent test memory.
    - Install: `npx -y agent-qa mcp`
    - Repository: [vostride/agent-qa](https://github.com/vostride/agent-qa)
+
+15. **Wondel.ai Skills MCP** 📚
+   - Read-only remote MCP server over 50 book-based agent skills and 12 guided journeys. Routes a task to the right framework (`recommend_skills`) and serves the real SKILL.md in-session (`load_skill`). 5 tools total.
+   - Remote Streamable HTTP endpoint — no install, no account, no auth: https://skills.wondel.ai/mcp
+   - Repository: [mjaskolski/wondel-skills-mcp](https://github.com/mjaskolski/wondel-skills-mcp) | MCP Registry: `io.github.mjaskolski/wondel-skills-mcp`
+
+16. **AI Developer Toolkit MCP** 🧰
+   - Read-only remote MCP endpoint over 950+ guides on AI-assisted development (Cursor, Claude Code, Codex) in EN+PL. Two tools: `search` (query → ranked results) and `fetch` (id → full article markdown).
+   - Remote Streamable HTTP endpoint — no install, no account, no API key: https://developertoolkit.ai/mcp
+   - Repository: [mjaskolski/developer-toolkit-mcp](https://github.com/mjaskolski/developer-toolkit-mcp) | MCP Registry: `io.github.mjaskolski/developer-toolkit-mcp`
