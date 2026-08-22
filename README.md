@@ -56,6 +56,18 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`
    - Repository: [Autoposting-ai/autoposting-mcp](https://github.com/Autoposting-ai/autoposting-mcp)
 
+11. **AISOTools MCP** 🔎
+   - Remote MCP server over a curated catalog of 1,766 AI tools: keyword/category/pricing search, full records (features, pros, cons, pricing tiers), side-by-side comparison of 2-5 products, and alternatives lookup.
+   - Streamable HTTP, read-only, no API key and no account. Every result carries a canonical citation URL, and sponsored placements are flagged with a `sponsored` boolean so an assistant can disclose them.
+   - Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp`
+   - Repository: [shibley/aisotools-mcp-server](https://github.com/shibley/aisotools-mcp-server) | Docs: [aisotools.com/mcp](https://aisotools.com/mcp) | MCP Registry: io.github.shibley/aisotools
+
+12. **SandBase CLI** 🧰
+   - Agent-first CLI and stdio MCP bridge for discovering, inspecting, and running 2,000+ AI models with one account.
+   - Covers web and social search, scraping, multimodal generation, data APIs, and sandboxes through six progressively disclosed MCP tools.
+   - Install: `npx -y @sandbaseai/cli connect`
+   - Repository: [sandbaseai/cli](https://github.com/sandbaseai/cli) | Website: [sandbase.ai](https://sandbase.ai)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
@@ -98,7 +110,19 @@ This project is open-source under the **MIT License**.
    - Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"`
    - Docs: [Zopnight MCP server](https://zop.dev/learn/mcp-server?utm_source=aianytime-awesome-mcp-server&utm_medium=listing&utm_campaign=mcp-directory) | Claude setup: [set up Zopnight MCP for Claude](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
 
-13. **Parallel Search MCP** 🔎
+
+13. **Skillselion** 🧩
+   - On-demand skill loader: searches the Skillselion catalog (79,000+ agent skills, MCP servers, plugins and marketplaces ranked by real install counts) and materializes the matching `SKILL.md` plus its bundled scripts and references into the session mid-task.
+   - 4 tools: `load_skill`, `synthesize_skills` (merges the top ~5 matching skills into one provenance-tagged digest), `search_skillselion`, `top_skillselion`.
+   - Install: `npx -y skillselion-mcp` — stdio, read-only, no auth or API key. MCP Registry: `io.github.skillselion/skillselion-mcp`.
+   - Repository: [skillselion/skillselion-mcp](https://github.com/skillselion/skillselion-mcp) | Website: [skillselion.com](https://skillselion.com)
+
+14. **Agent QA** 🧪
+   - Local stdio MCP server for authoring, validating, running, and inspecting natural-language web and mobile regression tests with persistent test memory.
+   - Install: `npx -y agent-qa mcp`
+   - Repository: [vostride/agent-qa](https://github.com/vostride/agent-qa)
+
+15. **Parallel Search MCP** 🔎
    - Free remote MCP for live web search and URL fetching.
    - Streamable HTTP with no account or API key required.
    - Endpoint: `https://search.parallel.ai/mcp` | Tools: `web_search`, `web_fetch` | [Docs](https://docs.parallel.ai/integrations/mcp/search-mcp)
