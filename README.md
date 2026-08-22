@@ -68,6 +68,10 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `npx -y @sandbaseai/cli connect`
    - Repository: [sandbaseai/cli](https://github.com/sandbaseai/cli) | Website: [sandbase.ai](https://sandbase.ai)
 
+8. **Darkmoon** 🛡️
+   - Open source (GPLv3) autonomous penetration testing platform. Exposes an MCP server that orchestrates 80+ offensive security tools through 50 specialist agents, with proof of exploitation behind every finding, and can run fully locally.
+   - Repository: [ASCIT31/Dark-Moon](https://github.com/ASCIT31/Dark-Moon)
+
 ## 🛠️ How to Use  
 
 1. Clone the repository:  
