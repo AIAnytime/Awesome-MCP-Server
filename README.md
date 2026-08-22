@@ -121,3 +121,8 @@ This project is open-source under the **MIT License**.
    - Local stdio MCP server for authoring, validating, running, and inspecting natural-language web and mobile regression tests with persistent test memory.
    - Install: `npx -y agent-qa mcp`
    - Repository: [vostride/agent-qa](https://github.com/vostride/agent-qa)
+
+15. **Parallel Search MCP** 🔎
+   - Free remote MCP for live web search and URL fetching.
+   - Streamable HTTP with no account or API key required.
+   - Endpoint: `https://search.parallel.ai/mcp` | Tools: `web_search`, `web_fetch` | [Docs](https://docs.parallel.ai/integrations/mcp/search-mcp)
