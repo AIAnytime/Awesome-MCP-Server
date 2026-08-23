@@ -130,3 +130,8 @@ This project is open-source under the **MIT License**.
    - Free remote MCP for live web search and URL fetching.
    - Streamable HTTP with no account or API key required.
    - Endpoint: `https://search.parallel.ai/mcp` | Tools: `web_search`, `web_fetch` | [Docs](https://docs.parallel.ai/integrations/mcp/search-mcp)
+
+16. **Pocket Drives** 🚗
+   - Search peer-to-peer luxury, exotic, and EV rentals from independent hosts.
+   - Remote Streamable HTTP at https://pocketdrives.ai/mcp, no auth.
+   - Repo: https://github.com/RevList/pocket-drives-mcp
