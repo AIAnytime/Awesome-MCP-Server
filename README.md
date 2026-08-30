@@ -68,6 +68,11 @@ This repository contains **MCP (Model Context Protocol) servers** . Each folder 
    - Install: `npx -y @sandbaseai/cli connect`
    - Repository: [sandbaseai/cli](https://github.com/sandbaseai/cli) | Website: [sandbase.ai](https://sandbase.ai)
 
+13. **SandBase Harness** 🏗️
+   - Local-first agent runtime and MCP bridge for governed tool access, persistent sessions, credentials, approvals, audit/replay, and sandboxed execution.
+   - Install: `docker run --rm -i -e MANAGED_AGENTS_URL=http://host.docker.internal:3000 ghcr.io/sandbaseai/sandbase-harness-mcp:0.3.8`
+   - Repository: [sandbaseai/sandbase-harness](https://github.com/sandbaseai/sandbase-harness) | [MCP setup](https://github.com/sandbaseai/sandbase-harness/blob/main/docs/mcp.md)
+
 8. **Darkmoon** 🛡️
    - Open source (GPLv3) autonomous penetration testing platform. Exposes an MCP server that orchestrates 80+ offensive security tools through 50 specialist agents, with proof of exploitation behind every finding, and can run fully locally.
    - Repository: [ASCIT31/Dark-Moon](https://github.com/ASCIT31/Dark-Moon)
