@@ -135,3 +135,8 @@ This project is open-source under the **MIT License**.
    - Search peer-to-peer luxury, exotic, and EV rentals from independent hosts.
    - Remote Streamable HTTP at https://pocketdrives.ai/mcp, no auth.
    - Repo: https://github.com/RevList/pocket-drives-mcp
+
+17. **Magic Hour** 🎬
+   - Hosted MCP server for generating and editing video, images, and audio with 44 Magic Hour API tools.
+   - Remote Streamable HTTP with bearer API-key authentication; no local server install is required.
+   - Endpoint: `https://mcp.magichour.ai/` | [Setup](https://magichour.ai/mcp) | [Repository](https://github.com/magichourhq/magic-hour-mcp)
