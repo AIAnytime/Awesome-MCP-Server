@@ -135,3 +135,8 @@ This project is open-source under the **MIT License**.
    - Search peer-to-peer luxury, exotic, and EV rentals from independent hosts.
    - Remote Streamable HTTP at https://pocketdrives.ai/mcp, no auth.
    - Repo: https://github.com/RevList/pocket-drives-mcp
+
+17. **Process Street** 📋
+   - Connect AI agents to Process Street workflows, tasks, runs, data sets, and operational records.
+   - Hosted remote server using Streamable HTTP with an interactive authorization flow.
+   - Repository: [process-street/process-street-mcp](https://github.com/process-street/process-street-mcp) | Docs: [Process Street MCP Server](https://www.process.st/help/docs/mcp-server/) | MCP Registry: `io.github.process-street/process-street-mcp`
