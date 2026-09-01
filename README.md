@@ -111,6 +111,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Media & generation
 
+- **[Magic Hour](https://github.com/magichourhq/magic-hour-mcp)** `http` — Generate and edit video, images, and audio with 44 Magic Hour API tools. Endpoint: `https://mcp.magichour.ai/` (bearer API key required) · [Setup](https://magichour.ai/mcp)
 - **[prompt-to-asset](https://github.com/MohamedAbdallah-14/prompt-to-asset)** `stdio` — Routes image-generation prompts to 30+ models (DALL·E, Stable Diffusion, Flux, Midjourney) through one interface. Install: `npm install -g prompt-to-asset`
 - **[RunAPI](https://github.com/runapi-ai/mcp)** `stdio` — Browse the RunAPI model catalog and run image, video, music/audio, text-to-speech, and LLM tasks from agent workflows. Install: `npx -y @runapi.ai/mcp`
 
