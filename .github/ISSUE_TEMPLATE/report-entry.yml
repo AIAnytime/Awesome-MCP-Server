@@ -1,0 +1,32 @@
+name: 🚩 Report a listed server
+description: A server in the directory is dead, misleading, or misbehaving.
+title: "Report: <server name>"
+labels: ["needs-verification"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Which entry
+      description: The name exactly as it appears in the README.
+    validations:
+      required: true
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What's wrong
+      options:
+        - Link is dead / 404
+        - Endpoint no longer responds
+        - Description is inaccurate or misleading
+        - Duplicate of another entry
+        - Security concern
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What you observed
+      description: What you did and what happened. For a security concern, describe the class of problem — please don't post a working exploit.
+    validations:
+      required: true

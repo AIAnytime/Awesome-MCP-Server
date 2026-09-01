@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Model Context Protocol docs
+    url: https://modelcontextprotocol.io
+    about: Questions about MCP itself — transports, SDKs, the spec.
+  - name: 📺 AI Anytime on YouTube
+    url: https://www.youtube.com/@AIAnytime
+    about: MCP tutorials and walkthroughs.
