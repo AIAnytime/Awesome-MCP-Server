@@ -25,7 +25,7 @@ assistants to tools and data. This repository is two things:
 
 Built and maintained by [AI Anytime](https://www.youtube.com/@AIAnytime). Additions come from the community — see [Contributing](#-contributing).
 
-## 📑 Contents
+## 🗒 Contents
 
 - [Servers in this repo](#-servers-in-this-repo)
 - [Quick start](#-quick-start)
@@ -106,6 +106,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Knowledge, memory & context
 
+- **[ContextStream](https://github.com/contextstream/mcp-server)** `http` — Shared persistent memory and semantic code search for AI coding agents (Cursor, Claude Code, Codex, Grok, Windsurf). Free tier; hosted OAuth or API key. Endpoint: `https://mcp.contextstream.io/mcp` · [Website](https://contextstream.io)
 - **[GoodMemory](https://github.com/hjqcan/GoodMemory)** `stdio` — Local-first, auditable memory for coding agents. SQLite-backed, read-only context/trace/search tools by default, with durable writes opt-in behind inspect, revise, forget, and export. Install: `npm install -g goodmemory`
 - **[Screenpipe](https://github.com/screenpipe/screenpipe)** `stdio` — Local-first 24/7 screen and microphone recording with OCR, accessibility-tree, and transcript indexing, so assistants can answer questions over everything you've seen and heard. Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest`
 
