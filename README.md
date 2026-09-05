@@ -146,6 +146,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Work & productivity
 
 - **[AI Applyd](https://github.com/whateverneveranywhere/aiapplyd-mcp)** `http` — ATS resume scoring, job-description analysis, interview prep, cover letters, resume building, and auto-apply that submits on the employer's own hiring system. [Website](https://aiapplyd.com/mcps)
+- **[Office Suite](https://github.com/theluckystrike/mcp-servers)** `stdio` — Bundle of MCP servers for freelance and back-office work: invoices, spreadsheets, PDFs, time tracking, expense tracking, resumes, and contracts. [Hosted](https://mcp.zovo.one)
 - **[Process Street](https://github.com/process-street/process-street-mcp)** `http` — Connect agents to Process Street workflows, tasks, runs, data sets, and operational records, with an interactive authorization flow. [Docs](https://www.process.st/help/docs/mcp-server/)
 
 ## 🤝 Contributing
