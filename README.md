@@ -125,6 +125,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[AskCyborg](https://github.com/Ask-Cyborg/askcyborg-mcp)** `http` — Stress-tests public and private companies through analyst debate: reports, scores, comparisons, competitors, recent developments. Anonymous free tier, no API key. Endpoint: `https://mcp.askcyborg.com/mcp`
 - **[EventTrader](https://github.com/eventtrader/event-trader-mcp)** `http` — Prediction-market trading: place bets, TGE token price predictions, real-time orderbooks, agent cloning, due-diligence scoring. [Platform](https://cymetica.com)
 - **[Helium](https://github.com/connerlambden/helium-mcp)** `http` — Real-time news with 37-dimension bias scoring, ML options pricing, and live market data. [Interactive demo](https://connerlambden.github.io/helium-news-explorer/) · [REST API](https://heliumtrades.com/mcp-page/)
+- **[ParlayAPI](https://github.com/JacobiusMakes/parlay-api-mcp)** `stdio` — Sports odds, player props, public event discovery, and account usage through ParlayAPI; account data tools require each user's own API key and allowances. Install: `uvx --from parlayapi-mcp==0.3.5 parlayapi-mcp`
 
 ### Marketing, content & social
 
