@@ -135,7 +135,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Cloud, ops & data
 
-- **[Zopnight](https://zop.dev/learn/mcp-server)** `http` — Read-only cloud cost and infrastructure governance across AWS, Azure, and GCP: 85 tools spanning cost, resources, schedules, recommendations, budgets, and diagnostics. Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"` · [Claude setup](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
+- **[ZopDev MCP](https://zop.dev/learn/mcp-server)** `http` — Cloud cost and infrastructure governance across AWS, Azure, GCP, Databricks, and Snowflake: 263 tools (155 read, 108 write) spanning cost, resources, schedules, recommendations, budgets, and diagnostics. Read-only by default, with optional scoped writes. Install: `claude mcp add zopdev https://api.zop.dev/mcp-server -t http` (OAuth 2.1 signs you in; add `--header "Authorization: Bearer zn_pat_YOUR_TOKEN"` for CI) · [Repo](https://github.com/zopdev/mcp) · [Claude setup](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
 
 ### Commerce, travel & logistics
 
