@@ -135,6 +135,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Cloud, ops & data
 
+- **[DC Hub](https://github.com/azmartone67/dchub-mcp-server)** `http` — Live data-center, power-grid, fiber and energy intelligence: facilities worldwide, DC Hub Power Index market scores, ISO grid telemetry, interconnection queues, fiber routes and tracked M&A, queried by name or coordinate with cited sources. Install: `claude mcp add --transport http dchub https://dchub.cloud/mcp` — keyless at free-tier depth.
 - **[Zopnight](https://zop.dev/learn/mcp-server)** `http` — Read-only cloud cost and infrastructure governance across AWS, Azure, and GCP: 85 tools spanning cost, resources, schedules, recommendations, budgets, and diagnostics. Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"` · [Claude setup](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
 
 ### Commerce, travel & logistics
