@@ -140,6 +140,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Commerce, travel & logistics
 
 - **[BuyWhere](https://github.com/BuyWhere/buywhere-mcp)** `stdio` — Cross-border e-commerce product search across 150M+ products in Singapore, SEA, and US markets with real-time price comparison. Install: `npx @buywhere/mcp-server`
+- **[CardDeals](https://github.com/cello305/carddeals-mcp)** `http` — Query and compare real-time discounted digital gift cards across 700+ brands. Endpoint: `https://catalog.carddeals.co/mcp` · [Docs](https://carddeals.co/mcp)
 - **[HOTLIKESHOP](https://github.com/tuanone123/hotlikeshop-mcp)** `http` — Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: `https://hotlikeshop.com/api/mcp` · [Docs](https://hotlikeshop.com/ai)
 - **[Packrift](https://github.com/Packrift/packrift-mcp)** `http` — Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
 - **[Pocket Drives](https://github.com/RevList/pocket-drives-mcp)** `http` — Search peer-to-peer luxury, exotic, and EV rentals from independent hosts. Endpoint: `https://pocketdrives.ai/mcp`, no auth.
