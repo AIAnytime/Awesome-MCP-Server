@@ -136,6 +136,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Cloud, ops & data
 
+- **[Cohesivity](https://github.com/cohesivity-org/cohesivity-plugin)** `http` — Agent-native backend services for hosting, Postgres, email, storage, containers, LLMs, voice, and third-party APIs, with free tiers, $5/month in AI and Search credits, and x402 top-ups. This remote MCP requires OAuth sign-in; anonymous no-signup setup uses the local MCP. Endpoint: `https://cohesivity.ai/mcp/manage` · [Docs](https://github.com/cohesivity-org/cohesivity-plugin#local-bootstrap-and-remote-oauth-are-independent)
 - **[Zopnight](https://zop.dev/learn/mcp-server)** `http` — Read-only cloud cost and infrastructure governance across AWS, Azure, and GCP: 85 tools spanning cost, resources, schedules, recommendations, budgets, and diagnostics. Install: `claude mcp add --transport http zopnight https://api.zop.dev/mcp-server --header "Authorization: Bearer zn_pat_YOUR_TOKEN"` · [Claude setup](https://zop.dev/learn/how-to/set-up-zopnight-mcp-for-claude)
 
 ### Commerce, travel & logistics
