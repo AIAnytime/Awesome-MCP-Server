@@ -95,6 +95,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[Roundtable](https://github.com/askbudi/roundtable)** `stdio` — Zero-configuration server that unifies multiple AI coding assistants (Codex, Claude Code, Cursor, Gemini) behind one interface with auto-discovery. [Website](https://askbudi.ai/roundtable)
 - **[SandBase CLI](https://github.com/sandbaseai/cli)** `stdio` — Agent-first CLI and MCP bridge for discovering, inspecting, and running 2,000+ AI models on one account — search, scraping, multimodal generation, data APIs, sandboxes. Install: `npx -y @sandbaseai/cli connect` · [Website](https://sandbase.ai)
 - **[Skillselion](https://github.com/skillselion/skillselion-mcp)** `stdio` — On-demand skill loader over a catalog of 79,000+ agent skills, MCP servers, and plugins; materializes the matching `SKILL.md` and its scripts into the session mid-task. Install: `npx -y skillselion-mcp` · [Website](https://skillselion.com)
+- **[Zambo](https://github.com/zambodotdev/zambo-mcp)** `http` — 120 native tools across 17 products: strategy, code audit, lead generation, onchain scoring, credit discovery, prompt defense. Endpoint: `https://zambo.dev/api/mcp`, zero auth, no signup. [Website](https://zambo.dev)
 
 ### Search & discovery
 
