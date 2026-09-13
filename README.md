@@ -89,6 +89,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Agents, IDEs & developer tools
 
 - **[Agent QA](https://github.com/vostride/agent-qa)** `stdio` — Author, validate, run, and inspect natural-language web and mobile regression tests, with persistent test memory. Install: `npx -y agent-qa mcp`
+- **[AIHawk](https://github.com/feder-cr/AIHawk)** `stdio` - AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: `uvx aihawk`
 - **[Antigravity Link](https://github.com/cafeTechne/antigravity-link-extension)** `stdio` — Mirror active AI chat sessions from Google's Antigravity IDE to your phone: send messages, upload files, stop generation, automate workflows across 9 tools. Registry: `io.github.cafeTechne/antigravity-link`
 - **[claude-node](https://github.com/claw-army/claude-node)** `stdio` — Python subprocess bridge to the Claude Code CLI, giving Python direct access to Claude Code's native capabilities over stream-json.
 - **[OpenAPI to MCP Cloud Bridge](https://github.com/notsariedo/openapi-mcp-gateway)** `sse` — Zero-setup hosted bridge that turns any OpenAPI JSON spec into a remote MCP server. [Hosted bridge](https://mcp-bridge-saas.onrender.com)
