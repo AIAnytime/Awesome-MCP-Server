@@ -171,7 +171,7 @@ Contributions are very welcome — this list is only as good as the people addin
 **Adding a server?** Read **[CONTRIBUTING.md](CONTRIBUTING.md)** first. The short version:
 
 - One server per pull request.
-- Add it as a **bullet** in the right category, in alphabetical order. Please don't renumber anything or introduce numbered lists — that's what broke this file before.
+- Add it as a **bullet** in the right category, in alphabetical order. Please don't renumber anything or introduce numbered lists.
 - Use the exact entry format:
   ```markdown
   - **[Name](https://link-to-repo-or-docs)** `stdio|http|sse` — One sentence on what it does. Install: `command` · [Docs](https://…)
