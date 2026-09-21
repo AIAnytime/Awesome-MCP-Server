@@ -132,6 +132,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Finance & markets
 
 - **[AskCyborg](https://github.com/Ask-Cyborg/askcyborg-mcp)** `http` — Stress-tests public and private companies through analyst debate: reports, scores, comparisons, competitors, recent developments. Anonymous free tier, no API key. Endpoint: `https://mcp.askcyborg.com/mcp`
+- **[ddbx](https://ddbx.uk/mcp)** `http` — Insider share dealings from UK directors, US Form 4 filers, Swedish and Dutch PDMRs, and US Congress members, with notable filings rated. Read-only, no API key. Endpoint: `https://api.ddbx.uk/mcp` · [Repo](https://github.com/jonwillington/ddbx-plugin) · Registry: `io.github.jonwillington/ddbx`
 - **[EventTrader](https://github.com/eventtrader/event-trader-mcp)** `http` — Prediction-market trading: place bets, TGE token price predictions, real-time orderbooks, agent cloning, due-diligence scoring. [Platform](https://cymetica.com)
 - **[Helium](https://github.com/connerlambden/helium-mcp)** `http` — Real-time news with 37-dimension bias scoring, ML options pricing, and live market data. [Interactive demo](https://connerlambden.github.io/helium-news-explorer/) · [REST API](https://heliumtrades.com/mcp-page/)
 
