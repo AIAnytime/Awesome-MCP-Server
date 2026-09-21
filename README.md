@@ -115,7 +115,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[GoodMemory](https://github.com/hjqcan/GoodMemory)** `stdio` — Local-first, auditable memory for coding agents. SQLite-backed, read-only context/trace/search tools by default, with durable writes opt-in behind inspect, revise, forget, and export. Install: `npm install -g goodmemory`
 - **[Hyperconsciousness](https://github.com/louis030195/hyperconsciousness)** `stdio` — Developer-alpha encrypted knowledge store with search and retrieval through scoped, expiring grants. · [Docs](https://github.com/louis030195/hyperconsciousness#give-an-agent-limited-access)
 - **[Neither](https://github.com/stonianua/neither-mcp)** `stdio` ? Project context your AI can query through MCP. Selected notes/docs for Cursor or Claude Desktop; related retrieval with source evidence. Install: `npx -y @neitherai/mcp-server`. Registry: `io.github.stonianua/neither-mcp`. [Start](https://www.neither.online/start/?product=dev)
-- **[Screenpipe](https://github.com/screenpipe/screenpipe)** `stdio` — Local-first 24/7 screen and microphone recording with OCR, accessibility-tree, and transcript indexing, so assistants can answer questions over everything you've seen and heard. Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest`
+- **[Screenpipe](https://github.com/screenpipe/screenpipe)** `stdio` — Source-available MCP access to searchable local screen text and audio transcripts. Requires a running Screenpipe recorder and local API authentication. Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest` · [Docs](https://github.com/screenpipe/screenpipe/tree/main/packages/screenpipe-mcp#installation)
 
 ### Media & generation
 
