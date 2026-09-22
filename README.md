@@ -144,6 +144,8 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[NotFair Skills](https://github.com/nowork-studio/NotFair)** — *Skills, not a server.* Open-source Claude Code skills for SEO, GEO, Google Ads, and Meta Ads that pull live data through the Google Ads, Meta Ads, Search Console, and GA4 MCP servers.
 - **[SearchLink Lite](https://github.com/GlobalMatchHub/searchlink-lite)** `stdio` — Google Search Console inside your MCP client: search performance by query, page, country or device, ranking opportunities, URL indexing, sitemaps and on-page checks. Eight read-only tools, runs locally with a service account or gcloud credentials. Install: `npx -y github:GlobalMatchHub/searchlink-lite`
 
+- **[Unfetch](https://unfetch.com/plugin)** `http` — Google Ads MCP reporting for campaign spend, conversions, and search terms, plus Google Analytics, Search Console, keyword research, and web research with read-only account access; OAuth and a free plan. Endpoint: `https://unfetch.com/api/mcp` · [Website](https://unfetch.com)
+
 ### Cloud, ops & data
 
 - **[Cohesivity](https://github.com/cohesivity-org/cohesivity-plugin)** `http` — Agent-native backend services for hosting, Postgres, email, storage, containers, LLMs, voice, and third-party APIs, with free tiers, $5/month in AI and Search credits, and x402 top-ups. This remote MCP requires OAuth sign-in; anonymous no-signup setup uses the local MCP. Endpoint: `https://cohesivity.ai/mcp/manage` · [Docs](https://github.com/cohesivity-org/cohesivity-plugin#local-bootstrap-and-remote-oauth-are-independent)
