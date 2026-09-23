@@ -137,14 +137,15 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Marketing, content & social
 
-- **[BulkPublish](https://github.com/azeemkafridi/bulkpublish-api)** `http` — Plan, review, schedule, publish, and analyze social media content for AI agents through BulkPublish. Endpoint: `https://mcp.bulkpublish.com/mcp` · [Docs](https://app.bulkpublish.com/docs)
 - **[Autoposting](https://github.com/Autoposting-ai/autoposting-mcp)** `http` — Draft, schedule, and publish to X, LinkedIn, Instagram, Threads, and YouTube, plus AI carousels and video clipping. OAuth 2.1 with dynamic client registration — no secret to paste. Install: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`
+- **[BulkPublish](https://github.com/azeemkafridi/bulkpublish-api)** `http` — Plan, review, schedule, publish, and analyze social media content for AI agents through BulkPublish. Endpoint: `https://mcp.bulkpublish.com/mcp` · [Docs](https://app.bulkpublish.com/docs)
 - **[Liftli](https://github.com/liftli-ai/liftli-mcp)** `http` — Head-of-content for LinkedIn, X, and Substack: extracts your voice from your own posts, turns voice notes and transcripts into drafts, critiques them, then publishes through official platform APIs. 54 tools, no scraping.
 - **[NotFair](https://notfair.co)** `http` — Google Ads diagnostics (CPA, ROAS, search-term waste, quality scores) and optimizations executed through the official Google Ads API behind a human-approval gate.
 - **[NotFair Skills](https://github.com/nowork-studio/NotFair)** — *Skills, not a server.* Open-source Claude Code skills for SEO, GEO, Google Ads, and Meta Ads that pull live data through the Google Ads, Meta Ads, Search Console, and GA4 MCP servers.
+- **[Robot Speed](https://github.com/robot-speed/mcp)** `http` — AI SEO MCP: content calendar, keyword research, site audits, backlinks, and CMS publishing. OAuth remote. Endpoint: `https://www.robot-speed.com/api/mcp` · [Website](https://www.robot-speed.com/mcp)
 - **[SearchLink Lite](https://github.com/GlobalMatchHub/searchlink-lite)** `stdio` — Google Search Console inside your MCP client: search performance by query, page, country or device, ranking opportunities, URL indexing, sitemaps and on-page checks. Eight read-only tools, runs locally with a service account or gcloud credentials. Install: `npx -y github:GlobalMatchHub/searchlink-lite`
-
 - **[Unfetch](https://unfetch.com/plugin)** `http` — Google Ads MCP reporting for campaign spend, conversions, and search terms, plus Google Analytics, Search Console, keyword research, and web research with read-only account access; OAuth and a free plan. Endpoint: `https://unfetch.com/api/mcp` · [Website](https://unfetch.com)
+
 
 ### Cloud, ops & data
 
