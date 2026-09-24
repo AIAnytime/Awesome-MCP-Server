@@ -127,6 +127,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[Motomarks](https://motomarks.io/docs/mcp)** `http` — Search a published automotive brand library and build logo CDN URLs for Claude, Cursor, and VS Code. Endpoint: `https://motomarks.io/api/mcp` (OAuth or API key; free account, no credit card)
 - **[prompt-to-asset](https://github.com/MohamedAbdallah-14/prompt-to-asset)** `stdio` — Routes image-generation prompts to 30+ models (DALL·E, Stable Diffusion, Flux, Midjourney) through one interface. Install: `npm install -g prompt-to-asset`
 - **[RunAPI](https://github.com/runapi-ai/mcp)** `stdio` — Browse the RunAPI model catalog and run image, video, music/audio, text-to-speech, and LLM tasks from agent workflows. Install: `npx -y @runapi.ai/mcp`
+- **[UpRes](https://github.com/auroracapital/upres-cli)** `stdio` — UpRes MCP: list models, credits, and submit 4K image and video upscale jobs. Install: `npx -y upres-cli`
 
 ### Security
 
