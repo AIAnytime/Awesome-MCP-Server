@@ -165,6 +165,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[HOTLIKESHOP](https://github.com/tuanone123/hotlikeshop-mcp)** `http` — Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: `https://hotlikeshop.com/api/mcp` · [Docs](https://hotlikeshop.com/ai)
 - **[Packrift](https://github.com/Packrift/packrift-mcp)** `http` — Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
 - **[Pocket Drives](https://github.com/RevList/pocket-drives-mcp)** `http` — Search peer-to-peer luxury, exotic, and EV rentals from independent hosts. Endpoint: `https://pocketdrives.ai/mcp`, no auth.
+- **[StayingAPI](https://github.com/stayingapi/hotel-mcp)** `http` — Accommodation data across Airbnb, Booking.com, Vrbo, and Google Hotels: search stays and read live listings, rates, availability and reviews. Endpoint: `https://mcp.stayingapi.com/mcp` · [Docs](https://stayingapi.com)
 
 ### Work & productivity
 
