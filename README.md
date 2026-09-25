@@ -167,11 +167,13 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Work & productivity
 
+- [HostDeFi](https://hostdefi.com) — free token-safety scanner grading tokens A+–F from on-chain checks (mint/freeze authority, liquidity, holder concentration) across Solana + 7 EVM chains. Keyless REST API, hosted MCP, x402 endpoints.
 - **[AI Applyd](https://github.com/whateverneveranywhere/aiapplyd-mcp)** `http` — ATS resume scoring, job-description analysis, interview prep, cover letters, resume building, and auto-apply that submits on the employer's own hiring system. [Website](https://aiapplyd.com/mcps)
 - **[CareClinic Health Tracker](https://cdn.careclinic.io/mcp/help/index.html)** `http` — Review personal medication schedules, symptoms, mood, and confirmed health check-ins through an authorized CareClinic account. Endpoint: `https://mcp.careclinic.io/mcp`
+- **[Kleap](https://github.com/kleaphq/cli)** `http` — AI website builder MCP: create apps, edit files, connect domains, and publish. OAuth remote. Endpoint: `https://kleap.co/api/mcp` · [Website](https://kleap.co/mcp)
 - **[Office Suite](https://github.com/theluckystrike/mcp-servers)** `stdio` — Bundle of MCP servers for freelance and back-office work: invoices, spreadsheets, PDFs, time tracking, expense tracking, resumes, and contracts. [Hosted](https://mcp.zovo.one)
 - **[Process Street](https://github.com/process-street/process-street-mcp)** `http` — Connect agents to Process Street workflows, tasks, runs, data sets, and operational records, with an interactive authorization flow. [Docs](https://www.process.st/help/docs/mcp-server/)
-- [HostDeFi](https://hostdefi.com) — free token-safety scanner grading tokens A+–F from on-chain checks (mint/freeze authority, liquidity, holder concentration) across Solana + 7 EVM chains. Keyless REST API, hosted MCP, x402 endpoints.
+
 
 ## 🤝 Contributing
 
