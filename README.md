@@ -89,6 +89,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Agents, IDEs & developer tools
 
 - **[Agent QA](https://github.com/vostride/agent-qa)** `stdio` — Author, validate, run, and inspect natural-language web and mobile regression tests, with persistent test memory. Install: `npx -y agent-qa mcp`
+- **[Aident Loadout](https://github.com/Aident-AI/aident-skill)** `http` — Connect Codex, Claude Code, Cursor, ChatGPT and other MCP clients to 1,000+ apps and 400+ Skills through one reusable setup with Vault-protected credentials. Endpoint: `https://loadout.aident.ai/mcp` · [Docs](https://docs.aident.ai/loadout/overview) · [Website](https://aident.ai) · Registry: `io.github.Aident-AI/loadout`
 - **[AIHawk](https://github.com/feder-cr/AIHawk)** `stdio` - AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: `uvx aihawk`
 - **[Antigravity Link](https://github.com/cafeTechne/antigravity-link-extension)** `stdio` — Mirror active AI chat sessions from Google's Antigravity IDE to your phone: send messages, upload files, stop generation, automate workflows across 9 tools. Registry: `io.github.cafeTechne/antigravity-link`
 - **[API.market MCP Gateway](https://api.market/mcp)** `http` — Discover and call 580+ APIs through five gateway tools, with OAuth or API-key authentication; pricing and free tiers vary by API. Endpoint: `https://api.market/api/mcp/gateway`
