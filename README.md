@@ -89,7 +89,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Agents, IDEs & developer tools
 
 - **[Agent QA](https://github.com/vostride/agent-qa)** `stdio` — Author, validate, run, and inspect natural-language web and mobile regression tests, with persistent test memory. Install: `npx -y agent-qa mcp`
-- **[AIHawk](https://github.com/feder-cr/AIHawk)** `stdio` - AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: `uvx aihawk`
+- **[AIHawk](https://github.com/feder-cr/AIHawk)** `stdio` — AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: `uvx aihawk`
 - **[Antigravity Link](https://github.com/cafeTechne/antigravity-link-extension)** `stdio` — Mirror active AI chat sessions from Google's Antigravity IDE to your phone: send messages, upload files, stop generation, automate workflows across 9 tools. Registry: `io.github.cafeTechne/antigravity-link`
 - **[API.market MCP Gateway](https://api.market/mcp)** `http` — Discover and call 580+ APIs through five gateway tools, with OAuth or API-key authentication; pricing and free tiers vary by API. Endpoint: `https://api.market/api/mcp/gateway`
 - **[Archcore](https://github.com/archcore-ai/archcore)** `stdio` — Git-native context engineering CLI and MCP server for AI coding agents. Keep specs, ADRs, rules, plans, and project knowledge in Git. Install: `curl -fsSL https://archcore.ai/install.sh | bash` · [Docs](https://docs.archcore.ai)
@@ -107,18 +107,18 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[AISOTools](https://github.com/shibley/aisotools-mcp-server)** `http` — Search a curated catalog of 1,766 AI tools by keyword, category, or pricing; compare 2–5 products side by side and find alternatives. Read-only, no API key, sponsored results flagged. Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp` · [Docs](https://aisotools.com/mcp)
 - **[nothumansearch](https://nothumansearch.ai/mcp)** `http` — Search engine over 8,600+ agent-native services: discover MCP servers, OpenAPI providers, and llms.txt publishers by keyword, category, or agentic-readiness score. Registry: `ai.nothumansearch/search`
 - **[Parallel Search](https://docs.parallel.ai/integrations/mcp/search-mcp)** `http` — Free live web search and URL fetching, no account or API key. Endpoint: `https://search.parallel.ai/mcp`
+- **[Statsnet](https://github.com/usenetstate/statsnet-mcp)** `http` — Background check any company in the world: registration, executives, courts and finances. Endpoint: `https://statsnet.co/mcp` · Registry: `io.github.usenetstate/statsnet`
 - **[TwitterAPI.io](https://github.com/kaitoInfra/twitterapi-io-mcp-server)** `http` — 12 read-only tools over [twitterapi.io](https://twitterapi.io): tweet search with full operators, profiles, followers, conversation threads, real-time streaming, trending topics. Endpoint: `mcp.twitterapi.io/mcp`
 - **[Vend API Merchant](https://extract.paypercall.dev)** `http` — Pay-per-call web intelligence: extract clean text from URLs, web search, link checking, domain WHOIS/DNS/SSL info, IP geolocation, and PDF text extraction. 22+ endpoints, no signup or API key, each call settles in Nano (XNO) via x402 at 0.0001–0.0005 XNO. Endpoint: `https://extract.paypercall.dev/mcp` · [Docs](https://extract.paypercall.dev) · Registry: `dev.paypercall.extract/vend-api-merchant`
 - **[Xquik](https://github.com/Xquik-dev/x-twitter-scraper)** `http` — X/Twitter search, extraction workflows, account insights, webhooks, and SDK access. [Docs](https://docs.xquik.com/mcp/overview)
 
-- **[Statsnet](https://github.com/usenetstate/statsnet-mcp)** `http` — Background check any company in the world: registration, executives, courts and finances. Endpoint: `https://statsnet.co/mcp` · Registry: `io.github.usenetstate/statsnet`
 ### Knowledge, memory & context
 
 - **[ContextStream](https://github.com/contextstream/mcp-server)** `http` — Shared persistent memory and semantic code search for AI coding agents (Cursor, Claude Code, Codex, Grok, Windsurf). Free tier; hosted OAuth or API key. Endpoint: `https://mcp.contextstream.io/mcp` · [Website](https://contextstream.io)
 - **[GoodMemory](https://github.com/hjqcan/GoodMemory)** `stdio` — Local-first, auditable memory for coding agents. SQLite-backed, read-only context/trace/search tools by default, with durable writes opt-in behind inspect, revise, forget, and export. Install: `npm install -g goodmemory`
 - **[Hyperconsciousness](https://github.com/louis030195/hyperconsciousness)** `stdio` — Developer-alpha encrypted knowledge store with search and retrieval through scoped, expiring grants. · [Docs](https://github.com/louis030195/hyperconsciousness#give-an-agent-limited-access)
 - **[Mnemoverse](https://github.com/mnemoverse/mcp-memory-server)** `http` — Hosted persistent memory for AI agents with shared rooms; tell it a recalled memory helped or misled and it re-ranks what comes back next. Free tier; OAuth on the hosted endpoint, API key for the npm package. Endpoint: `https://mcp.mnemoverse.com/mcp` · Install: `npx -y @mnemoverse/mcp-memory-server@latest` · [Docs](https://mnemoverse.com/docs)
-- **[Neither](https://github.com/stonianua/neither-mcp)** `stdio` ? Project context your AI can query through MCP. Selected notes/docs for Cursor or Claude Desktop; related retrieval with source evidence. Install: `npx -y @neitherai/mcp-server`. Registry: `io.github.stonianua/neither-mcp`. [Start](https://www.neither.online/start/?product=dev)
+- **[Neither](https://github.com/stonianua/neither-mcp)** `stdio` — Project context your AI can query through MCP. Selected notes/docs for Cursor or Claude Desktop; related retrieval with source evidence. Install: `npx -y @neitherai/mcp-server`. Registry: `io.github.stonianua/neither-mcp`. [Start](https://www.neither.online/start/?product=dev)
 - **[Screenpipe](https://github.com/screenpipe/screenpipe)** `stdio` — Source-available MCP access to searchable local screen text and audio transcripts. Requires a running Screenpipe recorder and local API authentication. Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest` · [Docs](https://github.com/screenpipe/screenpipe/tree/main/packages/screenpipe-mcp#installation)
 
 ### Media & generation
@@ -140,6 +140,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[Eulerpool](https://github.com/eulerpool/eulerpool-mcp)** `http` — Financial data for AI agents: 250+ tools over stocks, fundamentals, ETFs, macro (FRED/ECB/IMF/World Bank), crypto, FX, insider trades, congress trading and options flow. Free tier, API key or OAuth. Endpoint: `https://api.eulerpool.com/mcp` · [Docs](https://eulerpool.com/developers/mcp-server)
 - **[EventTrader](https://github.com/eventtrader/event-trader-mcp)** `http` — Prediction-market trading: place bets, TGE token price predictions, real-time orderbooks, agent cloning, due-diligence scoring. [Platform](https://cymetica.com)
 - **[Helium](https://github.com/connerlambden/helium-mcp)** `http` — Real-time news with 37-dimension bias scoring, ML options pricing, and live market data. [Interactive demo](https://connerlambden.github.io/helium-news-explorer/) · [REST API](https://heliumtrades.com/mcp-page/)
+- **[HostDeFi](https://hostdefi.com)** `http` — Free token-safety scanner grading tokens A+–F from on-chain checks (mint/freeze authority, liquidity, holder concentration) across Solana and 7 EVM chains. Keyless REST API, hosted MCP, and x402 endpoints.
 
 ### Marketing, content & social
 
@@ -152,7 +153,6 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[SearchLink Lite](https://github.com/GlobalMatchHub/searchlink-lite)** `stdio` — Google Search Console inside your MCP client: search performance by query, page, country or device, ranking opportunities, URL indexing, sitemaps and on-page checks. Eight read-only tools, runs locally with a service account or gcloud credentials. Install: `npx -y github:GlobalMatchHub/searchlink-lite`
 - **[ThreadFox Lite](https://github.com/amflimited/threadfox-lite)** `stdio` — Read-only Reddit research through your own signed-in Chrome: a subreddit's rules with self-promotion rules flagged, communities for a topic, an account's standing, and whether a post is still live. No API keys.
 - **[Unfetch](https://unfetch.com/plugin)** `http` — Google Ads MCP reporting for campaign spend, conversions, and search terms, plus Google Analytics, Search Console, keyword research, and web research with read-only account access; OAuth and a free plan. Endpoint: `https://unfetch.com/api/mcp` · [Website](https://unfetch.com)
-
 
 ### Cloud, ops & data
 
@@ -174,7 +174,6 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[CareClinic Health Tracker](https://cdn.careclinic.io/mcp/help/index.html)** `http` — Review personal medication schedules, symptoms, mood, and confirmed health check-ins through an authorized CareClinic account. Endpoint: `https://mcp.careclinic.io/mcp`
 - **[Office Suite](https://github.com/theluckystrike/mcp-servers)** `stdio` — Bundle of MCP servers for freelance and back-office work: invoices, spreadsheets, PDFs, time tracking, expense tracking, resumes, and contracts. [Hosted](https://mcp.zovo.one)
 - **[Process Street](https://github.com/process-street/process-street-mcp)** `http` — Connect agents to Process Street workflows, tasks, runs, data sets, and operational records, with an interactive authorization flow. [Docs](https://www.process.st/help/docs/mcp-server/)
-- [HostDeFi](https://hostdefi.com) — free token-safety scanner grading tokens A+–F from on-chain checks (mint/freeze authority, liquidity, holder concentration) across Solana + 7 EVM chains. Keyless REST API, hosted MCP, x402 endpoints.
 
 ## 🤝 Contributing
 
