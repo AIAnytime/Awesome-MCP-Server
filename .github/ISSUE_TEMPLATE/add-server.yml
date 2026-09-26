@@ -1,0 +1,72 @@
+name: ➕ Suggest an MCP server
+description: Suggest a server for the community directory (a pull request is faster).
+title: "Add <server name>"
+labels: ["new-server"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A pull request is faster than an issue — see [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+        Use this form if you'd rather a maintainer add it.
+  - type: input
+    id: name
+    attributes:
+      label: Server name
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: Public repository, or the docs page if there is no public repo. No tracking parameters.
+    validations:
+      required: true
+  - type: dropdown
+    id: transport
+    attributes:
+      label: Transport
+      options:
+        - stdio (runs locally)
+        - http (hosted remote)
+        - sse (remote over SSE)
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: One-sentence description
+      description: What it does and what it's over. No marketing language.
+    validations:
+      required: true
+  - type: input
+    id: install
+    attributes:
+      label: Install command or endpoint URL
+      placeholder: npx -y my-mcp-server
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Agents, IDEs & developer tools
+        - Search & discovery
+        - Knowledge, memory & context
+        - Media & generation
+        - Security
+        - Finance & markets
+        - Marketing, content & social
+        - Cloud, ops & data
+        - Commerce, travel & logistics
+        - Work & productivity
+        - Not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmations
+      options:
+        - label: It genuinely speaks MCP, and is reachable by someone other than me.
+          required: true
+        - label: I searched the README for both the name and the domain — it isn't already listed.
+          required: true
