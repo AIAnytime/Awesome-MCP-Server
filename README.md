@@ -105,6 +105,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Search & discovery
 
 - **[AISOTools](https://github.com/shibley/aisotools-mcp-server)** `http` — Search a curated catalog of 1,766 AI tools by keyword, category, or pricing; compare 2–5 products side by side and find alternatives. Read-only, no API key, sponsored results flagged. Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp` · [Docs](https://aisotools.com/mcp)
+- **[Derrick](https://github.com/DerrickAppOrg/derrick-mcp)** `stdio` — B2B data enrichment from a name, a domain or a LinkedIn URL: verified work emails, phone numbers, company firmographics, tech stack, hiring signals, and French SIRET/SIREN records. Install: `npx derrick-mcp` · [Docs](https://derrick-app.com/mcp)
 - **[nothumansearch](https://nothumansearch.ai/mcp)** `http` — Search engine over 8,600+ agent-native services: discover MCP servers, OpenAPI providers, and llms.txt publishers by keyword, category, or agentic-readiness score. Registry: `ai.nothumansearch/search`
 - **[Parallel Search](https://docs.parallel.ai/integrations/mcp/search-mcp)** `http` — Free live web search and URL fetching, no account or API key. Endpoint: `https://search.parallel.ai/mcp`
 - **[TwitterAPI.io](https://github.com/kaitoInfra/twitterapi-io-mcp-server)** `http` — 12 read-only tools over [twitterapi.io](https://twitterapi.io): tweet search with full operators, profiles, followers, conversation threads, real-time streaming, trending topics. Endpoint: `mcp.twitterapi.io/mcp`
