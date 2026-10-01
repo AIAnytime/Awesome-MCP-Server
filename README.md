@@ -107,6 +107,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Search & discovery
 
 - **[AISOTools](https://github.com/shibley/aisotools-mcp-server)** `http` — Search a curated catalog of 1,766 AI tools by keyword, category, or pricing; compare 2–5 products side by side and find alternatives. Read-only, no API key, sponsored results flagged. Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp` · [Docs](https://aisotools.com/mcp)
+- **[Court Rules](https://github.com/foklepoint/court-rules-mcp)** `http` — U.S. federal court rules, local rules, judge standing orders, court holidays and filing deadline checks; API key required, free tier. Endpoint: `https://mcp.courtrules.app/mcp`
 - **[nothumansearch](https://nothumansearch.ai/mcp)** `http` — Search engine over 8,600+ agent-native services: discover MCP servers, OpenAPI providers, and llms.txt publishers by keyword, category, or agentic-readiness score. Registry: `ai.nothumansearch/search`
 - **[Parallel Search](https://docs.parallel.ai/integrations/mcp/search-mcp)** `http` — Free live web search and URL fetching, no account or API key. Endpoint: `https://search.parallel.ai/mcp`
 - **[TwitterAPI.io](https://github.com/kaitoInfra/twitterapi-io-mcp-server)** `http` — 12 read-only tools over [twitterapi.io](https://twitterapi.io): tweet search with full operators, profiles, followers, conversation threads, real-time streaming, trending topics. Endpoint: `mcp.twitterapi.io/mcp`
