@@ -172,6 +172,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Commerce, travel & logistics
 
+- **[Brainy Prices](https://prices.brainy.ae/developers.html)** `http` — UAE cost of living data: school fees (KHDA), registered rents (DLD), fuel, utilities, telecom plans and relocation costs, with source and date on every answer. Read-only; no auth. Endpoint: `https://prices.brainy.ae/mcp/v2`
 - **[BuyWhere](https://github.com/BuyWhere/buywhere-mcp)** `stdio` — Cross-border e-commerce product search across 150M+ products in Singapore, SEA, and US markets with real-time price comparison. Install: `npx @buywhere/mcp-server`
 - **[CardDeals](https://github.com/cello305/carddeals-mcp)** `http` — Query and compare real-time discounted digital gift cards across 700+ brands. Endpoint: `https://catalog.carddeals.co/mcp` · [Docs](https://carddeals.co/mcp)
 - **[HOTLIKESHOP](https://github.com/tuanone123/hotlikeshop-mcp)** `http` — Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: `https://hotlikeshop.com/api/mcp` · [Docs](https://hotlikeshop.com/ai)
