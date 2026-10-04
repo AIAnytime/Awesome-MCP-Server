@@ -106,6 +106,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Search & discovery
 
+- **[AgentoolRank](https://github.com/agent-gigmole/agentoolrank-mcp)** `http` — Search open-source AI agent tools and MCP servers ranked by live GitHub activity, refreshed daily, and get alternatives for any tool; read-only search needs no API key. Install: `claude mcp add --transport http agentoolrank https://agentoolrank.com/api/mcp` · [Docs](https://agentoolrank.com/agents) · Registry: `com.agentoolrank/agent-tools`
 - **[AISOTools](https://github.com/shibley/aisotools-mcp-server)** `http` — Search a curated catalog of 1,766 AI tools by keyword, category, or pricing; compare 2–5 products side by side and find alternatives. Read-only, no API key, sponsored results flagged. Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp` · [Docs](https://aisotools.com/mcp)
 - **[Court Rules](https://github.com/foklepoint/court-rules-mcp)** `http` — U.S. federal court rules, local rules, judge standing orders, court holidays and filing deadline checks; API key required, free tier. Endpoint: `https://mcp.courtrules.app/mcp`
 - **[nothumansearch](https://nothumansearch.ai/mcp)** `http` — Search engine over 8,600+ agent-native services: discover MCP servers, OpenAPI providers, and llms.txt publishers by keyword, category, or agentic-readiness score. Registry: `ai.nothumansearch/search`
