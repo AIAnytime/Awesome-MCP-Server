@@ -178,6 +178,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[MAQAMI Travel](https://github.com/negm17111995/mcp-server)** `http` — Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel rates and flights, look up places, airports and hotel details, then prebook and book. Endpoint: `https://mcp.maqami.co/`, no API key required · [Website](https://maqami.co)
 - **[Packrift](https://github.com/Packrift/packrift-mcp)** `http` — Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
 - **[Pocket Drives](https://github.com/RevList/pocket-drives-mcp)** `http` — Search peer-to-peer luxury, exotic, and EV rentals from independent hosts. Endpoint: `https://pocketdrives.ai/mcp`, no auth.
+- **[SkyAccess](https://github.com/sky-access/skyaccess-mcp)** `http` - Search 5,000+ live empty leg flights, get charter price estimates and booking links. No account or API key. Endpoint: `https://mcp.skyaccess.com/mcp` · [Website](https://skyaccess.com) · Registry: `com.skyaccess/skyaccess`
 - **[StayingAPI](https://github.com/stayingapi/hotel-mcp)** `http` — Accommodation data across Airbnb, Booking.com, Vrbo, and Google Hotels: search stays and read live listings, rates, availability and reviews. Endpoint: `https://mcp.stayingapi.com/mcp` · [Docs](https://stayingapi.com)
 
 ### Work & productivity
