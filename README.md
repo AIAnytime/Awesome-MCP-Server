@@ -203,6 +203,7 @@ Servers built by the community. Entries are alphabetical within each category.
 
 ### Commerce, travel & logistics
 
+- **[BirkinBagStock](https://birkinbagstock.com/llms.txt)** `http` — Independent Hermès resale index: inventory, market prices, auction calendar and results. Endpoint: `https://birkinbagstock.com/mcp` (no auth) · Registry: `com.birkinbagstock/mcp`
 - **[BuyWhere](https://github.com/BuyWhere/buywhere-mcp)** `stdio` — Cross-border e-commerce product search across 150M+ products in Singapore, SEA, and US markets with real-time price comparison. Install: `npx @buywhere/mcp-server`
 - **[CardDeals](https://github.com/cello305/carddeals-mcp)** `http` — Query and compare real-time discounted digital gift cards across 700+ brands. Endpoint: `https://catalog.carddeals.co/mcp` · [Docs](https://carddeals.co/mcp)
 - **[Clickwise](https://github.com/softdevfz/clickwise-api)** `http` — Affiliate network: find affiliate programs that fit a site or channel, mint tracked links and browse deals without a key; a free publisher key adds GTIN product search (1.1M+ products, 7 markets) with your own tracked links. Endpoint: `https://partners.clickwise.net/api/v1/mcp` · [Docs](https://partners.clickwise.net/developers/) · Registry: `net.clickwise/mcp`
