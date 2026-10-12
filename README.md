@@ -144,6 +144,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Media & generation
 
 - **[audio](https://github.com/audiojs/audio)** `stdio` — Edit, analyze and convert audio files and the sound of videos, no ffmpeg: loudness and true peak, checks against ACX, podcast, streaming and EBU R 128 specs, denoise, EQ, trim, fades, BPM, key. Install: `npx -y audio --mcp` · [Docs](https://github.com/audiojs/audio#mcp)
+- **[Claude Imagine](https://github.com/lumian2015/claudeimagine-mcp)** `http` — Generate and edit images and videos with Nano Banana 2, GPT Image 2.5, Seedream 4.5, Flux 2 Pro, and Veo 3.1 Fast. Endpoint: `https://claudeimagine.com/api/mcp` (OAuth, no API key; free signup credits, then paid plans) · [Docs](https://claudeimagine.com/docs/mcp)
 - **[Magic Hour](https://github.com/magichourhq/magic-hour-mcp)** `http` — Generate and edit video, images, and audio with 44 Magic Hour API tools. Endpoint: `https://mcp.magichour.ai/` (bearer API key required) · [Setup](https://magichour.ai/mcp)
 - **[Motomarks](https://motomarks.io/docs/mcp)** `http` — Search a published automotive brand library and build logo CDN URLs for Claude, Cursor, and VS Code. Endpoint: `https://motomarks.io/api/mcp` (OAuth or API key; free account, no credit card)
 - **[OrkasVideoStudio](https://github.com/Orkas-AI/Orkas-VideoStudio)** `stdio` — Local-first server and TypeScript CLI for agent-driven video composition, editing, generation, and assembly on editable `plan.json` timelines, with installable skills for Codex and Claude Code.
