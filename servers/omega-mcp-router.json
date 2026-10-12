@@ -1,0 +1,7 @@
+{
+  "name": "Omega MCP Router",
+  "url": "https://github.com/Omega-JS-Stack/omega/tree/main/packages/mcp-router",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Fronts many upstream MCP servers behind one stdio connection, serves their tool schemas from a disk cache, and starts each upstream only on its first call; a session switches upstreams on and off through four `router__*` tools. Install: `npx -y @omega.js/mcp-router`"
+}
