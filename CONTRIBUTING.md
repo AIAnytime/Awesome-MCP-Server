@@ -83,6 +83,21 @@ The folders at the top level are teaching examples. If you want to add one:
 - Never commit secrets. Use `.env` (already gitignored) and document the variable names.
 - Add a row to the *Servers in this repo* table in the main README, and an entry in `data/reference.json` so it shows on the site.
 
+## Maintaining the site
+
+The `Check servers and publish site` workflow does this every night. To do it by hand:
+
+```bash
+git fetch origin status-data && git show FETCH_HEAD:status.json > data/status.json   # previous results
+GITHUB_TOKEN=$(gh auth token) python3 scripts/probe.py                               # check every server
+python3 scripts/build.py --site _site                                                # build the site
+mkdir -p _status && cp data/status.json _status/ && scripts/push_branch.sh _status status-data "Check results"
+scripts/push_branch.sh _site gh-pages "Site"
+```
+
+Set the repository variables `SITE_URL` (the site's public address) and `MCP_URL` (the hosted
+`directory-mcp` endpoint) to change what the workflow builds with.
+
 ## Reporting a problem
 
 - **A listed server is dead, misleading, or malicious** → open an issue with the entry name and what you observed. Verified reports get the entry removed.

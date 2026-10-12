@@ -176,3 +176,4 @@ cython_debug/
 # Generated site and nightly check results (results live on the status-data branch)
 _site/
 data/status.json
+_status/
