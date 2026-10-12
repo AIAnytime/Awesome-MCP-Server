@@ -20,11 +20,41 @@ from pathlib import Path
 
 from lib import CATEGORIES, README, REPO_URL, ROOT, load_servers, render_directory, splice_readme, validate
 
-SITE_URL = os.environ.get("SITE_URL", "https://aianytime.github.io/Awesome-MCP-Servers").rstrip("/")
+SITE_URL = os.environ.get("SITE_URL", "https://mcp.aianytime.net").rstrip("/")
 MCP_URL = os.environ.get("MCP_URL", "").rstrip("/")
 YOUTUBE = "https://www.youtube.com/@AIAnytime"
 MAIN_SITE = "https://aianytime.net"
 ACADEMY = "https://academy.aianytime.net"
+
+SITE_NAME = "Awesome MCP Servers by AI Anytime"
+KEYWORDS = "MCP servers, Model Context Protocol, MCP directory, remote MCP servers, MCP server list, awesome mcp servers, AI agents, Claude, Cursor, AI Anytime"
+STATIC = Path(__file__).resolve().parent / "static"
+
+# Hub pages besides the categories: (slug, title, intro, filter).
+COLLECTIONS = [
+    (
+        "no-auth",
+        "MCP servers you can connect to without an account",
+        "Hosted Model Context Protocol servers that answered last night's MCP handshake with no credentials at all. Paste the command and they work.",
+        lambda e: e["status"]["status"] == "live",
+    ),
+    (
+        "local",
+        "Local MCP servers that run on your machine",
+        "Model Context Protocol servers that run locally over stdio. Nothing is hosted, so your data stays on your machine and there is no endpoint to check.",
+        lambda e: e["transport"] == "stdio",
+    ),
+]
+
+FAQ = [
+    ("What is an MCP server?", "An MCP server exposes tools, data or prompts to an AI assistant through the Model Context Protocol, an open standard. A client such as Claude, Cursor or VS Code connects to the server and can then call its tools."),
+    ("How is this directory different from other MCP server lists?", "Every hosted server here is sent a real MCP handshake each night. The directory shows which servers answered, which asked for credentials, how many tools each one exposes and roughly how many tokens those tool definitions take up in a model's context."),
+    ("What do Live, Needs auth and Down mean?", "Live means the server answered an MCP initialize request without any credentials. Needs auth means it is reachable but asked for an OAuth sign-in or an API key first. Down means it did not return a valid MCP response. Local stdio servers run on your own machine and are not checked."),
+    ("What is context cost?", "A client loads every tool definition a server exposes into the model's context. Context cost is an estimate of how many tokens those definitions take, at about four characters per token. A server with hundreds of tools can use tens of thousands of tokens before you ask anything."),
+    ("Does a listing mean a server is safe?", "No. The nightly check records what a server answered, not whether it is safe. A listing is not a security audit. Read a server's source and the permissions it asks for before you connect it."),
+    ("How do I add my MCP server?", "Open a pull request on GitHub that adds one small JSON file for your server. Once it merges, the server gets its own page, a nightly check and a status badge you can embed in your README."),
+    ("Can an AI agent search this directory?", "Yes. The whole directory is available as a JSON file and as llms.txt and llms-full.txt, and the repository includes an MCP server that searches the directory by keyword, category and live status."),
+]
 
 STATUS_LABEL = {"live": "Live", "auth": "Needs auth", "down": "Down", "unprobed": "Not checked"}
 BADGE_COLOR = {"live": "#1a7f37", "auth": "#5b3df5", "down": "#cf222e", "unprobed": "#6e7781"}
@@ -202,6 +232,13 @@ dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
 pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.86rem}
 pre code{background:none;padding:0;overflow-wrap:normal}
 .tools{columns:220px;padding-left:18px;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.chips a:hover{border-color:var(--accent);color:var(--accent)}
+.chips a span{color:var(--mute)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mute)}
 [hidden]{display:none!important}
 """
 
@@ -238,7 +275,37 @@ navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.
 """
 
 
-def page(title: str, description: str, body: str, root: str, canonical: str, script: str = "") -> str:
+def jsonld(*items: dict) -> str:
+    graph = {"@context": "https://schema.org", "@graph": list(items)}
+    return '<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False).replace("</", "<\\/") + "</script>"
+
+
+ORG = {
+    "@type": "Organization",
+    "@id": "https://aianytime.net/#organization",
+    "name": "AI Anytime",
+    "url": "https://aianytime.net",
+    "sameAs": ["https://www.youtube.com/@AIAnytime", "https://github.com/AIAnytime", "https://academy.aianytime.net"],
+}
+
+
+def breadcrumbs(*trail: tuple[str, str]) -> dict:
+    return {
+        "@type": "BreadcrumbList",
+        "itemListElement": [{"@type": "ListItem", "position": i, "name": name, "item": url} for i, (name, url) in enumerate(trail, 1)],
+    }
+
+
+def item_list(entries: list[dict]) -> dict:
+    return {
+        "@type": "ItemList",
+        "numberOfItems": len(entries),
+        "itemListElement": [{"@type": "ListItem", "position": i, "name": e["name"], "url": f"{SITE_URL}/s/{e['slug']}/"} for i, e in enumerate(entries, 1)],
+    }
+
+
+def page(title: str, description: str, body: str, root: str, canonical: str, script: str = "", schema: str = "", index: bool = True) -> str:
+    browse = " · ".join(f'<a href="{root}c/{slug}/">{esc(name)}</a>' for slug, name in CATEGORIES.items())
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -246,11 +313,28 @@ def page(title: str, description: str, body: str, root: str, canonical: str, scr
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(description)}">
+<meta name="keywords" content="{esc(KEYWORDS)}">
+<meta name="author" content="AI Anytime">
+<meta name="robots" content="{'index,follow,max-image-preview:large,max-snippet:-1' if index else 'noindex,follow'}">
+<meta name="theme-color" content="#f6f4ee">
 <link rel="canonical" href="{esc(canonical)}">
+<link rel="icon" href="{root}favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" title="Directory data" href="{root}api/servers.json">
+<link rel="alternate" type="text/plain" title="llms.txt" href="{root}llms.txt">
+<meta property="og:site_name" content="{esc(SITE_NAME)}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{esc(canonical)}">
+<meta property="og:image" content="{SITE_URL}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Awesome MCP Servers by AI Anytime: MCP servers we actually connect to, every night.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(description)}">
+<meta name="twitter:image" content="{SITE_URL}/og.png">
+{schema}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
@@ -264,7 +348,8 @@ def page(title: str, description: str, body: str, root: str, canonical: str, scr
 <main class="wrap">
 {body}
 <p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
-<a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="{root}api/servers.json">JSON</a> · <a href="{root}llms.txt">llms.txt</a></p>
+<a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="{root}api/servers.json">JSON</a> · <a href="{root}llms.txt">llms.txt</a> · <a href="{root}llms-full.txt">llms-full.txt</a></p>
+<p class="fineprint" style="margin-top:8px">Browse: {browse} · <a href="{root}c/no-auth/">No account needed</a> · <a href="{root}c/local/">Local servers</a></p>
 </main>
 <footer><div class="wrap foot">
 <div>
@@ -295,7 +380,7 @@ def command_block(command: str) -> str:
     return f'<div class="cmd"><code>{esc(command)}</code><button class="copy" data-copy="{esc(command)}">Copy</button></div>'
 
 
-def card(entry: dict) -> str:
+def card(entry: dict, root: str = "") -> str:
     s = entry["status"]
     text = " ".join([entry["name"], plain(entry["description"]), CATEGORIES[entry["category"]], entry["transport"], *s.get("tool_names", [])]).lower()
     tag = "" if entry["transport"] == "none" else f'<span class="tag">{entry["transport"]}</span>'
@@ -304,7 +389,7 @@ def card(entry: dict) -> str:
     return (
         f'<li class="card" data-name="{esc(entry["name"].lower())}" data-cat="{entry["category"]}" data-status="{s["status"]}" '
         f'data-tools="{s.get("tools", 0)}" data-tokens="{s.get("tool_tokens", 0)}" data-stars="{(s.get("repo") or {}).get("stars", 0)}" data-text="{esc(text)}">'
-        f'<h3><a href="s/{entry["slug"]}/">{esc(entry["name"])}</a>{tag}{pill(entry)}</h3>'
+        f'<h3><a href="{root}s/{entry["slug"]}/">{esc(entry["name"])}</a>{tag}{pill(entry)}</h3>'
         f"<p>{md(entry['description'])}</p>"
         + (f'<div class="facts">{fact_html}</div>' if fact_html else "")
         + (command_block(command) if command else "")
@@ -329,6 +414,33 @@ def index_page(servers: list[dict], reference: list[dict], generated: str) -> st
         if MCP_URL
         else "<p>The whole directory, with the latest check results, is one JSON file.</p>"
     )
+    chips = "".join(
+        f'<li><a href="c/{slug}/">{esc(title)} <span>{sum(e["category"] == slug for e in servers)}</span></a></li>' for slug, title in CATEGORIES.items()
+    ) + "".join(f'<li><a href="c/{slug}/">{esc(title)} <span>{sum(map(keep, servers))}</span></a></li>' for slug, title, _, keep in COLLECTIONS)
+    faq = "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in FAQ)
+    schema = jsonld(
+        ORG,
+        {
+            "@type": "WebSite",
+            "@id": f"{SITE_URL}/#website",
+            "url": f"{SITE_URL}/",
+            "name": "Awesome MCP Servers",
+            "alternateName": SITE_NAME,
+            "description": "A community directory of Model Context Protocol servers whose hosted endpoints are checked every night.",
+            "publisher": {"@id": ORG["@id"]},
+            "potentialAction": {"@type": "SearchAction", "target": {"@type": "EntryPoint", "urlTemplate": f"{SITE_URL}/?q={{search_term_string}}"}, "query-input": "required name=search_term_string"},
+        },
+        {
+            "@type": "CollectionPage",
+            "@id": f"{SITE_URL}/#directory",
+            "url": f"{SITE_URL}/",
+            "name": "Awesome MCP Servers directory",
+            "isPartOf": {"@id": f"{SITE_URL}/#website"},
+            "dateModified": generated,
+            "mainEntity": item_list(servers),
+        },
+        {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQ]},
+    )
     body = f"""
 <div class="hero">
 <h1>MCP servers we actually connect to, <em>every night.</em></h1>
@@ -339,7 +451,8 @@ def index_page(servers: list[dict], reference: list[dict], generated: str) -> st
 <div class="stat"><b class="auth">{counts["auth"]}</b><span>reachable, need auth</span></div>
 <div class="stat"><b class="down">{counts["down"]}</b><span>did not answer</span></div>
 </div>
-<p class="note">{remote} hosted endpoints checked, last on {esc(generated[:10])} (UTC). Local stdio servers run on your machine and are not checked.</p>
+<p class="note">{remote} hosted endpoints checked, last on <time datetime="{esc(generated)}">{esc(generated[:10])}</time> (UTC). Local stdio servers run on your machine and are not checked.</p>
+<ul class="chips">{chips}</ul>
 </div>
 <div id="directory" class="controls">
 <input id="q" type="search" placeholder="Search servers, descriptions and tool names" aria-label="Search">
@@ -359,7 +472,11 @@ def index_page(servers: list[dict], reference: list[dict], generated: str) -> st
 <section id="agents">
 <h2>For agents and scripts</h2>
 {agents}
-<p><a href="api/servers.json"><code>api/servers.json</code></a> has every entry and its last check. <a href="llms.txt"><code>llms.txt</code></a> is a plain-text index. Each server also has a status badge its author can embed.</p>
+<p><a href="api/servers.json"><code>api/servers.json</code></a> has every entry and its last check. <a href="llms.txt"><code>llms.txt</code></a> is a plain-text index and <a href="llms-full.txt"><code>llms-full.txt</code></a> has every server in full. Each server also has a status badge its author can embed.</p>
+</section>
+<section id="faq" class="faq">
+<h2>Questions</h2>
+{faq}
 </section>
 """
     return page(
@@ -369,13 +486,44 @@ def index_page(servers: list[dict], reference: list[dict], generated: str) -> st
         "./",
         SITE_URL + "/",
         JS,
+        schema,
     )
 
 
-def server_page(entry: dict) -> str:
+def collection_page(slug: str, title: str, intro: str, entries: list[dict], generated: str) -> str:
+    url = f"{SITE_URL}/c/{slug}/"
+    counts = {k: sum(e["status"]["status"] == k for e in entries) for k in STATUS_LABEL}
+    hosted = counts["live"] + counts["auth"] + counts["down"]
+    summary = f"{len(entries)} server{'s' if len(entries) != 1 else ''} listed."
+    if hosted:
+        summary += f" Of the {hosted} hosted, {counts['live']} answered without credentials, {counts['auth']} need auth and {counts['down']} did not answer on {generated[:10]}."
+    others = "".join(f'<li><a href="../{s}/">{esc(n)}</a></li>' for s, n in CATEGORIES.items() if s != slug)
+    others += "".join(f'<li><a href="../{s}/">{esc(n)}</a></li>' for s, n, _, _ in COLLECTIONS if s != slug)
+    body = f"""
+<p class="crumbs"><a href="../../#directory">Directory</a> / {esc(title)}</p>
+<h1>{esc(title)}</h1>
+<p class="lede">{esc(intro)}</p>
+<p class="note" style="margin:14px 0 22px">{esc(summary)}</p>
+<ul class="list">
+{chr(10).join(card(e, "../../") for e in entries)}
+</ul>
+<section>
+<h2>More of the directory</h2>
+<ul class="chips">{others}<li><a href="../../#directory">All servers</a></li></ul>
+</section>
+"""
+    schema = jsonld(
+        ORG,
+        {"@type": "CollectionPage", "url": url, "name": title, "description": intro, "isPartOf": {"@id": f"{SITE_URL}/#website"}, "dateModified": generated, "mainEntity": item_list(entries)},
+        breadcrumbs(("Directory", f"{SITE_URL}/"), (title, url)),
+    )
+    return page(f"{title} | Awesome MCP Servers", intro[:200], body, "../../", url, schema=schema)
+
+
+def server_page(entry: dict, related: list[dict]) -> str:
     s = entry["status"]
     url = f"{SITE_URL}/s/{entry['slug']}/"
-    rows = [("Category", f'<a href="../../?category={entry["category"]}#directory">{esc(CATEGORIES[entry["category"]])}</a>')]
+    rows = [("Category", f'<a href="../../c/{entry["category"]}/">{esc(CATEGORIES[entry["category"]])}</a>')]
     if entry["transport"] != "none":
         rows.append(("Transport", f"<code>{entry['transport']}</code>"))
     rows.append(("Source", f'<a href="{esc(entry["url"])}" rel="nofollow noopener">{esc(entry["url"])}</a>'))
@@ -422,7 +570,7 @@ def server_page(entry: dict) -> str:
 
     badge_md = f"[![MCP status]({SITE_URL}/badge/{entry['slug']}.svg)]({url})"
     body = f"""
-<p class="crumbs"><a href="../../#directory">Directory</a> / {esc(CATEGORIES[entry["category"]])}</p>
+<p class="crumbs"><a href="../../#directory">Directory</a> / <a href="../../c/{entry["category"]}/">{esc(CATEGORIES[entry["category"]])}</a></p>
 <h1>{esc(entry["name"])}</h1>
 <p class="lede">{md(entry["description"])}</p>
 <p style="margin-top:18px">{pill(entry)} &nbsp;{esc(status_text(entry))}</p>
@@ -435,8 +583,32 @@ def server_page(entry: dict) -> str:
 <p><img src="../../badge/{entry["slug"]}.svg" alt="MCP status badge" height="20"></p>
 {command_block(badge_md)}
 <p class="note" style="margin-top:22px"><a href="{REPO_URL}/blob/main/servers/{entry["slug"]}.json">Edit this entry</a> · <a href="{REPO_URL}/issues/new?template=report-entry.yml">Report a problem</a></p>
+<section>
+<h2>More in {esc(CATEGORIES[entry["category"]])}</h2>
+<ul class="chips">{"".join(f'<li><a href="../{r["slug"]}/">{esc(r["name"])}</a></li>' for r in related)}<li><a href="../../c/{entry["category"]}/">All of {esc(CATEGORIES[entry["category"]])}</a></li></ul>
+</section>
 """
-    return page(f"{entry['name']} MCP server: status, tools and setup", plain(entry["description"])[:155], body, "../../", url)
+    description = f"{entry['name']} MCP server. {status_text(entry)} {plain(entry['description'])}"
+    description = description if len(description) <= 200 else description[:197].rsplit(" ", 1)[0] + "..."
+    app = {
+        "@type": "SoftwareApplication",
+        "name": entry["name"],
+        "description": plain(entry["description"]),
+        "url": url,
+        "sameAs": entry["url"],
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": f"MCP server ({CATEGORIES[entry['category']]})",
+        "operatingSystem": "Any",
+        "isPartOf": {"@id": f"{SITE_URL}/#website"},
+    }
+    if s.get("server_version"):
+        app["softwareVersion"] = s["server_version"]
+    if s.get("tool_names"):
+        app["featureList"] = s["tool_names"][:50]
+    if s.get("checked"):
+        app["dateModified"] = s["checked"]
+    schema = jsonld(ORG, app, breadcrumbs(("Directory", f"{SITE_URL}/"), (CATEGORIES[entry["category"]], f"{SITE_URL}/c/{entry['category']}/"), (entry["name"], url)))
+    return page(f"{entry['name']} MCP server: status, tools and setup", description, body, "../../", url, schema=schema)
 
 
 def llms_txt(servers: list[dict]) -> str:
@@ -447,17 +619,71 @@ def llms_txt(servers: list[dict]) -> str:
         "status values are live (answers without credentials), auth (reachable, needs credentials), down, or unprobed (local or no endpoint). "
         "A listing is not a security audit.",
         "",
+        f"- [Every server in full, as plain text]({SITE_URL}/llms-full.txt)",
         f"- [Full data as JSON]({SITE_URL}/api/servers.json)",
+        f"- [Servers that need no account]({SITE_URL}/c/no-auth/)",
+        f"- [Local stdio servers]({SITE_URL}/c/local/)",
+        f"- [Source and how to add a server]({REPO_URL})",
     ]
     if MCP_URL:
         out.append(f"- MCP endpoint for searching this directory: {MCP_URL}")
     for slug, title in CATEGORIES.items():
-        out += ["", f"## {title}", ""]
+        out += ["", f"## [{title}]({SITE_URL}/c/{slug}/)", ""]
         for e in servers:
             if e["category"] == slug:
                 where = f" Endpoint: {e['endpoint']}." if "endpoint" in e else ""
                 out.append(f"- [{e['name']}]({SITE_URL}/s/{e['slug']}/): [{e['transport']}, {e['status']['status']}] {plain(e['description'])[:220]}{where}")
     return "\n".join(out) + "\n"
+
+
+def llms_full_txt(servers: list[dict], generated: str) -> str:
+    counts = {k: sum(e["status"]["status"] == k for e in servers) for k in STATUS_LABEL}
+    out = [
+        "# Awesome MCP Servers: full directory",
+        "",
+        f"> {len(servers)} Model Context Protocol servers, maintained by AI Anytime ({MAIN_SITE}). Hosted endpoints were last checked on {generated[:10]} (UTC): "
+        f"{counts['live']} answered without credentials, {counts['auth']} are reachable but need auth, {counts['down']} did not answer. "
+        "A listing is not a security audit. Descriptions are written by each server's author.",
+        "",
+        f"Site: {SITE_URL}/",
+        f"Data: {SITE_URL}/api/servers.json",
+        f"Source: {REPO_URL}",
+        "",
+        "## How servers are checked",
+        "",
+        "Each night every hosted (http or sse) server with a known endpoint is sent an MCP `initialize` request and, if it answers without credentials, a `tools/list`. "
+        "The check records the result (live, auth, down), the handshake time, the number of tools, an estimate of the tokens the tool definitions take (about four characters per token) "
+        "and a hash of the definitions so that changes are noticed. Local stdio servers are listed but not checked.",
+        "",
+        "## Questions and answers",
+        "",
+    ]
+    for q, a in FAQ:
+        out += [f"### {q}", "", a, ""]
+    for slug, title in CATEGORIES.items():
+        out += [f"## {title}", ""]
+        for e in servers:
+            if e["category"] != slug:
+                continue
+            s = e["status"]
+            out += [f"### {e['name']}", "", plain(e["description"]), ""]
+            out.append(f"- Page: {SITE_URL}/s/{e['slug']}/")
+            out.append(f"- Source: {e['url']}")
+            out.append(f"- Transport: {e['transport']}")
+            if "endpoint" in e:
+                out.append(f"- Endpoint: {e['endpoint']}")
+                out.append(f"- Connect with Claude Code: `{install_command(e)}`")
+            if "registry" in e:
+                out.append(f"- MCP Registry id: {e['registry']}")
+            out.append(f"- Last check: {status_text(e)}")
+            if "tools" in s:
+                out.append(f"- Tools: {s['tools']} (about {s['tool_tokens']:,} tokens of definitions)")
+                out.append(f"- Tool names: {', '.join(s.get('tool_names', []))}")
+            repo = s.get("repo") or {}
+            if repo and not repo.get("missing"):
+                out.append(f"- Repository: {repo['stars']:,} stars, last push {repo['pushed']}")
+            out.append("")
+    return "\n".join(out)
 
 
 def build_site(out: Path, servers: list[dict], generated: str) -> None:
@@ -468,29 +694,46 @@ def build_site(out: Path, servers: list[dict], generated: str) -> None:
     reference = json.loads((ROOT / "data" / "reference.json").read_text(encoding="utf-8"))
 
     (out / "index.html").write_text(index_page(servers, reference, generated), encoding="utf-8")
+    for asset in STATIC.iterdir():
+        shutil.copy(asset, out / asset.name)
+
+    hubs = [(slug, f"{title} MCP servers", f"Model Context Protocol servers for {title[0].lower() + title[1:]}, with nightly status, tool counts and install commands for the hosted ones.", [e for e in servers if e["category"] == slug]) for slug, title in CATEGORIES.items()]
+    hubs += [(slug, title, intro, [e for e in servers if keep(e)]) for slug, title, intro, keep in COLLECTIONS]
+    for slug, title, intro, entries in hubs:
+        (out / "c" / slug).mkdir(parents=True)
+        (out / "c" / slug / "index.html").write_text(collection_page(slug, title, intro, entries, generated), encoding="utf-8")
+
     for entry in servers:
         folder = out / "s" / entry["slug"]
         folder.mkdir(parents=True)
-        (folder / "index.html").write_text(server_page(entry), encoding="utf-8")
+        # Link each server to the next few in its category, wrapping round, so every page is linked from several others.
+        peers = [e for e in servers if e["category"] == entry["category"]]
+        at = peers.index(entry)
+        related = [p for p in (peers[at + 1 :] + peers[:at])[:6]]
+        (folder / "index.html").write_text(server_page(entry, related), encoding="utf-8")
         (out / "badge" / f"{entry['slug']}.svg").write_text(badge_svg(entry), encoding="utf-8")
 
     api = {"generated": generated, "site": SITE_URL, "categories": CATEGORIES, "servers": [e | {"page": f"{SITE_URL}/s/{e['slug']}/"} for e in servers]}
     (out / "api" / "servers.json").write_text(json.dumps(api, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (out / "llms.txt").write_text(llms_txt(servers), encoding="utf-8")
-    urls = [f"{SITE_URL}/"] + [f"{SITE_URL}/s/{e['slug']}/" for e in servers]
+    (out / "llms-full.txt").write_text(llms_full_txt(servers, generated), encoding="utf-8")
+    urls = [f"{SITE_URL}/"] + [f"{SITE_URL}/c/{slug}/" for slug, *_ in hubs] + [f"{SITE_URL}/s/{e['slug']}/" for e in servers]
     (out / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "".join(f"<url><loc>{esc(u)}</loc></url>\n" for u in urls)
+        + "".join(f"<url><loc>{esc(u)}</loc><lastmod>{generated[:10]}</lastmod></url>\n" for u in urls)
         + "</urlset>\n",
         encoding="utf-8",
     )
-    (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
+    bots = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Google-Extended", "Applebot-Extended", "CCBot"]
+    robots = "User-agent: *\nAllow: /\n\n# AI crawlers and assistants are welcome. See /llms.txt and /llms-full.txt.\n"
+    robots += "".join(f"User-agent: {bot}\nAllow: /\n\n" for bot in bots) + f"Sitemap: {SITE_URL}/sitemap.xml\n"
+    (out / "robots.txt").write_text(robots, encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
     host = SITE_URL.split("//", 1)[-1].split("/", 1)[0]
     if not host.endswith(".github.io"):  # a custom domain on GitHub Pages needs this file
         (out / "CNAME").write_text(host + "\n", encoding="utf-8")
     (out / "404.html").write_text(
-        page("Not found", "This page does not exist.", f'<div class="hero"><h1>Nothing here.</h1><p class="lede"><a href="{SITE_URL}/">Back to the directory</a></p></div>', f"{SITE_URL}/", SITE_URL + "/"),
+        page("Not found", "This page does not exist.", f'<div class="hero"><h1>Nothing here.</h1><p class="lede"><a href="{SITE_URL}/">Back to the directory</a></p></div>', f"{SITE_URL}/", SITE_URL + "/", index=False),
         encoding="utf-8",
     )
 

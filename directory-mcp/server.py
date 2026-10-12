@@ -15,7 +15,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
 from starlette.responses import RedirectResponse
 
-SITE_URL = os.environ.get("SITE_URL", "https://aianytime.github.io/Awesome-MCP-Servers").rstrip("/")
+SITE_URL = os.environ.get("SITE_URL", "https://mcp.aianytime.net").rstrip("/")
 DATA_URL = os.environ.get("DIRECTORY_URL", f"{SITE_URL}/api/servers.json")
 CACHE_SECONDS = 600
 

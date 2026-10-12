@@ -1,6 +1,6 @@
 # Directory MCP Server
 
-Search the [Awesome MCP Servers](https://aianytime.github.io/Awesome-MCP-Servers/) directory from inside an MCP client, so an agent can find a server for a job on its own.
+Search the [Awesome MCP Servers](https://mcp.aianytime.net/) directory from inside an MCP client, so an agent can find a server for a job on its own.
 
 It reads the directory's public JSON file. No account or API key.
 

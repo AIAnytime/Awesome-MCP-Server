@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_URL: ${{ vars.SITE_URL || 'https://aianytime.github.io/Awesome-MCP-Servers' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://mcp.aianytime.net' }}
   MCP_URL: ${{ vars.MCP_URL }}
   REMOTE: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
 

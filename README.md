@@ -4,7 +4,7 @@
 
 **A directory of Model Context Protocol servers that checks every hosted server nightly — plus runnable reference implementations you can learn from.**
 
-**[Browse the live directory →](https://aianytime.github.io/Awesome-MCP-Servers/)**
+**[Browse the live directory →](https://mcp.aianytime.net/)**
 
 [![Stars](https://img.shields.io/github/stars/AIAnytime/Awesome-MCP-Servers?style=flat-square&color=f5c518)](https://github.com/AIAnytime/Awesome-MCP-Servers/stargazers)
 [![Forks](https://img.shields.io/github/forks/AIAnytime/Awesome-MCP-Servers?style=flat-square&color=6f42c1)](https://github.com/AIAnytime/Awesome-MCP-Servers/network/members)
@@ -22,7 +22,7 @@
 The [Model Context Protocol](https://modelcontextprotocol.io) is the open standard for connecting AI
 assistants to tools and data. This repository is two things:
 
-1. **A directory** — a categorized list of MCP servers the community has built and shipped. Every hosted server is sent a real MCP handshake each night, and [the site](https://aianytime.github.io/Awesome-MCP-Servers/) shows which ones answered, which need auth, how many tools they expose and how much context those tools cost.
+1. **A directory** — a categorized list of MCP servers the community has built and shipped. Every hosted server is sent a real MCP handshake each night, and [the site](https://mcp.aianytime.net/) shows which ones answered, which need auth, how many tools they expose and how much context those tools cost.
 2. **A teaching repo** — small, readable server implementations in Python you can clone, run, and copy from.
 
 Built and maintained by [AI Anytime](https://www.youtube.com/@AIAnytime). Additions come from the community — see [Contributing](#-contributing).
@@ -85,7 +85,7 @@ Stuck? The [MCP playlist on the AI Anytime YouTube channel](https://www.youtube.
 
 ## 🌍 Community directory
 
-Servers built by the community, alphabetical within each category. This list is generated from the files in [`servers/`](./servers); for live status, tool counts and one-line install commands, use [the site](https://aianytime.github.io/Awesome-MCP-Servers/).
+Servers built by the community, alphabetical within each category. This list is generated from the files in [`servers/`](./servers); for live status, tool counts and one-line install commands, use [the site](https://mcp.aianytime.net/).
 
 A listing is not a security review. Read a server's source and permissions before you connect it.
 
@@ -296,7 +296,7 @@ Contributions are very welcome — this list is only as good as the people addin
 Once merged, your server gets its own page and a status badge you can embed:
 
 ```markdown
-[![MCP status](https://aianytime.github.io/Awesome-MCP-Servers/badge/your-server.svg)](https://aianytime.github.io/Awesome-MCP-Servers/s/your-server/)
+[![MCP status](https://mcp.aianytime.net/badge/your-server.svg)](https://mcp.aianytime.net/s/your-server/)
 ```
 
 <a href="https://github.com/AIAnytime/Awesome-MCP-Servers/graphs/contributors">
