@@ -1,0 +1,9 @@
+{
+  "name": "SwapWallet",
+  "url": "https://github.com/SwapWallet/swapwallet-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Official server for the SwapWallet crypto exchange: balances, P&L, history and deposit addresses, plus swaps, transfers and withdrawals that run only after the user approves them in Telegram. OAuth sign-in. Endpoint: `https://swapwallet.app/mcp` · [Docs](https://swapwallet.app/docs/mcp) · Registry: `app.swapwallet/mcp`",
+  "endpoint": "https://swapwallet.app/mcp",
+  "registry": "app.swapwallet/mcp"
+}
