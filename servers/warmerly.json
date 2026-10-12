@@ -1,0 +1,9 @@
+{
+  "name": "Warmerly",
+  "url": "https://github.com/WarmerlyApp/mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Email warmup and cold outreach: mailbox health and warmup, SPF/DKIM/DMARC checks, placement tests, lead search, email verification, draft campaigns and inbox reply triage; campaigns are launched by the person in the dashboard, never by the assistant. OAuth sign-in, free plan. Endpoint: `https://app.warmerly.com/api/mcp` · [Docs](https://docs.warmerly.com/ai)",
+  "endpoint": "https://app.warmerly.com/api/mcp",
+  "registry": "com.warmerly/warmerly"
+}
