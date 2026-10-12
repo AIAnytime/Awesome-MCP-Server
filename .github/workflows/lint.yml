@@ -17,10 +17,16 @@ on:
 permissions:
   contents: read
 
+# A new push to the same PR replaces the run in progress.
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Check entry format
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
