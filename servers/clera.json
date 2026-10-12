@@ -1,0 +1,9 @@
+{
+  "name": "Clera",
+  "url": "https://github.com/getclera/mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Search 210,000+ vetted startup candidates, review Clera's picks for your open roles and request intros; candidates search open startup roles. Endpoint: `https://mcp.getclera.com` (OAuth 2.1, no API key) · [Docs](https://www.getclera.com/mcp) · Registry: `com.getclera/clera`",
+  "endpoint": "https://mcp.getclera.com",
+  "registry": "com.getclera/clera"
+}

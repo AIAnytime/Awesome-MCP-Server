@@ -1,0 +1,8 @@
+{
+  "name": "Kleap",
+  "url": "https://github.com/kleaphq/cli",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "AI website builder MCP: create apps, edit files, connect domains, and publish. OAuth remote. Endpoint: `https://kleap.co/api/mcp` · [Website](https://kleap.co/mcp)",
+  "endpoint": "https://kleap.co/api/mcp"
+}

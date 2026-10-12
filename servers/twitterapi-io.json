@@ -1,0 +1,8 @@
+{
+  "name": "TwitterAPI.io",
+  "url": "https://github.com/kaitoInfra/twitterapi-io-mcp-server",
+  "category": "search",
+  "transport": "http",
+  "description": "12 read-only tools over [twitterapi.io](https://twitterapi.io): tweet search with full operators, profiles, followers, conversation threads, real-time streaming, trending topics. Endpoint: `mcp.twitterapi.io/mcp`",
+  "endpoint": "https://mcp.twitterapi.io/mcp"
+}

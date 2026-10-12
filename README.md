@@ -2,11 +2,13 @@
 
 # Awesome MCP Servers
 
-**A curated directory of Model Context Protocol servers — plus runnable reference implementations you can learn from.**
+**A directory of Model Context Protocol servers that checks every hosted server nightly — plus runnable reference implementations you can learn from.**
 
-[![Stars](https://img.shields.io/github/stars/AIAnytime/Awesome-MCP-Server?style=flat-square&color=f5c518)](https://github.com/AIAnytime/Awesome-MCP-Server/stargazers)
-[![Forks](https://img.shields.io/github/forks/AIAnytime/Awesome-MCP-Server?style=flat-square&color=6f42c1)](https://github.com/AIAnytime/Awesome-MCP-Server/network/members)
-[![Contributors](https://img.shields.io/github/contributors/AIAnytime/Awesome-MCP-Server?style=flat-square&color=0aa)](https://github.com/AIAnytime/Awesome-MCP-Server/graphs/contributors)
+**[Browse the live directory →](https://aianytime.github.io/Awesome-MCP-Servers/)**
+
+[![Stars](https://img.shields.io/github/stars/AIAnytime/Awesome-MCP-Servers?style=flat-square&color=f5c518)](https://github.com/AIAnytime/Awesome-MCP-Servers/stargazers)
+[![Forks](https://img.shields.io/github/forks/AIAnytime/Awesome-MCP-Servers?style=flat-square&color=6f42c1)](https://github.com/AIAnytime/Awesome-MCP-Servers/network/members)
+[![Contributors](https://img.shields.io/github/contributors/AIAnytime/Awesome-MCP-Servers?style=flat-square&color=0aa)](https://github.com/AIAnytime/Awesome-MCP-Servers/graphs/contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![MCP](https://img.shields.io/badge/Model%20Context%20Protocol-spec-black?style=flat-square)](https://modelcontextprotocol.io)
@@ -20,7 +22,7 @@
 The [Model Context Protocol](https://modelcontextprotocol.io) is the open standard for connecting AI
 assistants to tools and data. This repository is two things:
 
-1. **A directory** — a curated, categorized list of MCP servers the community has built and shipped.
+1. **A directory** — a categorized list of MCP servers the community has built and shipped. Every hosted server is sent a real MCP handshake each night, and [the site](https://aianytime.github.io/Awesome-MCP-Servers/) shows which ones answered, which need auth, how many tools they expose and how much context those tools cost.
 2. **A teaching repo** — small, readable server implementations in Python you can clone, run, and copy from.
 
 Built and maintained by [AI Anytime](https://www.youtube.com/@AIAnytime). Additions come from the community — see [Contributing](#-contributing).
@@ -55,6 +57,7 @@ Reference implementations you can run locally. Each folder is self-contained —
 | [`pubmed-mcp-server`](./pubmed-mcp-server) | Searches PubMed and returns article abstracts, via BioPython's Entrez module. | Python · stdio |
 | [`mcp-wiki`](./mcp-wiki) | Reads a Wikipedia article and hands it back as clean Markdown. | Python · stdio |
 | [`http-sse-mcp-starter`](./http-sse-mcp-starter) | Starter template for a **remote** MCP server over HTTP/SSE (Starlette + FastMCP), with a matching client. | Python · SSE |
+| [`directory-mcp`](./directory-mcp) | Searches this directory from inside an MCP client: find servers by keyword, category and live status. Runs locally or as a remote server. | Python · stdio or HTTP |
 | [`streamlit as an MCP Host`](./streamlit%20as%20an%20MCP%20Host) | Streamlit app acting as an MCP **host** — connects to an SSE server, calls its tools, summarizes with a local Ollama model. | Python · Streamlit |
 
 > [!TIP]
@@ -64,8 +67,8 @@ Reference implementations you can run locally. Each folder is self-contained —
 ## 🚀 Quick start
 
 ```bash
-git clone https://github.com/AIAnytime/Awesome-MCP-Server.git
-cd Awesome-MCP-Server/weather
+git clone https://github.com/AIAnytime/Awesome-MCP-Servers.git
+cd Awesome-MCP-Servers/weather
 
 uv sync              # or: pip install -r requirements.txt
 uv run weather.py
@@ -74,7 +77,7 @@ uv run weather.py
 Then point an MCP client at it. With Claude Code:
 
 ```bash
-claude mcp add weather -- uv --directory /absolute/path/to/Awesome-MCP-Server/weather run weather.py
+claude mcp add weather -- uv --directory /absolute/path/to/Awesome-MCP-Servers/weather run weather.py
 ```
 
 For Claude Desktop, add the same command to `claude_desktop_config.json` under `mcpServers`.
@@ -82,9 +85,13 @@ Stuck? The [MCP playlist on the AI Anytime YouTube channel](https://www.youtube.
 
 ## 🌍 Community directory
 
-Servers built by the community. Entries are alphabetical within each category.
+Servers built by the community, alphabetical within each category. This list is generated from the files in [`servers/`](./servers); for live status, tool counts and one-line install commands, use [the site](https://aianytime.github.io/Awesome-MCP-Servers/).
+
+A listing is not a security review. Read a server's source and permissions before you connect it.
 
 **Legend** — `stdio` runs locally on your machine · `http` is a hosted remote server (nothing to install) · `sse` is a remote server over Server-Sent Events.
+
+<!-- directory:start (generated from servers/*.json by scripts/build.py; do not edit by hand) -->
 
 ### Agents, IDEs & developer tools
 
@@ -262,6 +269,8 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[Process Street](https://github.com/process-street/process-street-mcp)** `http` — Connect agents to Process Street workflows, tasks, runs, data sets, and operational records, with an interactive authorization flow. [Docs](https://www.process.st/help/docs/mcp-server/)
 - **[Scope by Ouroboros Apps](https://github.com/LAHutchins91/scope-mcp)** `http` — Freelance scope of work: approved scope, rates, deadlines, and change orders, so an assistant cannot promise work or discounts that were not approved. OAuth sign-in. Endpoint: `https://scope-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/scope) · [Ouroboros Apps](https://ouroborosapps.com)
 
+<!-- directory:end -->
+
 ## 🤝 Contributing
 
 Contributions are very welcome — this list is only as good as the people adding to it.
@@ -269,16 +278,29 @@ Contributions are very welcome — this list is only as good as the people addin
 **Adding a server?** Read **[CONTRIBUTING.md](CONTRIBUTING.md)** first. The short version:
 
 - One server per pull request.
-- Add it as a **bullet** in the right category, in alphabetical order. Please don't renumber anything or introduce numbered lists.
-- Use the exact entry format:
-  ```markdown
-  - **[Name](https://link-to-repo-or-docs)** `stdio|http|sse` — One sentence on what it does. Install: `command` · [Docs](https://…)
+- Add one file, `servers/<your-server>.json`:
+  ```json
+  {
+    "name": "Your Server",
+    "url": "https://link-to-repo-or-docs",
+    "category": "developer-tools",
+    "transport": "http",
+    "description": "One sentence on what it does. [Docs](https://…)",
+    "endpoint": "https://your-server.example/mcp"
+  }
   ```
-- Keep it to one or two sentences. No marketing copy, no tracking parameters in URLs.
+- Run `python3 scripts/build.py --readme` to regenerate the list. Don't edit the list in this README by hand.
+- Keep the description to one or two sentences. No marketing copy, no tracking parameters in URLs.
 - The server must actually exist, speak MCP, and be reachable by someone who isn't you.
 
-<a href="https://github.com/AIAnytime/Awesome-MCP-Server/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AIAnytime/Awesome-MCP-Server" alt="Contributors" />
+Once merged, your server gets its own page and a status badge you can embed:
+
+```markdown
+[![MCP status](https://aianytime.github.io/Awesome-MCP-Servers/badge/your-server.svg)](https://aianytime.github.io/Awesome-MCP-Servers/s/your-server/)
+```
+
+<a href="https://github.com/AIAnytime/Awesome-MCP-Servers/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AIAnytime/Awesome-MCP-Servers" alt="Contributors" />
 </a>
 
 ## 📚 Resources

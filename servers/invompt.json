@@ -1,0 +1,9 @@
+{
+  "name": "Invompt",
+  "url": "https://github.com/Invompt/invompt-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Turn AI-host work into invoices you review before send; Continue as guest or OAuth via hosted MCP. Endpoint: `https://mcp.invompt.com/mcp` · [Website](https://www.invompt.com) · Registry: `com.invompt/invompt`",
+  "endpoint": "https://mcp.invompt.com/mcp",
+  "registry": "com.invompt/invompt"
+}

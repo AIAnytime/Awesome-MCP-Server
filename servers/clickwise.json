@@ -1,0 +1,9 @@
+{
+  "name": "Clickwise",
+  "url": "https://github.com/softdevfz/clickwise-api",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Affiliate network: find affiliate programs that fit a site or channel, mint tracked links and browse deals without a key; a free publisher key adds GTIN product search (1.1M+ products, 7 markets) with your own tracked links. Endpoint: `https://partners.clickwise.net/api/v1/mcp` · [Docs](https://partners.clickwise.net/developers/) · Registry: `net.clickwise/mcp`",
+  "endpoint": "https://partners.clickwise.net/api/v1/mcp",
+  "registry": "net.clickwise/mcp"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "REA",
+  "url": "https://github.com/morluto/rea",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Local reverse-engineering tools for native binaries, JavaScript/Electron apps, and .NET assemblies; native deep analysis uses separately installed Hopper, Ghidra, or IDA. Install: `npm install --global rea-agents`"
+}

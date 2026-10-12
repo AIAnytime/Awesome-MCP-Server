@@ -1,0 +1,8 @@
+{
+  "name": "Cohesivity",
+  "url": "https://github.com/cohesivity-org/cohesivity-plugin",
+  "category": "cloud-data",
+  "transport": "http",
+  "description": "Agent-native backend services for hosting, Postgres, email, storage, containers, LLMs, voice, and third-party APIs, with free tiers, $5/month in AI and Search credits, and x402 top-ups. This remote MCP requires OAuth sign-in; anonymous no-signup setup uses the local MCP. Endpoint: `https://cohesivity.ai/mcp/manage` · [Docs](https://github.com/cohesivity-org/cohesivity-plugin#local-bootstrap-and-remote-oauth-are-independent)",
+  "endpoint": "https://cohesivity.ai/mcp/manage"
+}

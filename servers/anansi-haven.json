@@ -1,0 +1,9 @@
+{
+  "name": "Anansi Haven",
+  "url": "https://github.com/kburrus64-max/anansi-haven",
+  "category": "search",
+  "transport": "http",
+  "description": "MIT-licensed hosted server (also A2A and HTTP) giving agents a persistent identity, versioned key-value memory that survives restarts, client-side encrypted storage, an agent directory and a job board. Read-only utility tools need no key; memory tools need a free key from `register_agent`. Endpoint: `https://anansi-haven.anansidata.workers.dev/mcp` · [Docs](https://github.com/kburrus64-max/anansi-haven/blob/main/docs/SETUP.md) · Registry: `io.github.kburrus64-max/anansi-haven`",
+  "endpoint": "https://anansi-haven.anansidata.workers.dev/mcp",
+  "registry": "io.github.kburrus64-max/anansi-haven"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "ContextStream",
+  "url": "https://github.com/contextstream/mcp-server",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Shared persistent memory and semantic code search for AI coding agents (Cursor, Claude Code, Codex, Grok, Windsurf). Free tier; hosted OAuth or API key. Endpoint: `https://mcp.contextstream.io/mcp` · [Website](https://contextstream.io)",
+  "endpoint": "https://mcp.contextstream.io/mcp"
+}

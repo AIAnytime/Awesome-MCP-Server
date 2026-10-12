@@ -1,0 +1,8 @@
+{
+  "name": "AskCyborg",
+  "url": "https://github.com/Ask-Cyborg/askcyborg-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Stress-tests public and private companies through analyst debate: reports, scores, comparisons, competitors, recent developments. Anonymous free tier, no API key. Endpoint: `https://mcp.askcyborg.com/mcp`",
+  "endpoint": "https://mcp.askcyborg.com/mcp"
+}

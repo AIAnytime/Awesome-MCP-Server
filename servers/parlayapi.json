@@ -1,0 +1,7 @@
+{
+  "name": "ParlayAPI",
+  "url": "https://github.com/JacobiusMakes/parlay-api-mcp",
+  "category": "finance",
+  "transport": "stdio",
+  "description": "Sports odds, player props, public event discovery, and account usage through ParlayAPI; account data tools require each user's own API key and allowances. Install: `uvx --from parlayapi-mcp==0.3.6 parlayapi-mcp`"
+}

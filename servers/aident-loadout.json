@@ -1,0 +1,9 @@
+{
+  "name": "Aident Loadout",
+  "url": "https://github.com/Aident-AI/aident-skill",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Connect Codex, Claude Code, Cursor, ChatGPT and other MCP clients to 1,000+ apps and 400+ Skills through one reusable setup with Vault-protected credentials. Endpoint: `https://loadout.aident.ai/mcp` · [Docs](https://docs.aident.ai/loadout/overview) · [Website](https://aident.ai) · Registry: `io.github.Aident-AI/loadout`",
+  "endpoint": "https://loadout.aident.ai/mcp",
+  "registry": "io.github.Aident-AI/loadout"
+}

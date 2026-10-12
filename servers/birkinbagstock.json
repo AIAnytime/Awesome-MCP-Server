@@ -1,0 +1,9 @@
+{
+  "name": "BirkinBagStock",
+  "url": "https://birkinbagstock.com/llms.txt",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Independent Hermès resale index: inventory, market prices, auction calendar and results. Endpoint: `https://birkinbagstock.com/mcp` (no auth) · Registry: `com.birkinbagstock/mcp`",
+  "endpoint": "https://birkinbagstock.com/mcp",
+  "registry": "com.birkinbagstock/mcp"
+}

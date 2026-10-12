@@ -1,0 +1,8 @@
+{
+  "name": "BulkPublish",
+  "url": "https://github.com/azeemkafridi/bulkpublish-api",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Plan, review, schedule, publish, and analyze social media content for AI agents through BulkPublish. Endpoint: `https://mcp.bulkpublish.com/mcp` · [Docs](https://app.bulkpublish.com/docs)",
+  "endpoint": "https://mcp.bulkpublish.com/mcp"
+}

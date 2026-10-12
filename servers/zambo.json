@@ -1,0 +1,8 @@
+{
+  "name": "Zambo",
+  "url": "https://github.com/zambodotdev/zambo-mcp",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "120 native tools across 17 products: strategy, code audit, lead generation, onchain scoring, credit discovery, prompt defense. Endpoint: `https://zambo.dev/api/mcp`, zero auth, no signup. [Website](https://zambo.dev)",
+  "endpoint": "https://zambo.dev/api/mcp"
+}

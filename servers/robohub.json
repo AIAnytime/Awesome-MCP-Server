@@ -1,0 +1,9 @@
+{
+  "name": "RoboHub",
+  "url": "https://robohub.app",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Vendor-neutral catalog of 340+ commercial robots: search, compare specs and maker-verified prices. Endpoint: `https://robohub.app/api/mcp` (no auth) · Registry: `app.robohub/robohub`",
+  "endpoint": "https://robohub.app/api/mcp",
+  "registry": "app.robohub/robohub"
+}

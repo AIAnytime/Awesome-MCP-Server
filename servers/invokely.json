@@ -1,0 +1,8 @@
+{
+  "name": "Invokely",
+  "url": "https://invokely.ai/docs",
+  "category": "cloud-data",
+  "transport": "http",
+  "description": "Hosted MCP and REST API for official statistics by indicator, place, and period, with a source citation on each figure. The Free plan includes 500 MCP calls/month with no card; REST data queries require Builder, Pro, or prepaid credits, while the separate no-account MCP trial allows 25 calls/day per IP. Endpoint: `https://invokely.ai/mcp` · Trial endpoint: `https://invokely.ai/mcp/trial`",
+  "endpoint": "https://invokely.ai/mcp"
+}

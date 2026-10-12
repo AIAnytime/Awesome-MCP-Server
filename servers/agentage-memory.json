@@ -1,0 +1,9 @@
+{
+  "name": "Agentage Memory",
+  "url": "https://memory.agentage.io",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "One shared Markdown memory for Claude, Cursor, and ChatGPT that you own and can export: six tools to search, read, write, edit, list, and delete. OAuth 2.1 with dynamic client registration. Endpoint: `https://memory.agentage.io/mcp` · Registry: `io.agentage/memory`",
+  "endpoint": "https://memory.agentage.io/mcp",
+  "registry": "io.agentage/memory"
+}

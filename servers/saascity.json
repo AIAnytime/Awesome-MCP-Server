@@ -1,0 +1,9 @@
+{
+  "name": "SaaSCity",
+  "url": "https://github.com/nyyhao/saascity-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Launch toolkit: audits a homepage before launch, finds startup and SaaS directories by Ahrefs DR, dofollow and price, and submits the product to the SaaSCity launch directory as a draft the human claims. No API key. Endpoint: `https://saascity.io/api/mcp` · [Website](https://saascity.io) · Registry: `io.saascity/saascity`",
+  "endpoint": "https://saascity.io/api/mcp",
+  "registry": "io.saascity/saascity"
+}

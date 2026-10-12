@@ -1,0 +1,8 @@
+{
+  "name": "Patent by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/patent-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "USPTO patent search and prior art lookup: search public patent records, fetch a patent, list citations, and run a prior-art search. Not legal advice. Hosted coverage is USPTO only. OAuth sign-in. Endpoint: `https://patent-mcp.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/patent) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://patent-mcp.vercel.app/mcp"
+}

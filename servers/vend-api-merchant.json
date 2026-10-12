@@ -1,0 +1,9 @@
+{
+  "name": "Vend API Merchant",
+  "url": "https://extract.paypercall.dev",
+  "category": "search",
+  "transport": "http",
+  "description": "Pay-per-call web intelligence: extract clean text from URLs, web search, link checking, domain WHOIS/DNS/SSL info, IP geolocation, and PDF text extraction. 22+ endpoints, no signup or API key, each call settles in Nano (XNO) via x402 at 0.0001–0.0005 XNO. Endpoint: `https://extract.paypercall.dev/mcp` · [Docs](https://extract.paypercall.dev) · Registry: `dev.paypercall.extract/vend-api-merchant`",
+  "endpoint": "https://extract.paypercall.dev/mcp",
+  "registry": "dev.paypercall.extract/vend-api-merchant"
+}

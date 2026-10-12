@@ -1,0 +1,8 @@
+{
+  "name": "BuyWhere",
+  "url": "https://github.com/BuyWhere/buywhere-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Cross-border product search and price comparison across 370M+ listings. No API key. Endpoint: `https://api.buywhere.ai/mcp` · Install: `npx -y @buywhere/mcp-server` · [Docs](https://docs.buywhere.ai)",
+  "endpoint": "https://api.buywhere.ai/mcp"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "OrcaReplay",
+  "url": "https://github.com/Continuum-AI-Corp/OrcaReplay",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Read-only window into a local library of recorded agent runs: six tools (`list`, `show`, `checkpoints`, `graph`, `replay`, `compare`) over the prompts, tool calls and responses an agent already exchanged, so a failed run can be replayed offline or diffed against another. Install: `npx -y orcareplay mcp`"
+}

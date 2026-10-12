@@ -1,0 +1,8 @@
+{
+  "name": "Oh My Android",
+  "url": "https://github.com/ateymoori/oh-my-android",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Lets coding agents see and drive the Android Emulator and adb devices: dp-scaled screenshots, UI tree, taps, logcat, and dark mode, font scale, RTL and TalkBack switches; ships inside a free native macOS app (macOS 26+). Install: `brew install --cask ateymoori/tap/oh-my-android` · Registry: `io.github.ateymoori/oh-my-android`",
+  "registry": "io.github.ateymoori/oh-my-android"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Deposit by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/deposit-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Freelance deposit and payment schedule: approved deposits, payment dates, and client wording; deposit waivers and date changes need approval. OAuth sign-in. Endpoint: `https://deposit-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/deposit) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://deposit-continuity2.vercel.app/mcp"
+}

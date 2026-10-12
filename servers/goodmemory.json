@@ -1,0 +1,7 @@
+{
+  "name": "GoodMemory",
+  "url": "https://github.com/hjqcan/GoodMemory",
+  "category": "knowledge-memory",
+  "transport": "stdio",
+  "description": "Local-first, auditable memory for coding agents. SQLite-backed, read-only context/trace/search tools by default, with durable writes opt-in behind inspect, revise, forget, and export. Install: `npm install -g goodmemory`"
+}

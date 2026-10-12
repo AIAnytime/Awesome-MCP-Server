@@ -1,0 +1,7 @@
+{
+  "name": "NotFair",
+  "url": "https://notfair.co",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Google Ads diagnostics (CPA, ROAS, search-term waste, quality scores) and optimizations executed through the official Google Ads API behind a human-approval gate."
+}

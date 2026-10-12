@@ -1,0 +1,9 @@
+{
+  "name": "AI Developer Toolkit MCP",
+  "url": "https://github.com/mjaskolski/developer-toolkit-mcp",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Read-only search and fetch over 950+ guides on AI-assisted development (Cursor, Claude Code, Codex) in English and Polish. No account or API key. Endpoint: `https://developertoolkit.ai/mcp` · Registry: `io.github.mjaskolski/developer-toolkit-mcp`",
+  "endpoint": "https://developertoolkit.ai/mcp",
+  "registry": "io.github.mjaskolski/developer-toolkit-mcp"
+}

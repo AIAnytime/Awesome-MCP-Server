@@ -1,0 +1,7 @@
+{
+  "name": "Derrick",
+  "url": "https://github.com/DerrickAppOrg/derrick-mcp",
+  "category": "search",
+  "transport": "stdio",
+  "description": "B2B data enrichment from a name, a domain or a LinkedIn URL: verified work emails, phone numbers, company firmographics, tech stack, hiring signals, and French SIRET/SIREN records. Install: `npx derrick-mcp` · [Docs](https://derrick-app.com/mcp)"
+}

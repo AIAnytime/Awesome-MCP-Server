@@ -1,0 +1,7 @@
+{
+  "name": "Bestax",
+  "url": "https://github.com/allxsmith/bestax/tree/main/bestax-mcp",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Props, working examples, `--bulma-*` CSS variables and Agent Skills for Bestax, a React component library for Bulma v1; offline, no API key. Install: `npx -y bestax-mcp@1` · [Docs](https://bestax.io/docs/guides/llms#mcp-server)"
+}

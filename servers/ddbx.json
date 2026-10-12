@@ -1,0 +1,9 @@
+{
+  "name": "ddbx",
+  "url": "https://ddbx.uk/mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Insider share dealings from UK directors, US Form 4 filers, Swedish and Dutch PDMRs, and US Congress members, with notable filings rated. Read-only, no API key. Endpoint: `https://api.ddbx.uk/mcp` · [Repo](https://github.com/jonwillington/ddbx-plugin) · Registry: `io.github.jonwillington/ddbx`",
+  "endpoint": "https://api.ddbx.uk/mcp",
+  "registry": "io.github.jonwillington/ddbx"
+}

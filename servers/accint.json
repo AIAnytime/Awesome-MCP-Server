@@ -1,0 +1,7 @@
+{
+  "name": "AccInt",
+  "url": "https://github.com/maxbaluev/accreted-intelligence",
+  "category": "knowledge-memory",
+  "transport": "stdio",
+  "description": "Local-first, SQLite-backed memory shared across Claude Code, OpenCode, Codex, and Cursor; feeds verified outcomes back into future retrieval. Public integration glue around a private engine. · [Website](https://accint.xyz/)"
+}

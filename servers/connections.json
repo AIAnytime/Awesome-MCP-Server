@@ -1,0 +1,8 @@
+{
+  "name": "Connections",
+  "url": "https://studio.connections.icu/connect",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Contact book with follow-ups, event pages with ticketing, notes and email for a free Connections account, reached over OAuth sign-in. Endpoint: `https://studio.connections.icu/v1/mcp` · [Docs](https://studio.connections.icu/connect)",
+  "endpoint": "https://studio.connections.icu/v1/mcp"
+}

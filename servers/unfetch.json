@@ -1,0 +1,8 @@
+{
+  "name": "Unfetch",
+  "url": "https://unfetch.com/plugin",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Google Ads MCP reporting for campaign spend, conversions, and search terms, plus Google Analytics, Search Console, keyword research, and web research with read-only account access; OAuth and a free plan. Endpoint: `https://unfetch.com/api/mcp` · [Website](https://unfetch.com)",
+  "endpoint": "https://unfetch.com/api/mcp"
+}

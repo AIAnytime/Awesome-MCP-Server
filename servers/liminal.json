@@ -1,0 +1,9 @@
+{
+  "name": "Liminal",
+  "url": "https://github.com/jaybro2042-alt/liminality-mcp",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Liminal turns objectives into structured work by strategizing through an atomic, deterministic basis: setting guardrails around scope, compiling resources and constraints, uncovering gaps, and organizing research and next steps. OAuth 2.1 or API key; free key at physea.ai/signup. Endpoint: `https://liminality.physea.ai/mcp` · [Docs](https://physea.ai/mcp) · Registry: `ai.physea/liminality`",
+  "endpoint": "https://liminality.physea.ai/mcp",
+  "registry": "ai.physea/liminality"
+}

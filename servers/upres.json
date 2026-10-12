@@ -1,0 +1,7 @@
+{
+  "name": "UpRes",
+  "url": "https://github.com/auroracapital/upres-cli",
+  "category": "media",
+  "transport": "stdio",
+  "description": "UpRes MCP: list models, credits, and submit 4K image and video upscale jobs. Install: `npx -y upres-cli`"
+}

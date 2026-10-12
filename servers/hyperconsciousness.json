@@ -1,0 +1,7 @@
+{
+  "name": "Hyperconsciousness",
+  "url": "https://github.com/louis030195/hyperconsciousness",
+  "category": "knowledge-memory",
+  "transport": "stdio",
+  "description": "Developer-alpha encrypted knowledge store with search and retrieval through scoped, expiring grants. · [Docs](https://github.com/louis030195/hyperconsciousness#give-an-agent-limited-access)"
+}

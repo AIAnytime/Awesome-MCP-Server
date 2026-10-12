@@ -1,0 +1,7 @@
+{
+  "name": "Roundtable",
+  "url": "https://github.com/askbudi/roundtable",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Zero-configuration server that unifies multiple AI coding assistants (Codex, Claude Code, Cursor, Gemini) behind one interface with auto-discovery. [Website](https://askbudi.ai/roundtable)"
+}

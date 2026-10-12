@@ -1,0 +1,7 @@
+{
+  "name": "Ganado Bridge",
+  "url": "https://github.com/cynarax/bridge-by-ganado",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Checked local file edits (SHA-256-gated), bounded reads/search and persistent command sessions with real exit codes on macOS. Install: `.mcpb` bundle from releases · [Docs](https://ganado-bridge.vercel.app/install)"
+}

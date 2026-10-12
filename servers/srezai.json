@@ -1,0 +1,8 @@
+{
+  "name": "srezai",
+  "url": "https://github.com/srezai-team/srezai-mcp-web-search",
+  "category": "search",
+  "transport": "http",
+  "description": "Web search, page reading as clean Markdown, site crawling, JSON-schema extraction and claim verification with quotes for AI agents, with strong Russian-web coverage. Русский: веб-поиск и чтение страниц для ИИ-агентов, 12 инструментов. Endpoint: `https://srezai.ru/api/mcp`, API key required · [Docs](https://srezai.ru/docs/mcp)",
+  "endpoint": "https://srezai.ru/api/mcp"
+}

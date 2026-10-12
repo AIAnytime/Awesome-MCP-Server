@@ -1,0 +1,8 @@
+{
+  "name": "Papers by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/papers-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Research paper search with real citations from OpenAlex, Semantic Scholar, PubMed, Crossref, and arXiv: find papers, fetch abstracts, follow citations, and format references. OAuth sign-in. Endpoint: `https://papers-mcp.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/papers) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://papers-mcp.vercel.app/mcp"
+}

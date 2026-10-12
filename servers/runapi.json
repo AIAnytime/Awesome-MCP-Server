@@ -1,0 +1,7 @@
+{
+  "name": "RunAPI",
+  "url": "https://github.com/runapi-ai/mcp",
+  "category": "media",
+  "transport": "stdio",
+  "description": "Browse the RunAPI model catalog and run image, video, music/audio, text-to-speech, and LLM tasks from agent workflows. Install: `npx -y @runapi.ai/mcp`"
+}

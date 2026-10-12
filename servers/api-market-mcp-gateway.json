@@ -1,0 +1,8 @@
+{
+  "name": "API.market MCP Gateway",
+  "url": "https://api.market/mcp",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Discover and call 580+ APIs through five gateway tools, with OAuth or API-key authentication; pricing and free tiers vary by API. Endpoint: `https://api.market/api/mcp/gateway`",
+  "endpoint": "https://api.market/api/mcp/gateway"
+}

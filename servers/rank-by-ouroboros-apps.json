@@ -1,0 +1,8 @@
+{
+  "name": "Rank by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/rank-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "SEO rankings from Google Search Console, read-only: top queries and pages, traffic trends, period comparisons, quick wins, dropped pages, and URL inspection. OAuth sign-in. Endpoint: `https://rank.ouroborosapps.com/mcp` · [Docs](https://ouroborosapps.com/docs/rank) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://rank.ouroborosapps.com/mcp"
+}

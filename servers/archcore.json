@@ -1,0 +1,7 @@
+{
+  "name": "Archcore",
+  "url": "https://github.com/archcore-ai/archcore",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Git-native context engineering CLI and MCP server for AI coding agents. Keep specs, ADRs, rules, plans, and project knowledge in Git. Install: `curl -fsSL https://archcore.ai/install.sh | bash` · [Docs](https://docs.archcore.ai)"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "The Stall",
+  "url": "https://github.com/thebrierfox/the-stall",
+  "category": "finance",
+  "transport": "http",
+  "description": "About 300 pay-per-call capabilities: US/EU/JP/KR/AU equities, options chains, DeFi yields, blockchain analytics, macro indicators, wallet intelligence, and prediction markets. Paid per call in USDC on Base ($0.001–$1.50), no API key. Endpoint: `https://the-stall.intuitek.ai/mcp`",
+  "endpoint": "https://the-stall.intuitek.ai/mcp"
+}

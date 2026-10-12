@@ -1,0 +1,8 @@
+{
+  "name": "call4me",
+  "url": "https://github.com/skeptrunedev/call4me",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Places real phone calls to businesses for you (bookings, appointments, cancellations), works through phone menus, and returns the transcript and outcome. Endpoint: `https://call4.me/mcp` (OAuth) · [Docs](https://call4.me)",
+  "endpoint": "https://call4.me/mcp"
+}

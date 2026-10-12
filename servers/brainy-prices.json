@@ -1,0 +1,8 @@
+{
+  "name": "Brainy Prices",
+  "url": "https://prices.brainy.ae/developers.html",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "UAE cost of living data: school fees (KHDA), registered rents (DLD), fuel, utilities, telecom plans and relocation costs, with source and date on every answer. Read-only; no auth. Endpoint: `https://prices.brainy.ae/mcp/v2`",
+  "endpoint": "https://prices.brainy.ae/mcp/v2"
+}

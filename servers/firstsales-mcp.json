@@ -1,0 +1,8 @@
+{
+  "name": "FirstSales MCP",
+  "url": "https://developer.firstsales.io/agents/mcp-server",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Read CRM contacts, companies, deals, and lists, and create contacts in an authorized FirstSales workspace; OAuth and an eligible paid FirstSales plan required. Endpoint: `https://api.app.firstsales.io/mcp` · [Website](https://firstsales.io)",
+  "endpoint": "https://api.app.firstsales.io/mcp"
+}

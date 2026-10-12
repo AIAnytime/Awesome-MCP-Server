@@ -1,0 +1,8 @@
+{
+  "name": "Find MCP",
+  "url": "https://github.com/agentage/find-mcp",
+  "category": "search",
+  "transport": "stdio",
+  "description": "Discover other MCP servers: searches a catalog of 17,000+ servers synced from the official MCP registry. Install: `npx @agentage/find-mcp` · Registry: `io.agentage/find-mcp`",
+  "registry": "io.agentage/find-mcp"
+}

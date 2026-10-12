@@ -1,0 +1,8 @@
+{
+  "name": "Continuity by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/continuity-mcp",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Story continuity for fiction writers: a series bible and novel memory that keeps characters, places, timelines, and plot facts consistent across chats. OAuth sign-in. Endpoint: `https://continuitywriter.com/mcp` · [Website](https://continuitywriter.com) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://continuitywriter.com/mcp"
+}

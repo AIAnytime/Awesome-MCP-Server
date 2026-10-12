@@ -1,0 +1,9 @@
+{
+  "name": "AgentoolRank",
+  "url": "https://github.com/agent-gigmole/agentoolrank-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Search open-source AI agent tools and MCP servers ranked by live GitHub activity, refreshed daily, and get alternatives for any tool; read-only search needs no API key. Install: `claude mcp add --transport http agentoolrank https://agentoolrank.com/api/mcp` · [Docs](https://agentoolrank.com/agents) · Registry: `com.agentoolrank/agent-tools`",
+  "endpoint": "https://agentoolrank.com/api/mcp",
+  "registry": "com.agentoolrank/agent-tools"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Liftli",
+  "url": "https://github.com/liftli-ai/liftli-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Head-of-content for LinkedIn, X, and Substack: extracts your voice from your own posts, turns voice notes and transcripts into drafts, critiques them, then publishes through official platform APIs. 54 tools, no scraping."
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Milestone by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/milestone-mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Freelance project milestones: approved milestones, deliverables, and acceptance criteria; a milestone is only done when the saved criteria are met. OAuth sign-in. Endpoint: `https://milestone-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/milestone) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://milestone-continuity2.vercel.app/mcp"
+}

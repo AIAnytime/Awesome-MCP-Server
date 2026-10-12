@@ -1,0 +1,8 @@
+{
+  "name": "Robot Speed",
+  "url": "https://github.com/robot-speed/mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "AI SEO MCP: content calendar, keyword research, site audits, backlinks, and CMS publishing. OAuth remote. Endpoint: `https://www.robot-speed.com/api/mcp` · [Website](https://www.robot-speed.com/mcp)",
+  "endpoint": "https://www.robot-speed.com/api/mcp"
+}

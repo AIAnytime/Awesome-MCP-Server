@@ -1,0 +1,9 @@
+{
+  "name": "canli-validation-mcp",
+  "url": "https://github.com/arhancanli/canli-validation-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Checks whether a backtest result is real or just the luckiest of the variants tried: deflated Sharpe ratio, CSCV probability of backtest overfitting, data-snooping tests (Hansen's SPA, White's Reality Check, Romano-Wolf StepM), a lookahead check and a pipeline placebo test. Free, no API key; also runs locally with `npx -y canli-validation-mcp`. Endpoint: `https://canlicapital.com/mcp` · [Docs](https://canlicapital.com/developers) · Registry: `io.github.arhancanli/canli-validation-mcp`",
+  "endpoint": "https://canlicapital.com/mcp",
+  "registry": "io.github.arhancanli/canli-validation-mcp"
+}

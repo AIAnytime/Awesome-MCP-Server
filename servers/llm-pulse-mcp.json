@@ -1,0 +1,8 @@
+{
+  "name": "LLM Pulse MCP",
+  "url": "https://github.com/estevecastells/llmpulse-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "AI search visibility analytics for brand mentions, citations, share of voice, and AI-referred traffic across ChatGPT, Perplexity, Gemini, and Google AI Overviews. Endpoint: `https://llmpulse.ai/api/v1/mcp` (Bearer authentication) · [Product](https://llmpulse.ai)",
+  "endpoint": "https://llmpulse.ai/api/v1/mcp"
+}

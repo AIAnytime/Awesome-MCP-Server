@@ -1,0 +1,7 @@
+{
+  "name": "Packrift",
+  "url": "https://github.com/Packrift/packrift-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations."
+}

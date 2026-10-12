@@ -1,8 +1,8 @@
 # Contributing
 
-Thanks for adding to the list. This file exists because the README grew fast and got messy —
-duplicate numbers, entries landing below the license, the same server listed twice. These rules
-keep that from happening again. They take two minutes to follow and make your PR mergeable on sight.
+Thanks for adding to the list. The directory is built from one small file per server, so two
+people adding servers at the same time never collide, and a script can check every hosted
+server each night.
 
 ## Adding a server to the directory
 
@@ -11,36 +11,48 @@ keep that from happening again. They take two minutes to follow and make your PR
 Two servers, two PRs. It keeps review fast and makes a bad entry easy to revert without
 taking a good one with it.
 
-### 2. Put it in the right place
+### 2. Add one file: `servers/<your-server>.json`
 
-Find the category in [`README.md`](README.md#-community-directory) that fits and insert your entry
-**in alphabetical order** within that category. If nothing fits, use the closest category and say
-so in the PR — don't invent a new one unless you have three or more servers for it.
+Name the file after the server, in lowercase with hyphens (`parallel-search.json`).
 
-### 3. Use bullets, never numbers
-
-The list is deliberately unnumbered. Numbered lists collide on every concurrent PR — that's how
-the file ended up with two `7.`s and two `12.`s. **Do not renumber anything. Do not add a numbered list.**
-
-### 4. Use the exact entry format
-
-```markdown
-- **[Name](https://link-to-repo-or-docs)** `stdio` — One sentence on what it does. Install: `command` · [Docs](https://…)
+```json
+{
+  "name": "Parallel Search",
+  "url": "https://docs.parallel.ai/integrations/mcp/search-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Free live web search and URL fetching, no account or API key. Endpoint: `https://search.parallel.ai/mcp`",
+  "endpoint": "https://search.parallel.ai/mcp"
+}
 ```
 
 | Field | Rule |
 | --- | --- |
-| **Name** | The server's real name. Bold, linked to its repo, or its docs if there's no public repo. |
-| Transport tag | Exactly one of `` `stdio` `` (runs locally), `` `http` `` (hosted remote), `` `sse` `` (remote over SSE). Omit only if genuinely not a server. |
-| Description | One sentence, two at the absolute most. What it does and what it's over. |
-| Install / Endpoint | The literal command or URL, in backticks. Optional but appreciated. |
-| Extra links | `· [Docs](…)`, `· [Website](…)`, `· Registry: \`id\``. Keep it short. |
+| `name` | The server's real name. |
+| `url` | Its public repository, or its docs page if there is no public repo. |
+| `category` | One of `developer-tools`, `search`, `knowledge-memory`, `media`, `security`, `finance`, `marketing`, `cloud-data`, `commerce-travel`, `productivity`. If nothing fits, use the closest and say so in the PR. |
+| `transport` | `stdio` (runs locally), `http` (hosted remote) or `sse` (remote over SSE). |
+| `description` | One sentence, two at the absolute most, on a single line. Markdown links and `code` are fine: `Install: \`command\` · [Docs](https://…)`. |
+| `endpoint` | **Hosted servers only.** The `https://` URL an MCP client connects to. This is what gets checked every night. |
+| `registry` | Optional. Your id in the official MCP Registry. |
 
-A good entry:
+### 3. Regenerate the README
 
-```markdown
-- **[Parallel Search](https://docs.parallel.ai/integrations/mcp/search-mcp)** `http` — Free live web search and URL fetching, no account or API key. Endpoint: `https://search.parallel.ai/mcp`
+```bash
+python3 scripts/build.py --readme   # rewrites the list in README.md from servers/
+python3 scripts/lint.py             # the same check CI runs
 ```
+
+**Do not edit the list in `README.md` by hand.** It is generated, and the lint fails if it does
+not match the files in `servers/`. Python 3.10 or newer is all you need; there is nothing to install.
+
+### 4. What happens after it merges
+
+Your server gets a page on the site and a status badge you can put in your own README. If it is
+hosted, the nightly check sends it an MCP `initialize` and, when no credentials are needed, a
+`tools/list`, from a client that identifies itself as `awesome-mcp-servers-probe`. The site then
+shows whether it answered, whether it asked for auth, how many tools it has, and roughly how many
+tokens its tool definitions cost. It shows what was observed; it does not claim your server was audited.
 
 ### 5. Write like a directory, not an ad
 
@@ -56,7 +68,7 @@ Before opening the PR, confirm:
 - [ ] It speaks MCP (stdio, Streamable HTTP, or SSE) — not just "an API an agent could call".
 - [ ] Someone who isn't you can reach it: the repo is public, or the hosted endpoint responds, or the package installs.
 - [ ] Every link in your entry resolves.
-- [ ] It isn't already in the list. Search the README for the name **and** the domain first.
+- [ ] It isn't already in the list. Search `servers/` and the README for the name **and** the domain first.
 - [ ] You have the right to list it.
 
 PRs that are pure link-drops for a dead endpoint, or that list the same product under three names, get closed.
@@ -69,7 +81,7 @@ The folders at the top level are teaching examples. If you want to add one:
 - Python with `uv` matches the existing servers; another stack is fine if the README explains how to run it.
 - **Include a `README.md`** in your folder: what it does, tools exposed, prerequisites, how to run it, how to wire it into a client.
 - Never commit secrets. Use `.env` (already gitignored) and document the variable names.
-- Add a row to the *Servers in this repo* table in the main README.
+- Add a row to the *Servers in this repo* table in the main README, and an entry in `data/reference.json` so it shows on the site.
 
 ## Reporting a problem
 

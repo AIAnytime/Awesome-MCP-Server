@@ -1,0 +1,8 @@
+{
+  "name": "since-cutoff",
+  "url": "https://github.com/MohammadHijjawi97/since-cutoff",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Reports which APIs of a project's pinned Python dependencies changed after a coding model's training cutoff, from a static diff of the two releases, and where the project's code uses them; no model calls or API key. Install: `uvx since-cutoff mcp` · Registry: `io.github.MohammadHijjawi97/since-cutoff`",
+  "registry": "io.github.MohammadHijjawi97/since-cutoff"
+}

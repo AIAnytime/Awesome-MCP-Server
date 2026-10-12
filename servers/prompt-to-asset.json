@@ -1,0 +1,7 @@
+{
+  "name": "prompt-to-asset",
+  "url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+  "category": "media",
+  "transport": "stdio",
+  "description": "Routes image-generation prompts to 30+ models (DALL·E, Stable Diffusion, Flux, Midjourney) through one interface. Install: `npm install -g prompt-to-asset`"
+}

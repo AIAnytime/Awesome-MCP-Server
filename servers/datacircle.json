@@ -1,0 +1,9 @@
+{
+  "name": "Datacircle",
+  "url": "https://docs.datacircle.dev/mcp-server",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Query your favorite B2B data APIs through us. Same request, same price, no markup. OAuth sign-in, or an API key as a Bearer token. Endpoint: `https://api.datacircle.dev/mcp` · [Website](https://datacircle.dev) · Registry: `dev.datacircle/datacircle`",
+  "endpoint": "https://api.datacircle.dev/mcp",
+  "registry": "dev.datacircle/datacircle"
+}

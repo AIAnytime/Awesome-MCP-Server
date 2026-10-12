@@ -1,0 +1,9 @@
+{
+  "name": "PostWire",
+  "url": "https://github.com/Perufitlife/postwire-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Writes a separate native post per network from one idea and publishes or schedules it to TikTok, Instagram, YouTube, LinkedIn, Bluesky and more; free plan, OAuth sign-in. Endpoint: `https://postwire.io/api/mcp` · Local: `npx -y postwire-mcp` · Registry: `io.github.Perufitlife/postwire-mcp`",
+  "endpoint": "https://postwire.io/api/mcp",
+  "registry": "io.github.Perufitlife/postwire-mcp"
+}

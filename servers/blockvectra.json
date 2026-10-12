@@ -1,0 +1,8 @@
+{
+  "name": "BlockVectra",
+  "url": "https://github.com/blockvectra/mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI agents. Documentation, chain, pricing and status tools need no API key; Data API tools require one. Endpoint: `https://docs.blockvectra.com/mcp` · [Docs](https://docs.blockvectra.com/en/)",
+  "endpoint": "https://docs.blockvectra.com/mcp"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Screenpipe",
+  "url": "https://github.com/screenpipe/screenpipe",
+  "category": "knowledge-memory",
+  "transport": "stdio",
+  "description": "Source-available MCP access to searchable local screen text and audio transcripts. Requires a running Screenpipe recorder and local API authentication. Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest` · [Docs](https://github.com/screenpipe/screenpipe/tree/main/packages/screenpipe-mcp#installation)"
+}

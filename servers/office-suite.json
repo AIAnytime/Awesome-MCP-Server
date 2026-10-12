@@ -1,0 +1,7 @@
+{
+  "name": "Office Suite",
+  "url": "https://github.com/theluckystrike/mcp-servers",
+  "category": "productivity",
+  "transport": "stdio",
+  "description": "Bundle of MCP servers for freelance and back-office work: invoices, spreadsheets, PDFs, time tracking, expense tracking, resumes, and contracts. [Hosted](https://mcp.zovo.one)"
+}

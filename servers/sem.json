@@ -1,0 +1,7 @@
+{
+  "name": "Sem",
+  "url": "https://github.com/Ataraxy-Labs/sem",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Search code entities, inspect dependencies and impact, and review structural diffs in local Git repositories; no API key required. Install: `npm install -g @ataraxy-labs/sem`, then run `sem mcp` from the repository · [Docs](https://github.com/Ataraxy-Labs/sem#use-with-ai-agents-mcp)"
+}

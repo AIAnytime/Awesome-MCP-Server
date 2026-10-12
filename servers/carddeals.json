@@ -1,0 +1,8 @@
+{
+  "name": "CardDeals",
+  "url": "https://github.com/cello305/carddeals-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Query and compare real-time discounted digital gift cards across 700+ brands. Endpoint: `https://catalog.carddeals.co/mcp` · [Docs](https://carddeals.co/mcp)",
+  "endpoint": "https://catalog.carddeals.co/mcp"
+}

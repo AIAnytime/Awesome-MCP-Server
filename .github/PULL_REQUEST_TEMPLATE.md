@@ -1,6 +1,6 @@
 <!--
 Adding a server to the directory? Please read CONTRIBUTING.md first — it's short.
-One server per PR. Bullets only, never numbered lists. Alphabetical within its category.
+One server per PR: add servers/<name>.json, then run `python3 scripts/build.py --readme`.
 -->
 
 ## What is this?
@@ -17,12 +17,12 @@ One server per PR. Bullets only, never numbered lists. Alphabetical within its c
 ## Checklist
 
 - [ ] One server only in this PR
-- [ ] Added as a **bullet** (no numbered list), in **alphabetical order** within its category
-- [ ] Uses the entry format from CONTRIBUTING.md, including the `stdio` / `http` / `sse` tag
+- [ ] Added `servers/<name>.json` in the format from CONTRIBUTING.md (hosted servers include `endpoint`)
+- [ ] Ran `python3 scripts/build.py --readme` and `python3 scripts/lint.py`; did not edit the README list by hand
 - [ ] Description is one or two sentences, no marketing language
 - [ ] No `utm_*` or other tracking parameters in any URL
 - [ ] Every link in the entry resolves
-- [ ] Not already listed (searched the README for the name **and** the domain)
+- [ ] Not already listed (searched `servers/` for the name **and** the domain)
 - [ ] It genuinely speaks MCP and is reachable by someone other than me
 
 ## Anything else?

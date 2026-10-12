@@ -1,0 +1,9 @@
+{
+  "name": "VoxOdds",
+  "url": "https://github.com/softdevfz/voxodds-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Prediction-market research across Polymarket and Kalshi: odds for the same contract on both venues, the all-in executable price for a budget with estimated taker fees and which venue fills cheaper, trending markets, edge signals and an audited forecast track record. Read-only, no API key. Endpoint: `https://voxodds.com/mcp` · [Docs](https://voxodds.com/llms.txt) · Registry: `com.voxodds/voxodds`",
+  "endpoint": "https://voxodds.com/mcp",
+  "registry": "com.voxodds/voxodds"
+}

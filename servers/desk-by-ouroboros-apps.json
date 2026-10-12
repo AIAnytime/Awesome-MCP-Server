@@ -1,0 +1,8 @@
+{
+  "name": "Desk by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/desk-mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Customer support policy for assistants: approved support answers, refund rules, and escalation limits read before replying; unapproved promises go to human review. OAuth sign-in. Endpoint: `https://desk-mcp-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/desk) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://desk-mcp-continuity2.vercel.app/mcp"
+}

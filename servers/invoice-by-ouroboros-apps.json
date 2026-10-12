@@ -1,0 +1,8 @@
+{
+  "name": "Invoice by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/invoice-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Freelance invoice records: approved invoice line items, quantities, agreed rates, due dates, and late terms; invoice changes need explicit approval. OAuth sign-in. Endpoint: `https://invoice-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/invoice) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://invoice-continuity2.vercel.app/mcp"
+}

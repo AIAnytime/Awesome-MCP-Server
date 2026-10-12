@@ -1,0 +1,8 @@
+{
+  "name": "Testimonials.ltd",
+  "url": "https://testimonials.ltd/integrations/claude",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Testimonials and wall of love widgets: import reviews, approve, tag and pin the best ones from chat. Endpoint: `https://testimonials.ltd/mcp` · [Docs](https://testimonials.ltd/integrations/claude)",
+  "endpoint": "https://testimonials.ltd/mcp"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Council of AI (GSPC)",
+  "url": "https://github.com/CSOAI-ORG/councilof-ai/tree/master/mcp/gspc-server",
+  "category": "security",
+  "transport": "http",
+  "description": "Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures and Merkle inclusion; read tools need no key, evidence tools are x402-metered. Endpoint: `https://councilof.ai/mcp` · Install: `npx -y csoai-gspc-mcp` · Registry: `io.github.CSOAI-ORG/gspc`",
+  "endpoint": "https://councilof.ai/mcp",
+  "registry": "io.github.CSOAI-ORG/gspc"
+}

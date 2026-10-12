@@ -1,0 +1,7 @@
+{
+  "name": "PDFtoMarkdown.ai",
+  "url": "https://github.com/happywpco/pdftomarkdown-mcp",
+  "category": "productivity",
+  "transport": "stdio",
+  "description": "Converts local PDF, DOCX, PPTX, XLSX, PNG/JPG, HTML and EPUB files into structured Markdown with headings, tables and OCR text, via the PDFtoMarkdown.ai API. API key required; free account includes 10 pages, then pay-per-page credits. Install: `npm install -g @happywp/pdftomarkdown-mcp` · [Docs](https://pdftomarkdown.ai/developers)"
+}

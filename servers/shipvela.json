@@ -1,0 +1,8 @@
+{
+  "name": "Shipvela",
+  "url": "https://shipvela.com/integrations/assistants",
+  "category": "cloud-data",
+  "transport": "http",
+  "description": "Publish React, Vite and static websites, and read project status, build logs and usage through OAuth; a Shipvela account is required, a Hobby tier is available, and uploads require owner confirmation. Endpoint: `https://shipvela.com/mcp`",
+  "endpoint": "https://shipvela.com/mcp"
+}

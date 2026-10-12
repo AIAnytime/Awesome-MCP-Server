@@ -1,0 +1,8 @@
+[
+  {"folder": "weather", "title": "1. weather", "summary": "The smallest useful server: two tools over the US National Weather Service API, on stdio.", "video": null},
+  {"folder": "mcp-wiki", "title": "2. mcp-wiki", "summary": "Fetch a Wikipedia article and return clean Markdown.", "video": null},
+  {"folder": "pubmed-mcp-server", "title": "3. pubmed-mcp-server", "summary": "Search PubMed and return abstracts through BioPython.", "video": null},
+  {"folder": "linkedin-profile-mcp", "title": "4. linkedin-profile-mcp", "summary": "Call a third-party API that needs a key, and keep the key out of the code.", "video": null},
+  {"folder": "http-sse-mcp-starter", "title": "5. http-sse-mcp-starter", "summary": "The same idea served remotely over HTTP, with a matching client.", "video": null},
+  {"folder": "streamlit as an MCP Host", "title": "6. streamlit as an MCP Host", "summary": "The other side of the wire: a host app that connects to a server and calls its tools.", "video": null}
+]

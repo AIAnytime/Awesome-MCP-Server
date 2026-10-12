@@ -1,0 +1,8 @@
+{
+  "name": "Scope by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/scope-mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Freelance scope of work: approved scope, rates, deadlines, and change orders, so an assistant cannot promise work or discounts that were not approved. OAuth sign-in. Endpoint: `https://scope-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/scope) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://scope-continuity2.vercel.app/mcp"
+}

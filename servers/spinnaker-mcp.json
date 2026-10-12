@@ -1,0 +1,7 @@
+{
+  "name": "spinnaker-mcp",
+  "url": "https://github.com/GeiserX/spinnaker-mcp",
+  "category": "cloud-data",
+  "transport": "stdio",
+  "description": "Exposes a Spinnaker instance through its Gate API as 37 tools for applications, pipelines, executions, deployment strategies and infrastructure, with an optional read-only toolset. Install: `npx -y spinnaker-mcp` (set `GATE_URL`) · [Docs](https://geiserx.github.io/spinnaker-mcp/)"
+}

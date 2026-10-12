@@ -1,0 +1,8 @@
+{
+  "name": "Neither",
+  "url": "https://github.com/stonianua/neither-mcp",
+  "category": "knowledge-memory",
+  "transport": "stdio",
+  "description": "Project context your AI can query through MCP. Selected notes/docs for Cursor or Claude Desktop; related retrieval with source evidence. Install: `npx -y @neitherai/mcp-server`. Registry: `io.github.stonianua/neither-mcp`. [Start](https://www.neither.online/start/?product=dev)",
+  "registry": "io.github.stonianua/neither-mcp"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "AIHawk",
+  "url": "https://github.com/feder-cr/AIHawk",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: `uvx aihawk`"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Motomarks",
+  "url": "https://motomarks.io/docs/mcp",
+  "category": "media",
+  "transport": "http",
+  "description": "Search a published automotive brand library and build logo CDN URLs for Claude, Cursor, and VS Code. Endpoint: `https://motomarks.io/api/mcp` (OAuth or API key; free account, no credit card)",
+  "endpoint": "https://motomarks.io/api/mcp"
+}

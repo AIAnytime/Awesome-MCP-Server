@@ -1,0 +1,9 @@
+{
+  "name": "Silicon Floor",
+  "url": "https://github.com/Baptoshi/silicon-floor",
+  "category": "finance",
+  "transport": "http",
+  "description": "Who owns AI and semiconductor stocks, who is buying and selling them, and what their filed numbers say: SEC XBRL financials, 13F, Schedule 13D/G, Forms 3/4/5, FINRA short interest and dividends, every figure dated and linked to its filing. Read-only, no API key. Endpoint: `https://siliconfloor.com/mcp` · [Docs](https://siliconfloor.com/docs/mcp) · Registry: `com.siliconfloor/silicon-floor`",
+  "endpoint": "https://siliconfloor.com/mcp",
+  "registry": "com.siliconfloor/silicon-floor"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Wondel.ai Skills MCP",
+  "url": "https://github.com/mjaskolski/wondel-skills-mcp",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Read-only access to 50 book-based agent skills and 12 guided journeys: recommends a framework for a task and serves its SKILL.md in-session. No account or auth. Endpoint: `https://skills.wondel.ai/mcp` · Registry: `io.github.mjaskolski/wondel-skills-mcp`",
+  "endpoint": "https://skills.wondel.ai/mcp",
+  "registry": "io.github.mjaskolski/wondel-skills-mcp"
+}

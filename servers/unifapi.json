@@ -1,0 +1,9 @@
+{
+  "name": "UnifAPI",
+  "url": "https://github.com/unifapi-agent/unifapi-mcp-server",
+  "category": "search",
+  "transport": "http",
+  "description": "Public-data tools for social, search, scraping, news, creator research, and KOL pricing workflows. Endpoint: `https://mcp.unifapi.com` · [Docs](https://docs.unifapi.com/mcp) · Registry: `com.unifapi/mcp`",
+  "endpoint": "https://mcp.unifapi.com",
+  "registry": "com.unifapi/mcp"
+}

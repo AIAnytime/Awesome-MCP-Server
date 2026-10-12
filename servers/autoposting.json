@@ -1,0 +1,8 @@
+{
+  "name": "Autoposting",
+  "url": "https://github.com/Autoposting-ai/autoposting-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Draft, schedule, and publish to X, LinkedIn, Instagram, Threads, and YouTube, plus AI carousels and video clipping. OAuth 2.1 with dynamic client registration — no secret to paste. Install: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`",
+  "endpoint": "https://app.autoposting.ai/mcp"
+}

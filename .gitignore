@@ -172,3 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Generated site and nightly check results (results live on the status-data branch)
+_site/
+data/status.json

@@ -1,0 +1,7 @@
+{
+  "name": "Skillselion",
+  "url": "https://github.com/skillselion/skillselion-mcp",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "On-demand skill loader over a catalog of 79,000+ agent skills, MCP servers, and plugins; materializes the matching `SKILL.md` and its scripts into the session mid-task. Install: `npx -y skillselion-mcp` · [Website](https://skillselion.com)"
+}

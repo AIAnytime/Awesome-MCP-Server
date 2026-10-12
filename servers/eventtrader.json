@@ -1,0 +1,7 @@
+{
+  "name": "EventTrader",
+  "url": "https://github.com/eventtrader/event-trader-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Prediction-market trading: place bets, TGE token price predictions, real-time orderbooks, agent cloning, due-diligence scoring. [Platform](https://cymetica.com)"
+}

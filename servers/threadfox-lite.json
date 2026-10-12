@@ -1,0 +1,7 @@
+{
+  "name": "ThreadFox Lite",
+  "url": "https://github.com/amflimited/threadfox-lite",
+  "category": "marketing",
+  "transport": "stdio",
+  "description": "Read-only Reddit research through your own signed-in Chrome: a subreddit's rules with self-promotion rules flagged, communities for a topic, an account's standing, and whether a post is still live. No API keys."
+}

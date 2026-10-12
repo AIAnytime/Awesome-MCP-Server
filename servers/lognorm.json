@@ -1,0 +1,8 @@
+{
+  "name": "LogNorm",
+  "url": "https://github.com/lognorm/lognorm-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Site and GEO audits ranked into a backlog that Claude Code, Codex and Cursor can fix, write and track (including how AI assistants answer buyer prompts). OAuth 2.1 with dynamic client registration; free plan. Endpoint: `https://lognorm.com/api/mcp` · [Docs](https://lognorm.com/docs/agents)",
+  "endpoint": "https://lognorm.com/api/mcp"
+}

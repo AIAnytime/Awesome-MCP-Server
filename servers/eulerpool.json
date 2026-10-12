@@ -1,0 +1,8 @@
+{
+  "name": "Eulerpool",
+  "url": "https://github.com/eulerpool/eulerpool-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Financial data for AI agents: 250+ tools over stocks, fundamentals, ETFs, macro (FRED/ECB/IMF/World Bank), crypto, FX, insider trades, congress trading and options flow. Free tier, API key or OAuth. Endpoint: `https://api.eulerpool.com/mcp` · [Docs](https://eulerpool.com/developers/mcp-server)",
+  "endpoint": "https://api.eulerpool.com/mcp"
+}

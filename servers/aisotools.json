@@ -1,0 +1,8 @@
+{
+  "name": "AISOTools",
+  "url": "https://github.com/shibley/aisotools-mcp-server",
+  "category": "search",
+  "transport": "http",
+  "description": "Search a curated catalog of 1,766 AI tools by keyword, category, or pricing; compare 2–5 products side by side and find alternatives. Read-only, no API key, sponsored results flagged. Install: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp` · [Docs](https://aisotools.com/mcp)",
+  "endpoint": "https://aisotools.com/api/mcp"
+}

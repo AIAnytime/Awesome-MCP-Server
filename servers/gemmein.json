@@ -1,0 +1,7 @@
+{
+  "name": "Gemmein",
+  "url": "https://docs.gemmein.com/r/dir",
+  "category": "cloud-data",
+  "transport": "stdio",
+  "description": "Server-enforced access rules and server-defined AI tools on the owner's provider key, with an integration check that fails when anonymous people can read private data. · [Website](https://gemmein.com/r/dir)"
+}

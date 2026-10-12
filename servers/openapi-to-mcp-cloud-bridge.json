@@ -1,0 +1,7 @@
+{
+  "name": "OpenAPI to MCP Cloud Bridge",
+  "url": "https://github.com/notsariedo/openapi-mcp-gateway",
+  "category": "developer-tools",
+  "transport": "sse",
+  "description": "Zero-setup hosted bridge that turns any OpenAPI JSON spec into a remote MCP server. [Hosted bridge](https://mcp-bridge-saas.onrender.com)"
+}

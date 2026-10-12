@@ -1,0 +1,7 @@
+{
+  "name": "SandBase Harness",
+  "url": "https://github.com/sandbaseai/sandbase-harness",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Local-first agent runtime and MCP bridge for governed tool access, persistent sessions, credentials, approvals, audit/replay, and sandboxed execution. Install: `docker run --rm -i -e MANAGED_AGENTS_URL=http://host.docker.internal:3000 ghcr.io/sandbaseai/sandbase-harness-mcp:0.3.8`"
+}

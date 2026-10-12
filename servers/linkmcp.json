@@ -1,0 +1,9 @@
+{
+  "name": "LinkMCP",
+  "url": "https://app.linkmcp.io",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Hosted LinkedIn MCP server on your own LinkedIn account: profiles, companies, people, job and Sales Navigator search, inbox, posts, comments, reactions, connection requests and work email finding; OAuth or access key, paid plans with a 7-day free trial. Endpoint: `https://app.linkmcp.io/api/mcp` · [Docs](https://github.com/linkmcp-io/linkmcp) · Registry: `io.linkmcp/linkmcp`",
+  "endpoint": "https://app.linkmcp.io/api/mcp",
+  "registry": "io.linkmcp/linkmcp"
+}

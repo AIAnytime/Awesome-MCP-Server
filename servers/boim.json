@@ -1,0 +1,9 @@
+{
+  "name": "BOIM (보임)",
+  "url": "https://github.com/kikiyop1101/boim-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Find Korean businesses by region and industry (2.7M, all industries), public-procurement vendors (75,000+) and open public bids; read-only, no account or API key on the free tier (5 results per tool). Endpoint: `https://boim.io/api/mcp` · Registry: `io.boim/vendors`",
+  "endpoint": "https://boim.io/api/mcp",
+  "registry": "io.boim/vendors"
+}

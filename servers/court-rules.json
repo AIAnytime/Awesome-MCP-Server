@@ -1,0 +1,8 @@
+{
+  "name": "Court Rules",
+  "url": "https://github.com/foklepoint/court-rules-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "U.S. federal court rules, local rules, judge standing orders, court holidays and filing deadline checks; API key required, free tier. Endpoint: `https://mcp.courtrules.app/mcp`",
+  "endpoint": "https://mcp.courtrules.app/mcp"
+}

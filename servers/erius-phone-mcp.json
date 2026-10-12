@@ -1,0 +1,7 @@
+{
+  "name": "ERIUS PHONE MCP",
+  "url": "https://github.com/Protremix/erius-phone-mcp",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Drive a hosted ERIUS PHONE Android phone or tablet: read the screen as an accessibility tree or screenshot, tap, type, swipe, launch apps, install APKs and pull crash logs. Requires an ERIUS PHONE API key (early access). Install: `uvx erius-phone-mcp` · [Website](https://eriusphone.com)"
+}

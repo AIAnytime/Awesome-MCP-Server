@@ -1,0 +1,7 @@
+{
+  "name": "Darkmoon",
+  "url": "https://github.com/ASCIT31/Dark-Moon",
+  "category": "security",
+  "transport": "stdio",
+  "description": "Open-source (GPLv3) autonomous penetration-testing platform orchestrating 80+ offensive security tools through 50 specialist agents, with proof of exploitation behind every finding. Runs fully locally."
+}

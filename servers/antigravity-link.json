@@ -1,0 +1,8 @@
+{
+  "name": "Antigravity Link",
+  "url": "https://github.com/cafeTechne/antigravity-link-extension",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Mirror active AI chat sessions from Google's Antigravity IDE to your phone: send messages, upload files, stop generation, automate workflows across 9 tools. Registry: `io.github.cafeTechne/antigravity-link`",
+  "registry": "io.github.cafeTechne/antigravity-link"
+}

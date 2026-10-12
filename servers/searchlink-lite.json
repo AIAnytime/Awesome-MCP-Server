@@ -1,0 +1,7 @@
+{
+  "name": "SearchLink Lite",
+  "url": "https://github.com/GlobalMatchHub/searchlink-lite",
+  "category": "marketing",
+  "transport": "stdio",
+  "description": "Google Search Console inside your MCP client: search performance by query, page, country or device, ranking opportunities, URL indexing, sitemaps and on-page checks. Eight read-only tools, runs locally with a service account or gcloud credentials. Install: `npx -y github:GlobalMatchHub/searchlink-lite`"
+}

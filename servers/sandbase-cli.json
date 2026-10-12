@@ -1,0 +1,7 @@
+{
+  "name": "SandBase CLI",
+  "url": "https://github.com/sandbaseai/cli",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Agent-first CLI and MCP bridge for discovering, inspecting, and running 2,000+ AI models on one account — search, scraping, multimodal generation, data APIs, sandboxes. Install: `npx -y @sandbaseai/cli connect` · [Website](https://sandbase.ai)"
+}

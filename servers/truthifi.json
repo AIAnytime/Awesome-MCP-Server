@@ -1,0 +1,9 @@
+{
+  "name": "Truthifi",
+  "url": "https://github.com/truthifi/truthifi-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "One verified household record for your AI: accounts, activity, holdings, fees, performance, cash flow and your Truthifi Score. Can't move money. Endpoint: `https://api.truthifi.com/mcp` · [Docs](https://truthifi.com/mcp-tools) · Registry: `com.truthifi/mcp`",
+  "endpoint": "https://api.truthifi.com/mcp",
+  "registry": "com.truthifi/mcp"
+}

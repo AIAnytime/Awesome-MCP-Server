@@ -1,0 +1,9 @@
+{
+  "name": "nothumansearch",
+  "url": "https://nothumansearch.ai/mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Search engine over 8,600+ agent-native services: discover MCP servers, OpenAPI providers, and llms.txt publishers by keyword, category, or agentic-readiness score. Registry: `ai.nothumansearch/search`",
+  "registry": "ai.nothumansearch/search",
+  "endpoint": "https://nothumansearch.ai/mcp"
+}

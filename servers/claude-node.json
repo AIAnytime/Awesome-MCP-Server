@@ -1,0 +1,7 @@
+{
+  "name": "claude-node",
+  "url": "https://github.com/claw-army/claude-node",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Python subprocess bridge to the Claude Code CLI, giving Python direct access to Claude Code's native capabilities over stream-json."
+}

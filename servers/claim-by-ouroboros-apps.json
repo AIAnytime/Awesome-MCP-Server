@@ -1,0 +1,8 @@
+{
+  "name": "Claim by Ouroboros Apps",
+  "url": "https://github.com/LAHutchins91/claim-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Brand claims and marketing copy compliance: approved claims, offers, proof, brand voice, and banned phrases, with a check that rejects copy inventing a guarantee or discount. OAuth sign-in. Endpoint: `https://claim-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/claim) · [Ouroboros Apps](https://ouroborosapps.com)",
+  "endpoint": "https://claim-continuity2.vercel.app/mcp"
+}

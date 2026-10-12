@@ -1,0 +1,7 @@
+{
+  "name": "Agent QA",
+  "url": "https://github.com/vostride/agent-qa",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Author, validate, run, and inspect natural-language web and mobile regression tests, with persistent test memory. Install: `npx -y agent-qa mcp`"
+}

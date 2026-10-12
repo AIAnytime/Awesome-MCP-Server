@@ -1,0 +1,9 @@
+{
+  "name": "BankBridge",
+  "url": "https://github.com/bankbridge-money/bankbridge-plugin",
+  "category": "finance",
+  "transport": "http",
+  "description": "Read-only access to your US bank accounts, card transactions and investment holdings: spending, subscriptions, cashflow. Paid, OAuth sign-in or API key. Endpoint: `https://bankbridge.money/api/mcp` · [Website](https://bankbridge.money) · Registry: `money.bankbridge/server`",
+  "endpoint": "https://bankbridge.money/api/mcp",
+  "registry": "money.bankbridge/server"
+}

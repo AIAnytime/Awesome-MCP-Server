@@ -1,0 +1,8 @@
+{
+  "name": "Hexis",
+  "url": "https://github.com/Bevel-Software/Hexis",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Git-backed platform for skills, tools, and context for AI agents. Endpoint: `https://demo.bevel.software/api/mcp`",
+  "endpoint": "https://demo.bevel.software/api/mcp"
+}

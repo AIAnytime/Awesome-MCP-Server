@@ -1,0 +1,7 @@
+{
+  "name": "Xquik",
+  "url": "https://github.com/Xquik-dev/x-twitter-scraper",
+  "category": "search",
+  "transport": "http",
+  "description": "X/Twitter search, extraction workflows, account insights, webhooks, and SDK access. [Docs](https://docs.xquik.com/mcp/overview)"
+}

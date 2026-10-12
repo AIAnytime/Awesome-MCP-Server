@@ -1,0 +1,8 @@
+{
+  "name": "HOTLIKESHOP",
+  "url": "https://github.com/tuanone123/hotlikeshop-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: `https://hotlikeshop.com/api/mcp` · [Docs](https://hotlikeshop.com/ai)",
+  "endpoint": "https://hotlikeshop.com/api/mcp"
+}

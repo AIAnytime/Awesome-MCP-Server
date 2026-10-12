@@ -1,0 +1,9 @@
+{
+  "name": "HarborRank",
+  "url": "https://harborrank.com/features/mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "SEO data for agents: keyword metrics, live Google SERPs and Maps results, domain and backlink overviews, rank-tracker reads, site audits, and read-only Search Console performance and URL inspection. OAuth login, free plan, paid from $29/month. Endpoint: `https://app.harborrank.com/mcp` · Registry: `com.harborrank/harborrank`",
+  "endpoint": "https://app.harborrank.com/mcp",
+  "registry": "com.harborrank/harborrank"
+}

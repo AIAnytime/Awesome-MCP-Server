@@ -1,0 +1,8 @@
+{
+  "name": "Upload-Post",
+  "url": "https://github.com/Upload-Post/upload-post-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Publish and schedule videos, photos, carousels, text and documents to TikTok, Instagram, YouTube, LinkedIn, Facebook, X, Threads, Pinterest, Reddit, Bluesky and Google Business Profile, and read post analytics and comments; OAuth or API key, free plan. Install: `npx -y @upload-post/mcp` (stdio) or endpoint `https://mcp.upload-post.com/mcp` · [Docs](https://docs.upload-post.com/guides/mcp-server-integration/)",
+  "endpoint": "https://mcp.upload-post.com/mcp"
+}

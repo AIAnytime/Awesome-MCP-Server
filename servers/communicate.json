@@ -1,0 +1,9 @@
+{
+  "name": "Communicate",
+  "url": "https://developer.communicate.so/docs/mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Read-only discovery of workspace AI support agents through `communicate_list_agents`, using OAuth client-credentials tokens with the `agents:read` scope. Endpoint: `https://app.communicate.so/mcp` · [Website](https://communicate.so) · Registry: `io.github.uditgoenka/communicate`",
+  "endpoint": "https://app.communicate.so/mcp",
+  "registry": "io.github.uditgoenka/communicate"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Parallel Search",
+  "url": "https://docs.parallel.ai/integrations/mcp/search-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Free live web search and URL fetching, no account or API key. Endpoint: `https://search.parallel.ai/mcp`",
+  "endpoint": "https://search.parallel.ai/mcp"
+}

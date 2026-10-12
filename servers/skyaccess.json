@@ -1,0 +1,9 @@
+{
+  "name": "SkyAccess",
+  "url": "https://github.com/sky-access/skyaccess-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Search 5,000+ live empty leg flights, get charter price estimates and booking links. No account or API key. Endpoint: `https://mcp.skyaccess.com/mcp` · [Website](https://skyaccess.com) · Registry: `com.skyaccess/skyaccess`",
+  "endpoint": "https://mcp.skyaccess.com/mcp",
+  "registry": "com.skyaccess/skyaccess"
+}

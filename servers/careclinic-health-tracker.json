@@ -1,0 +1,8 @@
+{
+  "name": "CareClinic Health Tracker",
+  "url": "https://cdn.careclinic.io/mcp/help/index.html",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Review personal medication schedules, symptoms, mood, and confirmed health check-ins through an authorized CareClinic account. Endpoint: `https://mcp.careclinic.io/mcp`",
+  "endpoint": "https://mcp.careclinic.io/mcp"
+}

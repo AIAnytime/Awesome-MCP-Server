@@ -1,0 +1,8 @@
+{
+  "name": "squirrelscan",
+  "url": "https://github.com/squirrelscan/squirrelscan",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Audits websites for SEO, performance, security, accessibility, and agent experience (260+ rules) and returns fixes for your coding agent. Endpoint: `https://mcp.squirrelscan.com/mcp` · [Website](https://squirrelscan.com)",
+  "endpoint": "https://mcp.squirrelscan.com/mcp"
+}

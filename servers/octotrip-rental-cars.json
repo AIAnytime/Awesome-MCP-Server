@@ -1,0 +1,8 @@
+{
+  "name": "OctoTrip Rental Cars",
+  "url": "https://github.com/octotrip/rental-cars",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Search and compare rental cars with real-time pricing across providers worldwide, grouped by SIPP category. Endpoint: `https://mcp.octotrip.app/rental-cars/mcp`, no API key required · [Website](https://octotrip.app)",
+  "endpoint": "https://mcp.octotrip.app/rental-cars/mcp"
+}

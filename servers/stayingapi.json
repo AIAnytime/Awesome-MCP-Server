@@ -1,0 +1,8 @@
+{
+  "name": "StayingAPI",
+  "url": "https://github.com/stayingapi/hotel-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Accommodation data across Airbnb, Booking.com, Vrbo, and Google Hotels: search stays and read live listings, rates, availability and reviews. Endpoint: `https://mcp.stayingapi.com/mcp` · [Docs](https://stayingapi.com)",
+  "endpoint": "https://mcp.stayingapi.com/mcp"
+}

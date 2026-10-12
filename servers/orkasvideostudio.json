@@ -1,0 +1,7 @@
+{
+  "name": "OrkasVideoStudio",
+  "url": "https://github.com/Orkas-AI/Orkas-VideoStudio",
+  "category": "media",
+  "transport": "stdio",
+  "description": "Local-first server and TypeScript CLI for agent-driven video composition, editing, generation, and assembly on editable `plan.json` timelines, with installable skills for Codex and Claude Code."
+}

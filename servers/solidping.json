@@ -1,0 +1,8 @@
+{
+  "name": "SolidPing",
+  "url": "https://github.com/fclairamb/solidping",
+  "category": "cloud-data",
+  "transport": "http",
+  "description": "Self-hostable uptime monitor whose MCP server creates, runs and diagnoses checks across 43 types, reads incidents, and manages status pages and maintenance windows. Free hosted tier, OAuth 2.1, also runs over stdio. Endpoint: `https://solidping.io/api/v1/mcp` · [Docs](https://docs.solidping.io/features/mcp)",
+  "endpoint": "https://solidping.io/api/v1/mcp"
+}

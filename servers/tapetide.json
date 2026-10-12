@@ -1,0 +1,8 @@
+{
+  "name": "Tapetide",
+  "url": "https://github.com/Tapetide-hq/nse-bse-indian-stock-market-data-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Indian stock market (NSE and BSE) research over about 8,200 stocks: quotes, financials, technicals, fundamental and technical screeners, FII/DII flows, option chains, parsed filings, IPOs, and portfolio tracking; free plan of 50 tool calls a day. Endpoint: `https://mcp.tapetide.com/mcp` · [Docs](https://tapetide.com/mcp)",
+  "endpoint": "https://mcp.tapetide.com/mcp"
+}

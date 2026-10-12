@@ -1,0 +1,8 @@
+{
+  "name": "Murkuz",
+  "url": "https://murkuz.com/mcp-tools",
+  "category": "marketing",
+  "transport": "http",
+  "description": "SEO MCP: your Search Console, GA4 and Bing Webmaster data across every site, with live SEO analyses. Endpoint: `https://murkuz.com/mcp` · [Docs](https://murkuz.com/mcp-tools)",
+  "endpoint": "https://murkuz.com/mcp"
+}

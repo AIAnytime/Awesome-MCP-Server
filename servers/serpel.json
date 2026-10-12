@@ -1,0 +1,8 @@
+{
+  "name": "Serpel",
+  "url": "https://serpel.app/mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "SEO infrastructure for rankings, site audits, keyword research, and AI visibility. Endpoint: `https://serpel.app/mcp` · [Website](https://serpel.app)",
+  "endpoint": "https://serpel.app/mcp"
+}

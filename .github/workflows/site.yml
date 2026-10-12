@@ -1,0 +1,58 @@
+name: Check servers and publish site
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # nightly, 03:17 UTC
+  push:
+    branches: [main]
+    paths:
+      - "servers/**"
+      - "scripts/**"
+      - "data/**"
+      - ".github/workflows/site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+env:
+  SITE_URL: ${{ vars.SITE_URL || 'https://aianytime.github.io/Awesome-MCP-Servers' }}
+  MCP_URL: ${{ vars.MCP_URL }}
+  REMOTE: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+
+jobs:
+  publish:
+    name: Probe, build, publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore the previous check results
+        run: |
+          if git fetch --depth 1 origin status-data; then
+            git show FETCH_HEAD:status.json > data/status.json
+          fi
+
+      # A push only checks servers that have no result yet; the nightly run checks all of them.
+      - name: Check servers
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/probe.py ${{ github.event_name == 'push' && '--only-new' || '' }}
+
+      - name: Build the site
+        run: python3 scripts/build.py --site _site
+
+      - name: Save the check results
+        run: |
+          mkdir -p _status && cp data/status.json _status/status.json
+          scripts/push_branch.sh _status status-data "Check results $(date -u +%F)"
+
+      - name: Publish the site
+        run: scripts/push_branch.sh _site gh-pages "Site $(date -u +%F)"

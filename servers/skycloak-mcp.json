@@ -1,0 +1,9 @@
+{
+  "name": "Skycloak MCP",
+  "url": "https://github.com/sky-cloak/skycloak-mcp",
+  "category": "security",
+  "transport": "http",
+  "description": "Managed Keycloak identity MCP server for AI agents (OIDC/OAuth realms, users, clients, SSO). Endpoint: `https://mcp.skycloak.io` · [Docs](https://skycloak.io/mcp) · Registry: `io.skycloak/skycloak-mcp`",
+  "endpoint": "https://mcp.skycloak.io",
+  "registry": "io.skycloak/skycloak-mcp"
+}

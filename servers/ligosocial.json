@@ -1,0 +1,8 @@
+{
+  "name": "LigoSocial",
+  "url": "https://ligosocial.com/integrations/claude",
+  "category": "marketing",
+  "transport": "http",
+  "description": "LinkedIn MCP: draft posts in your voice, read post analytics, schedule and publish via LinkedIn's official API. Endpoint: `https://ligosocial.com/mcp` · [Docs](https://ligosocial.com/integrations/claude)",
+  "endpoint": "https://ligosocial.com/mcp"
+}

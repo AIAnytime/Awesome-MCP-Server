@@ -1,0 +1,9 @@
+{
+  "name": "VoiceMoat",
+  "url": "https://github.com/prateeks367/voicemoat-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Personal brand tools for Twitter/X and LinkedIn: score a draft against your own voice profile, improve it, read your analytics and top posts, and publish or schedule after a preview and a confirmed second call; OAuth, needs a VoiceMoat Pro or Enterprise plan. Endpoint: `https://app.voicemoat.com/api/mcp` · [Website](https://voicemoat.com/mcp) · Registry: `com.voicemoat/voicemoat`",
+  "endpoint": "https://app.voicemoat.com/api/mcp",
+  "registry": "com.voicemoat/voicemoat"
+}

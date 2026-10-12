@@ -1,0 +1,8 @@
+{
+  "name": "ORANO",
+  "url": "https://github.com/infotik/orano-mcp-server",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Read-only access to your ORANO library: projects built from saved Reels, videos, articles and PDFs, with summaries, ordered tasks, selectable video context and curated memory facts. Paid web plan; API key required. Endpoint: `https://orano-ai-backend-1037939693300.us-central1.run.app/mcp/` · [Website](https://oranoai.com/mcp)",
+  "endpoint": "https://orano-ai-backend-1037939693300.us-central1.run.app/mcp/"
+}

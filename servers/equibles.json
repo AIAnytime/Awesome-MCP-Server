@@ -1,0 +1,8 @@
+{
+  "name": "Equibles",
+  "url": "https://equibles.com/docs/mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "US company research: SEC filing search and text, fundamentals as reported in 10-K and 10-Q filings, earnings-call transcripts, 13F holdings, insider and congressional trades, and FRED macro series, with links to the source filings. Free tier, OAuth sign-in. Endpoint: `https://mcp.equibles.com/mcp` · [Website](https://equibles.com)",
+  "endpoint": "https://mcp.equibles.com/mcp"
+}

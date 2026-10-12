@@ -1,0 +1,7 @@
+{
+  "name": "Process Street",
+  "url": "https://github.com/process-street/process-street-mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Connect agents to Process Street workflows, tasks, runs, data sets, and operational records, with an interactive authorization flow. [Docs](https://www.process.st/help/docs/mcp-server/)"
+}

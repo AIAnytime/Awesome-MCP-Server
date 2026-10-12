@@ -1,0 +1,9 @@
+{
+  "name": "Better Design",
+  "url": "https://github.com/marvkr/better-design",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Design systems, UI and UX principles, icons and UI review for coding agents that build interfaces; free account, OAuth or API key. Endpoint: `https://better-design.com/api/mcp` · [Docs](https://better-design.com/mcp/install) · Registry: `io.github.marvkr/better-design`",
+  "endpoint": "https://better-design.com/api/mcp",
+  "registry": "io.github.marvkr/better-design"
+}

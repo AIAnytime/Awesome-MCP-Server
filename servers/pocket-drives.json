@@ -1,0 +1,8 @@
+{
+  "name": "Pocket Drives",
+  "url": "https://github.com/RevList/pocket-drives-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Search peer-to-peer luxury, exotic, and EV rentals from independent hosts. Endpoint: `https://pocketdrives.ai/mcp`, no auth.",
+  "endpoint": "https://pocketdrives.ai/mcp"
+}
