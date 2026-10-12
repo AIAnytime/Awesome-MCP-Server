@@ -23,9 +23,11 @@ from lib import CATEGORIES, README, REPO_URL, ROOT, load_servers, render_directo
 SITE_URL = os.environ.get("SITE_URL", "https://aianytime.github.io/Awesome-MCP-Servers").rstrip("/")
 MCP_URL = os.environ.get("MCP_URL", "").rstrip("/")
 YOUTUBE = "https://www.youtube.com/@AIAnytime"
+MAIN_SITE = "https://aianytime.net"
+ACADEMY = "https://academy.aianytime.net"
 
 STATUS_LABEL = {"live": "Live", "auth": "Needs auth", "down": "Down", "unprobed": "Not checked"}
-BADGE_COLOR = {"live": "#1a7f37", "auth": "#0969da", "down": "#cf222e", "unprobed": "#6e7781"}
+BADGE_COLOR = {"live": "#1a7f37", "auth": "#5b3df5", "down": "#cf222e", "unprobed": "#6e7781"}
 
 LINK = re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+)\)")
 CODE = re.compile(r"`([^`]+)`")
@@ -121,28 +123,32 @@ def badge_svg(entry: dict) -> str:
 
 
 CSS = """
-:root{--bg:#fbfaf7;--card:#fff;--ink:#1c1b19;--mute:#6b675f;--line:#e4e0d6;--accent:#0b5e55;--accent-ink:#fff;
---live:#1a7f37;--auth:#0969da;--down:#cf222e;--off:#8a857b;--code:#f1eee6}
-@media (prefers-color-scheme:dark){:root{--bg:#141412;--card:#1c1c19;--ink:#ecebe6;--mute:#a09c92;--line:#33322d;
---accent:#5fd3c3;--accent-ink:#0c1f1c;--live:#4ac26b;--auth:#58a6ff;--down:#ff7b72;--off:#8a857b;--code:#262521}}
+:root{--bg:#f6f4ee;--card:#fffdf8;--ink:#121118;--mute:#625f6d;--line:#dedad0;--accent:#5b3df5;--accent-soft:#ebe6ff;
+--lime:#d4f75e;--night:#0d0c12;--night-2:#17151f;--night-line:#2b2935;
+--live:#1a7f37;--auth:#5b3df5;--down:#c0262d;--off:#8a8794;--code:#efece3}
+@media (prefers-color-scheme:dark){:root{--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%}
 a{color:var(--accent)}
-code{font:.86em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+code{font:.86em "Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
 .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
 header.top{border-bottom:1px solid var(--line)}
 header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
 .brand{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
 .brand span{color:var(--mute);font-weight:500}
 nav a{margin-left:18px;color:var(--mute);text-decoration:none;font-size:.93rem}
-nav a:first-child{margin-left:0}
+nav a:first-child{margin-left:0;color:var(--accent);font-weight:600}
 nav a:hover{color:var(--ink)}
 .hero{padding:44px 0 18px}
-h1{font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;letter-spacing:-.03em;margin:0 0 14px;text-wrap:balance}
+h1{font:400 clamp(2.3rem,6vw,3.6rem)/1.05 "Instrument Serif",ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
 .lede{font-size:1.1rem;color:var(--mute);max-width:64ch;margin:0}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:26px 0 8px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.stat b{display:block;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat b{display:block;font-weight:600;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stat span{color:var(--mute);font-size:.86rem}
 .note{color:var(--mute);font-size:.86rem;margin:6px 0 0}
 .controls{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
@@ -151,12 +157,13 @@ h1{font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;letter-spacing:-.03em;marg
 .controls select{flex:0 1 auto;max-width:100%}
 #count{color:var(--mute);font-size:.88rem;margin:12px 0}
 .list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--accent)}
 .card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .card h3 a{color:var(--ink);text-decoration:none}
 .card h3 a:hover{text-decoration:underline}
 .card p{margin:6px 0 0;color:var(--mute);font-size:.94rem;overflow-wrap:anywhere}
-.tag{font:600 .7rem ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--mute)}
+.tag{font:500 .7rem "Geist Mono",ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 6px}
 .pill{font-size:.76rem;font-weight:600;white-space:nowrap}
 .pill::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
 .live{color:var(--live)}.auth{color:var(--auth)}.down{color:var(--down)}.unprobed{color:var(--off)}
@@ -166,13 +173,26 @@ h1{font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;letter-spacing:-.03em;marg
 .cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
 .cmd code{flex:1;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
 button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
-button.copy:hover{border-color:var(--accent)}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+.controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
 section{padding:34px 0 0}
 h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 10px}
 .learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:0;list-style:none;margin:14px 0 0}
 .learn li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
 .learn a{font-weight:600}
-footer{margin-top:48px;border-top:1px solid var(--line);padding:22px 0 40px;color:var(--mute);font-size:.88rem}
+.fineprint{margin-top:44px;color:var(--mute);font-size:.86rem}
+footer{margin-top:22px;background:var(--night);color:#b9b6c6;font-size:.92rem;border-top:1px solid var(--night-line)}
+footer .wrap{padding-top:36px;padding-bottom:36px}
+footer a{color:#f6f4ee}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:start}
+.foot h2{font:400 1.7rem/1.1 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:0 0 8px;letter-spacing:0}
+.foot p{margin:0 0 12px;max-width:46ch}
+.foot .links a{margin-right:16px;white-space:nowrap}
+.academy{background:var(--night-2);border:1px solid var(--night-line);border-radius:16px;padding:20px 22px}
+.academy .eyebrow{font:500 .72rem "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.academy h3{font:400 1.5rem/1.15 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:6px 0 8px}
+.academy a.cta{display:inline-block;background:var(--lime);color:#121118;font-weight:600;text-decoration:none;border-radius:999px;padding:9px 18px;margin-top:4px}
+.academy a.cta:hover{filter:brightness(1.06)}
 .crumbs{margin:26px 0 8px;font-size:.9rem}
 dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
 dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
@@ -231,19 +251,33 @@ def page(title: str, description: str, body: str, root: str, canonical: str, scr
 <meta property="og:description" content="{esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{esc(canonical)}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
 <style>{CSS}</style>
 </head>
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="{root}">Awesome MCP Servers <span>by AI Anytime</span></a>
-<nav><a href="{root}#directory">Directory</a><a href="{root}#learn">Learn</a><a href="{root}#agents">For agents</a><a href="{REPO_URL}">GitHub</a></nav>
+<nav><a href="{ACADEMY}">Academy</a><a href="{root}#directory">Directory</a><a href="{root}#learn">Learn</a><a href="{root}#agents">For agents</a><a href="{REPO_URL}">GitHub</a></nav>
 </div></header>
 <main class="wrap">
 {body}
+<p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
+<a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="{root}api/servers.json">JSON</a> · <a href="{root}llms.txt">llms.txt</a></p>
 </main>
-<footer><div class="wrap">
-Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
-<br>Maintained by <a href="{YOUTUBE}">AI Anytime</a> · <a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="{root}api/servers.json">JSON</a> · <a href="{root}llms.txt">llms.txt</a>
+<footer><div class="wrap foot">
+<div>
+<h2>AI Anytime</h2>
+<p>Practical AI for all. AI education, research and enablement, rooted in open source. This directory is built and maintained by AI Anytime.</p>
+<p class="links"><a href="{MAIN_SITE}">aianytime.net</a><a href="{YOUTUBE}">YouTube</a><a href="{REPO_URL}">GitHub</a></p>
+</div>
+<div class="academy">
+<span class="eyebrow">AI Anytime Academy</span>
+<h3>Become an AI engineer by building.</h3>
+<p>Structured career tracks, browser coding labs, an AI mentor and AI-reviewed portfolio projects. Start for free.</p>
+<a class="cta" href="{ACADEMY}">Explore the Academy</a>
+</div>
 </div></footer>
 <script>{COPY_JS}{script}</script>
 </body>
@@ -297,7 +331,7 @@ def index_page(servers: list[dict], reference: list[dict], generated: str) -> st
     )
     body = f"""
 <div class="hero">
-<h1>MCP servers we actually connect to, every night.</h1>
+<h1>MCP servers we actually connect to, <em>every night.</em></h1>
 <p class="lede">A community directory of Model Context Protocol servers. Each hosted server is sent a real MCP handshake nightly, so you can see which ones answer, which need a sign-in, how many tools they expose and how much of your context those tools cost.</p>
 <div class="stats">
 <div class="stat"><b>{len(servers)}</b><span>servers listed</span></div>
