@@ -177,6 +177,7 @@ A listing is not a security review. Read a server's source and permissions befor
 - **[Council of AI (GSPC)](https://github.com/CSOAI-ORG/councilof-ai/tree/master/mcp/gspc-server)** `http` — Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures and Merkle inclusion; read tools need no key, evidence tools are x402-metered. Endpoint: `https://councilof.ai/mcp` · Install: `npx -y csoai-gspc-mcp` · Registry: `io.github.CSOAI-ORG/gspc`
 - **[Darkmoon](https://github.com/ASCIT31/Dark-Moon)** `stdio` — Open-source (GPLv3) autonomous penetration-testing platform orchestrating 80+ offensive security tools through 50 specialist agents, with proof of exploitation behind every finding. Runs fully locally.
 - **[Skycloak MCP](https://github.com/sky-cloak/skycloak-mcp)** `http` — Managed Keycloak identity MCP server for AI agents (OIDC/OAuth realms, users, clients, SSO). Endpoint: `https://mcp.skycloak.io` · [Docs](https://skycloak.io/mcp) · Registry: `io.skycloak/skycloak-mcp`
+- **[Sunglasses](https://github.com/sunglasses-dev/sunglasses)** `stdio` — Scans text and files locally for prompt injection, credential leaks and data exfiltration; runs as a CLI, a Python API or an MCP server. Install: `pip install sunglasses` · Run: `python -m sunglasses.mcp` · [Website](https://sunglasses.dev)
 
 ### Finance & markets
 

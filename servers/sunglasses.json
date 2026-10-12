@@ -1,0 +1,7 @@
+{
+  "name": "Sunglasses",
+  "url": "https://github.com/sunglasses-dev/sunglasses",
+  "category": "security",
+  "transport": "stdio",
+  "description": "Scans text and files locally for prompt injection, credential leaks and data exfiltration; runs as a CLI, a Python API or an MCP server. Install: `pip install sunglasses` · Run: `python -m sunglasses.mcp` · [Website](https://sunglasses.dev)"
+}
