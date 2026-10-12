@@ -89,6 +89,7 @@ Servers built by the community. Entries are alphabetical within each category.
 ### Agents, IDEs & developer tools
 
 - **[Agent QA](https://github.com/vostride/agent-qa)** `stdio` — Author, validate, run, and inspect natural-language web and mobile regression tests, with persistent test memory. Install: `npx -y agent-qa mcp`
+- **[AI Developer Toolkit MCP](https://github.com/mjaskolski/developer-toolkit-mcp)** `http` — Read-only search and fetch over 950+ guides on AI-assisted development (Cursor, Claude Code, Codex) in English and Polish. No account or API key. Endpoint: `https://developertoolkit.ai/mcp` · Registry: `io.github.mjaskolski/developer-toolkit-mcp`
 - **[Aident Loadout](https://github.com/Aident-AI/aident-skill)** `http` — Connect Codex, Claude Code, Cursor, ChatGPT and other MCP clients to 1,000+ apps and 400+ Skills through one reusable setup with Vault-protected credentials. Endpoint: `https://loadout.aident.ai/mcp` · [Docs](https://docs.aident.ai/loadout/overview) · [Website](https://aident.ai) · Registry: `io.github.Aident-AI/loadout`
 - **[AIHawk](https://github.com/feder-cr/AIHawk)** `stdio` — AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: `uvx aihawk`
 - **[Antigravity Link](https://github.com/cafeTechne/antigravity-link-extension)** `stdio` — Mirror active AI chat sessions from Google's Antigravity IDE to your phone: send messages, upload files, stop generation, automate workflows across 9 tools. Registry: `io.github.cafeTechne/antigravity-link`
@@ -135,6 +136,7 @@ Servers built by the community. Entries are alphabetical within each category.
 - **[Neither](https://github.com/stonianua/neither-mcp)** `stdio` — Project context your AI can query through MCP. Selected notes/docs for Cursor or Claude Desktop; related retrieval with source evidence. Install: `npx -y @neitherai/mcp-server`. Registry: `io.github.stonianua/neither-mcp`. [Start](https://www.neither.online/start/?product=dev)
 - **[ORANO](https://github.com/infotik/orano-mcp-server)** `http` — Read-only access to your ORANO library: projects built from saved Reels, videos, articles and PDFs, with summaries, ordered tasks, selectable video context and curated memory facts. Paid web plan; API key required. Endpoint: `https://orano-ai-backend-1037939693300.us-central1.run.app/mcp/` · [Website](https://oranoai.com/mcp)
 - **[Screenpipe](https://github.com/screenpipe/screenpipe)** `stdio` — Source-available MCP access to searchable local screen text and audio transcripts. Requires a running Screenpipe recorder and local API authentication. Install: `claude mcp add screenpipe -- npx -y screenpipe-mcp@latest` · [Docs](https://github.com/screenpipe/screenpipe/tree/main/packages/screenpipe-mcp#installation)
+- **[Wondel.ai Skills MCP](https://github.com/mjaskolski/wondel-skills-mcp)** `http` — Read-only access to 50 book-based agent skills and 12 guided journeys: recommends a framework for a task and serves its SKILL.md in-session. No account or auth. Endpoint: `https://skills.wondel.ai/mcp` · Registry: `io.github.mjaskolski/wondel-skills-mcp`
 
 ### Media & generation
 
