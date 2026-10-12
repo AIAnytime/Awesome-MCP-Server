@@ -1,0 +1,9 @@
+{
+  "name": "looot",
+  "url": "https://github.com/loootai/looot-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "One API key and prepaid balance for about 2,500 data endpoints from 90+ providers: work email, phone, company enrichment, Google SERP, web pages. Pay per call, OAuth or Bearer key. Registry: `ai.looot/looot`",
+  "registry": "ai.looot/looot",
+  "endpoint": "https://api.looot.ai/mcp"
+}
