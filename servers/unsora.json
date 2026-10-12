@@ -1,0 +1,8 @@
+{
+  "name": "Unsora",
+  "url": "https://github.com/Shipped-Studio/unsora",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Generates AI images, video, voiceovers, music and clips, then schedules and publishes them to connected social accounts; OAuth or API-key auth, open source (AGPL-3.0). Endpoint: `https://mcp.tryunsora.com/mcp` · [Docs](https://docs.tryunsora.com)",
+  "endpoint": "https://mcp.tryunsora.com/mcp"
+}
