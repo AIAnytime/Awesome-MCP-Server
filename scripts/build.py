@@ -18,6 +18,7 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
+import sections
 from lib import CATEGORIES, README, REPO_URL, ROOT, load_servers, render_directory, splice_readme, validate
 
 SITE_URL = os.environ.get("SITE_URL", "https://mcp.aianytime.net").rstrip("/")
@@ -82,10 +83,6 @@ def plain(text: str) -> str:
 
 def fmt_tokens(n: int) -> str:
     return f"{n / 1000:.1f}k" if n >= 1000 else str(n)
-
-
-def uptime(history: str) -> int | None:
-    return round(100 * sum(c != "d" for c in history) / len(history)) if len(history) >= 7 else None
 
 
 def status_text(entry: dict) -> str:
@@ -290,6 +287,9 @@ document.getElementById('refresh').addEventListener('click',()=>location.reload(
 """
 
 
+CSS += sections.SECTION_CSS
+
+
 def jsonld(*items: dict) -> str:
     graph = {"@context": "https://schema.org", "@graph": list(items)}
     return '<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False).replace("</", "<\\/") + "</script>"
@@ -359,7 +359,7 @@ def page(title: str, description: str, body: str, root: str, canonical: str, scr
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="{root}">Awesome MCP Servers <span>by AI Anytime</span></a>
-<nav><a href="{ACADEMY}">Academy</a><a href="{root}#directory">Directory</a><a href="{root}#learn">Learn</a><a href="{root}#agents">For agents</a><a href="{REPO_URL}">GitHub</a>
+<nav><a href="{ACADEMY}">Academy</a><a href="{root}#directory">Directory</a><a href="{root}status/">Status</a><a href="{root}#learn">Learn</a><a href="{root}#agents">For agents</a><a href="{REPO_URL}">GitHub</a>
 <button id="refresh" class="icon" type="button" title="Reload for the latest check results" aria-label="Reload page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
 <button id="theme" class="icon" type="button" title="Switch between light and dark" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>
 </div></header>
@@ -538,7 +538,7 @@ def collection_page(slug: str, title: str, intro: str, entries: list[dict], gene
     return page(f"{title} | Awesome MCP Servers", intro[:200], body, "../../", url, schema=schema)
 
 
-def server_page(entry: dict, related: list[dict]) -> str:
+def server_page(entry: dict, related: list[dict], detail: dict | None = None) -> str:
     s = entry["status"]
     url = f"{SITE_URL}/s/{entry['slug']}/"
     rows = [("Category", f'<a href="../../c/{entry["category"]}/">{esc(CATEGORIES[entry["category"]])}</a>')]
@@ -570,21 +570,9 @@ def server_page(entry: dict, related: list[dict]) -> str:
         rows.append(("Last checked", esc(s["checked"].replace("T", " ").replace("Z", " UTC"))))
     rows.append(("Listed since", esc(s.get("first_seen", ""))))
 
-    history = s.get("history", "")
-    days = ""
-    if history:
-        up = uptime(history)
-        summary = f"{up}% of the last {len(history)} daily checks reachable" if up is not None else f"{len(history)} daily check{'s' if len(history) != 1 else ''} so far"
-        days = f'<h2>Check history</h2><p class="note">{summary}. Green answered, blue asked for auth, red did not answer.</p><div class="days">{"".join(f"<i class={c!r}></i>" for c in history)}</div>'
-
-    connect = ""
-    if command := install_command(entry):
-        config = json.dumps({"mcpServers": {entry["slug"]: {"type": entry["transport"], "url": entry["endpoint"]}}}, indent=2)
-        connect = f"<h2>Connect</h2><p>Claude Code:</p>{command_block(command)}<p>Other clients, as JSON config:</p><pre><code>{esc(config)}</code></pre>"
-
-    tools = ""
-    if s.get("tool_names"):
-        tools = f'<h2>Tools</h2><ul class="tools">{"".join(f"<li><code>{esc(n)}</code></li>" for n in s["tool_names"])}</ul>'
+    health = sections.health_section(entry)
+    connect = sections.setup_section(entry)
+    tools = sections.tools_section(entry, detail)
 
     badge_md = f"[![MCP status]({SITE_URL}/badge/{entry['slug']}.svg)]({url})"
     body = f"""
@@ -593,8 +581,8 @@ def server_page(entry: dict, related: list[dict]) -> str:
 <p class="lede">{md(entry["description"])}</p>
 <p style="margin-top:18px">{pill(entry)} &nbsp;{esc(status_text(entry))}</p>
 <dl>{"".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in rows)}</dl>
+{health}
 {connect}
-{days}
 {tools}
 <h2>Badge</h2>
 <p>Maintain this server? Put its live status in your README:</p>
@@ -626,7 +614,69 @@ def server_page(entry: dict, related: list[dict]) -> str:
     if s.get("checked"):
         app["dateModified"] = s["checked"]
     schema = jsonld(ORG, app, breadcrumbs(("Directory", f"{SITE_URL}/"), (CATEGORIES[entry["category"]], f"{SITE_URL}/c/{entry['category']}/"), (entry["name"], url)))
-    return page(f"{entry['name']} MCP server: status, tools and setup", description, body, "../../", url, schema=schema)
+    return page(f"{entry['name']} MCP server: status, tools and setup", description, body, "../../", url, sections.SECTION_JS, schema)
+
+
+def status_page(servers: list[dict], generated: str) -> str:
+    url = f"{SITE_URL}/status/"
+    hosted = [e for e in servers if e["status"]["status"] != "unprobed"]
+    order = {"down": 0, "auth": 1, "live": 2}
+    hosted.sort(key=lambda e: (order[e["status"]["status"]], e["name"].lower()))
+    counts = {k: sum(e["status"]["status"] == k for e in hosted) for k in ("live", "auth", "down")}
+    discovered = sum(sections.steps(e)[1] == "ok" for e in hosted)
+
+    reasons: dict[str, int] = {}
+    for e in hosted:
+        if e["status"]["status"] == "down":
+            label = sections.failure_label(e["status"].get("reason", ""))
+            reasons[label] = reasons.get(label, 0) + 1
+    protocols: dict[str, int] = {}
+    for e in hosted:
+        if proto := e["status"].get("protocol"):
+            protocols[proto] = protocols.get(proto, 0) + 1
+
+    def mark(outcome: str, ok: str = "ok") -> str:
+        return sections.state_pill("verified" if outcome == ok else "failed" if outcome == "failed" else "untested")
+
+    rows = ""
+    for e in hosted:
+        s = e["status"]
+        init, discovery = sections.steps(e)
+        up = sections.uptime(s.get("history", ""))
+        rows += (
+            f'<tr><td><a href="../s/{e["slug"]}/#health">{esc(e["name"])}</a></td><td>{pill(e)}</td><td>{mark(init)}</td><td>{mark(discovery)}</td>'
+            f'<td>{s.get("tools", "")}</td><td>{esc(s.get("protocol", ""))}</td><td>{str(s["latency_ms"]) + " ms" if "latency_ms" in s and s["status"] != "down" else ""}</td>'
+            f'<td>{sections.history_strip(s.get("history", ""))}</td><td>{str(up) + "%" if up is not None else "new"}</td></tr>'
+        )
+    why = "".join(f"<li><b>{n}</b> {esc(label)}</li>" for label, n in sorted(reasons.items(), key=lambda kv: -kv[1])) or "<li>None today.</li>"
+    protos = ", ".join(f"{esc(k)} ({v})" for k, v in sorted(protocols.items(), reverse=True))
+    body = f"""
+<p class="crumbs"><a href="../#directory">Directory</a> / Status</p>
+<h1>MCP server status</h1>
+<p class="lede">What every hosted server in the directory answered when it was last sent an MCP handshake. Checked nightly; last run <time datetime="{esc(generated)}">{esc(generated.replace("T", " ").replace("Z", " UTC"))}</time>.</p>
+<div class="stats">
+<div class="stat"><b>{len(hosted)}</b><span>hosted endpoints checked</span></div>
+<div class="stat"><b class="live">{counts["live"]}</b><span>answer without credentials</span></div>
+<div class="stat"><b class="auth">{counts["auth"]}</b><span>reachable, need auth</span></div>
+<div class="stat"><b class="down">{counts["down"]}</b><span>did not answer</span></div>
+</div>
+<p class="note">{discovered} servers also returned their tool list. Protocol versions seen: {protos or "none"}. <b>Verified</b> means the check saw the step succeed, <b>Failed</b> means it was tried and did not work, and <b>Untested</b> means it could not be tried, usually because the server wants credentials first. None of this says a server is safe.</p>
+<h2>Why servers failed</h2>
+<ul class="tips">{why}</ul>
+<h2>All hosted servers</h2>
+<div class="scroll"><table class="status">
+<thead><tr><th>Server</th><th>Status</th><th>Handshake</th><th>Tool discovery</th><th>Tools</th><th>Protocol</th><th>Response</th><th>Last 30 days</th><th>Reachable</th></tr></thead>
+<tbody>{rows}</tbody></table></div>
+"""
+    schema = jsonld(ORG, {"@type": "WebPage", "url": url, "name": "MCP server status", "isPartOf": {"@id": f"{SITE_URL}/#website"}, "dateModified": generated}, breadcrumbs(("Directory", f"{SITE_URL}/"), ("Status", url)))
+    return page(
+        "MCP server status: which servers are live right now | Awesome MCP Servers",
+        f"Live status of {len(hosted)} hosted MCP servers: handshake, tool discovery, protocol version, response time and 30-day history, checked nightly.",
+        body,
+        "../",
+        url,
+        schema=schema,
+    )
 
 
 def llms_txt(servers: list[dict]) -> str:
@@ -639,6 +689,7 @@ def llms_txt(servers: list[dict]) -> str:
         "",
         f"- [Every server in full, as plain text]({SITE_URL}/llms-full.txt)",
         f"- [Full data as JSON]({SITE_URL}/api/servers.json)",
+        f"- [Live status of every hosted server]({SITE_URL}/status/)",
         f"- [Servers that need no account]({SITE_URL}/c/no-auth/)",
         f"- [Local stdio servers]({SITE_URL}/c/local/)",
         f"- [Source and how to add a server]({REPO_URL})",
@@ -704,11 +755,14 @@ def llms_full_txt(servers: list[dict], generated: str) -> str:
     return "\n".join(out)
 
 
-def build_site(out: Path, servers: list[dict], generated: str) -> None:
+def build_site(out: Path, servers: list[dict], generated: str, tools_dir: Path) -> None:
     if out.exists():
         shutil.rmtree(out)
     (out / "api").mkdir(parents=True)
+    (out / "api" / "tools").mkdir()
     (out / "badge").mkdir()
+    (out / "status").mkdir()
+    (out / "status" / "index.html").write_text(status_page(servers, generated), encoding="utf-8")
     reference = json.loads((ROOT / "data" / "reference.json").read_text(encoding="utf-8"))
 
     (out / "index.html").write_text(index_page(servers, reference, generated), encoding="utf-8")
@@ -728,14 +782,18 @@ def build_site(out: Path, servers: list[dict], generated: str) -> None:
         peers = [e for e in servers if e["category"] == entry["category"]]
         at = peers.index(entry)
         related = [p for p in (peers[at + 1 :] + peers[:at])[:6]]
-        (folder / "index.html").write_text(server_page(entry, related), encoding="utf-8")
+        detail = None
+        if (tools_dir / f"{entry['slug']}.json").exists():
+            detail = json.loads((tools_dir / f"{entry['slug']}.json").read_text(encoding="utf-8"))
+            (out / "api" / "tools" / f"{entry['slug']}.json").write_text(json.dumps(detail, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        (folder / "index.html").write_text(server_page(entry, related, detail), encoding="utf-8")
         (out / "badge" / f"{entry['slug']}.svg").write_text(badge_svg(entry), encoding="utf-8")
 
     api = {"generated": generated, "site": SITE_URL, "categories": CATEGORIES, "servers": [e | {"page": f"{SITE_URL}/s/{e['slug']}/"} for e in servers]}
     (out / "api" / "servers.json").write_text(json.dumps(api, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (out / "llms.txt").write_text(llms_txt(servers), encoding="utf-8")
     (out / "llms-full.txt").write_text(llms_full_txt(servers, generated), encoding="utf-8")
-    urls = [f"{SITE_URL}/"] + [f"{SITE_URL}/c/{slug}/" for slug, *_ in hubs] + [f"{SITE_URL}/s/{e['slug']}/" for e in servers]
+    urls = [f"{SITE_URL}/", f"{SITE_URL}/status/"] + [f"{SITE_URL}/c/{slug}/" for slug, *_ in hubs] + [f"{SITE_URL}/s/{e['slug']}/" for e in servers]
     (out / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "".join(f"<url><loc>{esc(u)}</loc><lastmod>{generated[:10]}</lastmod></url>\n" for u in urls)
@@ -778,7 +836,7 @@ def main() -> int:
         generated = status.get("generated") or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         for entry in servers:
             entry["status"] = status["servers"].get(entry["slug"]) or {"status": "unprobed"}
-        build_site(args.site, servers, generated)
+        build_site(args.site, servers, generated, args.status.parent / "tools")
         print(f"{args.site}: {len(servers)} server pages")
     return 0
 

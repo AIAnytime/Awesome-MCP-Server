@@ -2,10 +2,13 @@
 """Connect to every remote server in the directory and record what answered.
 
 For each http/sse entry with an endpoint this sends an MCP `initialize`, and when the
-server allows it without credentials, a `tools/list`. It records whether the server is
-live, needs auth, or is down; how long it took; how many tools it exposes; roughly how
-many tokens those tool definitions cost a client; and a hash of them so changes show up.
-For entries with a GitHub repository it also records stars, last push and license.
+server allows it without credentials, a `tools/list` (plus `resources/list` and
+`prompts/list` where the server declares them). It records whether the server is live,
+needs auth, or is down; which step failed and why; how long it took; how many tools it
+exposes; roughly how many tokens those tool definitions cost a client; and a hash of
+them so changes show up. Tool descriptions and input schemas are saved per server in
+data/tools/ so the site can show them. For entries with a GitHub repository it also
+records stars, last push and license.
 
 Nothing here verifies that a server is safe. It records what was observed, nothing more.
 
@@ -33,6 +36,9 @@ TIMEOUT = 20
 MAX_BYTES = 2_000_000
 HISTORY_DAYS = 30
 MAX_TOOL_NAMES = 200
+MAX_TOOLS_SAVED = 400
+MAX_SCHEMA_CHARS = 20_000
+TOOLS_DIR = ROOT / "data" / "tools"  # main() points this next to the status file
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -132,17 +138,22 @@ def probe_endpoint(url: str) -> dict:
 
     if message and isinstance(message.get("result"), dict):
         info = message["result"].get("serverInfo") or {}
+        caps = message["result"].get("capabilities")
+        caps = caps if isinstance(caps, dict) else {}
         result |= {
             "status": "live",
+            "init": "ok",
+            "transport_seen": "streamable-http",
             "server_name": clip(info.get("name")),
             "server_version": clip(info.get("version"), 40),
             "protocol": clip(message["result"].get("protocolVersion"), 20),
+            "capabilities": sorted(clip(k, 30) for k in caps)[:12],
         }
         session = resp_headers.get("Mcp-Session-Id")
         try:
-            result |= list_tools(url, headers, session, result["protocol"])
-        except Exception:
-            pass
+            result |= discover(url, headers, session, result["protocol"], caps)
+        except Exception as err:
+            result |= {"discovery": "failed", "discovery_reason": clip(type(err).__name__ + ": " + str(getattr(err, "reason", err)))}
         return result
 
     if message and isinstance(message.get("error"), dict) and looks_like_auth(message["error"]):
@@ -154,40 +165,99 @@ def probe_endpoint(url: str) -> dict:
         if sse_status in (401, 403):
             return result | {"status": "auth", "auth": "credentials", "http": sse_status}
         if sse_status == 200 and "text/event-stream" in (sse_headers.get("Content-Type", "") or ""):
-            return result | {"status": "live", "protocol": "sse", "http": 200}
+            # The stream opened, which shows a legacy SSE server is there; no handshake is attempted over it.
+            return result | {"status": "live", "protocol": "sse", "transport_seen": "sse", "http": 200}
     except Exception:
         pass
     return result | {"status": "down", "reason": f"HTTP {status}, no MCP response"}
 
 
-def list_tools(url: str, headers: dict, session: str | None, protocol: str) -> dict:
+def call(url: str, headers: dict, rid: int, method: str, params: dict | None = None):
+    """One JSON-RPC call. Returns (outcome, result or reason): outcome is ok, auth or failed."""
+    status, _, message = request(url, {"jsonrpc": "2.0", "id": rid, "method": method, "params": params or {}}, headers, want_id=rid)
+    if message and isinstance(message.get("result"), dict):
+        return "ok", message["result"]
+    if status in (401, 403):
+        return "auth", f"HTTP {status}"
+    error = message.get("error") if message else None
+    if isinstance(error, dict):
+        return ("auth" if looks_like_auth(error) else "failed"), clip(error.get("message") or "JSON-RPC error")
+    return "failed", f"HTTP {status}, no result"
+
+
+def list_all(url: str, headers: dict, rid: int, method: str, key: str):
+    """Follow pagination for a list method. Returns (outcome, items or reason)."""
+    items, cursor = [], None
+    for page in range(5):
+        outcome, result = call(url, headers, rid + page, method, {"cursor": cursor} if cursor else None)
+        if outcome != "ok":
+            return (outcome, result) if page == 0 else ("ok", items)
+        items += [x for x in result.get(key) or [] if isinstance(x, dict)]
+        cursor = result.get("nextCursor")
+        if not cursor:
+            break
+    return "ok", items
+
+
+def tool_detail(tool: dict) -> dict:
+    """What the site shows for one tool. Everything here is the server author's text."""
+    out = {"name": clip(tool.get("name"), 80)}
+    if tool.get("title"):
+        out["title"] = clip(tool["title"], 120)
+    if isinstance(tool.get("description"), str):
+        out["description"] = tool["description"][:4000]
+    schema = tool.get("inputSchema")
+    if isinstance(schema, dict):
+        out["inputSchema"] = schema if len(json.dumps(schema)) <= MAX_SCHEMA_CHARS else {"type": "object", "x-omitted": "schema too large to store"}
+    hints = tool.get("annotations")
+    if isinstance(hints, dict):
+        kept = {k: hints[k] for k in ("readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint") if isinstance(hints.get(k), bool)}
+        if kept:
+            out["annotations"] = kept
+    return out
+
+
+def discover(url: str, headers: dict, session: str | None, protocol: str, caps: dict) -> dict:
     headers = headers | {"MCP-Protocol-Version": protocol or PROTOCOL_VERSION}
     if session:
         headers["Mcp-Session-Id"] = session
     request(url, {"jsonrpc": "2.0", "method": "notifications/initialized"}, headers)
-    tools, cursor = [], None
-    for page in range(5):
-        params = {"cursor": cursor} if cursor else {}
-        _, _, message = request(url, {"jsonrpc": "2.0", "id": 2 + page, "method": "tools/list", "params": params}, headers, want_id=2 + page)
-        if not message or not isinstance(message.get("result"), dict):
-            if page == 0:
-                return {}
-            break
-        tools += [t for t in message["result"].get("tools") or [] if isinstance(t, dict)]
-        cursor = message["result"].get("nextCursor")
-        if not cursor:
-            break
+
+    outcome, tools = list_all(url, headers, 2, "tools/list", "tools")
+    if outcome != "ok":
+        if outcome == "failed" and "tools" not in caps:
+            return {"discovery": "none"}  # the server never said it has tools
+        return {"discovery": outcome, "discovery_reason": tools}
+
     canonical = json.dumps(
         sorted(({"name": t.get("name"), "description": t.get("description"), "inputSchema": t.get("inputSchema")} for t in tools), key=lambda t: str(t["name"])),
         sort_keys=True,
         separators=(",", ":"),
     )
-    return {
+    found = {
+        "discovery": "ok",
         "tools": len(tools),
         "tool_names": sorted(clip(t.get("name"), 80) for t in tools)[:MAX_TOOL_NAMES],
         "tool_tokens": round(len(canonical) / 4),  # rough: about four characters per token
         "tools_hash": hashlib.sha256(canonical.encode()).hexdigest()[:16],
     }
+    detail = {"tools": sorted((tool_detail(t) for t in tools), key=lambda t: t["name"])[:MAX_TOOLS_SAVED]}
+
+    # Resources and prompts are optional parts of MCP; only ask servers that declare them.
+    for cap, method, key, label in (("resources", "resources/list", "resources", "name"), ("prompts", "prompts/list", "prompts", "name")):
+        if cap not in caps:
+            continue
+        try:
+            outcome, items = list_all(url, headers, 20 if cap == "resources" else 30, method, key)
+        except Exception:
+            continue
+        if outcome == "ok":
+            found[cap] = len(items)
+            detail[cap] = [
+                {k: (v[:500] if k == "description" else clip(v, 200)) for k, v in item.items() if k in ("name", "title", "uri", "description", "mimeType") and isinstance(v, str)}
+                for item in items[:100]
+            ]
+    return found | {"_detail": detail}
 
 
 def probe_with_retry(url: str) -> dict:
@@ -230,6 +300,11 @@ def check(entry: dict, previous: dict, today: str) -> dict:
         return record | {"status": "unprobed"}
 
     result = probe_with_retry(entry["endpoint"])
+    result.setdefault("init", {"live": "untested", "auth": "auth", "down": "failed"}[result["status"]])
+    result.setdefault("discovery", "untested")
+    if detail := result.pop("_detail", None):
+        TOOLS_DIR.mkdir(parents=True, exist_ok=True)
+        (TOOLS_DIR / f"{entry['slug']}.json").write_text(json.dumps({"server": entry["name"], "checked": today} | detail, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     old_hash, new_hash = previous.get("tools_hash"), result.get("tools_hash")
     if old_hash and new_hash and old_hash != new_hash:
         record["tools_changed"] = today
@@ -238,9 +313,11 @@ def check(entry: dict, previous: dict, today: str) -> dict:
 
     mark = {"live": "u", "auth": "a", "down": "d"}[result["status"]]
     history = record.get("history", "")
+    latencies = list(previous.get("latency_history", []))
     if previous.get("checked", "")[:10] == today and history:
-        history = history[:-1]  # one mark per day; a re-run replaces today's
+        history, latencies = history[:-1], latencies[:-1]  # one mark per day; a re-run replaces today's
     record["history"] = (history + mark)[-HISTORY_DAYS:]
+    record["latency_history"] = (latencies + [None if mark == "d" else result.get("latency_ms")])[-HISTORY_DAYS:]
     return record | result | {"checked": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
 
 
@@ -250,6 +327,9 @@ def main() -> None:
     parser.add_argument("--only-new", action="store_true", help="only check servers with no record yet")
     parser.add_argument("--only", nargs="*", default=None, help="only check these slugs")
     args = parser.parse_args()
+
+    global TOOLS_DIR
+    TOOLS_DIR = args.status.parent / "tools"
 
     old = json.loads(args.status.read_text())["servers"] if args.status.exists() else {}
     servers = load_servers()

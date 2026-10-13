@@ -38,7 +38,7 @@ jobs:
       - name: Restore the previous check results
         run: |
           if git fetch --depth 1 origin status-data; then
-            git show FETCH_HEAD:status.json > data/status.json
+            git archive FETCH_HEAD | tar -x -C data   # status.json and tools/
           fi
 
       # A push only checks servers that have no result yet; the nightly run checks all of them.
@@ -52,7 +52,7 @@ jobs:
 
       - name: Save the check results
         run: |
-          mkdir -p _status && cp data/status.json _status/status.json
+          mkdir -p _status data/tools && cp data/status.json _status/status.json && cp -R data/tools _status/tools
           scripts/push_branch.sh _status status-data "Check results $(date -u +%F)"
 
       - name: Publish the site

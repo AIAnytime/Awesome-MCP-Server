@@ -54,6 +54,10 @@ hosted, the nightly check sends it an MCP `initialize` and, when no credentials 
 shows whether it answered, whether it asked for auth, how many tools it has, and roughly how many
 tokens its tool definitions cost. It shows what was observed; it does not claim your server was audited.
 
+For servers that list their tools without credentials, the site also publishes each tool's name,
+description and input schema as returned, along with any resources and prompts, so people can see
+what the server does before connecting it. Nothing is ever called beyond those list requests.
+
 ### 5. Write like a directory, not an ad
 
 - Say what it does, not how great it is. Cut "powerful", "seamless", "revolutionary", "the best".
@@ -88,10 +92,10 @@ The folders at the top level are teaching examples. If you want to add one:
 The `Check servers and publish site` workflow does this every night. To do it by hand:
 
 ```bash
-git fetch origin status-data && git show FETCH_HEAD:status.json > data/status.json   # previous results
+git fetch origin status-data && git archive FETCH_HEAD | tar -x -C data              # previous results
 GITHUB_TOKEN=$(gh auth token) python3 scripts/probe.py                               # check every server
 python3 scripts/build.py --site _site                                                # build the site
-mkdir -p _status && cp data/status.json _status/ && scripts/push_branch.sh _status status-data "Check results"
+mkdir -p _status && cp data/status.json _status/ && cp -R data/tools _status/tools && scripts/push_branch.sh _status status-data "Check results"
 scripts/push_branch.sh _site gh-pages "Site"
 ```
 

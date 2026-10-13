@@ -177,3 +177,4 @@ cython_debug/
 _site/
 data/status.json
 _status/
+data/tools/
