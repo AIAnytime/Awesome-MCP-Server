@@ -1,0 +1,7 @@
+{
+  "name": "pumperly-mcp",
+  "url": "https://github.com/GeiserX/pumperly-mcp",
+  "category": "commerce-travel",
+  "transport": "stdio",
+  "description": "Queries fuel prices, finds nearby stations, plans routes and geocodes places through a Pumperly instance (the public pumperly.com or your own), read-only and with no API key. Install: `npx -y pumperly-mcp` (set `PUMPERLY_URL`) · [Docs](https://github.com/GeiserX/pumperly-mcp/blob/main/docs/getting-started.md)"
+}
