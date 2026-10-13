@@ -1,0 +1,9 @@
+{
+  "name": "AnswerLine",
+  "url": "https://answerline.dev/docs/mcp/",
+  "category": "search",
+  "transport": "http",
+  "description": "What ChatGPT, Gemini and Google (Search, AI Overviews, AI Mode, News) answer for a keyword or question, as structured JSON with cited sources and country targeting. Tool calls need an X-Api-Key header (free tier). Endpoint: `https://mcp.answerline.dev/mcp` · [Docs](https://answerline.dev/docs/mcp/)",
+  "endpoint": "https://mcp.answerline.dev/mcp",
+  "registry": "dev.answerline/answerline"
+}
