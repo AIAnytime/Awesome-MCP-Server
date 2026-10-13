@@ -1,0 +1,7 @@
+{
+  "name": "atlassian-browser-mcp",
+  "url": "https://github.com/GeiserX/atlassian-browser-mcp",
+  "category": "productivity",
+  "transport": "stdio",
+  "description": "Wraps mcp-atlassian with a Playwright browser-cookie login, so its Jira and Confluence tools work on Atlassian Server/Data Center behind corporate SSO (Okta, SAML) where API tokens are not available. Install: clone and `uv pip install -e .`, then `./atlassian-cli login jira` once per service · [Docs](https://github.com/GeiserX/atlassian-browser-mcp/blob/main/docs/getting-started.md)"
+}
