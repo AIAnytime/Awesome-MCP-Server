@@ -1,0 +1,9 @@
+{
+  "name": "VideoGen MCP",
+  "url": "https://github.com/video-gen/videogen-mcp",
+  "category": "media",
+  "transport": "http",
+  "description": "Create editable videos from storyboards, scripts or voiceovers, generate media, edit projects and export results through the VideoGen API; account and generation credits required. Hosted HTTP with OAuth/API key or local stdio via `npx -y @videogen/mcp@2.2.1` with `VIDEOGEN_API_KEY`; MIT server; [Setup](https://videogen.io/videogen-mcp).",
+  "endpoint": "https://mcp.videogen.io/mcp",
+  "registry": "io.github.dg314/videogen"
+}

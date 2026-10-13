@@ -173,6 +173,7 @@ A listing is not a security review. Read a server's source and permissions befor
 - **[prompt-to-asset](https://github.com/MohamedAbdallah-14/prompt-to-asset)** `stdio` — Routes image-generation prompts to 30+ models (DALL·E, Stable Diffusion, Flux, Midjourney) through one interface. Install: `npm install -g prompt-to-asset`
 - **[RunAPI](https://github.com/runapi-ai/mcp)** `stdio` — Browse the RunAPI model catalog and run image, video, music/audio, text-to-speech, and LLM tasks from agent workflows. Install: `npx -y @runapi.ai/mcp`
 - **[UpRes](https://github.com/auroracapital/upres-cli)** `stdio` — UpRes MCP: list models, credits, and submit 4K image and video upscale jobs. Install: `npx -y upres-cli`
+- **[VideoGen MCP](https://github.com/video-gen/videogen-mcp)** `http` — Create editable videos from storyboards, scripts or voiceovers, generate media, edit projects and export results through the VideoGen API; account and generation credits required. Hosted HTTP with OAuth/API key or local stdio via `npx -y @videogen/mcp@2.2.1` with `VIDEOGEN_API_KEY`; MIT server; [Setup](https://videogen.io/videogen-mcp).
 
 ### Security
 
