@@ -1,0 +1,8 @@
+{
+  "name": "StatOrigin",
+  "url": "https://github.com/SudoAI-App/statorigin-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Read-only search of sourced industry statistics; each record carries its publisher, source document and source sentence. No account or API key. Endpoint: `https://statorigin.org/mcp` · [Docs](https://statorigin.org/docs/mcp)",
+  "endpoint": "https://statorigin.org/mcp"
+}
