@@ -1,0 +1,9 @@
+{
+  "name": "ScentVerdict",
+  "url": "https://scentverdict.com/connect",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Fragrance verdicts, similarity scores, scent profiles, drydowns and local prices for a perfume catalogue. Read-only; no auth. Endpoint: `https://scentverdict.com/mcp` · Registry: `com.scentverdict/fragrances`",
+  "endpoint": "https://scentverdict.com/mcp",
+  "registry": "com.scentverdict/fragrances"
+}

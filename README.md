@@ -257,6 +257,7 @@ A listing is not a security review. Read a server's source and permissions befor
 - **[Packrift](https://github.com/Packrift/packrift-mcp)** `http` — Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
 - **[Pocket Drives](https://github.com/RevList/pocket-drives-mcp)** `http` — Search peer-to-peer luxury, exotic, and EV rentals from independent hosts. Endpoint: `https://pocketdrives.ai/mcp`, no auth.
 - **[RoboHub](https://robohub.app)** `http` — Vendor-neutral catalog of 340+ commercial robots: search, compare specs and maker-verified prices. Endpoint: `https://robohub.app/api/mcp` (no auth) · Registry: `app.robohub/robohub`
+- **[ScentVerdict](https://scentverdict.com/connect)** `http` — Fragrance verdicts, similarity scores, scent profiles, drydowns and local prices for a perfume catalogue. Read-only; no auth. Endpoint: `https://scentverdict.com/mcp` · Registry: `com.scentverdict/fragrances`
 - **[SkyAccess](https://github.com/sky-access/skyaccess-mcp)** `http` — Search 5,000+ live empty leg flights, get charter price estimates and booking links. No account or API key. Endpoint: `https://mcp.skyaccess.com/mcp` · [Website](https://skyaccess.com) · Registry: `com.skyaccess/skyaccess`
 - **[StayingAPI](https://github.com/stayingapi/hotel-mcp)** `http` — Accommodation data across Airbnb, Booking.com, Vrbo, and Google Hotels: search stays and read live listings, rates, availability and reviews. Endpoint: `https://mcp.stayingapi.com/mcp` · [Docs](https://stayingapi.com)
 
