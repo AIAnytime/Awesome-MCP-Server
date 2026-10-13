@@ -1,0 +1,9 @@
+{
+  "name": "Proofsource",
+  "url": "https://proofsource.co/docs/chatgpt-and-claude",
+  "category": "marketing",
+  "transport": "http",
+  "description": "AI visibility for a brand: which buyer questions name it in ChatGPT, Perplexity, Claude and Google AI Overviews, which competitors are named instead, which sources are cited, and whether shipped fixes changed the answers. OAuth sign-in; free trial. Endpoint: `https://app.proofsource.co/v1/mcp` · Registry: `co.proofsource/proofsource`",
+  "endpoint": "https://app.proofsource.co/v1/mcp",
+  "registry": "co.proofsource/proofsource"
+}
