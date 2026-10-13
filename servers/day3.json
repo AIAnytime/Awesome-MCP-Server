@@ -1,0 +1,9 @@
+{
+  "name": "day3",
+  "url": "https://github.com/Mopra/day3.app",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Official server for the day3 email platform: read account context, draft, edit, preview and test-send newsletter campaigns, and enroll contacts in automations; sending to an audience needs an extra API key scope. Bearer API key. Endpoint: `https://go.day3.app/api/mcp` · [Docs](https://docs.day3.app/mcp)",
+  "endpoint": "https://go.day3.app/api/mcp",
+  "registry": "io.github.Mopra/day3"
+}
