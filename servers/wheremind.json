@@ -1,0 +1,9 @@
+{
+  "name": "Wheremind",
+  "url": "https://wheremind.ai/maps-mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Hosted maps server: live place search, place details, nearby search, forward and reverse geocoding, and turn-by-turn directions, with no Maps API key to manage. Read-only tools; invite-only beta with OAuth or a stored Bearer header. Endpoint: `https://wheremind.ai/mcp` · [Docs](https://wheremind.ai/llms.txt) · Registry: `ai.wheremind/wheremind`",
+  "endpoint": "https://wheremind.ai/mcp",
+  "registry": "ai.wheremind/wheremind"
+}
