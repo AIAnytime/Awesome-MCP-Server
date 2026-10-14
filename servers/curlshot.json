@@ -1,0 +1,9 @@
+{
+  "name": "CurlShot",
+  "url": "https://curlshot.com/docs",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Renders any public URL as a PNG, JPEG or WebP screenshot, a PDF, or a scrolling video, full page or at a phone, tablet or desktop preset. `list_devices` needs no key; `take_screenshot` needs an API key as a Bearer token (free plan 100 screenshots/month, no card). Endpoint: `https://curlshot.com/api/mcp` · [Docs](https://curlshot.com/docs)",
+  "endpoint": "https://curlshot.com/api/mcp",
+  "registry": "io.github.SergiuPogor/curlshot"
+}
