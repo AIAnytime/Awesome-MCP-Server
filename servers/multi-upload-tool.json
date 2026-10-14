@@ -1,0 +1,9 @@
+{
+  "name": "Multi Upload Tool",
+  "url": "https://docs.multi-upload-tool.com/mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Schedule and publish videos and photos to TikTok, YouTube Shorts, Instagram, Facebook, LinkedIn, Pinterest, Bluesky, Threads and X; validate, reschedule, cancel and retry posts, and read post status and analytics; OAuth, free plan. Endpoint: `https://api.multi-upload-tool.com/mcp` · Local: `npx -y multi-upload-tool-mcp` · [Website](https://multi-upload-tool.com/integrations/mcp)",
+  "endpoint": "https://api.multi-upload-tool.com/mcp",
+  "registry": "com.multi-upload-tool/mcp"
+}
