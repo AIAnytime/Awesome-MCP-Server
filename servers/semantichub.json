@@ -1,0 +1,9 @@
+{
+  "name": "SemanticHub",
+  "url": "https://semantichub.app/docs",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Monitors news sources, clusters articles by topic and generates texts from them. OAuth 2 or Bearer token, free plan with no card.",
+  "endpoint": "https://mcp.semantichub.app/mcp",
+  "registry": "app.semantichub/semantichub"
+}
