@@ -3,6 +3,7 @@
   "url": "https://github.com/azmartone67/dchub-mcp-server",
   "category": "cloud-data",
   "transport": "http",
-  "description": "Live data-center, power-grid, fiber and energy intelligence: facilities worldwide, DC Hub Power Index market scores, ISO grid telemetry, interconnection queues, fiber routes and tracked M&A, queried by name or coordinate with cited sources. Install: `claude mcp add --transport http dchub https://dchub.cloud/mcp` — keyless at free-tier depth.",
-  "endpoint": "https://dchub.cloud/mcp"
+  "description": "DC Hub is the live data layer for data-center site selection. Its Data Center Power Index (DCPI) is a daily score of where data centers can get grid power, across 300+ markets, with 94 tools keyless at free-tier depth via `claude mcp add --transport http dchub https://dchub.cloud/mcp`.",
+  "endpoint": "https://dchub.cloud/mcp",
+  "registry": "cloud.dchub/mcp-server"
 }
