@@ -1,0 +1,8 @@
+{
+  "name": "ReadGZH",
+  "url": "https://github.com/sweesama/readgzh",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Reads WeChat Official Account articles into clean Markdown for AI clients. Free daily credits; cached articles cost 0. Endpoint: `https://api.readgzh.site/mcp-server` (API key optional for higher quota) · [Docs](https://readgzh.site/docs)",
+  "endpoint": "https://api.readgzh.site/mcp-server"
+}
