@@ -1,0 +1,8 @@
+{
+  "name": "Playable Gift",
+  "url": "https://playablegift.com/agents",
+  "category": "media",
+  "transport": "http",
+  "description": "Creates a small browser game from someone's habits or inside jokes, then returns links for sharing the gift. Free within daily allowances. Endpoint: `https://playablegift.com/mcp`",
+  "endpoint": "https://playablegift.com/mcp"
+}
