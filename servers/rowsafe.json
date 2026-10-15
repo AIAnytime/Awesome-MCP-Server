@@ -1,0 +1,9 @@
+{
+  "name": "RowSafe",
+  "url": "https://github.com/rowsafe/rowsafe",
+  "category": "cloud-data",
+  "transport": "http",
+  "description": "Database health, backups, recovery workflows and managed database provisioning through Streamable HTTP or local `rowsafe mcp`; a RowSafe account with OAuth or API-key authentication is required. The agent, CLI and MCP server are Apache-2.0; the hosted service is separate \u00b7 [Docs](https://rowsafe.sh/docs/reference/mcp)",
+  "endpoint": "https://api.rowsafe.sh/mcp",
+  "registry": "sh.rowsafe/rowsafe"
+}
