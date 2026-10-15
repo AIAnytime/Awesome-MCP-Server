@@ -1,0 +1,9 @@
+{
+  "name": "CareJobs.Now Healthcare Jobs",
+  "url": "https://github.com/yumaheymans/carejobs-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Search 170,000+ open US healthcare jobs read daily from 270 hospitals' and health systems' career sites, with job details and the pay employers post by kind of job, employer and state; read-only, no account or API key",
+  "endpoint": "https://carejobs.now/api/mcp",
+  "registry": "now.carejobs/healthcare-jobs"
+}
