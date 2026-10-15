@@ -1,0 +1,9 @@
+{
+  "name": "Chord",
+  "url": "https://github.com/getchordlabs/chord",
+  "category": "finance",
+  "transport": "http",
+  "description": "DEX swap quotes and unsigned swap transactions on 7 EVM chains (Base, Monad, BNB Chain, Avalanche, Arbitrum, Robinhood Chain, Arc), plus token boards, candles, trades, wallet PnL, smart money, holders and LP pools (Solana data read-only). Hosted, no key for data and swaps (about 60 requests a minute), only `chord_ask` needs an API key; non-custodial. Endpoint: `https://api.getchord.xyz/v1/mcp` · [Docs](https://getchord.xyz/docs/agents/mcp/) · Registry: `io.github.getchordlabs/chord`",
+  "endpoint": "https://api.getchord.xyz/v1/mcp",
+  "registry": "io.github.getchordlabs/chord"
+}
