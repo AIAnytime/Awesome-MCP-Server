@@ -269,6 +269,7 @@ A listing is not a security review. Read a server's source and permissions befor
 - **[ScentVerdict](https://scentverdict.com/connect)** `http` — Fragrance verdicts, similarity scores, scent profiles, drydowns and local prices for a perfume catalogue. Read-only; no auth. Endpoint: `https://scentverdict.com/mcp` · Registry: `com.scentverdict/fragrances`
 - **[SkyAccess](https://github.com/sky-access/skyaccess-mcp)** `http` — Search 5,000+ live empty leg flights, get charter price estimates and booking links. No account or API key. Endpoint: `https://mcp.skyaccess.com/mcp` · [Website](https://skyaccess.com) · Registry: `com.skyaccess/skyaccess`
 - **[StayingAPI](https://github.com/stayingapi/hotel-mcp)** `http` — Accommodation data across Airbnb, Booking.com, Vrbo, and Google Hotels: search stays and read live listings, rates, availability and reviews. Endpoint: `https://mcp.stayingapi.com/mcp` · [Docs](https://stayingapi.com)
+- **[Tenmomo](https://tenmomo.com/mcp)** `http` — Search US stores for cashback rates and coupon codes, and get a tracked activation link. Endpoint: `https://tenmomo.com/mcp`
 - **[Wheremind](https://wheremind.ai/maps-mcp)** `http` — Hosted maps server: live place search, place details, nearby search, forward and reverse geocoding, and turn-by-turn directions, with no Maps API key to manage. Read-only tools; invite-only beta with OAuth or a stored Bearer header. Endpoint: `https://wheremind.ai/mcp` · [Docs](https://wheremind.ai/llms.txt) · Registry: `ai.wheremind/wheremind`
 
 ### Work & productivity
