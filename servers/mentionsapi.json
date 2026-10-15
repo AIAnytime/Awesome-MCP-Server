@@ -1,0 +1,8 @@
+{
+  "name": "MentionsAPI",
+  "url": "https://github.com/mukul-dutt/mentionsapi-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "AI brand visibility: whether ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews and Bing Copilot mention a brand, at what rank and sentiment, and which URLs they cite. OAuth 2.1 or Bearer key; free tier. Endpoint: `https://api.mentionsapi.com/mcp` · [Docs](https://mentionsapi.com/docs)",
+  "endpoint": "https://api.mentionsapi.com/mcp"
+}
