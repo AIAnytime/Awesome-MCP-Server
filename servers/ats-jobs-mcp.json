@@ -1,0 +1,7 @@
+{
+  "name": "ats-jobs-mcp",
+  "url": "https://github.com/benkrasin/ats-jobs-mcp",
+  "category": "search",
+  "transport": "stdio",
+  "description": "Lists and filters a company's open jobs from its public Greenhouse, Lever or Ashby job board in one normalized shape; no API key, zero dependencies. Install: `npx -y github:benkrasin/ats-jobs-mcp mcp`"
+}
