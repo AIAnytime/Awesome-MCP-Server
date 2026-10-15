@@ -1,0 +1,8 @@
+{
+  "name": "rea-captcha",
+  "url": "https://github.com/masakaai/rea-captcha",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Local verification-evidence analysis and authorized test-flow control for browser agents; browser actions require a configured caller-owned Playwright/CDP session and official provider test keys or an owned flow. Start for stateless analysis and tool discovery: `npx -y rea-captcha mcp --stateless` · [Configuration](https://github.com/masakaai/rea-captcha#browser-providers)",
+  "registry": "io.github.masakaai/rea-captcha"
+}
