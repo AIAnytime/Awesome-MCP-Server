@@ -1,0 +1,9 @@
+{
+  "name": "MoltNode by Chord",
+  "url": "https://github.com/tuantqse90/moltnode-mcp",
+  "category": "finance",
+  "transport": "http",
+  "description": "Read 31 blockchains over JSON-RPC (Ethereum, Base, Arbitrum, Solana, Monad, BNB Chain, Avalanche, Sui and more) and get DEX swap quotes with the unsigned transaction, approval and simulation via Chord. Hosted, no account or API key; non-custodial, the user's wallet signs. Endpoint: `https://moltnode.ag/mcp` · [Docs](https://moltnode.ag/agents) · Registry: `io.github.tuantqse90/moltnode`",
+  "endpoint": "https://moltnode.ag/mcp",
+  "registry": "io.github.tuantqse90/moltnode"
+}
