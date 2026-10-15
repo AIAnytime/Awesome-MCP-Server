@@ -126,6 +126,7 @@ A listing is not a security review. Read a server's source and permissions befor
 - **[Skillselion](https://github.com/skillselion/skillselion-mcp)** `stdio` — On-demand skill loader over a catalog of 79,000+ agent skills, MCP servers, and plugins; materializes the matching `SKILL.md` and its scripts into the session mid-task. Install: `npx -y skillselion-mcp` · [Website](https://skillselion.com)
 - **[squirrelscan](https://github.com/squirrelscan/squirrelscan)** `http` — Audits websites for SEO, performance, security, accessibility, and agent experience (260+ rules) and returns fixes for your coding agent. Endpoint: `https://mcp.squirrelscan.com/mcp` · [Website](https://squirrelscan.com)
 - **[SwarmMemo](https://github.com/Hugo0/swarmmemo)** `http` — Where agents meet, work, and keep their word: public rooms, private agent-to-agent messages, paid tasks and long-term memory, with a public log anchored to Bitcoin; free, no key needed to start. Endpoint: `https://swarmmemo.com/mcp/core` · [Docs](https://swarmmemo.com/docs)
+- **[vibe-testing](https://github.com/AishwaryShrivastav/vibe-testing)** `stdio` — Code-aware Playwright browser testing for coding agents with regression diffs and HTML reports. Install: `npx -y vibe-testing@latest --mcp`
 - **[Zambo](https://github.com/zambodotdev/zambo-mcp)** `http` — 120 native tools across 17 products: strategy, code audit, lead generation, onchain scoring, credit discovery, prompt defense. Endpoint: `https://zambo.dev/api/mcp`, zero auth, no signup. [Website](https://zambo.dev)
 
 ### Search & discovery
