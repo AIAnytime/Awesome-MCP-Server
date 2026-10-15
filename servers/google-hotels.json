@@ -3,5 +3,5 @@
   "url": "https://github.com/huynhtanan/google-hotels-mcp",
   "category": "commerce-travel",
   "transport": "stdio",
-  "description": "Live Google Hotels + Vacation Rentals search with per-OTA price comparison (Booking.com, Expedia, Vrbo, Hotels.com, Agoda, Trip.com, Tripadvisor) and a 3-month daily price calendar. Install: `uvx --from \"git+https://github.com/huynhtanan/google-hotels-mcp.git@v0.1.1\" google-hotels-mcp` · [Docs](https://github.com/huynhtanan/google-hotels-mcp#readme)"
+  "description": "Live Google Hotels + Vacation Rentals search with per-OTA nightly rates (Booking.com, Expedia, Agoda, Vrbo, Airbnb, Hotels.com and 10+ other providers) and a 3-month daily price calendar. Install: `uvx --from \"git+https://github.com/huynhtanan/google-hotels-mcp.git@v0.1.1\" google-hotels-mcp` · [Docs](https://github.com/huynhtanan/google-hotels-mcp#readme)"
 }
