@@ -1,0 +1,8 @@
+{
+  "name": "vibe-testing",
+  "url": "https://github.com/AishwaryShrivastav/vibe-testing",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Code-aware Playwright browser testing for coding agents with regression diffs and HTML reports. Install: `npx -y vibe-testing@latest --mcp`",
+  "registry": "io.github.AishwaryShrivastav/vibe-testing"
+}
