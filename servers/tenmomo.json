@@ -1,0 +1,9 @@
+{
+  "name": "Tenmomo",
+  "url": "https://tenmomo.com/mcp",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Search US stores for cashback rates and coupon codes, and get a tracked activation link. Endpoint: `https://tenmomo.com/mcp`",
+  "endpoint": "https://tenmomo.com/mcp",
+  "registry": "com.tenmomo/tenmomo"
+}
