@@ -1,0 +1,9 @@
+{
+  "name": "Whisper Memos",
+  "url": "https://whispermemos.com/mcp",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Official server for the Whisper Memos iPhone and Apple Watch voice memo app: list and read memo transcripts and summaries, list labels, view account details, and delete memos; it cannot create or edit memos. OAuth 2.1, approved in the iOS app. Endpoint: `https://whispermemos.com/mcp` · [Config](https://github.com/whispermemos/whisper-memos-plugin) · Registry: `com.whispermemos/whisper-memos`",
+  "endpoint": "https://whispermemos.com/mcp",
+  "registry": "com.whispermemos/whisper-memos"
+}
