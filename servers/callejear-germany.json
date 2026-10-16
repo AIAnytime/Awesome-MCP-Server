@@ -1,0 +1,9 @@
+{
+  "name": "Callejear Germany",
+  "url": "https://callejear.de/mcp/",
+  "category": "search",
+  "transport": "http",
+  "description": "Search municipalities and streets, retrieve context and compare 593,062 historical German street records; read-only, no account or key, and not a current official register. Limits: 30 tool calls/minute and 100/day per origin, 1,000/day globally; endpoint: `https://callejear.de/api/mcp`.",
+  "endpoint": "https://callejear.de/api/mcp",
+  "registry": "io.github.Habanacasta88/callejear-de"
+}
