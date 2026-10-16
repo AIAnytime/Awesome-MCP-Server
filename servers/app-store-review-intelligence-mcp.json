@@ -1,0 +1,9 @@
+{
+  "name": "App Store & Google Play Review Intelligence MCP",
+  "url": "https://github.com/gunnargray-dev/app-store-review-intelligence-mcp",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Search Apple App Store / Google Play, pull reviews, return top complaints with quotes, rating-by-version, what got worse in the latest update, and competitor comparisons. Local stdio free; hosted pay-per-call on Apify (API token). Endpoint: `https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp` · Registry: `io.github.gunnargray-dev/app-store-review-intelligence-mcp`",
+  "endpoint": "https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp",
+  "registry": "io.github.gunnargray-dev/app-store-review-intelligence-mcp"
+}
