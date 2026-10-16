@@ -1,0 +1,8 @@
+{
+  "name": "AltoRank",
+  "url": "https://github.com/AltoRank/altorank",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Open-source SEO content software: site readiness checks for search engines and AI crawlers, keyword research, Search Console data and sourced drafts into a review queue. OAuth sign-in.",
+  "endpoint": "https://app.altorank.co/api/mcp"
+}
