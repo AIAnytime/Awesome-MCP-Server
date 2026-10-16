@@ -1,0 +1,9 @@
+{
+  "name": "Openhook",
+  "url": "https://github.com/openhook-dev/openhook-inbox",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Capture HTTP, email, and DNS callbacks and wait for or inspect inbox events through MCP; private inbox tokens control reads and deletion. MIT self-hosting and free temporary hosted inboxes are available, with optional paid persistent hosting.",
+  "endpoint": "https://openhook.dev/mcp",
+  "registry": "io.github.openhook-dev/openhook-inbox"
+}
