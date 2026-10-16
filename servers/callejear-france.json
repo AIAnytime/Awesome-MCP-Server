@@ -1,0 +1,9 @@
+{
+  "name": "Callejear France",
+  "url": "https://callejear.fr/mcp/",
+  "category": "search",
+  "transport": "http",
+  "description": "Search French communes and street records, retrieve IRIS-level amenities and commune-level risk codes, and compare streets with five read-only tools. Free without authentication, with quotas and explicit missing-data limits; [Docs](https://callejear.fr/mcp/).",
+  "endpoint": "https://callejear.fr/api/mcp",
+  "registry": "com.callejear/france"
+}
