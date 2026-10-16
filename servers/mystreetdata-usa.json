@@ -1,0 +1,9 @@
+{
+  "name": "MyStreetData USA",
+  "url": "https://mystreetdata.com/mcp/",
+  "category": "search",
+  "transport": "http",
+  "description": "Free read-only search, context and comparisons for 1.33M street records across 8 US states; no API key, with shared daily quotas. Endpoint: `https://mystreetdata.com/api/mcp`",
+  "endpoint": "https://mystreetdata.com/api/mcp",
+  "registry": "io.github.Habanacasta88/mystreetdata"
+}
