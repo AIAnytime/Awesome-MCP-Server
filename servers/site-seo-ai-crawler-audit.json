@@ -1,0 +1,9 @@
+{
+  "name": "Site SEO & AI Crawler Audit",
+  "url": "https://tools.openkrill.app/#site-check",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Checks a public page's SEO tags, its robots.txt rules for GPTBot and other AI crawlers, and the signals AI answer engines use to cite it; free, read-only, no API key. Endpoint: `https://sitecheck.openkrill.app/mcp`",
+  "endpoint": "https://sitecheck.openkrill.app/mcp",
+  "registry": "app.openkrill/site-check"
+}
