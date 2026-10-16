@@ -1,0 +1,9 @@
+{
+  "name": "Grok Bot Wiki",
+  "url": "https://www.grokbotwiki.com/mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Unofficial, read-only search of public Grok Bot templates and source-backed guides; free, no account or API key. Endpoint: `https://www.grokbotwiki.com/api/mcp`",
+  "endpoint": "https://www.grokbotwiki.com/api/mcp",
+  "registry": "com.grokbotwiki.www/grok-bot-wiki"
+}
