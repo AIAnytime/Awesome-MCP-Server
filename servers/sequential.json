@@ -1,0 +1,9 @@
+{
+  "name": "Sequential",
+  "url": "https://www.usesequential.com/docs/connect-claude-ai.md",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Session replay and product analytics with an AI judge that reviews each session (what the user came to do, whether they got there, where they struggled) and lists findings to fix; agents query sessions, findings, events, funnels, flows and retention. Hosted, OAuth sign-in, free sign-up. Endpoint: `https://api.usesequential.com/mcp` · [Tools](https://www.usesequential.com/docs/agent-tools.md) · Registry: `io.github.Acro/sequential`",
+  "endpoint": "https://api.usesequential.com/mcp",
+  "registry": "io.github.Acro/sequential"
+}
