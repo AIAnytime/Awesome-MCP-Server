@@ -194,8 +194,8 @@ h1 em{font-style:italic;color:var(--accent)}
 .controls input{flex:1 1 240px}
 .controls select{flex:0 1 auto;max-width:100%}
 #count{color:var(--mute);font-size:.88rem;margin:12px 0}
-.list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .card:hover{border-color:var(--accent)}
 .card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .card h3 a{color:var(--ink);text-decoration:none}
@@ -209,7 +209,7 @@ h1 em{font-style:italic;color:var(--accent)}
 .facts{margin:8px 0 0;font-size:.84rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
 .facts b{color:var(--ink);font-variant-numeric:tabular-nums}
 .cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
-.cmd code{flex:1;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
+.cmd code{flex:1;min-width:0;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
 button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
 button.copy:hover{border-color:var(--accent);color:var(--accent)}
 .controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
