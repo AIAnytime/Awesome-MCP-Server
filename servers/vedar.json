@@ -1,0 +1,9 @@
+{
+  "name": "Vedar Kamchatka",
+  "url": "https://github.com/tourhabk-ui/pos",
+  "category": "commerce-travel",
+  "transport": "http",
+  "description": "Kamchatka (Russia) travel: tours, accommodation, transfers, trip planning and booking requests, plus volcano status, weather and safety info. Endpoint: `https://vedarai.ru/api/mcp` (no auth) · Registry: `ru.vedarai/mcp`",
+  "endpoint": "https://vedarai.ru/api/mcp",
+  "registry": "ru.vedarai/mcp"
+}
