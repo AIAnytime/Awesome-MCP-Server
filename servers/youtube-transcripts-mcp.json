@@ -1,0 +1,9 @@
+{
+  "name": "YouTube Transcripts MCP",
+  "url": "https://github.com/gunnargray-dev/youtube-transcripts-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "YouTube transcripts with video metadata (text, timestamped segments or SRT), filtered YouTube search, chapters, and timestamped extractive summaries; no YouTube API key. Local stdio free; hosted pay-per-call on Apify (API token). Endpoint: `https://parallelstudio--youtube-transcripts-mcp.apify.actor/mcp` · Registry: `io.github.gunnargray-dev/youtube-transcripts-mcp`",
+  "endpoint": "https://parallelstudio--youtube-transcripts-mcp.apify.actor/mcp",
+  "registry": "io.github.gunnargray-dev/youtube-transcripts-mcp"
+}

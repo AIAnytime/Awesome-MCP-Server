@@ -155,6 +155,7 @@ A listing is not a security review. Read a server's source and permissions befor
 - **[UnifAPI](https://github.com/unifapi-agent/unifapi-mcp-server)** `http` — Public-data tools for social, search, scraping, news, creator research, and KOL pricing workflows. Endpoint: `https://mcp.unifapi.com` · [Docs](https://docs.unifapi.com/mcp) · Registry: `com.unifapi/mcp`
 - **[Vend API Merchant](https://extract.paypercall.dev)** `http` — Pay-per-call web intelligence: extract clean text from URLs, web search, link checking, domain WHOIS/DNS/SSL info, IP geolocation, and PDF text extraction. 22+ endpoints, no signup or API key, each call settles in Nano (XNO) via x402 at 0.0001–0.0005 XNO. Endpoint: `https://extract.paypercall.dev/mcp` · [Docs](https://extract.paypercall.dev) · Registry: `dev.paypercall.extract/vend-api-merchant`
 - **[Xquik](https://github.com/Xquik-dev/x-twitter-scraper)** `http` — X/Twitter search, extraction workflows, account insights, webhooks, and SDK access. [Docs](https://docs.xquik.com/mcp/overview)
+- **[YouTube Transcripts MCP](https://github.com/gunnargray-dev/youtube-transcripts-mcp)** `http` — YouTube transcripts with video metadata (text, timestamped segments or SRT), filtered YouTube search, chapters, and timestamped extractive summaries; no YouTube API key. Local stdio free; hosted pay-per-call on Apify (API token). Endpoint: `https://parallelstudio--youtube-transcripts-mcp.apify.actor/mcp` · Registry: `io.github.gunnargray-dev/youtube-transcripts-mcp`
 
 ### Knowledge, memory & context
 
