@@ -214,6 +214,7 @@ A listing is not a security review. Read a server's source and permissions befor
 
 ### Marketing, content & social
 
+- **[AltoRank](https://github.com/AltoRank/altorank)** `http` — Open-source SEO content software: site readiness checks for search engines and AI crawlers, keyword research, Search Console data and sourced drafts into a review queue. OAuth sign-in.
 - **[Autoposting](https://github.com/Autoposting-ai/autoposting-mcp)** `http` — Draft, schedule, and publish to X, LinkedIn, Instagram, Threads, and YouTube, plus AI carousels and video clipping. OAuth 2.1 with dynamic client registration — no secret to paste. Install: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`
 - **[BulkPublish](https://github.com/azeemkafridi/bulkpublish-api)** `http` — Plan, review, schedule, publish, and analyze social media content for AI agents through BulkPublish. Endpoint: `https://mcp.bulkpublish.com/mcp` · [Docs](https://app.bulkpublish.com/docs)
 - **[Claim by Ouroboros Apps](https://github.com/LAHutchins91/claim-mcp)** `http` — Brand claims and marketing copy compliance: approved claims, offers, proof, brand voice, and banned phrases, with a check that rejects copy inventing a guarantee or discount. OAuth sign-in. Endpoint: `https://claim-continuity2.vercel.app/mcp` · [Docs](https://ouroborosapps.com/docs/claim) · [Ouroboros Apps](https://ouroborosapps.com)
