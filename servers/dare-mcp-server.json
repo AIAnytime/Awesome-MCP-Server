@@ -1,0 +1,7 @@
+{
+  "name": "dare-mcp-server",
+  "url": "https://github.com/avi-aggarwal14/dare-mcp-server",
+  "category": "media",
+  "transport": "stdio",
+  "description": "Generate video and images on Dare (Seedance 2.5, Veo 3.1, Kling 3.0 Pro, Hailuo 2.3, Nano Banana 2) from Claude, billed to your own Dare credits, with local cost estimates and dry runs. Needs a Dare session cookie; unofficial. Install: `npx dare-mcp-server setup`"
+}
