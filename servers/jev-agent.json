@@ -1,0 +1,8 @@
+{
+  "name": "Jev Agent",
+  "url": "https://jev-agent.com/docs",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Hosted Jev AI MCP: judge_yes_no, judge_choice, judge_score, compare_versions and graders with calibrated probabilities; same key also calls Decision API and eight classify rulesets. Endpoint: `https://jev-agent.com/api/mcp`. Independent; not affiliated with TypeSafe AI.",
+  "endpoint": "https://jev-agent.com/api/mcp"
+}
