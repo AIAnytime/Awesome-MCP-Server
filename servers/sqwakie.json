@@ -1,0 +1,7 @@
+{
+  "name": "Sqwakie",
+  "url": "https://github.com/alexcarney460-hue/walkie",
+  "category": "developer-tools",
+  "transport": "stdio",
+  "description": "Live team dashboard for Claude Code and Codex agents, with agent-to-agent questions over MCP and peer-to-peer links between machines. Install: `curl -fsSL https://sqwakie.si/install.sh | sh` · [Website](https://sqwakie.si)"
+}
