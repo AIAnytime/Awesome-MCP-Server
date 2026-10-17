@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Packrift MCP server: status, tools and setup</title>
+<meta name="description" content="Packrift MCP server. No endpoint is on file for this server, so it is not checked. Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and...">
+<meta name="keywords" content="MCP servers, Model Context Protocol, MCP directory, remote MCP servers, MCP server list, awesome mcp servers, AI agents, Claude, Cursor, AI Anytime">
+<meta name="author" content="AI Anytime">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="theme-color" content="#f6f4ee">
+<link rel="canonical" href="https://mcp.aianytime.net/s/packrift/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" title="Directory data" href="../../api/servers.json">
+<link rel="alternate" type="text/plain" title="llms.txt" href="../../llms.txt">
+<meta property="og:site_name" content="Awesome MCP Servers by AI Anytime">
+<meta property="og:title" content="Packrift MCP server: status, tools and setup">
+<meta property="og:description" content="Packrift MCP server. No endpoint is on file for this server, so it is not checked. Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and...">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mcp.aianytime.net/s/packrift/">
+<meta property="og:image" content="https://mcp.aianytime.net/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Awesome MCP Servers by AI Anytime: MCP servers we actually connect to, every night.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Packrift MCP server: status, tools and setup">
+<meta name="twitter:description" content="Packrift MCP server. No endpoint is on file for this server, so it is not checked. Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and...">
+<meta name="twitter:image" content="https://mcp.aianytime.net/og.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://aianytime.net/#organization", "name": "AI Anytime", "url": "https://aianytime.net", "sameAs": ["https://www.youtube.com/@AIAnytime", "https://github.com/AIAnytime", "https://academy.aianytime.net"]}, {"@type": "SoftwareApplication", "name": "Packrift", "description": "Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.", "url": "https://mcp.aianytime.net/s/packrift/", "sameAs": "https://github.com/Packrift/packrift-mcp", "applicationCategory": "DeveloperApplication", "applicationSubCategory": "MCP server (Commerce, travel & logistics)", "operatingSystem": "Any", "isPartOf": {"@id": "https://mcp.aianytime.net/#website"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Directory", "item": "https://mcp.aianytime.net/"}, {"@type": "ListItem", "position": 2, "name": "Commerce, travel & logistics", "item": "https://mcp.aianytime.net/c/commerce-travel/"}, {"@type": "ListItem", "position": 3, "name": "Packrift", "item": "https://mcp.aianytime.net/s/packrift/"}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f4ee;--card:#fffdf8;--ink:#121118;--mute:#625f6d;--line:#dedad0;--accent:#5b3df5;--accent-soft:#ebe6ff;
+--lime:#d4f75e;--night:#0d0c12;--night-2:#17151f;--night-line:#2b2935;
+--live:#1a7f37;--auth:#5b3df5;--down:#c0262d;--off:#8a8794;--code:#efece3}
+/* Dark: follows the system unless the visitor picked a theme with the header button. */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}}
+:root[data-theme=dark]{--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}
+.icon .sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .icon .sun{display:block}:root:not([data-theme=light]) .icon .moon{display:none}}
+:root[data-theme=dark] .icon .sun{display:block}:root[data-theme=dark] .icon .moon{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%}
+a{color:var(--accent)}
+code{font:.86em "Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--mute);font-weight:500}
+nav a{margin-left:18px;color:var(--mute);text-decoration:none;font-size:.93rem}
+nav a:first-child{margin-left:0;color:var(--accent);font-weight:600}
+nav a:hover{color:var(--ink)}
+nav{display:flex;align-items:center;flex-wrap:wrap;row-gap:8px}
+.icon{display:inline-grid;place-items:center;width:34px;height:34px;margin-left:10px;padding:0;cursor:pointer;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px}
+nav a+.icon{margin-left:18px}
+.icon:hover{color:var(--accent);border-color:var(--accent)}
+.icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:44px 0 18px}
+h1{font:400 clamp(2.3rem,6vw,3.6rem)/1.05 "Instrument Serif",ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:1.1rem;color:var(--mute);max-width:64ch;margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-weight:600;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:.86rem}
+.note{color:var(--mute);font-size:.86rem;margin:6px 0 0}
+.controls{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.controls input,.controls select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.controls input{flex:1 1 240px}
+.controls select{flex:0 1 auto;max-width:100%}
+#count{color:var(--mute);font-size:.88rem;margin:12px 0}
+.list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--accent)}
+.card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.card p{margin:6px 0 0;color:var(--mute);font-size:.94rem;overflow-wrap:anywhere}
+.tag{font:500 .7rem "Geist Mono",ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 6px}
+.pill{font-size:.76rem;font-weight:600;white-space:nowrap}
+.pill::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
+.live{color:var(--live)}.auth{color:var(--auth)}.down{color:var(--down)}.unprobed{color:var(--off)}
+.unprobed.pill::before{background:none;border:1.5px solid currentColor}
+.facts{margin:8px 0 0;font-size:.84rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+.cmd code{flex:1;min-width:0;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
+button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+.controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
+section{padding:34px 0 0}
+h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 10px}
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:0;list-style:none;margin:14px 0 0}
+.learn li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
+.learn a{font-weight:600}
+.fineprint{margin-top:44px;color:var(--mute);font-size:.86rem}
+footer{margin-top:22px;background:var(--night);color:#b9b6c6;font-size:.92rem;border-top:1px solid var(--night-line)}
+footer .wrap{padding-top:36px;padding-bottom:36px}
+footer a{color:#f6f4ee}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:start}
+.foot h2{font:400 1.7rem/1.1 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:0 0 8px;letter-spacing:0}
+.foot p{margin:0 0 12px;max-width:46ch}
+.foot .links a{margin-right:16px;white-space:nowrap}
+.academy{background:var(--night-2);border:1px solid var(--night-line);border-radius:16px;padding:20px 22px}
+.academy .eyebrow{font:500 .72rem "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.academy h3{font:400 1.5rem/1.15 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:6px 0 8px}
+.academy a.cta{display:inline-block;background:var(--lime);color:#121118;font-weight:600;text-decoration:none;border-radius:999px;padding:9px 18px;margin-top:4px}
+.academy a.cta:hover{filter:brightness(1.06)}
+.crumbs{margin:26px 0 8px;font-size:.9rem}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
+dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
+.days{display:flex;gap:3px;margin-top:6px}
+.days i{width:12px;height:22px;border-radius:3px;background:var(--off)}
+.days .u{background:var(--live)}.days .a{background:var(--auth)}.days .d{background:var(--down)}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.86rem}
+pre code{background:none;padding:0;overflow-wrap:normal}
+.tools{columns:220px;padding-left:18px;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.chips a:hover{border-color:var(--accent);color:var(--accent)}
+.chips a span{color:var(--mute)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mute)}
+[hidden]{display:none!important}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.checks th{font-weight:500}
+table.checks td:last-child{min-width:150px}
+table.params{min-width:560px}
+thead th{color:var(--mute);font-weight:500;font-size:.8rem;white-space:nowrap}
+.state{font-size:.78rem;font-weight:600;white-space:nowrap}
+.state::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:currentColor}
+.state.verified{color:var(--live)}.state.failed{color:var(--down)}.state.untested{color:var(--off)}
+.state.untested::before{background:none;border:1.5px solid currentColor}
+h3{font-size:1.02rem;margin:22px 0 6px}
+.count{font:500 .8rem "Geist Mono",ui-monospace,monospace;color:var(--mute);margin-left:4px}
+.tablist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.tablist button{font:inherit;font-size:.88rem;cursor:pointer;color:var(--mute);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 13px}
+.tablist button.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.tabs.js .panel{display:none}.tabs.js .panel.on{display:block}.tabs.js .panel h3{display:none}
+.tabs:not(.js) .tablist{display:none}
+.panel{margin-top:6px}
+.snippet{position:relative}.snippet .copy{position:absolute;top:8px;right:8px;height:28px}
+.snippet pre{margin:8px 0;padding-right:76px}
+.btn{display:inline-block;background:var(--accent);color:var(--bg);font-weight:600;text-decoration:none;border-radius:999px;padding:7px 16px;font-size:.9rem}
+.tips{padding-left:18px;color:var(--mute);font-size:.92rem}.tips li{margin:4px 0}
+#toolq{font:inherit;width:100%;max-width:360px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:4px 0 10px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.tool summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.tool summary span:last-child{color:var(--mute);font-size:.88rem;flex:1 1 260px;min-width:0}
+.tool .desc{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem;margin:10px 0}
+.tool pre{margin:6px 0 4px}
+.hint{font:500 .68rem "Geist Mono",ui-monospace,monospace;border-radius:5px;padding:1px 6px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.hint.read{color:var(--live);border-color:currentColor}.hint.danger{color:var(--down);border-color:currentColor}
+ul.plain{padding-left:18px;font-size:.92rem;color:var(--mute)}
+.status td,.status th{white-space:nowrap}.status .days i{width:5px;height:16px;border-radius:2px}.status .days{gap:2px;margin:0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="brand" href="../../">Awesome MCP Servers <span>by AI Anytime</span></a>
+<nav><a href="https://academy.aianytime.net">Academy</a><a href="../../#directory">Directory</a><a href="../../status/">Status</a><a href="../../#learn">Learn</a><a href="../../#agents">For agents</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a>
+<button id="refresh" class="icon" type="button" title="Reload for the latest check results" aria-label="Reload page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
+<button id="theme" class="icon" type="button" title="Switch between light and dark" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>
+</div></header>
+<main class="wrap">
+
+<p class="crumbs"><a href="../../#directory">Directory</a> / <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a></p>
+<h1>Packrift</h1>
+<p class="lede">Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.</p>
+<p style="margin-top:18px"><span class="pill unprobed">Not checked</span> &nbsp;No endpoint is on file for this server, so it is not checked.</p>
+<dl><dt>Category</dt><dd><a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a></dd><dt>Transport</dt><dd><code>http</code></dd><dt>Source</dt><dd><a href="https://github.com/Packrift/packrift-mcp" rel="nofollow noopener">https://github.com/Packrift/packrift-mcp</a></dd><dt>Repository</dt><dd>1 stars · last push 2026-09-27 · MIT</dd><dt>Listed since</dt><dd>2026-10-12</dd></dl>
+<h2 id="health">Health and compatibility</h2><div class="scroll"><table class="checks"><tbody><tr><th scope='row'>Endpoint reachable</th><td><span class="state untested">Untested</span></td><td>No endpoint is on file for this server.</td></tr></tbody></table></div>
+
+
+<h2>Badge</h2>
+<p>Maintain this server? Put its live status in your README:</p>
+<p><img src="../../badge/packrift.svg" alt="MCP status badge" height="20"></p>
+<div class="cmd"><code>[![MCP status](https://mcp.aianytime.net/badge/packrift.svg)](https://mcp.aianytime.net/s/packrift/)</code><button class="copy" data-copy="[![MCP status](https://mcp.aianytime.net/badge/packrift.svg)](https://mcp.aianytime.net/s/packrift/)">Copy</button></div>
+<p class="note" style="margin-top:22px"><a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/servers/packrift.json">Edit this entry</a> · <a href="https://github.com/AIAnytime/Awesome-MCP-Servers/issues/new?template=report-entry.yml">Report a problem</a></p>
+<section>
+<h2>More in Commerce, travel &amp; logistics</h2>
+<ul class="chips"><li><a href="../pocket-drives/">Pocket Drives</a></li><li><a href="../pumperly-mcp/">pumperly-mcp</a></li><li><a href="../robohub/">RoboHub</a></li><li><a href="../scentverdict/">ScentVerdict</a></li><li><a href="../skyaccess/">SkyAccess</a></li><li><a href="../stayingapi/">StayingAPI</a></li><li><a href="../../c/commerce-travel/">All of Commerce, travel &amp; logistics</a></li></ul>
+</section>
+
+<p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
+<a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="../../api/servers.json">JSON</a> · <a href="../../llms.txt">llms.txt</a> · <a href="../../llms-full.txt">llms-full.txt</a></p>
+<p class="fineprint" style="margin-top:8px">Browse: <a href="../../c/developer-tools/">Agents, IDEs &amp; developer tools</a> · <a href="../../c/search/">Search &amp; discovery</a> · <a href="../../c/knowledge-memory/">Knowledge, memory &amp; context</a> · <a href="../../c/media/">Media &amp; generation</a> · <a href="../../c/security/">Security</a> · <a href="../../c/finance/">Finance &amp; markets</a> · <a href="../../c/marketing/">Marketing, content &amp; social</a> · <a href="../../c/cloud-data/">Cloud, ops &amp; data</a> · <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a> · <a href="../../c/productivity/">Work &amp; productivity</a> · <a href="../../c/no-auth/">No account needed</a> · <a href="../../c/local/">Local servers</a></p>
+</main>
+<footer><div class="wrap foot">
+<div>
+<h2>AI Anytime</h2>
+<p>Practical AI for all. AI education, research and enablement, rooted in open source. This directory is built and maintained by AI Anytime.</p>
+<p class="links"><a href="https://aianytime.net">aianytime.net</a><a href="https://www.youtube.com/@AIAnytime">YouTube</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a></p>
+</div>
+<div class="academy">
+<span class="eyebrow">AI Anytime Academy</span>
+<h3>Become an AI engineer by building.</h3>
+<p>Structured career tracks, browser coding labs, an AI mentor and AI-reviewed portfolio projects. Start for free.</p>
+<a class="cta" href="https://academy.aianytime.net">Explore the Academy</a>
+</div>
+</div></footer>
+<script>
+document.addEventListener('click',e=>{const b=e.target.closest('button.copy');if(!b)return;
+navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=t,1200)});});
+document.getElementById('theme').addEventListener('click',()=>{const r=document.documentElement;
+const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}});
+document.getElementById('refresh').addEventListener('click',()=>location.reload());
+
+document.querySelectorAll('.tabs').forEach(tabs=>{tabs.classList.add('js');
+const show=id=>{tabs.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+tabs.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('on',p.dataset.panel===id));};
+let saved=null;try{saved=localStorage.getItem('client')}catch(e){}
+show(saved&&tabs.querySelector('[data-tab="'+saved+'"]')?saved:tabs.querySelector('[data-tab]').dataset.tab);
+tabs.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;show(b.dataset.tab);try{localStorage.setItem('client',b.dataset.tab)}catch(e){}});});
+const tq=document.getElementById('toolq');
+if(tq)tq.addEventListener('input',()=>{const terms=tq.value.toLowerCase().split(/\s+/).filter(Boolean);
+document.querySelectorAll('#toollist .tool').forEach(t=>{t.hidden=!terms.every(x=>t.dataset.text.includes(x));});});
+</script>
+</body>
+</html>

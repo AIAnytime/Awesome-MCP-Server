@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOTLIKESHOP MCP server: status, tools and setup</title>
+<meta name="description" content="HOTLIKESHOP MCP server. Answered an MCP handshake without credentials and listed 32 tools. Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the...">
+<meta name="keywords" content="MCP servers, Model Context Protocol, MCP directory, remote MCP servers, MCP server list, awesome mcp servers, AI agents, Claude, Cursor, AI Anytime">
+<meta name="author" content="AI Anytime">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="theme-color" content="#f6f4ee">
+<link rel="canonical" href="https://mcp.aianytime.net/s/hotlikeshop/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" title="Directory data" href="../../api/servers.json">
+<link rel="alternate" type="text/plain" title="llms.txt" href="../../llms.txt">
+<meta property="og:site_name" content="Awesome MCP Servers by AI Anytime">
+<meta property="og:title" content="HOTLIKESHOP MCP server: status, tools and setup">
+<meta property="og:description" content="HOTLIKESHOP MCP server. Answered an MCP handshake without credentials and listed 32 tools. Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the...">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mcp.aianytime.net/s/hotlikeshop/">
+<meta property="og:image" content="https://mcp.aianytime.net/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Awesome MCP Servers by AI Anytime: MCP servers we actually connect to, every night.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HOTLIKESHOP MCP server: status, tools and setup">
+<meta name="twitter:description" content="HOTLIKESHOP MCP server. Answered an MCP handshake without credentials and listed 32 tools. Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the...">
+<meta name="twitter:image" content="https://mcp.aianytime.net/og.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://aianytime.net/#organization", "name": "AI Anytime", "url": "https://aianytime.net", "sameAs": ["https://www.youtube.com/@AIAnytime", "https://github.com/AIAnytime", "https://academy.aianytime.net"]}, {"@type": "SoftwareApplication", "name": "HOTLIKESHOP", "description": "Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: https://hotlikeshop.com/api/mcp · Docs", "url": "https://mcp.aianytime.net/s/hotlikeshop/", "sameAs": "https://github.com/tuanone123/hotlikeshop-mcp", "applicationCategory": "DeveloperApplication", "applicationSubCategory": "MCP server (Commerce, travel & logistics)", "operatingSystem": "Any", "isPartOf": {"@id": "https://mcp.aianytime.net/#website"}, "softwareVersion": "1.0.0", "featureList": ["best_sellers", "buy_product", "check_health_bulk", "check_live_facebook", "check_order_status", "claim_quest", "compare_products", "create_binance_deposit", "create_usdt_deposit", "daily_checkin", "deep_inspect", "gamefi_status", "get_2fa", "get_mail_code", "get_my_balance", "get_product", "how_to_start", "latest_products", "list_categories", "list_category_products", "list_orders", "list_quests", "quote_order", "recommend_products", "search_products", "similar_products", "spin_wheel", "submit_complaint", "topup_guide", "verify_binance_deposit", "verify_usdt_deposit", "wallet_history"], "dateModified": "2026-10-17T07:49:59Z"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Directory", "item": "https://mcp.aianytime.net/"}, {"@type": "ListItem", "position": 2, "name": "Commerce, travel & logistics", "item": "https://mcp.aianytime.net/c/commerce-travel/"}, {"@type": "ListItem", "position": 3, "name": "HOTLIKESHOP", "item": "https://mcp.aianytime.net/s/hotlikeshop/"}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f4ee;--card:#fffdf8;--ink:#121118;--mute:#625f6d;--line:#dedad0;--accent:#5b3df5;--accent-soft:#ebe6ff;
+--lime:#d4f75e;--night:#0d0c12;--night-2:#17151f;--night-line:#2b2935;
+--live:#1a7f37;--auth:#5b3df5;--down:#c0262d;--off:#8a8794;--code:#efece3}
+/* Dark: follows the system unless the visitor picked a theme with the header button. */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}}
+:root[data-theme=dark]{--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}
+.icon .sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .icon .sun{display:block}:root:not([data-theme=light]) .icon .moon{display:none}}
+:root[data-theme=dark] .icon .sun{display:block}:root[data-theme=dark] .icon .moon{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%}
+a{color:var(--accent)}
+code{font:.86em "Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--mute);font-weight:500}
+nav a{margin-left:18px;color:var(--mute);text-decoration:none;font-size:.93rem}
+nav a:first-child{margin-left:0;color:var(--accent);font-weight:600}
+nav a:hover{color:var(--ink)}
+nav{display:flex;align-items:center;flex-wrap:wrap;row-gap:8px}
+.icon{display:inline-grid;place-items:center;width:34px;height:34px;margin-left:10px;padding:0;cursor:pointer;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px}
+nav a+.icon{margin-left:18px}
+.icon:hover{color:var(--accent);border-color:var(--accent)}
+.icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:44px 0 18px}
+h1{font:400 clamp(2.3rem,6vw,3.6rem)/1.05 "Instrument Serif",ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:1.1rem;color:var(--mute);max-width:64ch;margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-weight:600;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:.86rem}
+.note{color:var(--mute);font-size:.86rem;margin:6px 0 0}
+.controls{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.controls input,.controls select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.controls input{flex:1 1 240px}
+.controls select{flex:0 1 auto;max-width:100%}
+#count{color:var(--mute);font-size:.88rem;margin:12px 0}
+.list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--accent)}
+.card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.card p{margin:6px 0 0;color:var(--mute);font-size:.94rem;overflow-wrap:anywhere}
+.tag{font:500 .7rem "Geist Mono",ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 6px}
+.pill{font-size:.76rem;font-weight:600;white-space:nowrap}
+.pill::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
+.live{color:var(--live)}.auth{color:var(--auth)}.down{color:var(--down)}.unprobed{color:var(--off)}
+.unprobed.pill::before{background:none;border:1.5px solid currentColor}
+.facts{margin:8px 0 0;font-size:.84rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+.cmd code{flex:1;min-width:0;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
+button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+.controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
+section{padding:34px 0 0}
+h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 10px}
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:0;list-style:none;margin:14px 0 0}
+.learn li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
+.learn a{font-weight:600}
+.fineprint{margin-top:44px;color:var(--mute);font-size:.86rem}
+footer{margin-top:22px;background:var(--night);color:#b9b6c6;font-size:.92rem;border-top:1px solid var(--night-line)}
+footer .wrap{padding-top:36px;padding-bottom:36px}
+footer a{color:#f6f4ee}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:start}
+.foot h2{font:400 1.7rem/1.1 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:0 0 8px;letter-spacing:0}
+.foot p{margin:0 0 12px;max-width:46ch}
+.foot .links a{margin-right:16px;white-space:nowrap}
+.academy{background:var(--night-2);border:1px solid var(--night-line);border-radius:16px;padding:20px 22px}
+.academy .eyebrow{font:500 .72rem "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.academy h3{font:400 1.5rem/1.15 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:6px 0 8px}
+.academy a.cta{display:inline-block;background:var(--lime);color:#121118;font-weight:600;text-decoration:none;border-radius:999px;padding:9px 18px;margin-top:4px}
+.academy a.cta:hover{filter:brightness(1.06)}
+.crumbs{margin:26px 0 8px;font-size:.9rem}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
+dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
+.days{display:flex;gap:3px;margin-top:6px}
+.days i{width:12px;height:22px;border-radius:3px;background:var(--off)}
+.days .u{background:var(--live)}.days .a{background:var(--auth)}.days .d{background:var(--down)}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.86rem}
+pre code{background:none;padding:0;overflow-wrap:normal}
+.tools{columns:220px;padding-left:18px;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.chips a:hover{border-color:var(--accent);color:var(--accent)}
+.chips a span{color:var(--mute)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mute)}
+[hidden]{display:none!important}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.checks th{font-weight:500}
+table.checks td:last-child{min-width:150px}
+table.params{min-width:560px}
+thead th{color:var(--mute);font-weight:500;font-size:.8rem;white-space:nowrap}
+.state{font-size:.78rem;font-weight:600;white-space:nowrap}
+.state::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:currentColor}
+.state.verified{color:var(--live)}.state.failed{color:var(--down)}.state.untested{color:var(--off)}
+.state.untested::before{background:none;border:1.5px solid currentColor}
+h3{font-size:1.02rem;margin:22px 0 6px}
+.count{font:500 .8rem "Geist Mono",ui-monospace,monospace;color:var(--mute);margin-left:4px}
+.tablist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.tablist button{font:inherit;font-size:.88rem;cursor:pointer;color:var(--mute);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 13px}
+.tablist button.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.tabs.js .panel{display:none}.tabs.js .panel.on{display:block}.tabs.js .panel h3{display:none}
+.tabs:not(.js) .tablist{display:none}
+.panel{margin-top:6px}
+.snippet{position:relative}.snippet .copy{position:absolute;top:8px;right:8px;height:28px}
+.snippet pre{margin:8px 0;padding-right:76px}
+.btn{display:inline-block;background:var(--accent);color:var(--bg);font-weight:600;text-decoration:none;border-radius:999px;padding:7px 16px;font-size:.9rem}
+.tips{padding-left:18px;color:var(--mute);font-size:.92rem}.tips li{margin:4px 0}
+#toolq{font:inherit;width:100%;max-width:360px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:4px 0 10px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.tool summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.tool summary span:last-child{color:var(--mute);font-size:.88rem;flex:1 1 260px;min-width:0}
+.tool .desc{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem;margin:10px 0}
+.tool pre{margin:6px 0 4px}
+.hint{font:500 .68rem "Geist Mono",ui-monospace,monospace;border-radius:5px;padding:1px 6px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.hint.read{color:var(--live);border-color:currentColor}.hint.danger{color:var(--down);border-color:currentColor}
+ul.plain{padding-left:18px;font-size:.92rem;color:var(--mute)}
+.status td,.status th{white-space:nowrap}.status .days i{width:5px;height:16px;border-radius:2px}.status .days{gap:2px;margin:0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="brand" href="../../">Awesome MCP Servers <span>by AI Anytime</span></a>
+<nav><a href="https://academy.aianytime.net">Academy</a><a href="../../#directory">Directory</a><a href="../../status/">Status</a><a href="../../#learn">Learn</a><a href="../../#agents">For agents</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a>
+<button id="refresh" class="icon" type="button" title="Reload for the latest check results" aria-label="Reload page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
+<button id="theme" class="icon" type="button" title="Switch between light and dark" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>
+</div></header>
+<main class="wrap">
+
+<p class="crumbs"><a href="../../#directory">Directory</a> / <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a></p>
+<h1>HOTLIKESHOP</h1>
+<p class="lede">Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: <code>https://hotlikeshop.com/api/mcp</code> · <a href="https://hotlikeshop.com/ai" rel="nofollow noopener">Docs</a></p>
+<p style="margin-top:18px"><span class="pill live">Live</span> &nbsp;Answered an MCP handshake without credentials and listed 32 tools.</p>
+<dl><dt>Category</dt><dd><a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a></dd><dt>Transport</dt><dd><code>http</code></dd><dt>Source</dt><dd><a href="https://github.com/tuanone123/hotlikeshop-mcp" rel="nofollow noopener">https://github.com/tuanone123/hotlikeshop-mcp</a></dd><dt>Endpoint</dt><dd><code>https://hotlikeshop.com/api/mcp</code></dd><dt>Reports itself as</dt><dd>hotlikeshop.com 1.0.0</dd><dt>Protocol</dt><dd>2025-06-18</dd><dt>Tools</dt><dd>32</dd><dt>Context cost</dt><dd>about 8,692 tokens for the tool definitions (estimated at four characters per token)</dd><dt>Tool definitions last changed</dt><dd>no change seen since first check</dd><dt>Handshake time</dt><dd>768 ms</dd><dt>Repository</dt><dd>1 stars · last push 2026-09-09 · MIT</dd><dt>Last checked</dt><dd>2026-10-17 07:49:59 UTC</dd><dt>Listed since</dt><dd>2026-10-12</dd></dl>
+<h2 id="health">Health and compatibility</h2><div class="scroll"><table class="checks"><tbody><tr><th scope='row'>Endpoint reachable</th><td><span class="state verified">Verified</span></td><td>Responded in 768 ms</td></tr><tr><th scope='row'>MCP handshake (initialize)</th><td><span class="state verified">Verified</span></td><td>Completed without credentials</td></tr><tr><th scope='row'>Tool discovery (tools/list)</th><td><span class="state verified">Verified</span></td><td>32 tools listed</td></tr><tr><th scope='row'>Authentication</th><td><span class="state verified">Verified</span></td><td>None needed to connect</td></tr><tr><th scope='row'>Protocol version</th><td><span class="state verified">Verified</span></td><td>2025-06-18</td></tr><tr><th scope='row'>Transport</th><td><span class="state verified">Verified</span></td><td>Streamable HTTP</td></tr><tr><th scope='row'>Capabilities declared</th><td><span class="state verified">Verified</span></td><td>tools</td></tr></tbody></table></div><p class="note">Last checked <time datetime="2026-10-17T07:49:59Z">2026-10-17 07:49:59 UTC</time>. Verified means the check saw it happen; it says nothing about whether the server is safe.</p><h3>Recent history</h3><p class="note">6 daily checks so far; median response 768 ms. Green answered, violet asked for auth, red did not answer.</p><div class="days"><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i></div>
+<h2 id="setup">Set up in your client</h2><div class="tabs"><div class="tablist" role="tablist"><button type="button" role="tab" data-tab="claude-code" class=on>Claude Code</button><button type="button" role="tab" data-tab="claude-desktop">Claude Desktop</button><button type="button" role="tab" data-tab="cursor">Cursor</button><button type="button" role="tab" data-tab="vscode">VS Code</button><button type="button" role="tab" data-tab="windsurf">Windsurf</button><button type="button" role="tab" data-tab="other">Other clients</button></div><div class="panel" data-panel="claude-code"><h3>Claude Code</h3><p>Run this in a terminal:</p><div class="cmd"><code>claude mcp add --transport http hotlikeshop https://hotlikeshop.com/api/mcp</code><button class="copy" data-copy="claude mcp add --transport http hotlikeshop https://hotlikeshop.com/api/mcp">Copy</button></div></div><div class="panel" data-panel="claude-desktop"><h3>Claude Desktop</h3><p>Open <b>Settings → Connectors → Add custom connector</b> and paste this URL:</p><div class="cmd"><code>https://hotlikeshop.com/api/mcp</code><button class="copy" data-copy="https://hotlikeshop.com/api/mcp">Copy</button></div><p>Or bridge it through <code>mcp-remote</code> in <code>claude_desktop_config.json</code> (needs Node.js):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://hotlikeshop.com/api/mcp&quot;
+      ]
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://hotlikeshop.com/api/mcp&quot;
+      ]
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="cursor"><h3>Cursor</h3><p><a class="btn" href="cursor://anysphere.cursor-deeplink/mcp/install?name=hotlikeshop&amp;config=eyJ1cmwiOiAiaHR0cHM6Ly9ob3RsaWtlc2hvcC5jb20vYXBpL21jcCJ9">Add to Cursor</a></p><p>Or add it to <code>~/.cursor/mcp.json</code> (or <code>.cursor/mcp.json</code> in a project):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="vscode"><h3>VS Code</h3><p><a class="btn" href="vscode:mcp/install?%7B%22name%22%3A%20%22hotlikeshop%22%2C%20%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A//hotlikeshop.com/api/mcp%22%7D">Add to VS Code</a></p><p>Or add it to <code>.vscode/mcp.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;servers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;servers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}</code></pre></div><p>Or from a terminal:</p><div class="cmd"><code>code --add-mcp &#x27;{&quot;name&quot;: &quot;hotlikeshop&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;}&#x27;</code><button class="copy" data-copy="code --add-mcp &#x27;{&quot;name&quot;: &quot;hotlikeshop&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;}&#x27;">Copy</button></div></div><div class="panel" data-panel="windsurf"><h3>Windsurf</h3><p>Add it to <code>~/.codeium/windsurf/mcp_config.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;serverUrl&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;serverUrl&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="other"><h3>Other clients</h3><p>Most clients accept this shape. The endpoint is:</p><div class="cmd"><code>https://hotlikeshop.com/api/mcp</code><button class="copy" data-copy="https://hotlikeshop.com/api/mcp">Copy</button></div><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;hotlikeshop&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://hotlikeshop.com/api/mcp&quot;
+    }
+  }
+}</code></pre></div></div></div><h3>If it does not connect</h3><ul class="tips"><li>Restart the client after editing a config file, and keep keys out of files you commit.</li><li>If the tools do not appear, open the client's MCP log: a 401 means the credentials were not accepted, and a timeout means the server did not answer.</li></ul>
+<h2 id="tools">Tools <span class="count">32</span></h2><p class="note">Names, descriptions and input schemas exactly as the server returned them on 2026-10-17. This is the server author's own text. Nothing is run from this page. <a href="../../api/tools/hotlikeshop.json">Raw JSON</a></p><input id="toolq" type="search" placeholder="Filter tools" aria-label="Filter tools"><div id="toollist"><details class="tool" data-text="best_sellers list best-selling in-stock public products (most sold first), public fields only (price vnd + units sold). read-only, no api_key required. when to use: the user wants &quot;popular / hot / most bought&quot; items. prefer instead: latest_products for &quot;new arrivals&quot;, search_products for a keyword, recommend_products for a budget, list_category_products for a full category. optionally scope with category_id (f"><summary><code>best_sellers</code><span>List best-selling in-stock public products (most sold first), public fields only (price VND + units sold). …</span></summary><p class="desc">List best-selling in-stock public products (most sold first), public fields only (price VND + units sold). Read-only, no api_key required. WHEN TO USE: the user wants &quot;popular / hot / most bought&quot; items. PREFER INSTEAD: latest_products for &quot;new arrivals&quot;, search_products for a keyword, recommend_products for a budget, list_category_products for a full category. Optionally scope with category_id (from list_categories) or a keyword. Danh sách sản phẩm BÁN CHẠY còn hàng (đã bán nhiều nhất trước); chỉ trả field công khai (giá VND + số đã bán).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>category_id</code></td><td>integer</td><td>optional</td><td>Limit to a category id (optional). Giới hạn theo danh mục (tùy chọn).</td></tr><tr><td><code>keyword</code></td><td>string</td><td>optional</td><td>Keyword in product name (optional). Từ khóa trong tên SP (tùy chọn).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Max results (default 10, max 20).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;best_sellers&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="buy_product step 2 of buying: place the order using the confirm_token from quote_order. irreversible — this spends real balance and delivers the product; returns order_code + the delivered content. prerequisite: a fresh confirm_token from quote_order (same api_key). when to use: only after the user has explicitly approved the exact total shown by quote_order. do not call speculatively or to re-price. afterwar"><summary><code>buy_product</code><span>STEP 2 of buying: place the order using the confirm_token from quote_order. IRREVERSIBLE — this SPENDS real …</span></summary><p class="desc">STEP 2 of buying: place the order using the confirm_token from quote_order. IRREVERSIBLE — this SPENDS real balance and delivers the product; returns order_code + the delivered content. PREREQUISITE: a fresh confirm_token from quote_order (same api_key). WHEN TO USE: only AFTER the user has explicitly approved the exact total shown by quote_order. Do NOT call speculatively or to re-price. AFTERWARDS: check_order_status for delivery (set refresh=true if it looks stuck), get_mail_code for OTP, submit_complaint if faulty. Bước 2: đặt mua thật bằng confirm_token (TRỪ TIỀN THẬT &amp; giao hàng); chỉ gọi sau khi người dùng đã đồng ý giá đã báo.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key (must match the one used in quote_order).</td></tr><tr><td><code>confirm_token</code></td><td>string</td><td>required</td><td>The confirm_token returned by quote_order (valid ~5 minutes, single use).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;buy_product&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;confirm_token&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="check_health_bulk bulk live/dead check for many accounts at once (max 20 per call): facebook uid (numeric) or instagram/telegram/tiktok usernames. returns per-item status + a summary. read-only, free, no api_key required. ig/fb items that cannot be verified (datacenter ip blocked) are moved to &quot;skipped&quot; — pass your own &quot;proxy&quot; to check them reliably. when to use: a list of 2-20 accounts, or any non-facebook platfor"><summary><code>check_health_bulk</code><span>Bulk live/dead check for MANY accounts at once (max 20 per call): Facebook UID (numeric) or …</span></summary><p class="desc">Bulk live/dead check for MANY accounts at once (max 20 per call): Facebook UID (numeric) or Instagram/Telegram/TikTok usernames. Returns per-item status + a summary. Read-only, free, no api_key required. IG/FB items that cannot be verified (datacenter IP blocked) are moved to &quot;skipped&quot; — pass your own &quot;proxy&quot; to check them reliably. WHEN TO USE: a list of 2-20 accounts, or any non-Facebook platform. PREFER INSTEAD: check_live_facebook for a single Facebook UID, deep_inspect for one detailed profile. Kiểm tra sống/chết HÀNG LOẠT (tối đa 20/lần): UID Facebook hoặc username IG/TG/TikTok; mục IG/FB không check được bị đưa vào &quot;skipped&quot; — truyền &quot;proxy&quot; riêng để check chuẩn.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>items</code></td><td>string[]</td><td>required</td><td>List of UIDs (Facebook) or usernames (IG/TG/TikTok). Danh sách UID/username (tối đa 20). Cũng chấp nhận 1 chuỗi ngăn cách bởi dấu phẩy/xuống dòng.</td></tr><tr><td><code>platform</code></td><td>string</td><td>optional</td><td>Platform to check. Nền tảng cần kiểm tra (mặc định facebook). One of: facebook, instagram, telegram, tiktok</td></tr><tr><td><code>proxy</code></td><td>string</td><td>optional</td><td>Optional (recommended for IG/FB): YOUR own proxy, this request only, never shared. http(s)://user:pass@host:port or socks5://host:port. Tùy chọn (nên có cho IG/FB): proxy CỦA BẠN, chỉ request này.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;check_health_bulk&quot;,
+    &quot;arguments&quot;: {
+      &quot;items&quot;: []
+    }
+  }
+}</code></pre></details><details class="tool" data-text="check_live_facebook check whether one facebook uid (numeric) is live or dead via the public profile-picture endpoint (server-side). read-only, free, no api_key required. facebook blocks datacenter ips, so if it cannot verify it returns status &quot;needs_proxy&quot; — pass your own &quot;proxy&quot; to check reliably. when to use: a single facebook uid. prefer instead: check_health_bulk for many accounts at once or for instagram/telegra"><summary><code>check_live_facebook</code><span>Check whether ONE Facebook UID (numeric) is live or dead via the public profile-picture endpoint …</span></summary><p class="desc">Check whether ONE Facebook UID (numeric) is live or dead via the public profile-picture endpoint (server-side). Read-only, free, no api_key required. Facebook blocks datacenter IPs, so if it cannot verify it returns status &quot;needs_proxy&quot; — pass your own &quot;proxy&quot; to check reliably. WHEN TO USE: a single Facebook UID. PREFER INSTEAD: check_health_bulk for many accounts at once or for Instagram/Telegram/TikTok, deep_inspect for a detailed profile (followers, bio, media). Kiểm tra 1 UID Facebook (số) sống/chết; FB chặn IP máy chủ nên nếu không check được sẽ trả &quot;needs_proxy&quot; — truyền &quot;proxy&quot; riêng để check chuẩn.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>uid</code></td><td>string</td><td>required</td><td>Facebook numeric UID. UID Facebook (chỉ gồm chữ số).</td></tr><tr><td><code>proxy</code></td><td>string</td><td>optional</td><td>Optional: YOUR own proxy for this request only (never shared). Format: http(s)://user:pass@host:port or socks5://host:port. Tùy chọn: proxy CỦA BẠN, chỉ áp cho request này (không chia sẻ). Dạng http(s)://user:pass@host:port hoặc socks5://host:port.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;check_live_facebook&quot;,
+    &quot;arguments&quot;: {
+      &quot;uid&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="check_order_status check the status and delivered content (account credentials) of one of your orders by order_code (requires your api_key). read-only by default — spends nothing. optional refresh=true: if the order looks stuck/undelivered (pending/failed), re-triggers delivery from the system (async, safe — never charges money, never touches a completed/refunded order) then returns the current status; poll again af"><summary><code>check_order_status</code><span>Check the status and delivered content (account credentials) of ONE of your orders by order_code (requires …</span></summary><p class="desc">Check the status and delivered content (account credentials) of ONE of your orders by order_code (requires your api_key). Read-only by default — spends nothing. OPTIONAL refresh=true: if the order looks stuck/undelivered (pending/failed), re-triggers delivery from the system (async, safe — never charges money, never touches a completed/refunded order) then returns the current status; poll again after ~5-10s. PREREQUISITE: an order_code (from buy_product or list_orders). WHEN TO USE: the user wants the current state or the delivered data of a specific order; set refresh=true only to nudge a stuck order. PREFER INSTEAD: list_orders to find the order_code first, get_mail_code for the email OTP, submit_complaint if the delivered item is faulty. Kiểm tra trạng thái &amp; nội dung đã giao của 1 đơn theo order_code (cần api_key); truyền refresh=true để ép giao lại nếu đơn treo — không tính phí.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>order_code</code></td><td>string</td><td>required</td><td>The order code returned by buy_product.</td></tr><tr><td><code>refresh</code></td><td>boolean</td><td>optional</td><td>Set true to re-trigger delivery when the order looks stuck/undelivered (async; safe, never charges). Default false = plain read-only status check.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;check_order_status&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;order_code&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="claim_quest claim the reward for one completed quest. server verifies completion from real data; idempotent — one claim per quest per period (a second call will not double-credit). reward credits the shopping balance (not withdrawable). prerequisite: a quest_key that is complete-but-unclaimed, from list_quests or gamefi_status. when to use: collect a finished quest. prefer instead: list_quests to find which q"><summary><code>claim_quest</code><span>Claim the reward for ONE completed quest. Server verifies completion from real data; idempotent — one claim …</span></summary><p class="desc">Claim the reward for ONE completed quest. Server verifies completion from real data; idempotent — one claim per quest per period (a second call will not double-credit). Reward credits the SHOPPING balance (not withdrawable). PREREQUISITE: a quest_key that is complete-but-unclaimed, from list_quests or gamefi_status. WHEN TO USE: collect a finished quest. PREFER INSTEAD: list_quests to find which quest_key is claimable, daily_checkin / spin_wheel for those specific rewards. Requires api_key. Nhận thưởng 1 nhiệm vụ đã hoàn thành (dùng quest_key từ list_quests).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>quest_key</code></td><td>string</td><td>required</td><td>The quest key to claim (from list_quests), e.g. daily_checkin, daily_buy1, weekly_spend50k.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;claim_quest&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;quest_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="compare_products compare 2–5 public products side by side (price, stock, min/max, sold, category) with a quick summary (cheapest / most stock / best seller). read-only, no api_key required, public fields only (price vnd). prerequisite: you already have 2-5 product ids. when to use: help the user pick between specific candidates. prefer instead: get_product for one id in depth, similar_products to first discover co"><summary><code>compare_products</code><span>Compare 2–5 public products side by side (price, stock, min/max, sold, category) with a quick summary …</span></summary><p class="desc">Compare 2–5 public products side by side (price, stock, min/max, sold, category) with a quick summary (cheapest / most stock / best seller). Read-only, no api_key required, public fields only (price VND). PREREQUISITE: you already have 2-5 product ids. WHEN TO USE: help the user pick between specific candidates. PREFER INSTEAD: get_product for one id in depth, similar_products to first discover comparable items, search_products / list_category_products to find ids. So sánh 2–5 sản phẩm cạnh nhau để khách chốt nhanh; chỉ field công khai (giá VND).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>ids</code></td><td>integer[]</td><td>required</td><td>Danh sách 2–5 product id cần so sánh, vd [943, 1004]. Cũng chấp nhận chuỗi &quot;943,1004&quot;.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;compare_products&quot;,
+    &quot;arguments&quot;: {
+      &quot;ids&quot;: []
+    }
+  }
+}</code></pre></details><details class="tool" data-text="create_binance_deposit create a binance pay deposit order to top up your balance. the server returns the shop receive pay id (and qr) plus a unique usdt amount (with cents) — relay them verbatim, never invent them. prerequisite: api_key and binance pay must be enabled (check topup_guide first). when to use: the user will pay inside the official binance app. afterwards: call verify_binance_deposit with merchant_trade_no."><summary><code>create_binance_deposit</code><span>Create a Binance Pay deposit order to top up your balance. The SERVER returns the shop receive Pay ID (and …</span></summary><p class="desc">Create a Binance Pay deposit order to top up your balance. The SERVER returns the shop receive Pay ID (and QR) plus a unique USDT amount (with cents) — relay them VERBATIM, never invent them. PREREQUISITE: api_key AND Binance Pay must be enabled (check topup_guide first). WHEN TO USE: the user will pay inside the official Binance app. AFTERWARDS: call verify_binance_deposit with merchant_trade_no. PREFER INSTEAD: create_usdt_deposit for on-chain USDT transfers. Tạo đơn nạp Binance Pay — hệ thống trả Pay ID nhận tiền + số USDT kèm số lẻ; chuyển lại NGUYÊN VĂN.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>amount_usd</code></td><td>number</td><td>required</td><td>Whole-number USD amount to deposit (the system assigns a unique cents suffix).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;create_binance_deposit&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;amount_usd&quot;: 0
+    }
+  }
+}</code></pre></details><details class="tool" data-text="create_usdt_deposit create a usdt deposit order to top up your balance. the server generates the real receiving wallet address and a unique amount (with cents) — relay them to the user verbatim, never invent or edit a wallet address. supports trc20 / bep20 / polygon / arbitrum / base. prerequisite: api_key; call topup_guide first to see which networks are active + min/max. when to use: the user wants to deposit on-ch"><summary><code>create_usdt_deposit</code><span>Create a USDT deposit order to top up your balance. The SERVER generates the real receiving wallet address …</span></summary><p class="desc">Create a USDT deposit order to top up your balance. The SERVER generates the real receiving wallet address and a unique amount (with cents) — relay them to the user VERBATIM, never invent or edit a wallet address. Supports TRC20 / BEP20 / Polygon / Arbitrum / Base. PREREQUISITE: api_key; call topup_guide FIRST to see which networks are active + min/max. WHEN TO USE: the user wants to deposit on-chain USDT. AFTERWARDS: once they send, call verify_usdt_deposit with order_code + claim_token. PREFER INSTEAD: create_binance_deposit for users paying inside the Binance app. Tạo đơn nạp USDT — hệ thống tự sinh ĐỊA CHỈ VÍ và SỐ TIỀN kèm số lẻ độc nhất; chuyển lại NGUYÊN VĂN, KHÔNG tự chế/sửa ví.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>amount_usd</code></td><td>number</td><td>required</td><td>Whole-number USD amount to deposit (decimals are ignored — the system assigns a unique cents suffix).</td></tr><tr><td><code>network</code></td><td>string</td><td>optional</td><td>USDT network: trc20 | bep20 | polygon | arbitrum | base (default trc20). Only networks with a configured wallet work — check topup_guide. One of: trc20, bep20, polygon, arbitrum, base</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;create_usdt_deposit&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;amount_usd&quot;: 0
+    }
+  }
+}</code></pre></details><details class="tool" data-text="daily_checkin perform the once-a-day check-in and collect the reward (random 200-1,000đ base + streak milestone bonuses at 7/30 days, sometimes x2 combo). idempotent — if already checked in today it just says so (no double credit). each check-in also grants +1 lucky-wheel spin. reward credits the shopping balance (not withdrawable). when to use: the user wants to claim today&#x27;s free check-in. prefer instead: gam"><summary><code>daily_checkin</code><span>Perform the once-a-day check-in and collect the reward (random 200-1,000đ base + streak milestone bonuses at …</span></summary><p class="desc">Perform the once-a-day check-in and collect the reward (random 200-1,000đ base + streak milestone bonuses at 7/30 days, sometimes x2 combo). Idempotent — if already checked in today it just says so (no double credit). Each check-in also grants +1 lucky-wheel spin. Reward credits the SHOPPING balance (not withdrawable). WHEN TO USE: the user wants to claim today&#x27;s free check-in. PREFER INSTEAD: gamefi_status to first see if it is available, spin_wheel to use the earned spin, claim_quest for quest rewards. Requires api_key. Điểm danh hằng ngày nhận thưởng (mỗi ngày 1 lần).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;daily_checkin&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="deep_inspect deep profile lookup for one social account (server-side, best-effort, public data only): instagram/tiktok → followers, bio, verified, media; telegram → title, members; facebook uid → live/dead + avatar. read-only, free, no api_key required. ig/fb block datacenter ips → if it cannot read it returns status &quot;needs_proxy&quot;; pass your own &quot;proxy&quot; to read reliably. when to use: you want rich detail about"><summary><code>deep_inspect</code><span>Deep profile lookup for ONE social account (server-side, best-effort, public data only): Instagram/TikTok → …</span></summary><p class="desc">Deep profile lookup for ONE social account (server-side, best-effort, public data only): Instagram/TikTok → followers, bio, verified, media; Telegram → title, members; Facebook UID → live/dead + avatar. Read-only, free, no api_key required. IG/FB block datacenter IPs → if it cannot read it returns status &quot;needs_proxy&quot;; pass your own &quot;proxy&quot; to read reliably. WHEN TO USE: you want rich detail about one profile. PREFER INSTEAD: check_health_bulk to sweep many accounts for live/dead only, check_live_facebook for a quick single-UID liveness check. Xem SÂU 1 tài khoản MXH (chỉ đọc công khai); IG/FB chặn IP máy chủ → nếu không xem được trả &quot;needs_proxy&quot;, truyền &quot;proxy&quot; riêng để xem chuẩn.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>platform</code></td><td>string</td><td>required</td><td>Platform. Nền tảng cần xem. One of: facebook, instagram, telegram, tiktok</td></tr><tr><td><code>handle</code></td><td>string</td><td>required</td><td>Username/handle (IG/TG/TikTok) or numeric UID (Facebook). Also accepts a full profile URL. Username hoặc UID (FB); chấp nhận cả link profile.</td></tr><tr><td><code>proxy</code></td><td>string</td><td>optional</td><td>Optional (recommended for IG/FB): YOUR own proxy, this request only, never shared. http(s)://user:pass@host:port or socks5://host:port. Tùy chọn (nên có cho IG/FB): proxy CỦA BẠN, chỉ request này.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;deep_inspect&quot;,
+    &quot;arguments&quot;: {
+      &quot;platform&quot;: &quot;facebook&quot;,
+      &quot;handle&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="gamefi_status one-shot overview of all free balance rewards the account can grab right now: daily check-in (available today? streak, reward range), lucky-wheel spins available, and the quest board (how many quests are complete &amp; claimable). read-only. when to use: call this first whenever the user asks about rewards/free balance, then use daily_checkin / spin_wheel / list_quests + claim_quest to collect. note: "><summary><code>gamefi_status</code><span>One-shot overview of all FREE balance rewards the account can grab right now: daily check-in (available …</span></summary><p class="desc">One-shot overview of all FREE balance rewards the account can grab right now: daily check-in (available today? streak, reward range), lucky-wheel spins available, and the quest board (how many quests are complete &amp; claimable). Read-only. WHEN TO USE: call this FIRST whenever the user asks about rewards/free balance, then use daily_checkin / spin_wheel / list_quests + claim_quest to collect. Note: all rewards credit the SHOPPING balance (spendable in-shop, NOT withdrawable). Requires api_key. Tổng quan phần thưởng miễn phí: điểm danh, vòng quay, nhiệm vụ có thể nhận (thưởng vào số dư mua hàng, không rút được).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Language for labels: &quot;vi&quot; or &quot;en&quot; (default en).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;gamefi_status&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_2fa generate the current 2fa/totp code (6 digits) from a base32 secret key (google authenticator style). computed on the server in-memory only, never stored or logged. free, no api_key required. when to use: the user has an authenticator secret key (from an account they bought or own) and needs the live totp code now. prefer instead: get_mail_code for email otp/verification codes delivered to a mail-b"><summary><code>get_2fa</code><span>Generate the current 2FA/TOTP code (6 digits) from a Base32 secret key (Google Authenticator style). Computed …</span></summary><p class="desc">Generate the current 2FA/TOTP code (6 digits) from a Base32 secret key (Google Authenticator style). Computed on the server in-memory only, never stored or logged. Free, no api_key required. WHEN TO USE: the user has an authenticator secret key (from an account they bought or own) and needs the live TOTP code now. PREFER INSTEAD: get_mail_code for email OTP/verification codes delivered to a mail-bundled order. Requires a valid Base32 secret. Sinh mã 2FA/TOTP hiện tại (6 số) từ khóa bí mật Base32; tính cục bộ, không lưu, không gửi đi đâu.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>secret</code></td><td>string</td><td>required</td><td>Base32 secret key (spaces allowed). Khóa bí mật Base32 (cho phép có dấu cách).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_2fa&quot;,
+    &quot;arguments&quot;: {
+      &quot;secret&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_mail_code get the latest email otp / verification code for a purchased mail-bundled account order. supports hotmail/outlook via oauth (refresh_token) and mail.tm (email + password). read-only. prerequisite: api_key + an order_code whose delivered account includes an inbox. when to use: the user needs the verification code sent to the email that came with their order. prefer instead: get_2fa for authenticato"><summary><code>get_mail_code</code><span>Get the latest email OTP / verification code for a purchased mail-bundled account order. Supports …</span></summary><p class="desc">Get the latest email OTP / verification code for a purchased mail-bundled account order. Supports Hotmail/Outlook via OAuth (refresh_token) and mail.tm (email + password). Read-only. PREREQUISITE: api_key + an order_code whose delivered account includes an inbox. WHEN TO USE: the user needs the verification code sent to the email that came with their order. PREFER INSTEAD: get_2fa for authenticator (TOTP) codes, check_order_status to see the delivered credentials themselves. Lấy mã OTP/xác minh mới nhất cho đơn tài khoản có kèm mail (Hotmail/Outlook qua refresh_token, mail.tm qua email+mật khẩu); cần api_key + order_code.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>order_code</code></td><td>string</td><td>required</td><td>The order code of the mail-bundled account order.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_mail_code&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;order_code&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_my_balance get your account balance, level and discount (requires your shop api_key). read-only, spends nothing. when to use: the user asks &quot;how much do i have&quot; or you need to confirm funds before quote_order / buy_product. prefer instead: wallet_history for the full ledger of top-ups/spends/refunds, topup_guide to add funds, quote_order to price a specific purchase. requires a valid api_key. xem số dư &amp; hạn"><summary><code>get_my_balance</code><span>Get your account balance, level and discount (requires your shop api_key). Read-only, spends nothing. WHEN TO …</span></summary><p class="desc">Get your account balance, level and discount (requires your shop api_key). Read-only, spends nothing. WHEN TO USE: the user asks &quot;how much do I have&quot; or you need to confirm funds before quote_order / buy_product. PREFER INSTEAD: wallet_history for the full ledger of top-ups/spends/refunds, topup_guide to add funds, quote_order to price a specific purchase. Requires a valid api_key. Xem số dư &amp; hạng tài khoản (cần api_key); trả balance (VND), level, discount.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key. Khóa API tài khoản shop của bạn (Trang cá nhân → API).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_my_balance&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_product get the full public detail of one product by its numeric id: name, price (vnd), stock, category, long description and url. read-only, no api_key required. when to use: after search_products / list_category_products / best_sellers gave you an id and the user wants the full description of that single item. prefer instead: compare_products to evaluate 2-5 ids at once, similar_products to find alterna"><summary><code>get_product</code><span>Get the full public detail of ONE product by its numeric id: name, price (VND), stock, category, long …</span></summary><p class="desc">Get the full public detail of ONE product by its numeric id: name, price (VND), stock, category, long description and url. Read-only, no api_key required. WHEN TO USE: after search_products / list_category_products / best_sellers gave you an id and the user wants the full description of that single item. PREFER INSTEAD: compare_products to evaluate 2-5 ids at once, similar_products to find alternatives. Requires a known product id (not a name). Not for buying — pass the id to quote_order. Xem chi tiết 1 sản phẩm công khai theo id (kèm mô tả); chỉ đọc, không cần api_key.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>integer</td><td>required</td><td>Product id.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_product&quot;,
+    &quot;arguments&quot;: {
+      &quot;id&quot;: 0
+    }
+  }
+}</code></pre></details><details class="tool" data-text="how_to_start onboarding guide for new users: how to start buying on hotlikeshop through this mcp (create account -&gt; get api_key -&gt; top up -&gt; search &amp; buy). read-only, no api_key required. when to use: the very first call for a new / international user, or whenever someone lacks an api_key or asks &quot;how does this work&quot;. lists which tools are free vs. which need an api_key. prefer instead: topup_guide for deposit"><summary><code>how_to_start</code><span>Onboarding guide for NEW users: how to start buying on hotlikeshop through this MCP (create account -&gt; get …</span></summary><p class="desc">Onboarding guide for NEW users: how to start buying on hotlikeshop through this MCP (create account -&gt; get api_key -&gt; top up -&gt; search &amp; buy). Read-only, no api_key required. WHEN TO USE: the very FIRST call for a new / international user, or whenever someone lacks an api_key or asks &quot;how does this work&quot;. Lists which tools are free vs. which need an api_key. PREFER INSTEAD: topup_guide for deposit specifics, quote_order + buy_product to actually purchase, search_products to browse. Pass lang=&quot;en&quot; (default) or lang=&quot;vi&quot;. Hướng dẫn bắt đầu cho người mới: tạo tài khoản -&gt; lấy api_key -&gt; nạp tiền -&gt; tìm &amp; mua.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Optional: &quot;en&quot; (default) or &quot;vi&quot;. Ngôn ngữ hướng dẫn: &quot;en&quot; (mặc định) hoặc &quot;vi&quot;.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;how_to_start&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="latest_products list newest in-stock public products (recently added first), public fields only (price vnd). read-only, no api_key required. when to use: the user wants &quot;new arrivals / just added&quot;. prefer instead: best_sellers for &quot;popular&quot;, search_products for a keyword, recommend_products for a budget, list_category_products for a full category. optionally scope with category_id (from list_categories) or a keyw"><summary><code>latest_products</code><span>List newest in-stock public products (recently added first), public fields only (price VND). Read-only, no …</span></summary><p class="desc">List newest in-stock public products (recently added first), public fields only (price VND). Read-only, no api_key required. WHEN TO USE: the user wants &quot;new arrivals / just added&quot;. PREFER INSTEAD: best_sellers for &quot;popular&quot;, search_products for a keyword, recommend_products for a budget, list_category_products for a full category. Optionally scope with category_id (from list_categories) or a keyword. Danh sách sản phẩm MỚI còn hàng (thêm gần đây nhất trước); chỉ trả field công khai (giá VND).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>category_id</code></td><td>integer</td><td>optional</td><td>Limit to a category id (optional). Giới hạn theo danh mục (tùy chọn).</td></tr><tr><td><code>keyword</code></td><td>string</td><td>optional</td><td>Keyword in product name (optional). Từ khóa trong tên SP (tùy chọn).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Max results (default 10, max 20).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;latest_products&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="list_categories list every public category with its id, name and in-stock product count. read-only, takes no parameters, no api_key required. when to use: call this first to discover the category taxonomy and get the category_id values required by list_category_products, best_sellers, latest_products and recommend_products. prefer instead: search_products when the user already has a keyword, or how_to_start for o"><summary><code>list_categories</code><span>List every public category with its id, name and in-stock product count. Read-only, takes no parameters, no …</span></summary><p class="desc">List every public category with its id, name and in-stock product count. Read-only, takes no parameters, no api_key required. WHEN TO USE: call this FIRST to discover the category taxonomy and get the category_id values required by list_category_products, best_sellers, latest_products and recommend_products. PREFER INSTEAD: search_products when the user already has a keyword, or how_to_start for onboarding. This only lists categories — it does not return individual products. Liệt kê danh mục công khai kèm số sản phẩm; dùng để lấy category_id.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_categories&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="list_category_products list in-stock public products inside one category by category_id: id, name, price (vnd), stock. read-only, no api_key required. prerequisite: get category_id from list_categories first. when to use: browse everything in a chosen category. prefer instead: search_products for keyword search across all categories, best_sellers to rank a category by sales, recommend_products to filter by budget, lates"><summary><code>list_category_products</code><span>List in-stock public products inside ONE category by category_id: id, name, price (VND), stock. Read-only, no …</span></summary><p class="desc">List in-stock public products inside ONE category by category_id: id, name, price (VND), stock. Read-only, no api_key required. PREREQUISITE: get category_id from list_categories first. WHEN TO USE: browse everything in a chosen category. PREFER INSTEAD: search_products for keyword search across all categories, best_sellers to rank a category by sales, recommend_products to filter by budget, latest_products for newest. Not for buying — pass a chosen id to quote_order. Liệt kê sản phẩm công khai trong 1 danh mục theo category_id.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>category_id</code></td><td>integer</td><td>required</td><td>Category id.</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Max results (default 30, max 100).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_category_products&quot;,
+    &quot;arguments&quot;: {
+      &quot;category_id&quot;: 0
+    }
+  }
+}</code></pre></details><details class="tool" data-text="list_orders list your recent orders (order history), paginated, with order_code, product, quantity, total paid, status and date (requires your api_key). read-only, spends nothing. when to use: the user wants their purchase history or you need to find an order_code. afterwards: check_order_status (with refresh=true to nudge a stuck order) / get_mail_code for a specific order_code. prefer instead: wallet_histor"><summary><code>list_orders</code><span>List your recent orders (order history), paginated, with order_code, product, quantity, total paid, status …</span></summary><p class="desc">List your recent orders (order history), paginated, with order_code, product, quantity, total paid, status and date (requires your api_key). Read-only, spends nothing. WHEN TO USE: the user wants their purchase history or you need to find an order_code. AFTERWARDS: check_order_status (with refresh=true to nudge a stuck order) / get_mail_code for a specific order_code. PREFER INSTEAD: wallet_history for money movements (top-ups/refunds), not order details. Liệt kê lịch sử đơn (order_code, sản phẩm, số lượng, tổng tiền, trạng thái, ngày) — cần api_key; dùng để tìm order_code rồi gọi check_order_status / get_mail_code.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>page</code></td><td>integer</td><td>optional</td><td>Page number (default 1).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Orders per page (default 20, max 100).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_orders&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="list_quests list the daily &amp; weekly quest board with progress: each quest key, title, reward, current/target progress, whether it is complete and whether it is already claimed. read-only, spends nothing. when to use: the user wants to see quests or you need a quest_key. afterwards: call claim_quest on any quest that is complete but not yet claimed. prefer instead: gamefi_status for a combined rewards summary "><summary><code>list_quests</code><span>List the daily &amp; weekly quest board with progress: each quest key, title, reward, current/target progress, …</span></summary><p class="desc">List the daily &amp; weekly quest board with progress: each quest key, title, reward, current/target progress, whether it is complete and whether it is already claimed. Read-only, spends nothing. WHEN TO USE: the user wants to see quests or you need a quest_key. AFTERWARDS: call claim_quest on any quest that is complete but not yet claimed. PREFER INSTEAD: gamefi_status for a combined rewards summary (check-in + wheel + quests). Requires api_key. Danh sách nhiệm vụ ngày/tuần kèm tiến độ + phần thưởng.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Language for titles: &quot;vi&quot; or &quot;en&quot; (default en).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_quests&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="quote_order step 1 of buying: get a price quote for a product before purchasing. returns unit price, discount, total to pay (vnd), your balance, stock, and a confirm_token (single-use, valid ~5 min). spends nothing. requires api_key + product_id. when to use: always call this first, then show the total to the user and get explicit approval before buy_product. prefer instead: get_my_balance to only check funds"><summary><code>quote_order</code><span>STEP 1 of buying: get a price quote for a product BEFORE purchasing. Returns unit price, discount, total to …</span></summary><p class="desc">STEP 1 of buying: get a price quote for a product BEFORE purchasing. Returns unit price, discount, total to pay (VND), your balance, stock, and a confirm_token (single-use, valid ~5 min). SPENDS NOTHING. Requires api_key + product_id. WHEN TO USE: always call this first, then show the total to the user and get explicit approval before buy_product. PREFER INSTEAD: get_my_balance to only check funds, check_order_status for an order that already exists (not for pricing a new one). Bước 1 khi mua: báo giá TRƯỚC khi mua, trả confirm_token; KHÔNG trừ tiền. Luôn hỏi người dùng xác nhận rồi mới gọi buy_product.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>product_id</code></td><td>integer</td><td>required</td><td>Product id (from search_products / get_product).</td></tr><tr><td><code>quantity</code></td><td>integer</td><td>optional</td><td>Quantity to buy (default 1).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;quote_order&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;product_id&quot;: 0
+    }
+  }
+}</code></pre></details><details class="tool" data-text="recommend_products recommend in-stock public products by budget and/or keyword/category, cheapest first, with a simple combo suggestion. read-only, no api_key required, public fields only (price vnd). when to use: the user has a budget or a vague need (&quot;something under 50k for facebook&quot;). prefer instead: search_products for an exact keyword, best_sellers for popularity, latest_products for newest, list_category_prod"><summary><code>recommend_products</code><span>Recommend in-stock public products by budget and/or keyword/category, cheapest first, with a simple combo …</span></summary><p class="desc">Recommend in-stock public products by budget and/or keyword/category, cheapest first, with a simple combo suggestion. Read-only, no api_key required, public fields only (price VND). WHEN TO USE: the user has a budget or a vague need (&quot;something under 50k for Facebook&quot;). PREFER INSTEAD: search_products for an exact keyword, best_sellers for popularity, latest_products for newest, list_category_products to see a whole category. Optionally scope with category_id from list_categories. Gợi ý sản phẩm CÒN HÀNG theo ngân sách và/hoặc từ khóa/danh mục (rẻ trước) kèm gợi ý combo; chỉ trả field công khai (giá VND).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>budget</code></td><td>integer</td><td>optional</td><td>Max unit price in VND (optional). Ngân sách/giá tối đa mỗi SP (VND, tùy chọn).</td></tr><tr><td><code>keyword</code></td><td>string</td><td>optional</td><td>Keyword in product name (optional). Từ khóa trong tên SP (tùy chọn).</td></tr><tr><td><code>category_id</code></td><td>integer</td><td>optional</td><td>Limit to a category id (optional). Giới hạn theo danh mục (tùy chọn).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Max results (default 8, max 20).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;recommend_products&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="search_products search the public catalog by keyword in the product name; returns id, name, price (vnd), stock, category and url. read-only, no api_key required. when to use: the user already has a search term or product name. prefer instead: list_categories + list_category_products to browse without a keyword, best_sellers for &quot;popular&quot;, latest_products for &quot;new&quot;, get_product for the full detail of one id. not f"><summary><code>search_products</code><span>Search the public catalog by keyword in the product name; returns id, name, price (VND), stock, category and …</span></summary><p class="desc">Search the public catalog by keyword in the product name; returns id, name, price (VND), stock, category and url. Read-only, no api_key required. WHEN TO USE: the user already has a search term or product name. PREFER INSTEAD: list_categories + list_category_products to browse without a keyword, best_sellers for &quot;popular&quot;, latest_products for &quot;new&quot;, get_product for the full detail of one id. Not for buying — pass a found id to quote_order. Tìm sản phẩm công khai theo tên; chỉ đọc, không cần api_key.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>query</code></td><td>string</td><td>required</td><td>Keyword / từ khóa (product name).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Max results (default 20, max 50).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;search_products&quot;,
+    &quot;arguments&quot;: {
+      &quot;query&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="similar_products given one product id, list similar in-stock public products (same category, best-selling first; fills with newest from other categories if few). read-only, no api_key required, public fields only (price vnd + units sold). prerequisite: a known product id. when to use: suggest alternatives / cross-sell around an item the user is viewing, then optionally compare_products. prefer instead: search_prod"><summary><code>similar_products</code><span>Given ONE product id, list similar in-stock public products (same category, best-selling first; fills with …</span></summary><p class="desc">Given ONE product id, list similar in-stock public products (same category, best-selling first; fills with newest from other categories if few). Read-only, no api_key required, public fields only (price VND + units sold). PREREQUISITE: a known product id. WHEN TO USE: suggest alternatives / cross-sell around an item the user is viewing, then optionally compare_products. PREFER INSTEAD: search_products for keyword search, recommend_products for budget-based picks, list_category_products to browse the whole category. Cho 1 product id, trả các SP TƯƠNG TỰ còn hàng (cùng danh mục, ưu tiên bán chạy; bù SP mới khác danh mục nếu ít).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>integer</td><td>required</td><td>Product id gốc để tìm SP tương tự, vd 943.</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Max results (default 8, max 20).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;similar_products&quot;,
+    &quot;arguments&quot;: {
+      &quot;id&quot;: 0
+    }
+  }
+}</code></pre></details><details class="tool" data-text="spin_wheel spin the lucky wheel once and return the prize won + new balance. consumes exactly one spin server-side (not free to repeat — each call uses a spin). prerequisite: available spins, earned from check-ins/deposits/purchases (see gamefi_status). when to use: the user has spins and wants to use one. prefer instead: daily_checkin to earn a spin first, gamefi_status to see how many spins remain. winning"><summary><code>spin_wheel</code><span>Spin the lucky wheel once and return the prize won + new balance. Consumes exactly one spin server-side (NOT …</span></summary><p class="desc">Spin the lucky wheel once and return the prize won + new balance. Consumes exactly one spin server-side (NOT free to repeat — each call uses a spin). PREREQUISITE: available spins, earned from check-ins/deposits/purchases (see gamefi_status). WHEN TO USE: the user has spins and wants to use one. PREFER INSTEAD: daily_checkin to earn a spin first, gamefi_status to see how many spins remain. Winnings credit the SHOPPING balance (not withdrawable). Requires api_key. Quay vòng quay may mắn 1 lượt (cần còn lượt quay).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;spin_wheel&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="submit_complaint file a complaint / warranty-refund request for one delivered order (requires your api_key). opens a support case; the shop reviews within 3 days and if unresolved in time the order is auto-refunded. not idempotent — one complaint per order, so confirm with the user before calling. prerequisite: an order_code that was delivered and is genuinely faulty. when to use: the bought item is wrong / dead /"><summary><code>submit_complaint</code><span>File a complaint / warranty-refund request for ONE delivered order (requires your api_key). Opens a support …</span></summary><p class="desc">File a complaint / warranty-refund request for ONE delivered order (requires your api_key). Opens a support case; the shop reviews within 3 days and if unresolved in time the order is auto-refunded. NOT idempotent — one complaint per order, so confirm with the user before calling. PREREQUISITE: an order_code that was delivered and is genuinely faulty. WHEN TO USE: the bought item is wrong / dead / login-fails / short quantity. PREFER INSTEAD: check_order_status with refresh=true first if it merely looks stuck (undelivered), then check_order_status to track the case afterwards. Gửi khiếu nại/bảo hành-hoàn tiền cho 1 đơn (cần api_key); shop xử lý ≤3 ngày, quá hạn TỰ ĐỘNG HOÀN; mỗi đơn chỉ khiếu nại 1 lần; theo dõi bằng check_order_status.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>order_code</code></td><td>string</td><td>required</td><td>The order code you want to complain about (must belong to your account).</td></tr><tr><td><code>reason</code></td><td>string</td><td>required</td><td>Short reason for the complaint, e.g. &quot;Sai sản phẩm&quot;, &quot;Không đăng nhập được&quot;, &quot;Die/khóa&quot;, &quot;Thiếu số lượng&quot;, &quot;Khác&quot;.</td></tr><tr><td><code>description</code></td><td>string</td><td>optional</td><td>Optional details describing the problem (which items failed, error message, etc.).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;submit_complaint&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;order_code&quot;: &quot;...&quot;,
+      &quot;reason&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="topup_guide explain how to add funds (deposit) to a hotlikeshop account and list the active deposit methods/networks + min/max. info only — this tool never moves money. read-only. when to use: call this first, before create_usdt_deposit or create_binance_deposit, to see which networks are enabled; pass api_key to also show current balance &amp; the shortfall vs a target amount. prefer instead: how_to_start for fu"><summary><code>topup_guide</code><span>Explain how to add funds (deposit) to a hotlikeshop account and list the active deposit methods/networks + …</span></summary><p class="desc">Explain how to add funds (deposit) to a hotlikeshop account and list the active deposit methods/networks + min/max. Info only — this tool never moves money. Read-only. WHEN TO USE: call this FIRST, before create_usdt_deposit or create_binance_deposit, to see which networks are enabled; pass api_key to also show current balance &amp; the shortfall vs a target amount. PREFER INSTEAD: how_to_start for full new-user onboarding, get_my_balance if you only need the balance number. Pass lang=&quot;en&quot; for an English guide. Hướng dẫn nạp tiền (chỉ thông tin, KHÔNG thanh toán); truyền api_key để kèm số dư &amp; phần còn thiếu, kèm quy đổi USD.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>optional</td><td>Optional: your shop api_key to also show current balance &amp; shortfall (with USD conversion). Tùy chọn: api_key để hiện số dư &amp; phần còn thiếu.</td></tr><tr><td><code>amount</code></td><td>integer</td><td>optional</td><td>Optional: amount you want to spend (VND) to compute shortfall. Tùy chọn: số tiền cần (VND) để tính phần còn thiếu.</td></tr><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Optional: &quot;en&quot; for English guide, otherwise Vietnamese. Tùy chọn: &quot;en&quot; để nhận hướng dẫn tiếng Anh.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;topup_guide&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="verify_binance_deposit check / confirm a binance pay deposit created by create_binance_deposit. reads the shop binance pay history for a matching transfer and credits your balance when found. idempotent — safe to poll every ~12s, credits only once. prerequisite: merchant_trade_no from create_binance_deposit. when to use: after the user has paid via binance pay, to confirm and credit it. prefer instead: verify_usdt_depos"><summary><code>verify_binance_deposit</code><span>Check / confirm a Binance Pay deposit created by create_binance_deposit. Reads the shop Binance Pay history …</span></summary><p class="desc">Check / confirm a Binance Pay deposit created by create_binance_deposit. Reads the shop Binance Pay history for a matching transfer and credits your balance when found. Idempotent — safe to poll every ~12s, credits only once. PREREQUISITE: merchant_trade_no from create_binance_deposit. WHEN TO USE: after the user has paid via Binance Pay, to confirm and credit it. PREFER INSTEAD: verify_usdt_deposit for on-chain USDT deposits, get_my_balance/wallet_history to inspect balance afterwards. Kiểm tra &amp; xác nhận đơn nạp Binance Pay — khớp thì cộng tiền (an toàn khi gọi lại nhiều lần).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>merchant_trade_no</code></td><td>string</td><td>required</td><td>merchant_trade_no from create_binance_deposit.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;verify_binance_deposit&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;merchant_trade_no&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="verify_usdt_deposit check / confirm a usdt deposit created by create_usdt_deposit. scans the blockchain for a matching transfer and credits your balance when found. idempotent — safe to poll every ~15s, credits only once. prerequisite: order_code + claim_token from create_usdt_deposit. when to use: after the user has sent the usdt, to confirm and credit it; optionally pass method=&quot;hash&quot; + tx_hash to verify by a speci"><summary><code>verify_usdt_deposit</code><span>Check / confirm a USDT deposit created by create_usdt_deposit. Scans the blockchain for a matching transfer …</span></summary><p class="desc">Check / confirm a USDT deposit created by create_usdt_deposit. Scans the blockchain for a matching transfer and credits your balance when found. Idempotent — safe to poll every ~15s, credits only once. PREREQUISITE: order_code + claim_token from create_usdt_deposit. WHEN TO USE: after the user has sent the USDT, to confirm and credit it; optionally pass method=&quot;hash&quot; + tx_hash to verify by a specific transaction. PREFER INSTEAD: verify_binance_deposit for Binance Pay deposits, get_my_balance/wallet_history to inspect balance afterwards. Kiểm tra &amp; xác nhận đơn nạp USDT — quét blockchain, khớp thì cộng tiền (an toàn khi gọi lại nhiều lần).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>order_code</code></td><td>string</td><td>required</td><td>order_code from create_usdt_deposit.</td></tr><tr><td><code>claim_token</code></td><td>string</td><td>required</td><td>claim_token from create_usdt_deposit (single-order secret).</td></tr><tr><td><code>method</code></td><td>string</td><td>optional</td><td>Verification mode: &quot;amount&quot; (default, auto-scan by unique amount) or &quot;hash&quot;. One of: amount, hash</td></tr><tr><td><code>tx_hash</code></td><td>string</td><td>optional</td><td>Transaction hash (only when method=&quot;hash&quot;).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;verify_usdt_deposit&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;,
+      &quot;order_code&quot;: &quot;...&quot;,
+      &quot;claim_token&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="wallet_history get the balance ledger for the account: every top-up (bank/usdt/binance pay + bonuses, check-in, missions, wheel, reviews, affiliate) and every spend (purchases) / refund, with the running balance after each entry, plus totals in/out. paginated (20/page, newest first). read-only, spends nothing. when to use: the user wants a history of money movements or to audit where funds went. prefer instead: "><summary><code>wallet_history</code><span>Get the balance ledger for the account: every top-up (bank/USDT/Binance Pay + bonuses, check-in, missions, …</span></summary><p class="desc">Get the balance ledger for the account: every top-up (bank/USDT/Binance Pay + bonuses, check-in, missions, wheel, reviews, affiliate) and every spend (purchases) / refund, with the running balance after each entry, plus totals in/out. Paginated (20/page, newest first). Read-only, spends nothing. WHEN TO USE: the user wants a history of money movements or to audit where funds went. PREFER INSTEAD: get_my_balance for just the current number, list_orders for purchase/order details rather than money entries. Requires api_key. Xem lịch sử biến động số dư (nạp/tiêu/hoàn) kèm số dư sau mỗi giao dịch.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>api_key</code></td><td>string</td><td>required</td><td>Your shop account API key.</td></tr><tr><td><code>page</code></td><td>integer</td><td>optional</td><td>Page number (default 1, 20 rows per page).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;wallet_history&quot;,
+    &quot;arguments&quot;: {
+      &quot;api_key&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details></div>
+<h2>Badge</h2>
+<p>Maintain this server? Put its live status in your README:</p>
+<p><img src="../../badge/hotlikeshop.svg" alt="MCP status badge" height="20"></p>
+<div class="cmd"><code>[![MCP status](https://mcp.aianytime.net/badge/hotlikeshop.svg)](https://mcp.aianytime.net/s/hotlikeshop/)</code><button class="copy" data-copy="[![MCP status](https://mcp.aianytime.net/badge/hotlikeshop.svg)](https://mcp.aianytime.net/s/hotlikeshop/)">Copy</button></div>
+<p class="note" style="margin-top:22px"><a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/servers/hotlikeshop.json">Edit this entry</a> · <a href="https://github.com/AIAnytime/Awesome-MCP-Servers/issues/new?template=report-entry.yml">Report a problem</a></p>
+<section>
+<h2>More in Commerce, travel &amp; logistics</h2>
+<ul class="chips"><li><a href="../maqami-travel/">MAQAMI Travel</a></li><li><a href="../octotrip-rental-cars/">OctoTrip Rental Cars</a></li><li><a href="../packrift/">Packrift</a></li><li><a href="../pocket-drives/">Pocket Drives</a></li><li><a href="../pumperly-mcp/">pumperly-mcp</a></li><li><a href="../robohub/">RoboHub</a></li><li><a href="../../c/commerce-travel/">All of Commerce, travel &amp; logistics</a></li></ul>
+</section>
+
+<p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
+<a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="../../api/servers.json">JSON</a> · <a href="../../llms.txt">llms.txt</a> · <a href="../../llms-full.txt">llms-full.txt</a></p>
+<p class="fineprint" style="margin-top:8px">Browse: <a href="../../c/developer-tools/">Agents, IDEs &amp; developer tools</a> · <a href="../../c/search/">Search &amp; discovery</a> · <a href="../../c/knowledge-memory/">Knowledge, memory &amp; context</a> · <a href="../../c/media/">Media &amp; generation</a> · <a href="../../c/security/">Security</a> · <a href="../../c/finance/">Finance &amp; markets</a> · <a href="../../c/marketing/">Marketing, content &amp; social</a> · <a href="../../c/cloud-data/">Cloud, ops &amp; data</a> · <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a> · <a href="../../c/productivity/">Work &amp; productivity</a> · <a href="../../c/no-auth/">No account needed</a> · <a href="../../c/local/">Local servers</a></p>
+</main>
+<footer><div class="wrap foot">
+<div>
+<h2>AI Anytime</h2>
+<p>Practical AI for all. AI education, research and enablement, rooted in open source. This directory is built and maintained by AI Anytime.</p>
+<p class="links"><a href="https://aianytime.net">aianytime.net</a><a href="https://www.youtube.com/@AIAnytime">YouTube</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a></p>
+</div>
+<div class="academy">
+<span class="eyebrow">AI Anytime Academy</span>
+<h3>Become an AI engineer by building.</h3>
+<p>Structured career tracks, browser coding labs, an AI mentor and AI-reviewed portfolio projects. Start for free.</p>
+<a class="cta" href="https://academy.aianytime.net">Explore the Academy</a>
+</div>
+</div></footer>
+<script>
+document.addEventListener('click',e=>{const b=e.target.closest('button.copy');if(!b)return;
+navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=t,1200)});});
+document.getElementById('theme').addEventListener('click',()=>{const r=document.documentElement;
+const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}});
+document.getElementById('refresh').addEventListener('click',()=>location.reload());
+
+document.querySelectorAll('.tabs').forEach(tabs=>{tabs.classList.add('js');
+const show=id=>{tabs.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+tabs.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('on',p.dataset.panel===id));};
+let saved=null;try{saved=localStorage.getItem('client')}catch(e){}
+show(saved&&tabs.querySelector('[data-tab="'+saved+'"]')?saved:tabs.querySelector('[data-tab]').dataset.tab);
+tabs.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;show(b.dataset.tab);try{localStorage.setItem('client',b.dataset.tab)}catch(e){}});});
+const tq=document.getElementById('toolq');
+if(tq)tq.addEventListener('input',()=>{const terms=tq.value.toLowerCase().split(/\s+/).filter(Boolean);
+document.querySelectorAll('#toollist .tool').forEach(t=>{t.hidden=!terms.every(x=>t.dataset.text.includes(x));});});
+</script>
+</body>
+</html>

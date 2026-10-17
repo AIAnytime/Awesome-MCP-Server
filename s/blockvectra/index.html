@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlockVectra MCP server: status, tools and setup</title>
+<meta name="description" content="BlockVectra MCP server. Answered an MCP handshake without credentials and listed 15 tools. Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI...">
+<meta name="keywords" content="MCP servers, Model Context Protocol, MCP directory, remote MCP servers, MCP server list, awesome mcp servers, AI agents, Claude, Cursor, AI Anytime">
+<meta name="author" content="AI Anytime">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="theme-color" content="#f6f4ee">
+<link rel="canonical" href="https://mcp.aianytime.net/s/blockvectra/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" title="Directory data" href="../../api/servers.json">
+<link rel="alternate" type="text/plain" title="llms.txt" href="../../llms.txt">
+<meta property="og:site_name" content="Awesome MCP Servers by AI Anytime">
+<meta property="og:title" content="BlockVectra MCP server: status, tools and setup">
+<meta property="og:description" content="BlockVectra MCP server. Answered an MCP handshake without credentials and listed 15 tools. Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI...">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mcp.aianytime.net/s/blockvectra/">
+<meta property="og:image" content="https://mcp.aianytime.net/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Awesome MCP Servers by AI Anytime: MCP servers we actually connect to, every night.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BlockVectra MCP server: status, tools and setup">
+<meta name="twitter:description" content="BlockVectra MCP server. Answered an MCP handshake without credentials and listed 15 tools. Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI...">
+<meta name="twitter:image" content="https://mcp.aianytime.net/og.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://aianytime.net/#organization", "name": "AI Anytime", "url": "https://aianytime.net", "sameAs": ["https://www.youtube.com/@AIAnytime", "https://github.com/AIAnytime", "https://academy.aianytime.net"]}, {"@type": "SoftwareApplication", "name": "BlockVectra", "description": "Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI agents. Documentation, chain, pricing and status tools need no API key; Data API tools require one. Endpoint: https://docs.blockvectra.com/mcp · Docs", "url": "https://mcp.aianytime.net/s/blockvectra/", "sameAs": "https://github.com/blockvectra/mcp", "applicationCategory": "DeveloperApplication", "applicationSubCategory": "MCP server (Finance & markets)", "operatingSystem": "Any", "isPartOf": {"@id": "https://mcp.aianytime.net/#website"}, "softwareVersion": "1.2.0", "featureList": ["data_api_get", "estimate_usage", "explain_error", "get_account", "get_deposit_address", "get_method_info", "get_pricing", "get_status", "how_to_get_api_key", "list_chains", "list_docs", "read_doc", "rpc_call", "search_docs", "send_raw_transaction"], "dateModified": "2026-10-17T07:49:55Z"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Directory", "item": "https://mcp.aianytime.net/"}, {"@type": "ListItem", "position": 2, "name": "Finance & markets", "item": "https://mcp.aianytime.net/c/finance/"}, {"@type": "ListItem", "position": 3, "name": "BlockVectra", "item": "https://mcp.aianytime.net/s/blockvectra/"}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f4ee;--card:#fffdf8;--ink:#121118;--mute:#625f6d;--line:#dedad0;--accent:#5b3df5;--accent-soft:#ebe6ff;
+--lime:#d4f75e;--night:#0d0c12;--night-2:#17151f;--night-line:#2b2935;
+--live:#1a7f37;--auth:#5b3df5;--down:#c0262d;--off:#8a8794;--code:#efece3}
+/* Dark: follows the system unless the visitor picked a theme with the header button. */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}}
+:root[data-theme=dark]{--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}
+.icon .sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .icon .sun{display:block}:root:not([data-theme=light]) .icon .moon{display:none}}
+:root[data-theme=dark] .icon .sun{display:block}:root[data-theme=dark] .icon .moon{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%}
+a{color:var(--accent)}
+code{font:.86em "Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--mute);font-weight:500}
+nav a{margin-left:18px;color:var(--mute);text-decoration:none;font-size:.93rem}
+nav a:first-child{margin-left:0;color:var(--accent);font-weight:600}
+nav a:hover{color:var(--ink)}
+nav{display:flex;align-items:center;flex-wrap:wrap;row-gap:8px}
+.icon{display:inline-grid;place-items:center;width:34px;height:34px;margin-left:10px;padding:0;cursor:pointer;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px}
+nav a+.icon{margin-left:18px}
+.icon:hover{color:var(--accent);border-color:var(--accent)}
+.icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:44px 0 18px}
+h1{font:400 clamp(2.3rem,6vw,3.6rem)/1.05 "Instrument Serif",ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:1.1rem;color:var(--mute);max-width:64ch;margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-weight:600;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:.86rem}
+.note{color:var(--mute);font-size:.86rem;margin:6px 0 0}
+.controls{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.controls input,.controls select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.controls input{flex:1 1 240px}
+.controls select{flex:0 1 auto;max-width:100%}
+#count{color:var(--mute);font-size:.88rem;margin:12px 0}
+.list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--accent)}
+.card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.card p{margin:6px 0 0;color:var(--mute);font-size:.94rem;overflow-wrap:anywhere}
+.tag{font:500 .7rem "Geist Mono",ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 6px}
+.pill{font-size:.76rem;font-weight:600;white-space:nowrap}
+.pill::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
+.live{color:var(--live)}.auth{color:var(--auth)}.down{color:var(--down)}.unprobed{color:var(--off)}
+.unprobed.pill::before{background:none;border:1.5px solid currentColor}
+.facts{margin:8px 0 0;font-size:.84rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+.cmd code{flex:1;min-width:0;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
+button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+.controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
+section{padding:34px 0 0}
+h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 10px}
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:0;list-style:none;margin:14px 0 0}
+.learn li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
+.learn a{font-weight:600}
+.fineprint{margin-top:44px;color:var(--mute);font-size:.86rem}
+footer{margin-top:22px;background:var(--night);color:#b9b6c6;font-size:.92rem;border-top:1px solid var(--night-line)}
+footer .wrap{padding-top:36px;padding-bottom:36px}
+footer a{color:#f6f4ee}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:start}
+.foot h2{font:400 1.7rem/1.1 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:0 0 8px;letter-spacing:0}
+.foot p{margin:0 0 12px;max-width:46ch}
+.foot .links a{margin-right:16px;white-space:nowrap}
+.academy{background:var(--night-2);border:1px solid var(--night-line);border-radius:16px;padding:20px 22px}
+.academy .eyebrow{font:500 .72rem "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.academy h3{font:400 1.5rem/1.15 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:6px 0 8px}
+.academy a.cta{display:inline-block;background:var(--lime);color:#121118;font-weight:600;text-decoration:none;border-radius:999px;padding:9px 18px;margin-top:4px}
+.academy a.cta:hover{filter:brightness(1.06)}
+.crumbs{margin:26px 0 8px;font-size:.9rem}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
+dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
+.days{display:flex;gap:3px;margin-top:6px}
+.days i{width:12px;height:22px;border-radius:3px;background:var(--off)}
+.days .u{background:var(--live)}.days .a{background:var(--auth)}.days .d{background:var(--down)}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.86rem}
+pre code{background:none;padding:0;overflow-wrap:normal}
+.tools{columns:220px;padding-left:18px;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.chips a:hover{border-color:var(--accent);color:var(--accent)}
+.chips a span{color:var(--mute)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mute)}
+[hidden]{display:none!important}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.checks th{font-weight:500}
+table.checks td:last-child{min-width:150px}
+table.params{min-width:560px}
+thead th{color:var(--mute);font-weight:500;font-size:.8rem;white-space:nowrap}
+.state{font-size:.78rem;font-weight:600;white-space:nowrap}
+.state::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:currentColor}
+.state.verified{color:var(--live)}.state.failed{color:var(--down)}.state.untested{color:var(--off)}
+.state.untested::before{background:none;border:1.5px solid currentColor}
+h3{font-size:1.02rem;margin:22px 0 6px}
+.count{font:500 .8rem "Geist Mono",ui-monospace,monospace;color:var(--mute);margin-left:4px}
+.tablist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.tablist button{font:inherit;font-size:.88rem;cursor:pointer;color:var(--mute);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 13px}
+.tablist button.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.tabs.js .panel{display:none}.tabs.js .panel.on{display:block}.tabs.js .panel h3{display:none}
+.tabs:not(.js) .tablist{display:none}
+.panel{margin-top:6px}
+.snippet{position:relative}.snippet .copy{position:absolute;top:8px;right:8px;height:28px}
+.snippet pre{margin:8px 0;padding-right:76px}
+.btn{display:inline-block;background:var(--accent);color:var(--bg);font-weight:600;text-decoration:none;border-radius:999px;padding:7px 16px;font-size:.9rem}
+.tips{padding-left:18px;color:var(--mute);font-size:.92rem}.tips li{margin:4px 0}
+#toolq{font:inherit;width:100%;max-width:360px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:4px 0 10px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.tool summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.tool summary span:last-child{color:var(--mute);font-size:.88rem;flex:1 1 260px;min-width:0}
+.tool .desc{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem;margin:10px 0}
+.tool pre{margin:6px 0 4px}
+.hint{font:500 .68rem "Geist Mono",ui-monospace,monospace;border-radius:5px;padding:1px 6px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.hint.read{color:var(--live);border-color:currentColor}.hint.danger{color:var(--down);border-color:currentColor}
+ul.plain{padding-left:18px;font-size:.92rem;color:var(--mute)}
+.status td,.status th{white-space:nowrap}.status .days i{width:5px;height:16px;border-radius:2px}.status .days{gap:2px;margin:0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="brand" href="../../">Awesome MCP Servers <span>by AI Anytime</span></a>
+<nav><a href="https://academy.aianytime.net">Academy</a><a href="../../#directory">Directory</a><a href="../../status/">Status</a><a href="../../#learn">Learn</a><a href="../../#agents">For agents</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a>
+<button id="refresh" class="icon" type="button" title="Reload for the latest check results" aria-label="Reload page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
+<button id="theme" class="icon" type="button" title="Switch between light and dark" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>
+</div></header>
+<main class="wrap">
+
+<p class="crumbs"><a href="../../#directory">Directory</a> / <a href="../../c/finance/">Finance &amp; markets</a></p>
+<h1>BlockVectra</h1>
+<p class="lede">Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI agents. Documentation, chain, pricing and status tools need no API key; Data API tools require one. Endpoint: <code>https://docs.blockvectra.com/mcp</code> · <a href="https://docs.blockvectra.com/en/" rel="nofollow noopener">Docs</a></p>
+<p style="margin-top:18px"><span class="pill live">Live</span> &nbsp;Answered an MCP handshake without credentials and listed 15 tools.</p>
+<dl><dt>Category</dt><dd><a href="../../c/finance/">Finance &amp; markets</a></dd><dt>Transport</dt><dd><code>http</code></dd><dt>Source</dt><dd><a href="https://github.com/blockvectra/mcp" rel="nofollow noopener">https://github.com/blockvectra/mcp</a></dd><dt>Endpoint</dt><dd><code>https://docs.blockvectra.com/mcp</code></dd><dt>Reports itself as</dt><dd>blockvectra-docs 1.2.0</dd><dt>Protocol</dt><dd>2025-06-18</dd><dt>Tools</dt><dd>15</dd><dt>Context cost</dt><dd>about 3,256 tokens for the tool definitions (estimated at four characters per token)</dd><dt>Tool definitions last changed</dt><dd>2026-10-16</dd><dt>Handshake time</dt><dd>133 ms</dd><dt>Repository</dt><dd>0 stars · last push 2026-10-16 · MIT</dd><dt>Last checked</dt><dd>2026-10-17 07:49:55 UTC</dd><dt>Listed since</dt><dd>2026-10-12</dd></dl>
+<h2 id="health">Health and compatibility</h2><div class="scroll"><table class="checks"><tbody><tr><th scope='row'>Endpoint reachable</th><td><span class="state verified">Verified</span></td><td>Responded in 133 ms</td></tr><tr><th scope='row'>MCP handshake (initialize)</th><td><span class="state verified">Verified</span></td><td>Completed without credentials</td></tr><tr><th scope='row'>Tool discovery (tools/list)</th><td><span class="state verified">Verified</span></td><td>15 tools listed</td></tr><tr><th scope='row'>Authentication</th><td><span class="state verified">Verified</span></td><td>None needed to connect</td></tr><tr><th scope='row'>Protocol version</th><td><span class="state verified">Verified</span></td><td>2025-06-18</td></tr><tr><th scope='row'>Transport</th><td><span class="state verified">Verified</span></td><td>Streamable HTTP</td></tr><tr><th scope='row'>Capabilities declared</th><td><span class="state verified">Verified</span></td><td>tools</td></tr></tbody></table></div><p class="note">Last checked <time datetime="2026-10-17T07:49:55Z">2026-10-17 07:49:55 UTC</time>. Verified means the check saw it happen; it says nothing about whether the server is safe.</p><h3>Recent history</h3><p class="note">6 daily checks so far; median response 215 ms. Green answered, violet asked for auth, red did not answer.</p><div class="days"><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i></div>
+<h2 id="setup">Set up in your client</h2><div class="tabs"><div class="tablist" role="tablist"><button type="button" role="tab" data-tab="claude-code" class=on>Claude Code</button><button type="button" role="tab" data-tab="claude-desktop">Claude Desktop</button><button type="button" role="tab" data-tab="cursor">Cursor</button><button type="button" role="tab" data-tab="vscode">VS Code</button><button type="button" role="tab" data-tab="windsurf">Windsurf</button><button type="button" role="tab" data-tab="other">Other clients</button></div><div class="panel" data-panel="claude-code"><h3>Claude Code</h3><p>Run this in a terminal:</p><div class="cmd"><code>claude mcp add --transport http blockvectra https://docs.blockvectra.com/mcp</code><button class="copy" data-copy="claude mcp add --transport http blockvectra https://docs.blockvectra.com/mcp">Copy</button></div></div><div class="panel" data-panel="claude-desktop"><h3>Claude Desktop</h3><p>Open <b>Settings → Connectors → Add custom connector</b> and paste this URL:</p><div class="cmd"><code>https://docs.blockvectra.com/mcp</code><button class="copy" data-copy="https://docs.blockvectra.com/mcp">Copy</button></div><p>Or bridge it through <code>mcp-remote</code> in <code>claude_desktop_config.json</code> (needs Node.js):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://docs.blockvectra.com/mcp&quot;
+      ]
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://docs.blockvectra.com/mcp&quot;
+      ]
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="cursor"><h3>Cursor</h3><p><a class="btn" href="cursor://anysphere.cursor-deeplink/mcp/install?name=blockvectra&amp;config=eyJ1cmwiOiAiaHR0cHM6Ly9kb2NzLmJsb2NrdmVjdHJhLmNvbS9tY3AifQ%3D%3D">Add to Cursor</a></p><p>Or add it to <code>~/.cursor/mcp.json</code> (or <code>.cursor/mcp.json</code> in a project):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="vscode"><h3>VS Code</h3><p><a class="btn" href="vscode:mcp/install?%7B%22name%22%3A%20%22blockvectra%22%2C%20%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A//docs.blockvectra.com/mcp%22%7D">Add to VS Code</a></p><p>Or add it to <code>.vscode/mcp.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;servers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;servers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}</code></pre></div><p>Or from a terminal:</p><div class="cmd"><code>code --add-mcp &#x27;{&quot;name&quot;: &quot;blockvectra&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;}&#x27;</code><button class="copy" data-copy="code --add-mcp &#x27;{&quot;name&quot;: &quot;blockvectra&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;}&#x27;">Copy</button></div></div><div class="panel" data-panel="windsurf"><h3>Windsurf</h3><p>Add it to <code>~/.codeium/windsurf/mcp_config.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;serverUrl&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;serverUrl&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="other"><h3>Other clients</h3><p>Most clients accept this shape. The endpoint is:</p><div class="cmd"><code>https://docs.blockvectra.com/mcp</code><button class="copy" data-copy="https://docs.blockvectra.com/mcp">Copy</button></div><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;blockvectra&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://docs.blockvectra.com/mcp&quot;
+    }
+  }
+}</code></pre></div></div></div><h3>If it does not connect</h3><ul class="tips"><li>Restart the client after editing a config file, and keep keys out of files you commit.</li><li>If the tools do not appear, open the client's MCP log: a 401 means the credentials were not accepted, and a timeout means the server did not answer.</li></ul>
+<h2 id="tools">Tools <span class="count">15</span></h2><p class="note">Names, descriptions and input schemas exactly as the server returned them on 2026-10-17. This is the server author's own text. Nothing is run from this page. Labels such as read-only are declared by the server and are not verified. <a href="../../api/tools/blockvectra.json">Raw JSON</a></p><input id="toolq" type="search" placeholder="Filter tools" aria-label="Filter tools"><div id="toollist"><details class="tool" data-text="data_api_get query the blockvectra data api for a specified chain and path using your blockvectra api key. for endpoint schemas and parameter specifications, see the openapi contract at https://docs.blockvectra.com/openapi/data.yaml. requires the &#x27;x-api-key&#x27; or &#x27;authorization: bearer &lt;key&gt;&#x27; http header in your mcp client configuration (keys must not be passed in tool parameters or chat). returns the http statu"><summary><code>data_api_get</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Query the BlockVectra Data API for a specified chain and path using your BlockVectra API key. For endpoint …</span></summary><p class="desc">Query the BlockVectra Data API for a specified chain and path using your BlockVectra API key. For endpoint schemas and parameter specifications, see the OpenAPI contract at https://docs.blockvectra.com/openapi/data.yaml. Requires the &#x27;x-api-key&#x27; or &#x27;Authorization: Bearer &lt;key&gt;&#x27; HTTP header in your MCP client configuration (keys must not be passed in tool parameters or chat). Returns the HTTP status and JSON response body.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>chain</code></td><td>string</td><td>required</td><td>Target blockchain network slug (e.g. &#x27;robinhood_mainnet&#x27;).</td></tr><tr><td><code>path</code></td><td>string</td><td>required</td><td>Path after &#x27;/v1/data/{chain}/&#x27; (e.g. &#x27;status/freshness&#x27;, &#x27;address/0x.../balances&#x27;). Must not start with &#x27;/&#x27;, and cannot contain &#x27;..&#x27;, &#x27;//&#x27;, &#x27;?&#x27;, &#x27;#&#x27;, or &#x27;%&#x27;.</td></tr><tr><td><code>query</code></td><td>object</td><td>optional</td><td>Optional URL query parameters as key-value pairs.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;data_api_get&quot;,
+    &quot;arguments&quot;: {
+      &quot;chain&quot;: &quot;...&quot;,
+      &quot;path&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="estimate_usage calculate projected daily and billing cycle compute units (cu) and usd costs for planned call volumes across one or more methods, factoring in method weights and free credit allowances from /v1/plans. available without an api key. estimates the api key count for planned traffic under key_defaults. use this tool for volume budget calculations and capacity planning. for looking up raw system pricing"><summary><code>estimate_usage</code><span class="hint read">read-only</span><span>Calculate projected daily and billing cycle Compute Units (CU) and USD costs for planned call volumes across …</span></summary><p class="desc">Calculate projected daily and billing cycle Compute Units (CU) and USD costs for planned call volumes across one or more methods, factoring in method weights and free credit allowances from /v1/plans. Available without an API key. Estimates the API key count for planned traffic under key_defaults. Use this tool for volume budget calculations and capacity planning. For looking up raw system pricing tables, use get_pricing instead. For checking whether a single method is supported on a specific chain, use get_method_info instead. Accepts &#x27;lines&#x27; array of {method, calls_per_day} or single &#x27;method&#x27; and &#x27;calls_per_day&#x27;.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>lines</code></td><td>object[]</td><td>optional</td><td>List of methods and daily call volumes to estimate.</td></tr><tr><td><code>method</code></td><td>string</td><td>optional</td><td>Exact method name (e.g. &#x27;eth_call&#x27;, &#x27;eth_getLogs&#x27;, &#x27;eth_blockNumber&#x27;, &#x27;data.address_balances&#x27;). Single-method mode.</td></tr><tr><td><code>calls_per_day</code></td><td>integer</td><td>optional</td><td>Expected daily call volume (non-negative integer). Single-method mode.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;estimate_usage&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="explain_error lookup error code, reason, or http status in the official error reference catalog. returns meaning, billing implications (whether the call was billed), retryability, retry delay, recommended agent action, and documentation url."><summary><code>explain_error</code><span class="hint read">read-only</span><span>Lookup error code, reason, or HTTP status in the official error reference catalog. Returns meaning, billing …</span></summary><p class="desc">Lookup error code, reason, or HTTP status in the official error reference catalog. Returns meaning, billing implications (whether the call was billed), retryability, retry delay, recommended agent action, and documentation URL.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>reason</code></td><td>string</td><td>optional</td><td>Error reason slug (e.g. &#x27;invalid_request&#x27;, &#x27;key_rate_limit&#x27;, &#x27;insufficient_balance&#x27;, &#x27;not_found&#x27;).</td></tr><tr><td><code>code</code></td><td>number | string</td><td>optional</td><td>Error code (e.g. -32600, -32005, -32020, or console code string like &#x27;siwe_invalid&#x27;).</td></tr><tr><td><code>http_status</code></td><td>number</td><td>optional</td><td>HTTP status code (e.g. 200, 400, 402, 404, 429, 500, 503).</td></tr><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Response language (case-insensitive). Defaults to &#x27;en&#x27;. One of: zh, en, ja, es, pt-br, ko, vi, zh-hant …</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;explain_error&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_account get the api key&#x27;s own balance, compute units (cu), rate limits, and key parameters from get /v1/account using your blockvectra api key. free and unbilled. requires the &#x27;x-api-key&#x27; or &#x27;authorization: bearer &lt;key&gt;&#x27; http header in your mcp client configuration (never pass keys in tool parameters or chat). returns the account&#x27;s key_id, plan, balance_units, balance_cu, balance_as_of_age_ms, and key lim"><summary><code>get_account</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Get the API key&#x27;s own balance, Compute Units (CU), rate limits, and key parameters from GET /v1/account using …</span></summary><p class="desc">Get the API key&#x27;s own balance, Compute Units (CU), rate limits, and key parameters from GET /v1/account using your BlockVectra API key. Free and unbilled. Requires the &#x27;x-api-key&#x27; or &#x27;Authorization: Bearer &lt;key&gt;&#x27; HTTP header in your MCP client configuration (never pass keys in tool parameters or chat). Returns the account&#x27;s key_id, plan, balance_units, balance_cu, balance_as_of_age_ms, and key limits.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_account&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_deposit_address requires an api key. get your account&#x27;s dedicated on-chain deposit address and open networks to top up balance; only transfer to the listed networks and tokens."><summary><code>get_deposit_address</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Requires an API key. Get your account&#x27;s dedicated on-chain deposit address and open networks to top up …</span></summary><p class="desc">Requires an API key. Get your account&#x27;s dedicated on-chain deposit address and open networks to top up balance; only transfer to the listed networks and tokens.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_deposit_address&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_method_info inspect a single method&#x27;s chain-by-chain availability, compute unit (cu) weight, price per million calls, and documentation link. check json-rpc method policy and data api dataset coverage separately. json-rpc follows methods.allow and methods.deny from /v1/chains. data api coverage follows data_features in get /v1/status, with data enabled in /v1/chains. pricing comes from /v1/plans. for the full"><summary><code>get_method_info</code><span class="hint read">read-only</span><span>Inspect a single method&#x27;s chain-by-chain availability, Compute Unit (CU) weight, price per million calls, and …</span></summary><p class="desc">Inspect a single method&#x27;s chain-by-chain availability, Compute Unit (CU) weight, price per million calls, and documentation link. Check JSON-RPC method policy and Data API dataset coverage separately. JSON-RPC follows methods.allow and methods.deny from /v1/chains. Data API coverage follows data_features in GET /v1/status, with data enabled in /v1/chains. Pricing comes from /v1/plans. For the full system-wide pricing schedule and rate card, use get_pricing instead. For calculating projected bills for expected call volumes across methods, use estimate_usage instead.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>method</code></td><td>string</td><td>required</td><td>Method name (e.g. &#x27;eth_call&#x27;, &#x27;eth_getBalance&#x27;, &#x27;debug_traceBlockByNumber&#x27;, &#x27;data.address_balances&#x27;).</td></tr><tr><td><code>chain</code></td><td>string</td><td>optional</td><td>Optional chain slug (e.g. &#x27;robinhood_mainnet&#x27;). If specified, only availability for this chain is returned.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_method_info&quot;,
+    &quot;arguments&quot;: {
+      &quot;method&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_pricing live prices and plan limits from `get /v1/plans`. use before estimating cost or when asked about free credits, rate limits or per-method prices. units: 1 billing unit = `pricing.cu_per_unit` cu; 1 usd buys `pricing.units_per_usd` units. `method_weights` includes json-rpc and data api cu per call, `push.log` / `push.native_transfer` / `push.token_transfer` per delivered data event, `push.history` p"><summary><code>get_pricing</code><span class="hint read">read-only</span><span>Live prices and plan limits from `GET /v1/plans`. Use before estimating cost or when asked about free …</span></summary><p class="desc">Live prices and plan limits from `GET /v1/plans`. Use before estimating cost or when asked about free credits, rate limits or per-method prices. Units: 1 billing unit = `pricing.cu_per_unit` CU; 1 USD buys `pricing.units_per_usd` units. `method_weights` includes JSON-RPC and Data API CU per call, `push.log` / `push.native_transfer` / `push.token_transfer` per delivered data event, `push.history` per successful history request and `push.address_day` per billable address-day; resolve a method by exact match, then the longest prefix rule ending in `*`, then the `*` row (JSON-RPC only; Data API and push operations have no default). `free.*` values are in billing units; `key_defaults` are per-key CU/s and burst CU. `promo.ends_at` is a sign-up coverage cutoff, not the end of the offer. For a single method&#x27;s chain support and documentation use get_method_info instead; for projecting cycle costs use estimate_usage instead.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_pricing&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_status live operational status and network health from `get /v1/status`. confirm chain `status` is &#x27;ok&#x27; before calling methods; see `list_chains` for static chain capabilities and method policies. for data api, `data_status` can be &#x27;ok&#x27;, &#x27;syncing&#x27; (queryable and billed normally, but indexing is lagging behind latest block time), or &#x27;unavailable&#x27;."><summary><code>get_status</code><span class="hint read">read-only</span><span>Live operational status and network health from `GET /v1/status`. Confirm chain `status` is &#x27;ok&#x27; before …</span></summary><p class="desc">Live operational status and network health from `GET /v1/status`. Confirm chain `status` is &#x27;ok&#x27; before calling methods; see `list_chains` for static chain capabilities and method policies. For Data API, `data_status` can be &#x27;ok&#x27;, &#x27;syncing&#x27; (queryable and billed normally, but indexing is lagging behind latest block time), or &#x27;unavailable&#x27;.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_status&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="how_to_get_api_key get instructions and endpoints for obtaining a blockvectra api key via preferred programmatic siwe sign-up or browser handoff, plus authentication header and url formats for json-rpc and data api."><summary><code>how_to_get_api_key</code><span class="hint read">read-only</span><span>Get instructions and endpoints for obtaining a BlockVectra API key via preferred programmatic SIWE sign-up or …</span></summary><p class="desc">Get instructions and endpoints for obtaining a BlockVectra API key via preferred programmatic SIWE sign-up or browser handoff, plus authentication header and URL formats for JSON-RPC and Data API.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Response language (case-insensitive). Defaults to &#x27;en&#x27;. One of: zh, en, ja, es, pt-br, ko, vi, zh-hant …</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;how_to_get_api_key&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="list_chains fetch supported blockchain networks and static parameters from `get /v1/chains`. `methods.allow` and `methods.deny` support wildcard patterns where `deny` takes precedence over `allow`. `state_window_blocks` indicates the historical state window in blocks for state queries (null when full history is available); `max_logs_block_range` limits `eth_getlogs`: the range is inclusive, so `toblock - from"><summary><code>list_chains</code><span class="hint read">read-only</span><span>Fetch supported blockchain networks and static parameters from `GET /v1/chains`. `methods.allow` and …</span></summary><p class="desc">Fetch supported blockchain networks and static parameters from `GET /v1/chains`. `methods.allow` and `methods.deny` support wildcard patterns where `deny` takes precedence over `allow`. `state_window_blocks` indicates the historical state window in blocks for state queries (null when full history is available); `max_logs_block_range` limits `eth_getLogs`: the range is inclusive, so `toBlock - fromBlock + 1` must not exceed it, otherwise the call fails with `logs_range_too_large`. `public` describes the keyless endpoint: `public.url` serves only the methods in `public.methods`, and `public.history_blocks` is how far back a block reference may reach on that endpoint (it does not add methods). Pass `chain` (a slug such as `base_mainnet`) to return only that chain.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>chain</code></td><td>string</td><td>optional</td><td>Optional chain slug (exact match, e.g. &#x27;base_mainnet&#x27;). When set, only that chain is returned; unknown slugs return an error listing the available ones. Omit to list all chains.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_chains&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="list_docs list all available documentation pages, relative paths, and titles from the static documentation index, including webhook push subscriptions, signatures, delivery and billing. available without an api key."><summary><code>list_docs</code><span class="hint read">read-only</span><span>List all available documentation pages, relative paths, and titles from the static documentation index, …</span></summary><p class="desc">List all available documentation pages, relative paths, and titles from the static documentation index, including webhook push subscriptions, signatures, delivery and billing. Available without an API key.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Published documentation language (case-insensitive, e.g. zh-hant or zh-Hant). Omit for English; unavailable languages return an error. One of: en, zh, de, es, fr, id, ja, ko …</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_docs&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="read_doc read the raw markdown content of a documentation page from /md/{lang}/{path}.md. path must be an internal relative path (e.g. &#x27;quickstart&#x27;, &#x27;guides/ai-agents&#x27;, &#x27;api/json-rpc&#x27;, &#x27;chains&#x27;)."><summary><code>read_doc</code><span class="hint read">read-only</span><span>Read the raw Markdown content of a documentation page from /md/{lang}/{path}.md. Path must be an internal …</span></summary><p class="desc">Read the raw Markdown content of a documentation page from /md/{lang}/{path}.md. Path must be an internal relative path (e.g. &#x27;quickstart&#x27;, &#x27;guides/ai-agents&#x27;, &#x27;api/json-rpc&#x27;, &#x27;chains&#x27;).</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>path</code></td><td>string</td><td>required</td><td>Internal relative documentation path (e.g. &#x27;quickstart&#x27;, &#x27;guides/ai-agents&#x27;, &#x27;api/json-rpc&#x27;). Do not include protocol, hostname, query string, fragment, or &#x27;..&#x27;.</td></tr><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Published documentation language (case-insensitive, e.g. zh-hant or zh-Hant). Omit for English; unavailable languages return an error. One of: en, zh, de, es, fr, id, ja, ko …</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;read_doc&quot;,
+    &quot;arguments&quot;: {
+      &quot;path&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="rpc_call execute a read-only json-rpc 2.0 method on a specified blockchain network using your blockvectra api key, or via the keyless public endpoint if available on the chain. chain slugs look like &#x27;base_mainnet&#x27;; take them from list_chains. without a key the call goes to the keyless endpoint `/v1/{chain}/public` (the chain&#x27;s `public.url` in list_chains), which only serves the methods listed in that chain"><summary><code>rpc_call</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Execute a read-only JSON-RPC 2.0 method on a specified blockchain network using your BlockVectra API key, or …</span></summary><p class="desc">Execute a read-only JSON-RPC 2.0 method on a specified blockchain network using your BlockVectra API key, or via the keyless public endpoint if available on the chain. Chain slugs look like &#x27;base_mainnet&#x27;; take them from list_chains. Without a key the call goes to the keyless endpoint `/v1/{chain}/public` (the chain&#x27;s `public.url` in list_chains), which only serves the methods listed in that chain&#x27;s `public.methods`. Write methods (such as &#x27;eth_sendRawTransaction&#x27;) are not supported in rpc_call; use &#x27;send_raw_transaction&#x27; instead. Consult the Ethereum JSON-RPC specification (https://ethereum.org/en/developers/docs/apis/json-rpc/) and the BlockVectra method reference (https://docs.blockvectra.com/en/api/json-rpc/methods/). With a key, set the &#x27;x-api-key&#x27; or &#x27;Authorization: Bearer &lt;key&gt;&#x27; HTTP header in your MCP client configuration for full access (keys must not be passed in tool parameters or chat). Returns the raw JSON-RPC response from the server.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>chain</code></td><td>string</td><td>required</td><td>Target blockchain network slug (e.g. &#x27;base_mainnet&#x27;). Must exist in GET /v1/chains; list_chains returns the valid slugs.</td></tr><tr><td><code>method</code></td><td>string</td><td>required</td><td>JSON-RPC 2.0 method name (e.g. &#x27;eth_blockNumber&#x27;, &#x27;eth_call&#x27;, &#x27;eth_getLogs&#x27;). Write methods are not accepted.</td></tr><tr><td><code>params</code></td><td>array</td><td>optional</td><td>Optional JSON-RPC parameter array. Defaults to [].</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;rpc_call&quot;,
+    &quot;arguments&quot;: {
+      &quot;chain&quot;: &quot;...&quot;,
+      &quot;method&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="search_docs find documentation by topic or task keywords when the page path is unknown. searches page titles, navigation titles, relative paths, and page summaries, returning titles, relative paths, and summaries. read a result with read_doc using its path and the same lang; use read_doc directly for a known path or list_docs to browse the documentation catalog. omit lang for english; limit is 1-20 (default 5"><summary><code>search_docs</code><span class="hint read">read-only</span><span>Find documentation by topic or task keywords when the page path is unknown. Searches page titles, navigation …</span></summary><p class="desc">Find documentation by topic or task keywords when the page path is unknown. Searches page titles, navigation titles, relative paths, and page summaries, returning titles, relative paths, and summaries. Read a result with read_doc using its path and the same lang; use read_doc directly for a known path or list_docs to browse the documentation catalog. Omit lang for English; limit is 1-20 (default 5). If no results match, try broader keywords or browse list_docs. Available without an API key.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>query</code></td><td>string</td><td>required</td><td>Keywords to search for in documentation titles, navigation titles, paths, and summaries.</td></tr><tr><td><code>lang</code></td><td>string</td><td>optional</td><td>Published documentation language (case-insensitive, e.g. zh-hant or zh-Hant). Omit for English; unavailable languages return an error. One of: en, zh, de, es, fr, id, ja, ko …</td></tr><tr><td><code>limit</code></td><td>number</td><td>optional</td><td>Maximum number of search results to return (1-20, default 5).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;search_docs&quot;,
+    &quot;arguments&quot;: {
+      &quot;query&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="send_raw_transaction broadcast a signed raw transaction to a specified blockchain network via eth_sendrawtransaction. requires the &#x27;x-api-key&#x27; or &#x27;authorization: bearer &lt;key&gt;&#x27; http header in your mcp client configuration for full access, or uses the keyless public endpoint if permitted on the chain (keys must not be passed in tool parameters or chat). returns the transaction hash or json-rpc error."><summary><code>send_raw_transaction</code><span class="hint write">can modify</span><span class="hint danger">destructive</span><span class="hint world">external access</span><span>Broadcast a signed raw transaction to a specified blockchain network via eth_sendRawTransaction. Requires the …</span></summary><p class="desc">Broadcast a signed raw transaction to a specified blockchain network via eth_sendRawTransaction. Requires the &#x27;x-api-key&#x27; or &#x27;Authorization: Bearer &lt;key&gt;&#x27; HTTP header in your MCP client configuration for full access, or uses the keyless public endpoint if permitted on the chain (keys must not be passed in tool parameters or chat). Returns the transaction hash or JSON-RPC error.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>chain</code></td><td>string</td><td>required</td><td>Target blockchain network slug (e.g. &#x27;robinhood_mainnet&#x27;). Must exist in GET /v1/chains.</td></tr><tr><td><code>raw_tx</code></td><td>string</td><td>required</td><td>Signed raw transaction data as a 0x-prefixed hex string (the RLP-encoded raw transaction).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;send_raw_transaction&quot;,
+    &quot;arguments&quot;: {
+      &quot;chain&quot;: &quot;...&quot;,
+      &quot;raw_tx&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details></div>
+<h2>Badge</h2>
+<p>Maintain this server? Put its live status in your README:</p>
+<p><img src="../../badge/blockvectra.svg" alt="MCP status badge" height="20"></p>
+<div class="cmd"><code>[![MCP status](https://mcp.aianytime.net/badge/blockvectra.svg)](https://mcp.aianytime.net/s/blockvectra/)</code><button class="copy" data-copy="[![MCP status](https://mcp.aianytime.net/badge/blockvectra.svg)](https://mcp.aianytime.net/s/blockvectra/)">Copy</button></div>
+<p class="note" style="margin-top:22px"><a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/servers/blockvectra.json">Edit this entry</a> · <a href="https://github.com/AIAnytime/Awesome-MCP-Servers/issues/new?template=report-entry.yml">Report a problem</a></p>
+<section>
+<h2>More in Finance &amp; markets</h2>
+<ul class="chips"><li><a href="../canli-validation-mcp/">canli-validation-mcp</a></li><li><a href="../chord/">Chord</a></li><li><a href="../ddbx/">ddbx</a></li><li><a href="../deposit-by-ouroboros-apps/">Deposit by Ouroboros Apps</a></li><li><a href="../equibles/">Equibles</a></li><li><a href="../eulerpool/">Eulerpool</a></li><li><a href="../../c/finance/">All of Finance &amp; markets</a></li></ul>
+</section>
+
+<p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
+<a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="../../api/servers.json">JSON</a> · <a href="../../llms.txt">llms.txt</a> · <a href="../../llms-full.txt">llms-full.txt</a></p>
+<p class="fineprint" style="margin-top:8px">Browse: <a href="../../c/developer-tools/">Agents, IDEs &amp; developer tools</a> · <a href="../../c/search/">Search &amp; discovery</a> · <a href="../../c/knowledge-memory/">Knowledge, memory &amp; context</a> · <a href="../../c/media/">Media &amp; generation</a> · <a href="../../c/security/">Security</a> · <a href="../../c/finance/">Finance &amp; markets</a> · <a href="../../c/marketing/">Marketing, content &amp; social</a> · <a href="../../c/cloud-data/">Cloud, ops &amp; data</a> · <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a> · <a href="../../c/productivity/">Work &amp; productivity</a> · <a href="../../c/no-auth/">No account needed</a> · <a href="../../c/local/">Local servers</a></p>
+</main>
+<footer><div class="wrap foot">
+<div>
+<h2>AI Anytime</h2>
+<p>Practical AI for all. AI education, research and enablement, rooted in open source. This directory is built and maintained by AI Anytime.</p>
+<p class="links"><a href="https://aianytime.net">aianytime.net</a><a href="https://www.youtube.com/@AIAnytime">YouTube</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a></p>
+</div>
+<div class="academy">
+<span class="eyebrow">AI Anytime Academy</span>
+<h3>Become an AI engineer by building.</h3>
+<p>Structured career tracks, browser coding labs, an AI mentor and AI-reviewed portfolio projects. Start for free.</p>
+<a class="cta" href="https://academy.aianytime.net">Explore the Academy</a>
+</div>
+</div></footer>
+<script>
+document.addEventListener('click',e=>{const b=e.target.closest('button.copy');if(!b)return;
+navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=t,1200)});});
+document.getElementById('theme').addEventListener('click',()=>{const r=document.documentElement;
+const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}});
+document.getElementById('refresh').addEventListener('click',()=>location.reload());
+
+document.querySelectorAll('.tabs').forEach(tabs=>{tabs.classList.add('js');
+const show=id=>{tabs.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+tabs.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('on',p.dataset.panel===id));};
+let saved=null;try{saved=localStorage.getItem('client')}catch(e){}
+show(saved&&tabs.querySelector('[data-tab="'+saved+'"]')?saved:tabs.querySelector('[data-tab]').dataset.tab);
+tabs.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;show(b.dataset.tab);try{localStorage.setItem('client',b.dataset.tab)}catch(e){}});});
+const tq=document.getElementById('toolq');
+if(tq)tq.addEventListener('input',()=>{const terms=tq.value.toLowerCase().split(/\s+/).filter(Boolean);
+document.querySelectorAll('#toollist .tool').forEach(t=>{t.hidden=!terms.every(x=>t.dataset.text.includes(x));});});
+</script>
+</body>
+</html>

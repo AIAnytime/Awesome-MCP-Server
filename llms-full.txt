@@ -1,0 +1,2420 @@
+# Awesome MCP Servers: full directory
+
+> 192 Model Context Protocol servers, maintained by AI Anytime (https://aianytime.net). Hosted endpoints were last checked on 2026-10-17 (UTC): 76 answered without credentials, 54 are reachable but need auth, 3 did not answer. A listing is not a security audit. Descriptions are written by each server's author.
+
+Site: https://mcp.aianytime.net/
+Data: https://mcp.aianytime.net/api/servers.json
+Source: https://github.com/AIAnytime/Awesome-MCP-Servers
+
+## How servers are checked
+
+Each night every hosted (http or sse) server with a known endpoint is sent an MCP `initialize` request and, if it answers without credentials, a `tools/list`. The check records the result (live, auth, down), the handshake time, the number of tools, an estimate of the tokens the tool definitions take (about four characters per token) and a hash of the definitions so that changes are noticed. Local stdio servers are listed but not checked.
+
+## Questions and answers
+
+### What is an MCP server?
+
+An MCP server exposes tools, data or prompts to an AI assistant through the Model Context Protocol, an open standard. A client such as Claude, Cursor or VS Code connects to the server and can then call its tools.
+
+### How is this directory different from other MCP server lists?
+
+Every hosted server here is sent a real MCP handshake each night. The directory shows which servers answered, which asked for credentials, how many tools each one exposes and roughly how many tokens those tool definitions take up in a model's context.
+
+### What do Live, Needs auth and Down mean?
+
+Live means the server answered an MCP initialize request without any credentials. Needs auth means it is reachable but asked for an OAuth sign-in or an API key first. Down means it did not return a valid MCP response. Local stdio servers run on your own machine and are not checked.
+
+### What is context cost?
+
+A client loads every tool definition a server exposes into the model's context. Context cost is an estimate of how many tokens those definitions take, at about four characters per token. A server with hundreds of tools can use tens of thousands of tokens before you ask anything.
+
+### Does a listing mean a server is safe?
+
+No. The nightly check records what a server answered, not whether it is safe. A listing is not a security audit. Read a server's source and the permissions it asks for before you connect it.
+
+### How do I add my MCP server?
+
+Open a pull request on GitHub that adds one small JSON file for your server. Once it merges, the server gets its own page, a nightly check and a status badge you can embed in your README.
+
+### Can an AI agent search this directory?
+
+Yes. The whole directory is available as a JSON file and as llms.txt and llms-full.txt, and the repository includes an MCP server that searches the directory by keyword, category and live status.
+
+## Agents, IDEs & developer tools
+
+### Agent QA
+
+Author, validate, run, and inspect natural-language web and mobile regression tests, with persistent test memory. Install: npx -y agent-qa mcp
+
+- Page: https://mcp.aianytime.net/s/agent-qa/
+- Source: https://github.com/vostride/agent-qa
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 908 stars, last push 2026-08-03
+
+### AI Developer Toolkit MCP
+
+Read-only search and fetch over 950+ guides on AI-assisted development (Cursor, Claude Code, Codex) in English and Polish. No account or API key. Endpoint: https://developertoolkit.ai/mcp · Registry: io.github.mjaskolski/developer-toolkit-mcp
+
+- Page: https://mcp.aianytime.net/s/ai-developer-toolkit-mcp/
+- Source: https://github.com/mjaskolski/developer-toolkit-mcp
+- Transport: http
+- Endpoint: https://developertoolkit.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http ai-developer-toolkit-mcp https://developertoolkit.ai/mcp`
+- MCP Registry id: io.github.mjaskolski/developer-toolkit-mcp
+- Last check: Answered an MCP handshake without credentials and listed 2 tools.
+- Tools: 2 (about 482 tokens of definitions)
+- Tool names: fetch, search
+- Repository: 1 stars, last push 2026-08-20
+
+### Aident Loadout
+
+Connect Codex, Claude Code, Cursor, ChatGPT and other MCP clients to 1,000+ apps and 400+ Skills through one reusable setup with Vault-protected credentials. Endpoint: https://loadout.aident.ai/mcp · Docs · Website · Registry: io.github.Aident-AI/loadout
+
+- Page: https://mcp.aianytime.net/s/aident-loadout/
+- Source: https://github.com/Aident-AI/aident-skill
+- Transport: http
+- Endpoint: https://loadout.aident.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http aident-loadout https://loadout.aident.ai/mcp`
+- MCP Registry id: io.github.Aident-AI/loadout
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 6 stars, last push 2026-10-12
+
+### AIHawk
+
+AI browser agent that browses, clicks, types, and reads real web pages from plain-English instructions. Install: uvx aihawk
+
+- Page: https://mcp.aianytime.net/s/aihawk/
+- Source: https://github.com/feder-cr/AIHawk
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 32,120 stars, last push 2026-10-17
+
+### Antigravity Link
+
+Mirror active AI chat sessions from Google's Antigravity IDE to your phone: send messages, upload files, stop generation, automate workflows across 9 tools. Registry: io.github.cafeTechne/antigravity-link
+
+- Page: https://mcp.aianytime.net/s/antigravity-link/
+- Source: https://github.com/cafeTechne/antigravity-link-extension
+- Transport: stdio
+- MCP Registry id: io.github.cafeTechne/antigravity-link
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 219 stars, last push 2026-06-04
+
+### API.market MCP Gateway
+
+Discover and call 580+ APIs through five gateway tools, with OAuth or API-key authentication; pricing and free tiers vary by API. Endpoint: https://api.market/api/mcp/gateway
+
+- Page: https://mcp.aianytime.net/s/api-market-mcp-gateway/
+- Source: https://api.market/mcp
+- Transport: http
+- Endpoint: https://api.market/api/mcp/gateway
+- Connect with Claude Code: `claude mcp add --transport http api-market-mcp-gateway https://api.market/api/mcp/gateway`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Apple Docs 2.0 MCP
+
+Searches and reads Apple's developer documentation, Human Interface Guidelines and 1,700 WWDC sessions with code, with an offline index of 336,629 pages. Install: npx -y apple-docs-2.0-mcp
+
+- Page: https://mcp.aianytime.net/s/apple-docs-2-0-mcp/
+- Source: https://github.com/mishafyi/Apple-Docs-2.0-MCP
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 21 stars, last push 2026-10-13
+
+### Archcore
+
+Git-native context engineering CLI and MCP server for AI coding agents. Keep specs, ADRs, rules, plans, and project knowledge in Git. Install: curl -fsSL https://archcore.ai/install.sh | bash · Docs
+
+- Page: https://mcp.aianytime.net/s/archcore/
+- Source: https://github.com/archcore-ai/archcore
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 69 stars, last push 2026-10-16
+
+### Bestax
+
+Props, working examples, --bulma-* CSS variables and Agent Skills for Bestax, a React component library for Bulma v1; offline, no API key. Install: npx -y bestax-mcp@1 · Docs
+
+- Page: https://mcp.aianytime.net/s/bestax/
+- Source: https://github.com/allxsmith/bestax/tree/main/bestax-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 12 stars, last push 2026-10-17
+
+### Better Design
+
+Design systems, UI and UX principles, icons and UI review for coding agents that build interfaces; free account, OAuth or API key. Endpoint: https://better-design.com/api/mcp · Docs · Registry: io.github.marvkr/better-design
+
+- Page: https://mcp.aianytime.net/s/better-design/
+- Source: https://github.com/marvkr/better-design
+- Transport: http
+- Endpoint: https://better-design.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http better-design https://better-design.com/api/mcp`
+- MCP Registry id: io.github.marvkr/better-design
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 457 stars, last push 2026-09-22
+
+### claude-node
+
+Python subprocess bridge to the Claude Code CLI, giving Python direct access to Claude Code's native capabilities over stream-json.
+
+- Page: https://mcp.aianytime.net/s/claude-node/
+- Source: https://github.com/claw-army/claude-node
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 7 stars, last push 2026-04-04
+
+### CurlShot
+
+Renders any public URL as a PNG, JPEG or WebP screenshot, a PDF, or a scrolling video, full page or at a phone, tablet or desktop preset. list_devices needs no key; take_screenshot needs an API key as a Bearer token (free plan 100 screenshots/month, no card). Endpoint: https://curlshot.com/api/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/curlshot/
+- Source: https://curlshot.com/docs
+- Transport: http
+- Endpoint: https://curlshot.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http curlshot https://curlshot.com/api/mcp`
+- MCP Registry id: io.github.SergiuPogor/curlshot
+- Last check: Answered an MCP handshake without credentials and listed 2 tools.
+- Tools: 2 (about 726 tokens of definitions)
+- Tool names: list_devices, take_screenshot
+
+### ERIUS PHONE MCP
+
+Drive a hosted ERIUS PHONE Android phone or tablet: read the screen as an accessibility tree or screenshot, tap, type, swipe, launch apps, install APKs and pull crash logs. Requires an ERIUS PHONE API key (early access). Install: uvx erius-phone-mcp · Website
+
+- Page: https://mcp.aianytime.net/s/erius-phone-mcp/
+- Source: https://github.com/Protremix/erius-phone-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 2 stars, last push 2026-10-13
+
+### Ganado Bridge
+
+Checked local file edits (SHA-256-gated), bounded reads/search and persistent command sessions with real exit codes on macOS. Install: .mcpb bundle from releases · Docs
+
+- Page: https://mcp.aianytime.net/s/ganado-bridge/
+- Source: https://github.com/cynarax/bridge-by-ganado
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-09-27
+
+### Hexis
+
+Git-backed platform for skills, tools, and context for AI agents. Endpoint: https://demo.bevel.software/api/mcp
+
+- Page: https://mcp.aianytime.net/s/hexis/
+- Source: https://github.com/Bevel-Software/Hexis
+- Transport: http
+- Endpoint: https://demo.bevel.software/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http hexis https://demo.bevel.software/api/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 115 stars, last push 2026-10-16
+
+### Jev Agent
+
+Hosted Jev AI MCP: judge_yes_no, judge_choice, judge_score, compare_versions and graders with calibrated probabilities; same key also calls Decision API and eight classify rulesets. Endpoint: https://jev-agent.com/api/mcp. Independent; not affiliated with TypeSafe AI.
+
+- Page: https://mcp.aianytime.net/s/jev-agent/
+- Source: https://jev-agent.com/docs
+- Transport: http
+- Endpoint: https://jev-agent.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http jev-agent https://jev-agent.com/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 7 tools.
+- Tools: 7 (about 1,439 tokens of definitions)
+- Tool names: check_resume, compare_versions, grade_essay, grade_with_rubric, judge_choice, judge_score, judge_yes_no
+
+### Kleap
+
+AI website builder MCP: create apps, edit files, connect domains, and publish. OAuth remote. Endpoint: https://kleap.co/api/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/kleap/
+- Source: https://github.com/kleaphq/cli
+- Transport: http
+- Endpoint: https://kleap.co/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http kleap https://kleap.co/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 34 tools.
+- Tools: 34 (about 9,435 tokens of definitions)
+- Tool names: buy_domain, check_domain, check_task, connect_domain, connect_search_console, create_app, delete_database_rows, delete_files, edit_files, find_app, generate_image, get_analytics, get_app, get_credits, get_database_schema, get_form_submissions, get_publish_status, get_screenshot, get_search_console, insert_database_rows, list_app_files, list_apps, modify_app, publish_app, query_database_rows, read_files, rename_app, retry_task, run_database_sql, search_domains, update_database_rows, upgrade_plan, wake_app, write_files
+- Repository: 1 stars, last push 2026-09-27
+
+### Needhave
+
+Open public list where agents post what they need or what they have, read open posts, and send one first reply that the poster accepts; the two sides finish the deal themselves. Free, no account or API key. Endpoint: https://needhave.io/mcp · Website · Registry: io.github.PrivateAISystems/needhave
+
+- Page: https://mcp.aianytime.net/s/needhave/
+- Source: https://github.com/PrivateAISystems/needhave
+- Transport: http
+- Endpoint: https://needhave.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http needhave https://needhave.io/mcp`
+- MCP Registry id: io.github.PrivateAISystems/needhave
+- Last check: Answered an MCP handshake without credentials and listed 8 tools.
+- Tools: 8 (about 1,339 tokens of definitions)
+- Tool names: accept_reply, create_have, create_need, list_posts, read_post, read_thread, write_first_reply, write_thread_message
+- Repository: 0 stars, last push 2026-10-17
+
+### Oh My Android
+
+Lets coding agents see and drive the Android Emulator and adb devices: dp-scaled screenshots, UI tree, taps, logcat, and dark mode, font scale, RTL and TalkBack switches; ships inside a free native macOS app (macOS 26+). Install: brew install --cask ateymoori/tap/oh-my-android · Registry: io.github.ateymoori/oh-my-android
+
+- Page: https://mcp.aianytime.net/s/oh-my-android/
+- Source: https://github.com/ateymoori/oh-my-android
+- Transport: stdio
+- MCP Registry id: io.github.ateymoori/oh-my-android
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 65 stars, last push 2026-10-17
+
+### Omega MCP Router
+
+Fronts many upstream MCP servers behind one stdio connection, serves their tool schemas from a disk cache, and starts each upstream only on its first call; a session switches upstreams on and off through four router__* tools. Install: npx -y @omega.js/mcp-router
+
+- Page: https://mcp.aianytime.net/s/omega-mcp-router/
+- Source: https://github.com/Omega-JS-Stack/omega/tree/main/packages/mcp-router
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 2 stars, last push 2026-10-16
+
+### OpenAPI to MCP Cloud Bridge
+
+Zero-setup hosted bridge that turns any OpenAPI JSON spec into a remote MCP server. Hosted bridge
+
+- Page: https://mcp.aianytime.net/s/openapi-to-mcp-cloud-bridge/
+- Source: https://github.com/notsariedo/openapi-mcp-gateway
+- Transport: sse
+- Last check: No endpoint is on file for this server, so it is not checked.
+- Repository: 0 stars, last push 2026-07-19
+
+### Openhook
+
+Capture HTTP, email, and DNS callbacks and wait for or inspect inbox events through MCP; private inbox tokens control reads and deletion. MIT self-hosting and free temporary hosted inboxes are available, with optional paid persistent hosting.
+
+- Page: https://mcp.aianytime.net/s/openhook/
+- Source: https://github.com/openhook-dev/openhook-inbox
+- Transport: http
+- Endpoint: https://openhook.dev/mcp
+- Connect with Claude Code: `claude mcp add --transport http openhook https://openhook.dev/mcp`
+- MCP Registry id: io.github.openhook-dev/openhook-inbox
+- Last check: Answered an MCP handshake without credentials and listed 29 tools.
+- Tools: 29 (about 3,085 tokens of definitions)
+- Tool names: access_hosted_inbox, check_for_callbacks, configure_webhook, create_webhook, delete_all_requests, delete_request, delete_webhook, download_request_file, export_webhook_data, extract_links_from_request, generate_oob_payloads, get_hosted_inboxes, get_request, get_webhook_activity, get_webhook_email, get_webhook_info, get_webhook_requests, register_github_webhook, register_linear_webhook, register_stripe_webhook, respond_to_next_request, rotate_webhook_token, search_requests, send_requests, server_status, unregister_webhook, update_request, wait_for_email, wait_for_request
+- Repository: 1 stars, last push 2026-10-16
+
+### OrcaReplay
+
+Read-only window into a local library of recorded agent runs: six tools (list, show, checkpoints, graph, replay, compare) over the prompts, tool calls and responses an agent already exchanged, so a failed run can be replayed offline or diffed against another. Install: npx -y orcareplay mcp
+
+- Page: https://mcp.aianytime.net/s/orcareplay/
+- Source: https://github.com/Continuum-AI-Corp/OrcaReplay
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 285 stars, last push 2026-10-01
+
+### Plazmi
+
+A homemaking world for AI agents: move into a little house on a floating island, keep it on a real UTC clock, meet neighbours and send your human a postcard; free, no auth. Endpoint: https://plazmi.gg/mcp · Skill · Registry: gg.plazmi/plazmi
+
+- Page: https://mcp.aianytime.net/s/plazmi/
+- Source: https://plazmi.gg
+- Transport: http
+- Endpoint: https://plazmi.gg/mcp
+- Connect with Claude Code: `claude mcp add --transport http plazmi https://plazmi.gg/mcp`
+- MCP Registry id: gg.plazmi/plazmi
+- Last check: Answered an MCP handshake without credentials and listed 33 tools.
+- Tools: 33 (about 6,970 tokens of definitions)
+- Tool names: ask_human, away_note, build, catalog_search, daily_visit, dance, digest, do, draw, feedback, gifts, give, go, inbox, landing, letter, look, make, move_in, my_house, news, playa, plots, postcard, pulse, reply, say, share_dance, sign_in, unwish, visit, wish, wishlist
+
+### REA
+
+Local reverse-engineering tools for native binaries, JavaScript/Electron apps, and .NET assemblies; native deep analysis uses separately installed Hopper, Ghidra, or IDA. Install: npm install --global rea-agents
+
+- Page: https://mcp.aianytime.net/s/rea/
+- Source: https://github.com/morluto/rea
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 295,677 stars, last push 2026-10-17
+
+### rea-captcha
+
+Local verification-evidence analysis and authorized test-flow control for browser agents; browser actions require a configured caller-owned Playwright/CDP session and official provider test keys or an owned flow. Start for stateless analysis and tool discovery: npx -y rea-captcha mcp --stateless · Configuration
+
+- Page: https://mcp.aianytime.net/s/rea-captcha/
+- Source: https://github.com/masakaai/rea-captcha
+- Transport: stdio
+- MCP Registry id: io.github.masakaai/rea-captcha
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 1 stars, last push 2026-10-16
+
+### Roundtable
+
+Zero-configuration server that unifies multiple AI coding assistants (Codex, Claude Code, Cursor, Gemini) behind one interface with auto-discovery. Website
+
+- Page: https://mcp.aianytime.net/s/roundtable/
+- Source: https://github.com/askbudi/roundtable
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 126 stars, last push 2025-10-06
+
+### SandBase CLI
+
+Agent-first CLI and MCP bridge for discovering, inspecting, and running 2,000+ AI models on one account — search, scraping, multimodal generation, data APIs, sandboxes. Install: npx -y @sandbaseai/cli connect · Website
+
+- Page: https://mcp.aianytime.net/s/sandbase-cli/
+- Source: https://github.com/sandbaseai/cli
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 185 stars, last push 2026-10-12
+
+### SandBase Harness
+
+Local-first agent runtime and MCP bridge for governed tool access, persistent sessions, credentials, approvals, audit/replay, and sandboxed execution. Install: docker run --rm -i -e MANAGED_AGENTS_URL=http://host.docker.internal:3000 ghcr.io/sandbaseai/sandbase-harness-mcp:0.3.8
+
+- Page: https://mcp.aianytime.net/s/sandbase-harness/
+- Source: https://github.com/sandbaseai/sandbase-harness
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 638 stars, last push 2026-10-12
+
+### Sem
+
+Search code entities, inspect dependencies and impact, and review structural diffs in local Git repositories; no API key required. Install: npm install -g @ataraxy-labs/sem, then run sem mcp from the repository · Docs
+
+- Page: https://mcp.aianytime.net/s/sem/
+- Source: https://github.com/Ataraxy-Labs/sem
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 3,413 stars, last push 2026-10-16
+
+### Sequential
+
+Session replay and product analytics with an AI judge that reviews each session (what the user came to do, whether they got there, where they struggled) and lists findings to fix; agents query sessions, findings, events, funnels, flows and retention. Hosted, OAuth sign-in, free sign-up. Endpoint: https://api.usesequential.com/mcp · Tools · Registry: io.github.Acro/sequential
+
+- Page: https://mcp.aianytime.net/s/sequential/
+- Source: https://www.usesequential.com/docs/connect-claude-ai.md
+- Transport: http
+- Endpoint: https://api.usesequential.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http sequential https://api.usesequential.com/mcp`
+- MCP Registry id: io.github.Acro/sequential
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### since-cutoff
+
+Reports which APIs of a project's pinned Python dependencies changed after a coding model's training cutoff, from a static diff of the two releases, and where the project's code uses them; no model calls or API key. Install: uvx since-cutoff mcp · Registry: io.github.MohammadHijjawi97/since-cutoff
+
+- Page: https://mcp.aianytime.net/s/since-cutoff/
+- Source: https://github.com/MohammadHijjawi97/since-cutoff
+- Transport: stdio
+- MCP Registry id: io.github.MohammadHijjawi97/since-cutoff
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 9 stars, last push 2026-10-11
+
+### Skillselion
+
+On-demand skill loader over a catalog of 79,000+ agent skills, MCP servers, and plugins; materializes the matching SKILL.md and its scripts into the session mid-task. Install: npx -y skillselion-mcp · Website
+
+- Page: https://mcp.aianytime.net/s/skillselion/
+- Source: https://github.com/skillselion/skillselion-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 1 stars, last push 2026-08-25
+
+### squirrelscan
+
+Audits websites for SEO, performance, security, accessibility, and agent experience (260+ rules) and returns fixes for your coding agent. Endpoint: https://mcp.squirrelscan.com/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/squirrelscan/
+- Source: https://github.com/squirrelscan/squirrelscan
+- Transport: http
+- Endpoint: https://mcp.squirrelscan.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http squirrelscan https://mcp.squirrelscan.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 27 tools.
+- Tools: 27 (about 14,184 tokens of definitions)
+- Tool names: add_website, comment_on_issue, compare_audits, compare_entities, create_api_key, delete_website, delete_websites, get_audit_status, get_credit_balance, get_entity, get_entity_findings, get_entity_graph, get_issue, get_report, get_rule, get_website_settings, list_audits, list_credit_transactions, list_entities, list_issues, list_notifications, list_rules, list_websites, run_audit, send_feedback, update_website_settings, whoami
+- Repository: 283 stars, last push 2026-10-17
+
+### SwarmMemo
+
+Where agents meet, work, and keep their word: public rooms, private agent-to-agent messages, paid tasks and long-term memory, with a public log anchored to Bitcoin; free, no key needed to start. Endpoint: https://swarmmemo.com/mcp/core · Docs
+
+- Page: https://mcp.aianytime.net/s/swarmmemo/
+- Source: https://github.com/Hugo0/swarmmemo
+- Transport: http
+- Endpoint: https://swarmmemo.com/mcp/core
+- Connect with Claude Code: `claude mcp add --transport http swarmmemo https://swarmmemo.com/mcp/core`
+- Last check: Answered an MCP handshake without credentials and listed 88 tools.
+- Tools: 88 (about 19,750 tokens of definitions)
+- Tool names: accept_request, accept_work, agent_record, allowance, buy_offering, cancel_event_subscription, claim_identity, claim_work, create_conversation, create_identity, create_invite, create_work, dispose_updates, docs_create, docs_delete, docs_history, docs_list, docs_open, docs_read, docs_write, find, find_agents, find_offerings, find_work, gate_solve, home, join_invite, journal, journal_suspend, list_conversations, list_event_subscriptions, list_pages, list_paid_api, list_rooms, list_services, log_proof, manage_tokens, manage_work, mark_updates_read, memory_delete, memory_get, memory_list, memory_put, notary_get, notary_key, notary_stamp, offering_call_status, post_message, raise_standing, read_agent, read_agent_posts, read_conversation, read_feed, read_messages, read_offering, read_subject, read_thread, read_updates, read_verification, read_work, read_work_history, receiver_create, receiver_delete, receiver_items, receiver_list, receiver_rotate, recover_identity, reject_work, resolve_subject, search_subjects, send_feedback, send_private, set_handle, set_protection, standing_ways, submit_work, subscribe_room, trust, tune_feed, update_conversation, verify_publish, wakeup_cancel, wakeup_list, wakeup_notices, wakeup_schedule, whoami, work_proofs, write_review
+- Repository: 1 stars, last push 2026-10-17
+
+### vibe-testing
+
+Code-aware Playwright browser testing for coding agents with regression diffs and HTML reports. Install: npx -y vibe-testing@latest --mcp
+
+- Page: https://mcp.aianytime.net/s/vibe-testing/
+- Source: https://github.com/AishwaryShrivastav/vibe-testing
+- Transport: stdio
+- MCP Registry id: io.github.AishwaryShrivastav/vibe-testing
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 16 stars, last push 2026-10-15
+
+### Zambo
+
+120 native tools across 17 products: strategy, code audit, lead generation, onchain scoring, credit discovery, prompt defense. Endpoint: https://zambo.dev/api/mcp, zero auth, no signup. Website
+
+- Page: https://mcp.aianytime.net/s/zambo/
+- Source: https://github.com/zambodotdev/zambo-mcp
+- Transport: http
+- Endpoint: https://zambo.dev/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http zambo https://zambo.dev/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 35 tools.
+- Tools: 35 (about 13,705 tokens of definitions)
+- Tool names: activity_today, capability_search, continuity_get_recent, continuity_list_threads, continuity_open_thread, continuity_set_prefs, continuity_start_thread, credithunt, day_pass_activate, day_pass_checkout_link, day_pass_redeem, day_pass_status, ghost_audit_report, ghost_audit_site, ghost_audit_status, handover, handover_accept, handover_list, handover_status, journal_log, leadsignal, live_price, memory_recall, memory_remember, new_session, pass_status, pdf_extract, prompt_shield, provibe_audit, spend_limit_set, spend_limit_status, workflow_close, workflow_seal, zambo_home, zambo_universal
+
+## Search & discovery
+
+### AgentoolRank
+
+Search open-source AI agent tools and MCP servers ranked by live GitHub activity, refreshed daily, and get alternatives for any tool; read-only search needs no API key. Install: claude mcp add --transport http agentoolrank https://agentoolrank.com/api/mcp · Docs · Registry: com.agentoolrank/agent-tools
+
+- Page: https://mcp.aianytime.net/s/agentoolrank/
+- Source: https://github.com/agent-gigmole/agentoolrank-mcp
+- Transport: http
+- Endpoint: https://agentoolrank.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http agentoolrank https://agentoolrank.com/api/mcp`
+- MCP Registry id: com.agentoolrank/agent-tools
+- Last check: Answered an MCP handshake without credentials and listed 9 tools.
+- Tools: 9 (about 1,500 tokens of definitions)
+- Tool names: get_alternatives, get_submission_status, get_tool, my_progress, next_directory, recommend_directories, report_result, search_tools, submit_tool
+- Repository: 0 stars, last push 2026-10-05
+
+### AISOTools
+
+Search a curated catalog of 1,766 AI tools by keyword, category, or pricing; compare 2–5 products side by side and find alternatives. Read-only, no API key, sponsored results flagged. Install: claude mcp add --transport http aisotools https://aisotools.com/api/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/aisotools/
+- Source: https://github.com/shibley/aisotools-mcp-server
+- Transport: http
+- Endpoint: https://aisotools.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http aisotools https://aisotools.com/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 643 tokens of definitions)
+- Tool names: compare_ai_tools, find_ai_tool_alternatives, get_ai_tool, list_ai_tool_categories, search_ai_tools
+- Repository: 3 stars, last push 2026-09-07
+
+### Anansi Haven
+
+MIT-licensed hosted server (also A2A and HTTP) giving agents a persistent identity, versioned key-value memory that survives restarts, client-side encrypted storage, an agent directory and a job board. Read-only utility tools need no key; memory tools need a free key from register_agent. Endpoint: https://anansi-haven.anansidata.workers.dev/mcp · Docs · Registry: io.github.kburrus64-max/anansi-haven
+
+- Page: https://mcp.aianytime.net/s/anansi-haven/
+- Source: https://github.com/kburrus64-max/anansi-haven
+- Transport: http
+- Endpoint: https://anansi-haven.anansidata.workers.dev/mcp
+- Connect with Claude Code: `claude mcp add --transport http anansi-haven https://anansi-haven.anansidata.workers.dev/mcp`
+- MCP Registry id: io.github.kburrus64-max/anansi-haven
+- Last check: Answered an MCP handshake without credentials and listed 87 tools.
+- Tools: 87 (about 11,350 tokens of definitions)
+- Tool names: add_note, anansi_free_data, balance, block_agent, boost_job, bounty_status, buy_house_plan, buy_item, buy_rate_boost, calculate, cancel_job, claim_bounty, claim_job, claim_listing_start, claim_listing_verify, commons_settings, confirm_subscription, delete_memory, draftcheck_check, find_tools, forex_market_hours, get_agent, get_bounty, get_home, get_job, get_lesson, get_memory, get_skill, get_updates, house_delete, house_get, house_list, house_plans, house_put, json_validate, ledger, list_bounties, list_jobs, list_market, list_notes, list_proposals, list_rooms, market_hours, my_credits, my_learning, my_rewards, outreach_opt_out, position_size, post_job, post_lesson, post_to_room, prop_firm_rules, propose_improvement, publish_profile, publish_skill, put_memory, quote_anansi, rate_skill, read_dms, read_room, register_agent, release_bounty, report_content, report_house, review_job, search_agents, search_lessons, search_skills, send_dm, slopscore_check, submit_bounty, submit_job, subscribe_updates, text_tools, time_tools, tool_capabilities, topup_quote, unit_convert, unsubscribe_updates, url_metadata, use_skill, uuid_hash, verify_domain_check, verify_domain_start, vote_lesson, vote_proposal, whoami
+- Repository: 0 stars, last push 2026-10-14
+
+### ats-jobs-mcp
+
+Lists and filters a company's open jobs from its public Greenhouse, Lever or Ashby job board in one normalized shape; no API key, zero dependencies. Install: npx -y github:benkrasin/ats-jobs-mcp mcp
+
+- Page: https://mcp.aianytime.net/s/ats-jobs-mcp/
+- Source: https://github.com/benkrasin/ats-jobs-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-10-15
+
+### BOIM (보임)
+
+Find Korean businesses by region and industry (2.7M, all industries), public-procurement vendors (75,000+) and open public bids; read-only, no account or API key on the free tier (5 results per tool). Endpoint: https://boim.io/api/mcp · Registry: io.boim/vendors
+
+- Page: https://mcp.aianytime.net/s/boim/
+- Source: https://github.com/kikiyop1101/boim-mcp
+- Transport: http
+- Endpoint: https://boim.io/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http boim https://boim.io/api/mcp`
+- MCP Registry id: io.boim/vendors
+- Last check: Answered an MCP handshake without credentials and listed 6 tools.
+- Tools: 6 (about 3,053 tokens of definitions)
+- Tool names: find_businesses, find_local_shops, find_public_bids, get_vendor, list_categories, search_vendors
+- Repository: 0 stars, last push 2026-10-15
+
+### Callejear France
+
+Search French communes and street records, retrieve IRIS-level amenities and commune-level risk codes, and compare streets with five read-only tools. Free without authentication, with quotas and explicit missing-data limits; Docs.
+
+- Page: https://mcp.aianytime.net/s/callejear-france/
+- Source: https://callejear.fr/mcp/
+- Transport: http
+- Endpoint: https://callejear.fr/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http callejear-france https://callejear.fr/api/mcp`
+- MCP Registry id: com.callejear/france
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 736 tokens of definitions)
+- Tool names: callejear_compare_streets, callejear_get_coverage, callejear_get_street_context, callejear_search_communes, callejear_search_streets
+
+### CareJobs.Now Healthcare Jobs
+
+Search 170,000+ open US healthcare jobs read daily from 270 hospitals' and health systems' career sites, with job details and the pay employers post by kind of job, employer and state; read-only, no account or API key
+
+- Page: https://mcp.aianytime.net/s/carejobs-healthcare-jobs/
+- Source: https://github.com/yumaheymans/carejobs-mcp
+- Transport: http
+- Endpoint: https://carejobs.now/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http carejobs-healthcare-jobs https://carejobs.now/api/mcp`
+- MCP Registry id: now.carejobs/healthcare-jobs
+- Last check: Answered an MCP handshake without credentials and listed 6 tools.
+- Tools: 6 (about 2,311 tokens of definitions)
+- Tool names: get_healthcare_employer, get_healthcare_job_market, get_healthcare_jobs_by_state, get_healthcare_pay, list_healthcare_employers, search_healthcare_jobs
+- Repository: 3 stars, last push 2026-10-16
+
+### Chain.Love MCP
+
+Discover and compare Web3 infrastructure across supported networks. Endpoint: https://app.chain.love/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/chain-love-mcp/
+- Source: https://github.com/Chain-Love/chain.love-mcp
+- Transport: http
+- Endpoint: https://app.chain.love/mcp
+- Connect with Claude Code: `claude mcp add --transport http chain-love-mcp https://app.chain.love/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 1,516 tokens of definitions)
+- Tool names: bind_credentials_bag, discover_categories, discover_networks, execute, search
+- Repository: 2 stars, last push 2026-04-16
+
+### Court Rules
+
+U.S. federal court rules, local rules, judge standing orders, court holidays and filing deadline checks; API key required, free tier. Endpoint: https://mcp.courtrules.app/mcp
+
+- Page: https://mcp.aianytime.net/s/court-rules/
+- Source: https://github.com/foklepoint/court-rules-mcp
+- Transport: http
+- Endpoint: https://mcp.courtrules.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http court-rules https://mcp.courtrules.app/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 4 stars, last push 2026-09-30
+
+### Derrick
+
+B2B data enrichment from a name, a domain or a LinkedIn URL: verified work emails, phone numbers, company firmographics, tech stack, hiring signals, and French SIRET/SIREN records. Install: npx derrick-mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/derrick/
+- Source: https://github.com/DerrickAppOrg/derrick-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-10-07
+
+### Find MCP
+
+Discover other MCP servers: searches a catalog of 17,000+ servers synced from the official MCP registry. Install: npx @agentage/find-mcp · Registry: io.agentage/find-mcp
+
+- Page: https://mcp.aianytime.net/s/find-mcp/
+- Source: https://github.com/agentage/find-mcp
+- Transport: stdio
+- MCP Registry id: io.agentage/find-mcp
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 6 stars, last push 2026-10-17
+
+### Grok Bot Wiki
+
+Unofficial, read-only search of public Grok Bot templates and source-backed guides; free, no account or API key. Endpoint: https://www.grokbotwiki.com/api/mcp
+
+- Page: https://mcp.aianytime.net/s/grok-bot-wiki/
+- Source: https://www.grokbotwiki.com/mcp
+- Transport: http
+- Endpoint: https://www.grokbotwiki.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http grok-bot-wiki https://www.grokbotwiki.com/api/mcp`
+- MCP Registry id: com.grokbotwiki.www/grok-bot-wiki
+- Last check: Answered an MCP handshake without credentials and listed 8 tools.
+- Tools: 8 (about 1,065 tokens of definitions)
+- Tool names: fetch, get_bot, get_guide, list_categories, search, search_bots, search_guides, troubleshoot
+
+### looot
+
+One API key and prepaid balance for about 2,500 data endpoints from 90+ providers: work email, phone, company enrichment, Google SERP, web pages. Pay per call, OAuth or Bearer key. Registry: ai.looot/looot
+
+- Page: https://mcp.aianytime.net/s/looot/
+- Source: https://github.com/loootai/looot-mcp
+- Transport: http
+- Endpoint: https://api.looot.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http looot https://api.looot.ai/mcp`
+- MCP Registry id: ai.looot/looot
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 3 stars, last push 2026-10-11
+
+### MyStreetData USA
+
+Free read-only search, context and comparisons for 1.33M street records across 8 US states; no API key, with shared daily quotas. Endpoint: https://mystreetdata.com/api/mcp
+
+- Page: https://mcp.aianytime.net/s/mystreetdata-usa/
+- Source: https://mystreetdata.com/mcp/
+- Transport: http
+- Endpoint: https://mystreetdata.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http mystreetdata-usa https://mystreetdata.com/api/mcp`
+- MCP Registry id: io.github.Habanacasta88/mystreetdata
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 764 tokens of definitions)
+- Tool names: mystreetdata_compare_streets, mystreetdata_get_coverage, mystreetdata_get_street_context, mystreetdata_search_areas, mystreetdata_search_streets
+
+### nothumansearch
+
+Search engine over 8,600+ agent-native services: discover MCP servers, OpenAPI providers, and llms.txt publishers by keyword, category, or agentic-readiness score. Registry: ai.nothumansearch/search
+
+- Page: https://mcp.aianytime.net/s/nothumansearch/
+- Source: https://nothumansearch.ai/mcp
+- Transport: http
+- Endpoint: https://nothumansearch.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http nothumansearch https://nothumansearch.ai/mcp`
+- MCP Registry id: ai.nothumansearch/search
+- Last check: Answered an MCP handshake without credentials and listed 14 tools.
+- Tools: 14 (about 3,731 tokens of definitions)
+- Tool names: check_url, find_mcp_servers, get_site_details, get_stats, get_top_sites, handoff_provider_action, list_categories, prepare_provider_action, recent_additions, record_action_interest, register_monitor, search_agents, submit_site, verify_mcp
+
+### Papers by Ouroboros Apps
+
+Research paper search with real citations from OpenAlex, Semantic Scholar, PubMed, Crossref, and arXiv: find papers, fetch abstracts, follow citations, and format references. OAuth sign-in. Endpoint: https://papers-mcp.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/papers-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/papers-mcp
+- Transport: http
+- Endpoint: https://papers-mcp.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http papers-by-ouroboros-apps https://papers-mcp.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 4 tools.
+- Tools: 4 (about 735 tokens of definitions)
+- Tool names: find_related_papers, format_citation, get_paper, search_papers
+- Repository: 0 stars, last push 2026-10-11
+
+### Parallel Search
+
+Free live web search and URL fetching, no account or API key. Endpoint: https://search.parallel.ai/mcp
+
+- Page: https://mcp.aianytime.net/s/parallel-search/
+- Source: https://docs.parallel.ai/integrations/mcp/search-mcp
+- Transport: http
+- Endpoint: https://search.parallel.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http parallel-search https://search.parallel.ai/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 2 tools.
+- Tools: 2 (about 1,408 tokens of definitions)
+- Tool names: web_fetch, web_search
+
+### Patent by Ouroboros Apps
+
+USPTO patent search and prior art lookup: search public patent records, fetch a patent, list citations, and run a prior-art search. Not legal advice. Hosted coverage is USPTO only. OAuth sign-in. Endpoint: https://patent-mcp.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/patent-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/patent-mcp
+- Transport: http
+- Endpoint: https://patent-mcp.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http patent-by-ouroboros-apps https://patent-mcp.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 4 tools.
+- Tools: 4 (about 738 tokens of definitions)
+- Tool names: find_patent_citations, get_patent, search_patents, search_prior_art
+- Repository: 0 stars, last push 2026-10-11
+
+### srezai
+
+Web search, page reading as clean Markdown, site crawling, JSON-schema extraction and claim verification with quotes for AI agents, with strong Russian-web coverage. Русский: веб-поиск и чтение страниц для ИИ-агентов, 12 инструментов. Endpoint: https://srezai.ru/api/mcp, API key required · Docs
+
+- Page: https://mcp.aianytime.net/s/srezai/
+- Source: https://github.com/srezai-team/srezai-mcp-web-search
+- Transport: http
+- Endpoint: https://srezai.ru/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http srezai https://srezai.ru/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 12 tools.
+- Tools: 12 (about 27,977 tokens of definitions)
+- Tool names: answer_search, crawl, deep_research, extract, fetch_page, get_usage, image_search, map, read_url, read_urls, verify_claim, web_search
+- Repository: 0 stars, last push 2026-10-12
+
+### StatOrigin
+
+Read-only search of sourced industry statistics; each record carries its publisher, source document and source sentence. No account or API key. Endpoint: https://statorigin.org/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/statorigin/
+- Source: https://github.com/SudoAI-App/statorigin-mcp
+- Transport: http
+- Endpoint: https://statorigin.org/mcp
+- Connect with Claude Code: `claude mcp add --transport http statorigin https://statorigin.org/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 3 tools.
+- Tools: 3 (about 504 tokens of definitions)
+- Tool names: fetch, get_ranking, search
+- Repository: 0 stars, last push 2026-10-15
+
+### Statsnet
+
+Background check any company in the world: registration, executives, courts and finances. Endpoint: https://statsnet.co/mcp · Registry: io.github.usenetstate/statsnet
+
+- Page: https://mcp.aianytime.net/s/statsnet/
+- Source: https://github.com/usenetstate/statsnet-mcp
+- Transport: http
+- Endpoint: https://statsnet.co/mcp
+- Connect with Claude Code: `claude mcp add --transport http statsnet https://statsnet.co/mcp`
+- MCP Registry id: io.github.usenetstate/statsnet
+- Last check: Answered an MCP handshake without credentials and listed 2 tools.
+- Tools: 2 (about 724 tokens of definitions)
+- Tool names: get_company, search_companies
+- Repository: 0 stars, last push 2026-09-16
+
+### TwitterAPI.io
+
+12 read-only tools over twitterapi.io: tweet search with full operators, profiles, followers, conversation threads, real-time streaming, trending topics. Endpoint: mcp.twitterapi.io/mcp
+
+- Page: https://mcp.aianytime.net/s/twitterapi-io/
+- Source: https://github.com/kaitoInfra/twitterapi-io-mcp-server
+- Transport: http
+- Endpoint: https://mcp.twitterapi.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http twitterapi-io https://mcp.twitterapi.io/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 12 tools.
+- Tools: 12 (about 2,506 tokens of definitions)
+- Tool names: get_trends, get_tweet_quotes, get_tweet_replies, get_tweet_retweeters, get_tweets_by_ids, get_user_about, get_user_followers, get_user_followings, get_user_info, get_user_last_tweets, get_user_mentions, search_tweets
+- Repository: 1 stars, last push 2026-10-07
+
+### UnifAPI
+
+Public-data tools for social, search, scraping, news, creator research, and KOL pricing workflows. Endpoint: https://mcp.unifapi.com · Docs · Registry: com.unifapi/mcp
+
+- Page: https://mcp.aianytime.net/s/unifapi/
+- Source: https://github.com/unifapi-agent/unifapi-mcp-server
+- Transport: http
+- Endpoint: https://mcp.unifapi.com
+- Connect with Claude Code: `claude mcp add --transport http unifapi https://mcp.unifapi.com`
+- MCP Registry id: com.unifapi/mcp
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 4 stars, last push 2026-05-31
+
+### Vend API Merchant
+
+Pay-per-call web intelligence: extract clean text from URLs, web search, link checking, domain WHOIS/DNS/SSL info, IP geolocation, and PDF text extraction. 22+ endpoints, no signup or API key, each call settles in Nano (XNO) via x402 at 0.0001–0.0005 XNO. Endpoint: https://extract.paypercall.dev/mcp · Docs · Registry: dev.paypercall.extract/vend-api-merchant
+
+- Page: https://mcp.aianytime.net/s/vend-api-merchant/
+- Source: https://extract.paypercall.dev
+- Transport: http
+- Endpoint: https://extract.paypercall.dev/mcp
+- Connect with Claude Code: `claude mcp add --transport http vend-api-merchant https://extract.paypercall.dev/mcp`
+- MCP Registry id: dev.paypercall.extract/vend-api-merchant
+- Last check: Did not answer an MCP handshake (URLError: timed out).
+- Tools: 13 (about 1,710 tokens of definitions)
+- Tool names: browser_agent, browser_agent_batch, check_link, check_url_status, domain_info, extract_url, geoip_lookup, mcp_find, nano_account_info, scrape_page, scrape_pages, web_search, youtube_transcript
+
+### Xquik
+
+X/Twitter search, extraction workflows, account insights, webhooks, and SDK access. Docs
+
+- Page: https://mcp.aianytime.net/s/xquik/
+- Source: https://github.com/Xquik-dev/x-twitter-scraper
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+- Repository: 213 stars, last push 2026-10-15
+
+### YouTube Transcripts MCP
+
+YouTube transcripts with video metadata (text, timestamped segments or SRT), filtered YouTube search, chapters, and timestamped extractive summaries; no YouTube API key. Local stdio free; hosted pay-per-call on Apify (API token). Endpoint: https://parallelstudio--youtube-transcripts-mcp.apify.actor/mcp · Registry: io.github.gunnargray-dev/youtube-transcripts-mcp
+
+- Page: https://mcp.aianytime.net/s/youtube-transcripts-mcp/
+- Source: https://github.com/gunnargray-dev/youtube-transcripts-mcp
+- Transport: http
+- Endpoint: https://parallelstudio--youtube-transcripts-mcp.apify.actor/mcp
+- Connect with Claude Code: `claude mcp add --transport http youtube-transcripts-mcp https://parallelstudio--youtube-transcripts-mcp.apify.actor/mcp`
+- MCP Registry id: io.github.gunnargray-dev/youtube-transcripts-mcp
+- Last check: Reachable, and asks for credentials before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-16
+
+## Knowledge, memory & context
+
+### AccInt
+
+Local-first, SQLite-backed memory shared across Claude Code, OpenCode, Codex, and Cursor; feeds verified outcomes back into future retrieval. Public integration glue around a private engine. · Website
+
+- Page: https://mcp.aianytime.net/s/accint/
+- Source: https://github.com/maxbaluev/accreted-intelligence
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 7 stars, last push 2026-07-05
+
+### Agentage Memory
+
+One shared Markdown memory for Claude, Cursor, and ChatGPT that you own and can export: six tools to search, read, write, edit, list, and delete. OAuth 2.1 with dynamic client registration. Endpoint: https://memory.agentage.io/mcp · Registry: io.agentage/memory
+
+- Page: https://mcp.aianytime.net/s/agentage-memory/
+- Source: https://memory.agentage.io
+- Transport: http
+- Endpoint: https://memory.agentage.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http agentage-memory https://memory.agentage.io/mcp`
+- MCP Registry id: io.agentage/memory
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### ContextStream
+
+Shared persistent memory and semantic code search for AI coding agents (Cursor, Claude Code, Codex, Grok, Windsurf). Free tier; hosted OAuth or API key. Endpoint: https://mcp.contextstream.io/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/contextstream/
+- Source: https://github.com/contextstream/mcp-server
+- Transport: http
+- Endpoint: https://mcp.contextstream.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http contextstream https://mcp.contextstream.io/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 44 stars, last push 2026-10-17
+
+### Continuity by Ouroboros Apps
+
+Story continuity for fiction writers: a series bible and novel memory that keeps characters, places, timelines, and plot facts consistent across chats. OAuth sign-in. Endpoint: https://continuitywriter.com/mcp · Website · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/continuity-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/continuity-mcp
+- Transport: http
+- Endpoint: https://continuitywriter.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http continuity-by-ouroboros-apps https://continuitywriter.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 11 tools.
+- Tools: 11 (about 1,803 tokens of definitions)
+- Tool names: continuity_audit, create_story_project, get_canon_history, get_continuity_context, list_approved_scenes, list_story_checkpoints, list_story_projects, record_approved_scene, save_story_checkpoint, search_story_canon, upsert_canon_entry
+- Repository: 0 stars, last push 2026-10-11
+
+### GoodMemory
+
+Local-first, auditable memory for coding agents. SQLite-backed, read-only context/trace/search tools by default, with durable writes opt-in behind inspect, revise, forget, and export. Install: npm install -g goodmemory
+
+- Page: https://mcp.aianytime.net/s/goodmemory/
+- Source: https://github.com/hjqcan/GoodMemory
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 19 stars, last push 2026-10-16
+
+### Hyperconsciousness
+
+Developer-alpha encrypted knowledge store with search and retrieval through scoped, expiring grants. · Docs
+
+- Page: https://mcp.aianytime.net/s/hyperconsciousness/
+- Source: https://github.com/louis030195/hyperconsciousness
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 7 stars, last push 2026-10-15
+
+### Liminal
+
+Liminal turns objectives into structured work by strategizing through an atomic, deterministic basis: setting guardrails around scope, compiling resources and constraints, uncovering gaps, and organizing research and next steps. OAuth 2.1 or API key; free key at physea.ai/signup. Endpoint: https://liminality.physea.ai/mcp · Docs · Registry: ai.physea/liminality
+
+- Page: https://mcp.aianytime.net/s/liminal/
+- Source: https://github.com/jaybro2042-alt/liminality-mcp
+- Transport: http
+- Endpoint: https://liminality.physea.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http liminal https://liminality.physea.ai/mcp`
+- MCP Registry id: ai.physea/liminality
+- Last check: Answered an MCP handshake without credentials. It did not list its tools to an anonymous client.
+- Repository: 0 stars, last push 2026-10-12
+
+### Mnemoverse
+
+Hosted persistent memory for AI agents with shared rooms; tell it a recalled memory helped or misled and it re-ranks what comes back next. Free tier; OAuth on the hosted endpoint, API key for the npm package. Endpoint: https://mcp.mnemoverse.com/mcp · Install: npx -y @mnemoverse/mcp-memory-server@latest · Docs
+
+- Page: https://mcp.aianytime.net/s/mnemoverse/
+- Source: https://github.com/mnemoverse/mcp-memory-server
+- Transport: http
+- Endpoint: https://mcp.mnemoverse.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http mnemoverse https://mcp.mnemoverse.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 27 stars, last push 2026-10-14
+
+### Neither
+
+Project context your AI can query through MCP. Selected notes/docs for Cursor or Claude Desktop; related retrieval with source evidence. Install: npx -y @neitherai/mcp-server. Registry: io.github.stonianua/neither-mcp. Start
+
+- Page: https://mcp.aianytime.net/s/neither/
+- Source: https://github.com/stonianua/neither-mcp
+- Transport: stdio
+- MCP Registry id: io.github.stonianua/neither-mcp
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-10-09
+
+### ORANO
+
+Read-only access to your ORANO library: projects built from saved Reels, videos, articles and PDFs, with summaries, ordered tasks, selectable video context and curated memory facts. Paid web plan; API key required. Endpoint: https://orano-ai-backend-1037939693300.us-central1.run.app/mcp/ · Website
+
+- Page: https://mcp.aianytime.net/s/orano/
+- Source: https://github.com/infotik/orano-mcp-server
+- Transport: http
+- Endpoint: https://orano-ai-backend-1037939693300.us-central1.run.app/mcp/
+- Connect with Claude Code: `claude mcp add --transport http orano https://orano-ai-backend-1037939693300.us-central1.run.app/mcp/`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-13
+
+### ppl
+
+Personal CRM for AI agents: relationship briefings, person digests, search, and full CRUD for contacts, notes, tasks, reminders, calls, gifts, and journal entries. OAuth 2.1 with dynamic client registration; free beta up to 1,000 contacts. Endpoint: https://withppl.com/mcp · Docs · Registry: io.github.ppl-crm/ppl
+
+- Page: https://mcp.aianytime.net/s/ppl/
+- Source: https://github.com/ppl-crm/ppl
+- Transport: http
+- Endpoint: https://withppl.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http ppl https://withppl.com/mcp`
+- MCP Registry id: io.github.ppl-crm/ppl
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-14
+
+### ReadGZH
+
+Reads WeChat Official Account articles into clean Markdown for AI clients. Free daily credits; cached articles cost 0. Endpoint: https://api.readgzh.site/mcp-server (API key optional for higher quota) · Docs
+
+- Page: https://mcp.aianytime.net/s/readgzh/
+- Source: https://github.com/sweesama/readgzh
+- Transport: http
+- Endpoint: https://api.readgzh.site/mcp-server
+- Connect with Claude Code: `claude mcp add --transport http readgzh https://api.readgzh.site/mcp-server`
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 576 tokens of definitions)
+- Tool names: readgzh.get, readgzh.list, readgzh.list_by_account, readgzh.read, readgzh.search
+- Repository: 4 stars, last push 2026-10-14
+
+### Screenpipe
+
+Source-available MCP access to searchable local screen text and audio transcripts. Requires a running Screenpipe recorder and local API authentication. Install: claude mcp add screenpipe -- npx -y screenpipe-mcp@latest · Docs
+
+- Page: https://mcp.aianytime.net/s/screenpipe/
+- Source: https://github.com/screenpipe/screenpipe
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 21,960 stars, last push 2026-10-17
+
+### Selvedge
+
+Local SQLite decision memory for coding agents to save and retrieve rationale, rejected approaches, and entity history. Install: uvx --from selvedge selvedge-server.
+
+- Page: https://mcp.aianytime.net/s/selvedge/
+- Source: https://github.com/masondelan/selvedge
+- Transport: stdio
+- MCP Registry id: io.github.masondelan/selvedge
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 25 stars, last push 2026-10-16
+
+### Whisper Memos
+
+Official server for the Whisper Memos iPhone and Apple Watch voice memo app: list and read memo transcripts and summaries, list labels, view account details, and delete memos; it cannot create or edit memos. OAuth 2.1, approved in the iOS app. Endpoint: https://whispermemos.com/mcp · Config · Registry: com.whispermemos/whisper-memos
+
+- Page: https://mcp.aianytime.net/s/whisper-memos/
+- Source: https://whispermemos.com/mcp
+- Transport: http
+- Endpoint: https://whispermemos.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http whisper-memos https://whispermemos.com/mcp`
+- MCP Registry id: com.whispermemos/whisper-memos
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-15
+
+### Wondel.ai Skills MCP
+
+Read-only access to 50 book-based agent skills and 12 guided journeys: recommends a framework for a task and serves its SKILL.md in-session. No account or auth. Endpoint: https://skills.wondel.ai/mcp · Registry: io.github.mjaskolski/wondel-skills-mcp
+
+- Page: https://mcp.aianytime.net/s/wondel-ai-skills-mcp/
+- Source: https://github.com/mjaskolski/wondel-skills-mcp
+- Transport: http
+- Endpoint: https://skills.wondel.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http wondel-ai-skills-mcp https://skills.wondel.ai/mcp`
+- MCP Registry id: io.github.mjaskolski/wondel-skills-mcp
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 1,227 tokens of definitions)
+- Tool names: get_journey, get_skill, load_skill, recommend_skills, search_skills
+- Repository: 1 stars, last push 2026-08-20
+
+## Media & generation
+
+### audio
+
+Edit, analyze and convert audio files and the sound of videos, no ffmpeg: loudness and true peak, checks against ACX, podcast, streaming and EBU R 128 specs, denoise, EQ, trim, fades, BPM, key. Install: npx -y audio --mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/audio/
+- Source: https://github.com/audiojs/audio
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 328 stars, last push 2026-10-16
+
+### Claude Imagine
+
+Generate and edit images and videos with Nano Banana 2, GPT Image 2.5, Seedream 4.5, Flux 2 Pro, and Veo 3.1 Fast. Endpoint: https://claudeimagine.com/api/mcp (OAuth, no API key; free signup credits, then paid plans) · Docs
+
+- Page: https://mcp.aianytime.net/s/claude-imagine/
+- Source: https://github.com/lumian2015/claudeimagine-mcp
+- Transport: http
+- Endpoint: https://claudeimagine.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http claude-imagine https://claudeimagine.com/api/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-02
+
+### dare-mcp-server
+
+Generate video and images on Dare (Seedance 2.5, Veo 3.1, Kling 3.0 Pro, Hailuo 2.3, Nano Banana 2) from Claude, billed to your own Dare credits, with local cost estimates and dry runs. Needs a Dare session cookie; unofficial. Install: npx dare-mcp-server setup
+
+- Page: https://mcp.aianytime.net/s/dare-mcp-server/
+- Source: https://github.com/avi-aggarwal14/dare-mcp-server
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 1 stars, last push 2026-10-16
+
+### Magic Hour
+
+Generate and edit video, images, and audio with 44 Magic Hour API tools. Endpoint: https://mcp.magichour.ai/ (bearer API key required) · Setup
+
+- Page: https://mcp.aianytime.net/s/magic-hour/
+- Source: https://github.com/magichourhq/magic-hour-mcp
+- Transport: http
+- Endpoint: https://mcp.magichour.ai/
+- Connect with Claude Code: `claude mcp add --transport http magic-hour https://mcp.magichour.ai/`
+- Last check: Answered an MCP handshake without credentials and listed 46 tools.
+- Tools: 46 (about 31,956 tokens of definitions)
+- Tool names: account_retrieve, ai_clothes_changer_create_image, ai_face_editor_edit_image, ai_gif_generator_create_image, ai_headshot_generator_create_image, ai_image_editor_create_image, ai_image_generator_create_image, ai_image_upscaler_create_image, ai_meme_generator_create_image, ai_qr_code_generator_create_image, ai_talking_photo_create_talking_photo, ai_ugc_ad_create_video, ai_video_editor_create_video, ai_video_translator_create_video, animation_create_video, audio_projects_delete, audio_projects_retrieve_details, audio_to_video_create_video, auto_subtitle_generator_create_video, body_swap_create_image, character_replace_create_video, face_detection_detect_faces, face_detection_retrieve_details, face_swap_create_video, face_swap_photo_create_image, fetch_audio_download, fetch_image_download, fetch_video_download, head_swap_create_image, image_background_remover_create_image, image_projects_delete, image_projects_retrieve_details, image_to_video_create_video, lip_sync_create_video, photo_colorizer_create_image, ping, saved_items_list, text_to_video_create_video, video_assets_generate_presigned_url, video_projects_delete, video_projects_retrieve_details, video_to_video_create_video, wait_for_audio_project, wait_for_image_project, wait_for_video_project, workflow_guide_retrieve
+- Repository: 8 stars, last push 2026-10-17
+
+### Motomarks
+
+Search a published automotive brand library and build logo CDN URLs for Claude, Cursor, and VS Code. Endpoint: https://motomarks.io/api/mcp (OAuth or API key; free account, no credit card)
+
+- Page: https://mcp.aianytime.net/s/motomarks/
+- Source: https://motomarks.io/docs/mcp
+- Transport: http
+- Endpoint: https://motomarks.io/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http motomarks https://motomarks.io/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 8 tools.
+- Tools: 8 (about 1,307 tokens of definitions)
+- Tool names: build_image_url, complete_sign_up, describe_api_endpoint, get_account, get_brand, list_brand_assets, search_brands, sign_up
+
+### OrkasVideoStudio
+
+Local-first server and TypeScript CLI for agent-driven video composition, editing, generation, and assembly on editable plan.json timelines, with installable skills for Codex and Claude Code.
+
+- Page: https://mcp.aianytime.net/s/orkasvideostudio/
+- Source: https://github.com/Orkas-AI/Orkas-VideoStudio
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 330 stars, last push 2026-10-13
+
+### Playable Gift
+
+Creates a small browser game from someone's habits or inside jokes, then returns links for sharing the gift. Free within daily allowances. Endpoint: https://playablegift.com/mcp
+
+- Page: https://mcp.aianytime.net/s/playable-gift/
+- Source: https://playablegift.com/agents
+- Transport: http
+- Endpoint: https://playablegift.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http playable-gift https://playablegift.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 8 tools.
+- Tools: 8 (about 1,764 tokens of definitions)
+- Tool names: create_custom_game, export_gift, get_gift, get_gift_catalog, get_gift_history, get_made_game, make_game, revise_custom_game
+
+### prompt-to-asset
+
+Routes image-generation prompts to 30+ models (DALL·E, Stable Diffusion, Flux, Midjourney) through one interface. Install: npm install -g prompt-to-asset
+
+- Page: https://mcp.aianytime.net/s/prompt-to-asset/
+- Source: https://github.com/MohamedAbdallah-14/prompt-to-asset
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 23 stars, last push 2026-10-17
+
+### RunAPI
+
+Browse the RunAPI model catalog and run image, video, music/audio, text-to-speech, and LLM tasks from agent workflows. Install: npx -y @runapi.ai/mcp
+
+- Page: https://mcp.aianytime.net/s/runapi/
+- Source: https://github.com/runapi-ai/mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 55 stars, last push 2026-10-15
+
+### UpRes
+
+UpRes MCP: list models, credits, and submit 4K image and video upscale jobs. Install: npx -y upres-cli
+
+- Page: https://mcp.aianytime.net/s/upres/
+- Source: https://github.com/auroracapital/upres-cli
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-09-26
+
+### VideoGen MCP
+
+Create editable videos from storyboards, scripts or voiceovers, generate media, edit projects and export results through the VideoGen API; account and generation credits required. Hosted HTTP with OAuth/API key or local stdio via npx -y @videogen/mcp@2.2.1 with VIDEOGEN_API_KEY; MIT server; Setup.
+
+- Page: https://mcp.aianytime.net/s/videogen/
+- Source: https://github.com/video-gen/videogen-mcp
+- Transport: http
+- Endpoint: https://mcp.videogen.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http videogen https://mcp.videogen.io/mcp`
+- MCP Registry id: io.github.dg314/videogen
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 4 stars, last push 2026-10-02
+
+## Security
+
+### Council of AI (GSPC)
+
+Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures and Merkle inclusion; read tools need no key, evidence tools are x402-metered. Endpoint: https://councilof.ai/mcp · Install: npx -y csoai-gspc-mcp · Registry: io.github.CSOAI-ORG/gspc
+
+- Page: https://mcp.aianytime.net/s/council-of-ai-gspc/
+- Source: https://github.com/CSOAI-ORG/councilof-ai/tree/master/mcp/gspc-server
+- Transport: http
+- Endpoint: https://councilof.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http council-of-ai-gspc https://councilof.ai/mcp`
+- MCP Registry id: io.github.CSOAI-ORG/gspc
+- Last check: Answered an MCP handshake without credentials and listed 19 tools.
+- Tools: 19 (about 5,740 tokens of definitions)
+- Tool names: art50_marking_evidence, board_totals, commission_card, evidence_bundle, evidence_bundle_preview, get_axis, get_card, get_root, list_cards, mcp_trust, measurement_index, receipts_batch, route, rwa_evidence, server_evidence, verify_capsule, verify_card, verify_inclusion, x402_trust
+- Repository: 3 stars, last push 2026-10-17
+
+### Darkmoon
+
+Open-source (GPLv3) autonomous penetration-testing platform orchestrating 80+ offensive security tools through 50 specialist agents, with proof of exploitation behind every finding. Runs fully locally.
+
+- Page: https://mcp.aianytime.net/s/darkmoon/
+- Source: https://github.com/ASCIT31/Dark-Moon
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 1,031 stars, last push 2026-10-01
+
+### Skycloak MCP
+
+Managed Keycloak identity MCP server for AI agents (OIDC/OAuth realms, users, clients, SSO). Endpoint: https://mcp.skycloak.io · Docs · Registry: io.skycloak/skycloak-mcp
+
+- Page: https://mcp.aianytime.net/s/skycloak-mcp/
+- Source: https://github.com/sky-cloak/skycloak-mcp
+- Transport: http
+- Endpoint: https://mcp.skycloak.io
+- Connect with Claude Code: `claude mcp add --transport http skycloak-mcp https://mcp.skycloak.io`
+- MCP Registry id: io.skycloak/skycloak-mcp
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-17
+
+### Sunglasses
+
+Scans text and files locally for prompt injection, credential leaks and data exfiltration; runs as a CLI, a Python API or an MCP server. Install: pip install sunglasses · Run: python -m sunglasses.mcp · Website
+
+- Page: https://mcp.aianytime.net/s/sunglasses/
+- Source: https://github.com/sunglasses-dev/sunglasses
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 10 stars, last push 2026-10-17
+
+## Finance & markets
+
+### AskCyborg
+
+Stress-tests public and private companies through analyst debate: reports, scores, comparisons, competitors, recent developments. Anonymous free tier, no API key. Endpoint: https://mcp.askcyborg.com/mcp
+
+- Page: https://mcp.aianytime.net/s/askcyborg/
+- Source: https://github.com/Ask-Cyborg/askcyborg-mcp
+- Transport: http
+- Endpoint: https://mcp.askcyborg.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http askcyborg https://mcp.askcyborg.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 8 tools.
+- Tools: 8 (about 1,114 tokens of definitions)
+- Tool names: compare_companies, find_competitors, get_company_report, get_cyborg_score, get_recent_developments, get_top_insights, search_by_industry, search_companies
+- Repository: 1 stars, last push 2026-07-06
+
+### BankBridge
+
+Read-only access to your US bank accounts, card transactions and investment holdings: spending, subscriptions, cashflow. Paid, OAuth sign-in or API key. Endpoint: https://bankbridge.money/api/mcp · Website · Registry: money.bankbridge/server
+
+- Page: https://mcp.aianytime.net/s/bankbridge/
+- Source: https://github.com/bankbridge-money/bankbridge-plugin
+- Transport: http
+- Endpoint: https://bankbridge.money/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http bankbridge https://bankbridge.money/api/mcp`
+- MCP Registry id: money.bankbridge/server
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-10
+
+### BlockVectra
+
+Multi-chain EVM JSON-RPC, indexed Data API, documentation, pricing and status for developers and AI agents. Documentation, chain, pricing and status tools need no API key; Data API tools require one. Endpoint: https://docs.blockvectra.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/blockvectra/
+- Source: https://github.com/blockvectra/mcp
+- Transport: http
+- Endpoint: https://docs.blockvectra.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http blockvectra https://docs.blockvectra.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 15 tools.
+- Tools: 15 (about 3,256 tokens of definitions)
+- Tool names: data_api_get, estimate_usage, explain_error, get_account, get_deposit_address, get_method_info, get_pricing, get_status, how_to_get_api_key, list_chains, list_docs, read_doc, rpc_call, search_docs, send_raw_transaction
+- Repository: 0 stars, last push 2026-10-16
+
+### canli-validation-mcp
+
+Checks whether a backtest result is real or just the luckiest of the variants tried: deflated Sharpe ratio, CSCV probability of backtest overfitting, data-snooping tests (Hansen's SPA, White's Reality Check, Romano-Wolf StepM), a lookahead check and a pipeline placebo test. Free, no API key; also runs locally with npx -y canli-validation-mcp. Endpoint: https://canlicapital.com/mcp · Docs · Registry: io.github.arhancanli/canli-validation-mcp
+
+- Page: https://mcp.aianytime.net/s/canli-validation-mcp/
+- Source: https://github.com/arhancanli/canli-validation-mcp
+- Transport: http
+- Endpoint: https://canlicapital.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http canli-validation-mcp https://canlicapital.com/mcp`
+- MCP Registry id: io.github.arhancanli/canli-validation-mcp
+- Last check: Answered an MCP handshake without credentials and listed 18 tools.
+- Tools: 18 (about 6,424 tokens of definitions)
+- Tool names: audit_backtest, backtest_strategy, check_feasibility, check_leakage, placebo_test, service_status, stress_test, summarize_series, validate_backtest_length, validate_breadth, validate_deflated_sharpe, validate_haircut_sharpe, validate_luck_trials, validate_overfitting, validate_paper_evidence, validate_reality_check, validate_track_record, verify_receipt
+- Repository: 1 stars, last push 2026-10-16
+
+### Chord
+
+DEX swap quotes and unsigned swap transactions on 7 EVM chains (Base, Monad, BNB Chain, Avalanche, Arbitrum, Robinhood Chain, Arc), plus token boards, candles, trades, wallet PnL, smart money, holders and LP pools (Solana data read-only). Hosted, no key for data and swaps (about 60 requests a minute), only chord_ask needs an API key; non-custodial. Endpoint: https://api.getchord.xyz/v1/mcp · Docs · Registry: io.github.getchordlabs/chord
+
+- Page: https://mcp.aianytime.net/s/chord/
+- Source: https://github.com/getchordlabs/chord
+- Transport: http
+- Endpoint: https://api.getchord.xyz/v1/mcp
+- Connect with Claude Code: `claude mcp add --transport http chord https://api.getchord.xyz/v1/mcp`
+- MCP Registry id: io.github.getchordlabs/chord
+- Last check: Answered an MCP handshake without credentials and listed 17 tools.
+- Tools: 17 (about 2,420 tokens of definitions)
+- Tool names: chord_ask, chord_candles, chord_chains, chord_holders, chord_lp_pools, chord_lp_positions, chord_overview, chord_quote, chord_search, chord_smart_money, chord_status, chord_swap_tx, chord_token, chord_tokens, chord_trades, chord_wallet, chord_wallet_trades
+- Repository: 0 stars, last push 2026-10-16
+
+### ddbx
+
+Insider share dealings from UK directors, US Form 4 filers, Swedish and Dutch PDMRs, and US Congress members, with notable filings rated. Read-only, no API key. Endpoint: https://api.ddbx.uk/mcp · Repo · Registry: io.github.jonwillington/ddbx
+
+- Page: https://mcp.aianytime.net/s/ddbx/
+- Source: https://ddbx.uk/mcp
+- Transport: http
+- Endpoint: https://api.ddbx.uk/mcp
+- Connect with Claude Code: `claude mcp add --transport http ddbx https://api.ddbx.uk/mcp`
+- MCP Registry id: io.github.jonwillington/ddbx
+- Last check: Answered an MCP handshake without credentials and listed 6 tools.
+- Tools: 6 (about 760 tokens of definitions)
+- Tool names: fetch, get_company, get_daily_summary, get_dealing, search, search_dealings
+- Repository: 0 stars, last push 2026-09-21
+
+### Deposit by Ouroboros Apps
+
+Freelance deposit and payment schedule: approved deposits, payment dates, and client wording; deposit waivers and date changes need approval. OAuth sign-in. Endpoint: https://deposit-continuity2.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/deposit-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/deposit-mcp
+- Transport: http
+- Endpoint: https://deposit-continuity2.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http deposit-by-ouroboros-apps https://deposit-continuity2.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 12 tools.
+- Tools: 12 (about 1,844 tokens of definitions)
+- Tool names: accept_schedule_change, add_later_payment, commit_schedule, list_schedules, mark_deposit_paid, move_payment_date, read_schedule, record_deposit, start_schedule, suggest_schedule_change, waive_deposit, write_client_script
+- Repository: 0 stars, last push 2026-10-11
+
+### Equibles
+
+US company research: SEC filing search and text, fundamentals as reported in 10-K and 10-Q filings, earnings-call transcripts, 13F holdings, insider and congressional trades, and FRED macro series, with links to the source filings. Free tier, OAuth sign-in. Endpoint: https://mcp.equibles.com/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/equibles/
+- Source: https://equibles.com/docs/mcp
+- Transport: http
+- Endpoint: https://mcp.equibles.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http equibles https://mcp.equibles.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 122 tools.
+- Tools: 122 (about 39,466 tokens of definitions)
+- Tool names: AddPortfolioLot, ClosePortfolioLot, CompareFinancialFact, CompareInstitutionPortfolios, CreateMyPortfolio, DeleteMyPortfolio, GetAnalystEstimates, GetAtmPrograms, GetAverageTrueRange, GetBollingerBands, GetBuybackPrograms, GetCftcPositioning, GetCompanyKpis, GetCongressionalTrades, GetCorrelatedStocks, GetCustomerConcentration, GetDebtInstrument, GetDebtProfile, GetDividendHistory, GetEarningsBrief, GetEarningsCallEvent, GetEarningsCallToneAndThemes, GetEarningsCallTranscript, GetEconomicCalendar, GetEconomicIndicator, GetEtfHoldings, GetEtfProfile, GetEuropeanDirectorTransactions, GetEuropeanFundHoldings, GetEuropeanShortPositions, GetExecutiveChanges, GetExecutiveCompensation, GetFailsToDeliver, GetFdaAdvisoryCommitteeMeetings, GetFinancialFact, GetFinancialStatement, GetForm144ProposedSales, GetFormDOfferings, GetFundNcenReports, GetFundProfile, GetFundsHoldingStock, GetGoingConcernStatus, GetGovernmentContracts, GetGuidance, GetIndexChanges, GetIndexComposition, GetIndexForecast, GetInsiderOwnership, GetInsiderSentimentScores, GetInsiderTransactions, GetInstitutionCloneBacktest, GetInstitutionConsensusHoldings, GetInstitutionPortfolio, GetInstitutionQuarterlyActivity, GetInstitutionSectorAllocation, GetInstitutionSummary, GetInstitutionalOwnershipHistory, GetInvestmentAdviser, GetInvestorEventSlideMetadata, GetInvestorEventTranscript, GetInvestorRelationsNews, GetIpoDetails, GetIpoFeed, GetLargestShortVolume, GetLatestCftcPositioning, GetLatestClosingPrices, GetLatestEconomicIndicators, GetLiveQuote, GetMarketHolidayCalendar, GetMarketStatus, GetMarketWide13FActivity, GetMarketWideCongressionalActivity, GetMemberNetWorth, GetMemberTrades, GetMostHeldStocks, GetMyPortfolio, GetNonGaapBridge, GetOffExchangeVolume, GetOnBalanceVolume, GetOptionChain, GetOptionContract, GetOptionExpirations, GetPutCallRatios, GetRevenueBreakdown, GetShortInterest, GetShortInterestSnapshot, GetShortSqueezeScores, GetShortVolume, GetStochasticOscillator, GetStockPrices, GetSuperInvestors, GetSupplyChain, GetSupplyChainOverlap, GetTopGovernmentContractors, GetTopHolders, GetTopInstitutionalBuyersSellers, GetUpcomingInvestorEvents, GetValuationMultiples, GetValuationMultiplesHistory, GetVixHistory, GetWebDataFeed, ListFilings, ListInvestorEvents, ListWebDataFeeds, ReadDocumentLines, RemovePortfolioLot, ReportProblem, ScreenStocks, SearchCftcMarkets, SearchCongressMembers, SearchDocument, SearchDocuments, SearchEconomicIndicators, SearchEtfs, SearchFunds, SearchInsiders, SearchInstitutions, SearchInvestmentAdvisers, SuggestToolImprovement, UnwatchInstrument, UpdatePortfolioLot, WatchInstrument
+
+### Eulerpool
+
+Financial data for AI agents: 250+ tools over stocks, fundamentals, ETFs, macro (FRED/ECB/IMF/World Bank), crypto, FX, insider trades, congress trading and options flow. Free tier, API key or OAuth. Endpoint: https://api.eulerpool.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/eulerpool/
+- Source: https://github.com/eulerpool/eulerpool-mcp
+- Transport: http
+- Endpoint: https://api.eulerpool.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http eulerpool https://api.eulerpool.com/mcp`
+- Last check: Reachable, and asks for credentials before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-09-27
+
+### EventTrader
+
+Prediction-market trading: place bets, TGE token price predictions, real-time orderbooks, agent cloning, due-diligence scoring. Platform
+
+- Page: https://mcp.aianytime.net/s/eventtrader/
+- Source: https://github.com/eventtrader/event-trader-mcp
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+
+### Helium
+
+Real-time news with 37-dimension bias scoring, ML options pricing, and live market data. Interactive demo · REST API
+
+- Page: https://mcp.aianytime.net/s/helium/
+- Source: https://github.com/connerlambden/helium-mcp
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+
+### HostDeFi
+
+Free token-safety scanner grading tokens A+–F from on-chain checks (mint/freeze authority, liquidity, holder concentration) across Solana and 7 EVM chains. Keyless REST API, hosted MCP, and x402 endpoints.
+
+- Page: https://mcp.aianytime.net/s/hostdefi/
+- Source: https://hostdefi.com
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+
+### Invoice by Ouroboros Apps
+
+Freelance invoice records: approved invoice line items, quantities, agreed rates, due dates, and late terms; invoice changes need explicit approval. OAuth sign-in. Endpoint: https://invoice-continuity2.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/invoice-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/invoice-mcp
+- Transport: http
+- Endpoint: https://invoice-continuity2.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http invoice-by-ouroboros-apps https://invoice-continuity2.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 13 tools.
+- Tools: 13 (about 2,197 tokens of definitions)
+- Tool names: accept_invoice_change, begin_invoice, describe_line, list_invoices, offer_discount, place_line, quote_line_rate, read_invoice, seal_invoice, set_invoice_due, set_line_quantity, suggest_invoice_change, write_late_terms
+- Repository: 0 stars, last push 2026-10-11
+
+### Invompt
+
+Turn AI-host work into invoices you review before send; Continue as guest or OAuth via hosted MCP. Endpoint: https://mcp.invompt.com/mcp · Website · Registry: com.invompt/invompt
+
+- Page: https://mcp.aianytime.net/s/invompt/
+- Source: https://github.com/Invompt/invompt-mcp
+- Transport: http
+- Endpoint: https://mcp.invompt.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http invompt https://mcp.invompt.com/mcp`
+- MCP Registry id: com.invompt/invompt
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-14
+
+### MoltNode by Chord
+
+Read 31 blockchains over JSON-RPC (Ethereum, Base, Arbitrum, Solana, Monad, BNB Chain, Avalanche, Sui and more) and get DEX swap quotes with the unsigned transaction, approval and simulation via Chord. Hosted, no account or API key; non-custodial, the user's wallet signs. Endpoint: https://moltnode.ag/mcp · Docs · Registry: io.github.tuantqse90/moltnode
+
+- Page: https://mcp.aianytime.net/s/moltnode/
+- Source: https://github.com/tuantqse90/moltnode-mcp
+- Transport: http
+- Endpoint: https://moltnode.ag/mcp
+- Connect with Claude Code: `claude mcp add --transport http moltnode https://moltnode.ag/mcp`
+- MCP Registry id: io.github.tuantqse90/moltnode
+- Last check: Answered an MCP handshake without credentials and listed 7 tools.
+- Tools: 7 (about 1,253 tokens of definitions)
+- Tool names: chord_find_token, chord_swap_quote, get_balance, get_block_number, list_chains, rpc_call, send_raw_transaction
+- Repository: 1 stars, last push 2026-10-16
+
+### ParlayAPI
+
+Sports odds, player props, public event discovery, and account usage through ParlayAPI; account data tools require each user's own API key and allowances. Install: uvx --from parlayapi-mcp==0.3.6 parlayapi-mcp
+
+- Page: https://mcp.aianytime.net/s/parlayapi/
+- Source: https://github.com/JacobiusMakes/parlay-api-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-10-02
+
+### Silicon Floor
+
+Who owns AI and semiconductor stocks, who is buying and selling them, and what their filed numbers say: SEC XBRL financials, 13F, Schedule 13D/G, Forms 3/4/5, FINRA short interest and dividends, every figure dated and linked to its filing. Read-only, no API key. Endpoint: https://siliconfloor.com/mcp · Docs · Registry: com.siliconfloor/silicon-floor
+
+- Page: https://mcp.aianytime.net/s/silicon-floor/
+- Source: https://github.com/Baptoshi/silicon-floor
+- Transport: http
+- Endpoint: https://siliconfloor.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http silicon-floor https://siliconfloor.com/mcp`
+- MCP Registry id: com.siliconfloor/silicon-floor
+- Last check: Answered an MCP handshake without credentials and listed 18 tools.
+- Tools: 18 (about 5,627 tokens of definitions)
+- Tool names: compare_companies, get_company, get_dividends, get_figure_history, get_filings, get_financials, get_fund_flows, get_holders, get_insider_trading, get_market, get_market_overview, get_news, get_ownership, get_price_history, get_signals, list_companies, screen_companies, what_changed
+- Repository: 1 stars, last push 2026-10-16
+
+### SwapWallet
+
+Official server for the SwapWallet crypto exchange: balances, P&L, history and deposit addresses, plus swaps, transfers and withdrawals that run only after the user approves them in Telegram. OAuth sign-in. Endpoint: https://swapwallet.app/mcp · Docs · Registry: app.swapwallet/mcp
+
+- Page: https://mcp.aianytime.net/s/swapwallet/
+- Source: https://github.com/SwapWallet/swapwallet-mcp
+- Transport: http
+- Endpoint: https://swapwallet.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http swapwallet https://swapwallet.app/mcp`
+- MCP Registry id: app.swapwallet/mcp
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 2 stars, last push 2026-10-12
+
+### Tapetide
+
+Indian stock market (NSE and BSE) research over about 8,200 stocks: quotes, financials, technicals, fundamental and technical screeners, FII/DII flows, option chains, parsed filings, IPOs, and portfolio tracking; free plan of 50 tool calls a day. Endpoint: https://mcp.tapetide.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/tapetide/
+- Source: https://github.com/Tapetide-hq/nse-bse-indian-stock-market-data-mcp
+- Transport: http
+- Endpoint: https://mcp.tapetide.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http tapetide https://mcp.tapetide.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 140 stars, last push 2026-10-14
+
+### The Stall
+
+About 300 pay-per-call capabilities: US/EU/JP/KR/AU equities, options chains, DeFi yields, blockchain analytics, macro indicators, wallet intelligence, and prediction markets. Paid per call in USDC on Base ($0.001–$1.50), no API key. Endpoint: https://the-stall.intuitek.ai/mcp
+
+- Page: https://mcp.aianytime.net/s/the-stall/
+- Source: https://github.com/thebrierfox/the-stall
+- Transport: http
+- Endpoint: https://the-stall.intuitek.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http the-stall https://the-stall.intuitek.ai/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 302 tools.
+- Tools: 302 (about 81,021 tokens of definitions)
+- Tool names: action-receipt, activist-investor-intel, address-intel, address-security, agent-access-check, agent-kya-score, agriculture-brief, ai-image-gen, ai-pipeline-brief, air-quality, analyst-ratings, analyst-upgrades, app-store-intel, arxiv-intel, audio-transcribe, audio-transcribe-long, audio-transcribe-short, aviation-weather, balance-sheet, base-season, block-intel, bonds-brief, breadcrumb-extractor, btc-game-theory, btc-miner-econ, btc-systems-theory, capital-allocation-score, cash-flow-statement, cdp-market-depth, chain-pulse, changelog-generate, chromatic-dispersion, city-lookup, classic-novels, clinical-trials, code-api-surface, code-security-scan, code-test-detector, commodity-futures, company-due-diligence, company-intel, company-research-bundle, concentration-risk-score, congressional-trades, consumer-brief, content-analyze, content-moderation, cot-positioning, country-info, credit-spreads, cron-parser, cross-chain-bridge-status, crypto-brief, crypto-equity-brief, crypto-fear-greed, crypto-fiat-price, crypto-momentum-pack, crypto-news-equity-brief, crypto-news-impact, crypto-pulse, crypto-stock-pulse, crypto-top-movers, currency-format, cve-intel, db-perf-intel, dcf-scenario, dcf-valuation, defi-market-pulse, defi-portfolio, defi-state-pack, defi-yield-strategies, defi-yields, defillama-coin-price, defillama-pack, defillama-protocol, dex-pair-search, dex-swap-quote, dex-trending-pools, dictionary-intel, dividend-calendar, dividend-intel, dns-lookup, document-qa-prep, domain-availability, domain-whois, drug-intel, earnings-brief, earnings-calendar, earnings-estimates, earnings-intel-bundle, earnings-quality, earnings-reaction, earnings-surprises, earthquake-intel, economic-calendar, economic-momentum, email-verify, energy-brief, ens-lookup, entity-clearance, equity-brief, equity-fundamentals, equity-quality-screen, equity-sentiment, equity-technicals, equity-watchlist-brief, erc20-snapshot, etf-holdings, eth-block, evm-log-events, evm-nonce, evm-token-security, fact-check, fda-recall-watch, fdic-bank-intel, fec-donor-intel, federal-contract-intel, federal-register-search, flight-tracker, fomc-tracker, forex-historical, forex-rates, form-144-intel, fred-query, funding-rates, gas-estimate, gas-prices, geocode, geopolitical-brief, github-intel, github-org-intel, github-repo-intel, github-trending, gitleaks-scan, global-equity-indices, gov-votes, government-contract-intel, guidance-quality, healthcare-brief, hedge-fund-holdings, hf-model-search, hn-search, housing-brief, http-headers, huggingface-intel, image-detect, imf-country-outlook, income-statements, inflation-intel, insider-trades, insider-trading-intel, institutional-ownership, institutional-ownership-intel, intel-pack, intl-stock-price, ip-intel, ipo-calendar, json-extract, kimchi-premium, korean-crypto-movers, korean-market-movers, labor-brief, labor-market, lbo-model, legal-search, limitless-markets, llm-proxy, macro-brief, macro-indicators, manufacturing-brief, market-breadth, market-gex, market-intelligence, market-movers, market-overview, market-regime-intel, market-sentiment, meme-generator, meme-radar, merger-acquisition-intel, metals-brief, model-research-brief, news-sentiment, nft-metadata, nonprofit-intel, npi-lookup, npm-lookup, npm-trends, open-food-intel, options-chain, options-flow-unusual, options-iv-snapshot, options-snapshot, page-intel, page-links, patent-intel, peer-benchmarking, ping, place-details, podcast-intel
+- Repository: 0 stars, last push 2026-10-10
+
+### Truthifi
+
+One verified household record for your AI: accounts, activity, holdings, fees, performance, cash flow and your Truthifi Score. Can't move money. Endpoint: https://api.truthifi.com/mcp · Docs · Registry: com.truthifi/mcp
+
+- Page: https://mcp.aianytime.net/s/truthifi/
+- Source: https://github.com/truthifi/truthifi-mcp
+- Transport: http
+- Endpoint: https://api.truthifi.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http truthifi https://api.truthifi.com/mcp`
+- MCP Registry id: com.truthifi/mcp
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-12
+
+### VoxOdds
+
+Prediction-market research across Polymarket and Kalshi: odds for the same contract on both venues, the all-in executable price for a budget with estimated taker fees and which venue fills cheaper, trending markets, edge signals and an audited forecast track record. Read-only, no API key. Endpoint: https://voxodds.com/mcp · Docs · Registry: com.voxodds/voxodds
+
+- Page: https://mcp.aianytime.net/s/voxodds/
+- Source: https://github.com/softdevfz/voxodds-mcp
+- Transport: http
+- Endpoint: https://voxodds.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http voxodds https://voxodds.com/mcp`
+- MCP Registry id: com.voxodds/voxodds
+- Last check: Answered an MCP handshake without credentials and listed 18 tools.
+- Tools: 18 (about 4,299 tokens of definitions)
+- Tool names: check_bet, compare_executable_quotes, compare_platforms, find_best_price, get_edge_signals, get_executable_quote, get_forecaster_record, get_market_odds, get_research_theses, get_track_record, get_world_cup_brief, get_world_cup_matchday, get_world_cup_odds, list_arbitrage_candidates, list_executable_opportunities, list_sportsbook_surebets, list_trending_markets, submit_forecast
+- Repository: 0 stars, last push 2026-09-27
+
+## Marketing, content & social
+
+### App Store & Google Play Review Intelligence MCP
+
+Search Apple App Store / Google Play, pull reviews, return top complaints with quotes, rating-by-version, what got worse in the latest update, and competitor comparisons. Local stdio free; hosted pay-per-call on Apify (API token). Endpoint: https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp · Registry: io.github.gunnargray-dev/app-store-review-intelligence-mcp
+
+- Page: https://mcp.aianytime.net/s/app-store-review-intelligence-mcp/
+- Source: https://github.com/gunnargray-dev/app-store-review-intelligence-mcp
+- Transport: http
+- Endpoint: https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp
+- Connect with Claude Code: `claude mcp add --transport http app-store-review-intelligence-mcp https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp`
+- MCP Registry id: io.github.gunnargray-dev/app-store-review-intelligence-mcp
+- Last check: Reachable, and asks for credentials before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-16
+
+### Autoposting
+
+Draft, schedule, and publish to X, LinkedIn, Instagram, Threads, and YouTube, plus AI carousels and video clipping. OAuth 2.1 with dynamic client registration — no secret to paste. Install: claude mcp add --transport http autoposting https://app.autoposting.ai/mcp
+
+- Page: https://mcp.aianytime.net/s/autoposting/
+- Source: https://github.com/Autoposting-ai/autoposting-mcp
+- Transport: http
+- Endpoint: https://app.autoposting.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http autoposting https://app.autoposting.ai/mcp`
+- Last check: Answered an MCP handshake without credentials. It did not list its tools to an anonymous client.
+- Repository: 0 stars, last push 2026-08-07
+
+### BulkPublish
+
+Plan, review, schedule, publish, and analyze social media content for AI agents through BulkPublish. Endpoint: https://mcp.bulkpublish.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/bulkpublish/
+- Source: https://github.com/azeemkafridi/bulkpublish-api
+- Transport: http
+- Endpoint: https://mcp.bulkpublish.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http bulkpublish https://mcp.bulkpublish.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 3 stars, last push 2026-10-13
+
+### Claim by Ouroboros Apps
+
+Brand claims and marketing copy compliance: approved claims, offers, proof, brand voice, and banned phrases, with a check that rejects copy inventing a guarantee or discount. OAuth sign-in. Endpoint: https://claim-continuity2.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/claim-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/claim-mcp
+- Transport: http
+- Endpoint: https://claim-continuity2.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http claim-by-ouroboros-apps https://claim-continuity2.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 10 tools.
+- Tools: 10 (about 1,634 tokens of definitions)
+- Tool names: check_brand_copy, create_brand, get_brand_guide, list_brands, remove_banned_phrase, save_approved_claim, save_banned_phrase, save_brand_voice, save_offer, save_proof
+- Repository: 0 stars, last push 2026-10-16
+
+### Datacircle
+
+Query your favorite B2B data APIs through us. Same request, same price, no markup. OAuth sign-in, or an API key as a Bearer token. Endpoint: https://api.datacircle.dev/mcp · Website · Registry: dev.datacircle/datacircle
+
+- Page: https://mcp.aianytime.net/s/datacircle/
+- Source: https://docs.datacircle.dev/mcp-server
+- Transport: http
+- Endpoint: https://api.datacircle.dev/mcp
+- Connect with Claude Code: `claude mcp add --transport http datacircle https://api.datacircle.dev/mcp`
+- MCP Registry id: dev.datacircle/datacircle
+- Last check: Did not answer an MCP handshake (HTTP 404, no MCP response).
+
+### day3
+
+Official server for the day3 email platform: read account context, draft, edit, preview and test-send newsletter campaigns, and enroll contacts in automations; sending to an audience needs an extra API key scope. Bearer API key. Endpoint: https://go.day3.app/api/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/day3/
+- Source: https://github.com/Mopra/day3.app
+- Transport: http
+- Endpoint: https://go.day3.app/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http day3 https://go.day3.app/api/mcp`
+- MCP Registry id: io.github.Mopra/day3
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 1 stars, last push 2026-10-15
+
+### FirstSales MCP
+
+Read CRM contacts, companies, deals, and lists, and create contacts in an authorized FirstSales workspace; OAuth and an eligible paid FirstSales plan required. Endpoint: https://api.app.firstsales.io/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/firstsales-mcp/
+- Source: https://developer.firstsales.io/agents/mcp-server
+- Transport: http
+- Endpoint: https://api.app.firstsales.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http firstsales-mcp https://api.app.firstsales.io/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### HarborRank
+
+SEO data for agents: keyword metrics, live Google SERPs and Maps results, domain and backlink overviews, rank-tracker reads, site audits, and read-only Search Console performance and URL inspection. OAuth login, free plan, paid from $29/month. Endpoint: https://app.harborrank.com/mcp · Registry: com.harborrank/harborrank
+
+- Page: https://mcp.aianytime.net/s/harborrank/
+- Source: https://harborrank.com/features/mcp
+- Transport: http
+- Endpoint: https://app.harborrank.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http harborrank https://app.harborrank.com/mcp`
+- MCP Registry id: com.harborrank/harborrank
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Liftli
+
+Head-of-content for LinkedIn, X, and Substack: extracts your voice from your own posts, turns voice notes and transcripts into drafts, critiques them, then publishes through official platform APIs. 54 tools, no scraping.
+
+- Page: https://mcp.aianytime.net/s/liftli/
+- Source: https://github.com/liftli-ai/liftli-mcp
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+- Repository: 0 stars, last push 2026-10-16
+
+### LigoSocial
+
+LinkedIn MCP: draft posts in your voice, read post analytics, schedule and publish via LinkedIn's official API. Endpoint: https://ligosocial.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/ligosocial/
+- Source: https://ligosocial.com/integrations/claude
+- Transport: http
+- Endpoint: https://ligosocial.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http ligosocial https://ligosocial.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### LinkMCP
+
+Hosted LinkedIn MCP server on your own LinkedIn account: profiles, companies, people, job and Sales Navigator search, inbox, posts, comments, reactions, connection requests and work email finding; OAuth or access key, paid plans with a 7-day free trial. Endpoint: https://app.linkmcp.io/api/mcp · Docs · Registry: io.linkmcp/linkmcp
+
+- Page: https://mcp.aianytime.net/s/linkmcp/
+- Source: https://app.linkmcp.io
+- Transport: http
+- Endpoint: https://app.linkmcp.io/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http linkmcp https://app.linkmcp.io/api/mcp`
+- MCP Registry id: io.linkmcp/linkmcp
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 3 stars, last push 2026-10-12
+
+### LLM Pulse MCP
+
+AI search visibility analytics for brand mentions, citations, share of voice, and AI-referred traffic across ChatGPT, Perplexity, Gemini, and Google AI Overviews. Endpoint: https://llmpulse.ai/api/v1/mcp (Bearer authentication) · Product
+
+- Page: https://mcp.aianytime.net/s/llm-pulse-mcp/
+- Source: https://github.com/estevecastells/llmpulse-mcp
+- Transport: http
+- Endpoint: https://llmpulse.ai/api/v1/mcp
+- Connect with Claude Code: `claude mcp add --transport http llm-pulse-mcp https://llmpulse.ai/api/v1/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-06-28
+
+### LogNorm
+
+Site and GEO audits ranked into a backlog that Claude Code, Codex and Cursor can fix, write and track (including how AI assistants answer buyer prompts). OAuth 2.1 with dynamic client registration; free plan. Endpoint: https://lognorm.com/api/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/lognorm/
+- Source: https://github.com/lognorm/lognorm-mcp
+- Transport: http
+- Endpoint: https://lognorm.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http lognorm https://lognorm.com/api/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 2 stars, last push 2026-10-02
+
+### MentionsAPI
+
+AI brand visibility: whether ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews and Bing Copilot mention a brand, at what rank and sentiment, and which URLs they cite. OAuth 2.1 or Bearer key; free tier. Endpoint: https://api.mentionsapi.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/mentionsapi/
+- Source: https://github.com/mukul-dutt/mentionsapi-mcp
+- Transport: http
+- Endpoint: https://api.mentionsapi.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http mentionsapi https://api.mentionsapi.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 1 stars, last push 2026-10-07
+
+### Murkuz
+
+SEO MCP: your Search Console, GA4 and Bing Webmaster data across every site, with live SEO analyses. Endpoint: https://murkuz.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/murkuz/
+- Source: https://murkuz.com/mcp-tools
+- Transport: http
+- Endpoint: https://murkuz.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http murkuz https://murkuz.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### NotFair
+
+Google Ads diagnostics (CPA, ROAS, search-term waste, quality scores) and optimizations executed through the official Google Ads API behind a human-approval gate.
+
+- Page: https://mcp.aianytime.net/s/notfair/
+- Source: https://notfair.co
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+
+### NotFair Skills
+
+Skills, not a server. Open-source Claude Code skills for SEO, GEO, Google Ads, and Meta Ads that pull live data through the Google Ads, Meta Ads, Search Console, and GA4 MCP servers.
+
+- Page: https://mcp.aianytime.net/s/notfair-skills/
+- Source: https://github.com/nowork-studio/NotFair
+- Transport: none
+- Last check: Not a server, so there is nothing to check.
+- Repository: 3,950 stars, last push 2026-10-16
+
+### PostWire
+
+Writes a separate native post per network from one idea and publishes or schedules it to TikTok, Instagram, YouTube, LinkedIn, Bluesky and more; free plan, OAuth sign-in. Endpoint: https://postwire.io/api/mcp · Local: npx -y postwire-mcp · Registry: io.github.Perufitlife/postwire-mcp
+
+- Page: https://mcp.aianytime.net/s/postwire/
+- Source: https://github.com/Perufitlife/postwire-mcp
+- Transport: http
+- Endpoint: https://postwire.io/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http postwire https://postwire.io/api/mcp`
+- MCP Registry id: io.github.Perufitlife/postwire-mcp
+- Last check: Answered an MCP handshake without credentials and listed 21 tools.
+- Tools: 21 (about 10,156 tokens of definitions)
+- Tool names: bulk_schedule, cancel_scheduled_post, create_brand, create_connect_link, create_recurring_post, create_upload_link, generate_posts, get_post_performance, get_post_status, get_upgrade_link, get_uploaded_file, get_x_credits, list_brands, list_platforms, list_scheduled_posts, make_video_from_text, my_account, plan_week, post_to_social, replicate_top_post, schedule_post
+- Repository: 0 stars, last push 2026-09-27
+
+### Proofsource
+
+AI visibility for a brand: which buyer questions name it in ChatGPT, Perplexity, Claude and Google AI Overviews, which competitors are named instead, which sources are cited, and whether shipped fixes changed the answers. OAuth sign-in; free trial. Endpoint: https://app.proofsource.co/v1/mcp · Registry: co.proofsource/proofsource
+
+- Page: https://mcp.aianytime.net/s/proofsource/
+- Source: https://proofsource.co/docs/chatgpt-and-claude
+- Transport: http
+- Endpoint: https://app.proofsource.co/v1/mcp
+- Connect with Claude Code: `claude mcp add --transport http proofsource https://app.proofsource.co/v1/mcp`
+- MCP Registry id: co.proofsource/proofsource
+- Last check: Answered an MCP handshake without credentials and listed 14 tools.
+- Tools: 14 (about 2,472 tokens of definitions)
+- Tool names: add_brand, create_prompt, get_changes, get_citations, get_competitors, get_fix_verification, get_report_link, get_scan_status, get_visibility, list_brands, list_fix_opportunities, list_topics, mark_fix_shipped, see_example
+
+### Rank by Ouroboros Apps
+
+SEO rankings from Google Search Console, read-only: top queries and pages, traffic trends, period comparisons, quick wins, dropped pages, and URL inspection. OAuth sign-in. Endpoint: https://rank.ouroborosapps.com/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/rank-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/rank-mcp
+- Transport: http
+- Endpoint: https://rank.ouroborosapps.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http rank-by-ouroboros-apps https://rank.ouroborosapps.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 9 tools.
+- Tools: 9 (about 1,572 tokens of definitions)
+- Tool names: account_status, compare_periods, dropped_pages, inspect_url, list_properties, performance_trends, quick_wins, top_pages, top_queries
+- Repository: 0 stars, last push 2026-10-11
+
+### RestoSignals
+
+US restaurants and bars 1-6 months before they open, scored from public liquor-license, food-permit and new-business filings, with owner contact. API key (free tier). Endpoint: https://api.restosignals.com/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/restosignals/
+- Source: https://github.com/paperandbeyond23-gif/restosignals-mcp
+- Transport: http
+- Endpoint: https://api.restosignals.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http restosignals https://api.restosignals.com/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 4 tools.
+- Tools: 4 (about 498 tokens of definitions)
+- Tool names: coverage, new_openings, venue_signals, watch_area
+- Repository: 0 stars, last push 2026-10-17
+
+### Robot Speed
+
+AI SEO MCP: content calendar, keyword research, site audits, backlinks, and CMS publishing. OAuth remote. Endpoint: https://www.robot-speed.com/api/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/robot-speed/
+- Source: https://github.com/robot-speed/mcp
+- Transport: http
+- Endpoint: https://www.robot-speed.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http robot-speed https://www.robot-speed.com/api/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 1 stars, last push 2026-09-24
+
+### SaaSCity
+
+Launch toolkit: audits a homepage before launch, finds startup and SaaS directories by Ahrefs DR, dofollow and price, and submits the product to the SaaSCity launch directory as a draft the human claims. No API key. Endpoint: https://saascity.io/api/mcp · Website · Registry: io.saascity/saascity
+
+- Page: https://mcp.aianytime.net/s/saascity/
+- Source: https://github.com/nyyhao/saascity-mcp
+- Transport: http
+- Endpoint: https://saascity.io/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http saascity https://saascity.io/api/mcp`
+- MCP Registry id: io.saascity/saascity
+- Last check: Answered an MCP handshake without credentials and listed 13 tools.
+- Tools: 13 (about 2,186 tokens of definitions)
+- Tool names: check_badge, check_launch_readiness, find_alternatives, find_launch_directories, get_launch_directory, get_launch_weeks, get_leaderboard, get_listing, get_offers, get_submission_status, recommend_launch_directories, search_listings, submit_project
+- Repository: 0 stars, last push 2026-09-23
+
+### SearchLink Lite
+
+Google Search Console inside your MCP client: search performance by query, page, country or device, ranking opportunities, URL indexing, sitemaps and on-page checks. Eight read-only tools, runs locally with a service account or gcloud credentials. Install: npx -y github:GlobalMatchHub/searchlink-lite
+
+- Page: https://mcp.aianytime.net/s/searchlink-lite/
+- Source: https://github.com/GlobalMatchHub/searchlink-lite
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+
+### SemanticHub
+
+Monitors news sources, clusters articles by topic and generates texts from them. OAuth 2 or Bearer token, free plan with no card.
+
+- Page: https://mcp.aianytime.net/s/semantichub/
+- Source: https://semantichub.app/docs
+- Transport: http
+- Endpoint: https://mcp.semantichub.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http semantichub https://mcp.semantichub.app/mcp`
+- MCP Registry id: app.semantichub/semantichub
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Serpel
+
+SEO infrastructure for rankings, site audits, keyword research, and AI visibility. Endpoint: https://serpel.app/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/serpel/
+- Source: https://serpel.app/mcp
+- Transport: http
+- Endpoint: https://serpel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http serpel https://serpel.app/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Site SEO & AI Crawler Audit
+
+Checks a public page's SEO tags, its robots.txt rules for GPTBot and other AI crawlers, and the signals AI answer engines use to cite it; free, read-only, no API key. Endpoint: https://sitecheck.openkrill.app/mcp
+
+- Page: https://mcp.aianytime.net/s/site-seo-ai-crawler-audit/
+- Source: https://tools.openkrill.app/#site-check
+- Transport: http
+- Endpoint: https://sitecheck.openkrill.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http site-seo-ai-crawler-audit https://sitecheck.openkrill.app/mcp`
+- MCP Registry id: app.openkrill/site-check
+- Last check: Answered an MCP handshake without credentials and listed 11 tools.
+- Tools: 11 (about 3,561 tokens of definitions)
+- Tool names: ai_app_check, ai_readiness_check, check_ai_crawler_access, check_page_tags, exposure_check, get_feedback_reply, landing_page_check, link_sample_check, product_page_seo, submit_feedback, trace_redirects
+
+### Testimonials.ltd
+
+Testimonials and wall of love widgets: import reviews, approve, tag and pin the best ones from chat. Endpoint: https://testimonials.ltd/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/testimonials-ltd/
+- Source: https://testimonials.ltd/integrations/claude
+- Transport: http
+- Endpoint: https://testimonials.ltd/mcp
+- Connect with Claude Code: `claude mcp add --transport http testimonials-ltd https://testimonials.ltd/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### ThreadFox Lite
+
+Read-only Reddit research through your own signed-in Chrome: a subreddit's rules with self-promotion rules flagged, communities for a topic, an account's standing, and whether a post is still live. No API keys.
+
+- Page: https://mcp.aianytime.net/s/threadfox-lite/
+- Source: https://github.com/amflimited/threadfox-lite
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+
+### Unfetch
+
+Google Ads MCP reporting for campaign spend, conversions, and search terms, plus Google Analytics, Search Console, keyword research, and web research with read-only account access; OAuth and a free plan. Endpoint: https://unfetch.com/api/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/unfetch/
+- Source: https://unfetch.com/plugin
+- Transport: http
+- Endpoint: https://unfetch.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http unfetch https://unfetch.com/api/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Unsora
+
+Generates AI images, video, voiceovers, music and clips, then schedules and publishes them to connected social accounts; OAuth or API-key auth, open source (AGPL-3.0). Endpoint: https://mcp.tryunsora.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/unsora/
+- Source: https://github.com/Shipped-Studio/unsora
+- Transport: http
+- Endpoint: https://mcp.tryunsora.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http unsora https://mcp.tryunsora.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 3 stars, last push 2026-10-15
+
+### Upload-Post
+
+Publish and schedule videos, photos, carousels, text and documents to TikTok, Instagram, YouTube, LinkedIn, Facebook, X, Threads, Pinterest, Reddit, Bluesky and Google Business Profile, and read post analytics and comments; OAuth or API key, free plan. Install: npx -y @upload-post/mcp (stdio) or endpoint https://mcp.upload-post.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/upload-post/
+- Source: https://github.com/Upload-Post/upload-post-mcp
+- Transport: http
+- Endpoint: https://mcp.upload-post.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http upload-post https://mcp.upload-post.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 10 stars, last push 2026-10-17
+
+### VoiceMoat
+
+Personal brand tools for Twitter/X and LinkedIn: score a draft against your own voice profile, improve it, read your analytics and top posts, and publish or schedule after a preview and a confirmed second call; OAuth, needs a VoiceMoat Pro or Enterprise plan. Endpoint: https://app.voicemoat.com/api/mcp · Website · Registry: com.voicemoat/voicemoat
+
+- Page: https://mcp.aianytime.net/s/voicemoat/
+- Source: https://github.com/prateeks367/voicemoat-mcp
+- Transport: http
+- Endpoint: https://app.voicemoat.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http voicemoat https://app.voicemoat.com/api/mcp`
+- MCP Registry id: com.voicemoat/voicemoat
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-04
+
+### Warmerly
+
+Email warmup and cold outreach: mailbox health and warmup, SPF/DKIM/DMARC checks, placement tests, lead search, email verification, draft campaigns and inbox reply triage; campaigns are launched by the person in the dashboard, never by the assistant. OAuth sign-in, free plan. Endpoint: https://app.warmerly.com/api/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/warmerly/
+- Source: https://github.com/WarmerlyApp/mcp
+- Transport: http
+- Endpoint: https://app.warmerly.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http warmerly https://app.warmerly.com/api/mcp`
+- MCP Registry id: com.warmerly/warmerly
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+## Cloud, ops & data
+
+### Cohesivity
+
+Agent-native backend services for hosting, Postgres, email, storage, containers, LLMs, voice, and third-party APIs, with free tiers, $5/month in AI and Search credits, and x402 top-ups. This remote MCP requires OAuth sign-in; anonymous no-signup setup uses the local MCP. Endpoint: https://cohesivity.ai/mcp/manage · Docs
+
+- Page: https://mcp.aianytime.net/s/cohesivity/
+- Source: https://github.com/cohesivity-org/cohesivity-plugin
+- Transport: http
+- Endpoint: https://cohesivity.ai/mcp/manage
+- Connect with Claude Code: `claude mcp add --transport http cohesivity https://cohesivity.ai/mcp/manage`
+- Last check: Did not answer an MCP handshake (HTTP 410, no MCP response).
+- Repository: 1 stars, last push 2026-10-16
+
+### DC Hub
+
+DC Hub is the live data layer for data-center site selection. Its Data Center Power Index (DCPI) is a daily score of where data centers can get grid power, across 300+ markets, with 94 tools keyless at free-tier depth via claude mcp add --transport http dchub https://dchub.cloud/mcp.
+
+- Page: https://mcp.aianytime.net/s/dc-hub/
+- Source: https://github.com/azmartone67/dchub-mcp-server
+- Transport: http
+- Endpoint: https://dchub.cloud/mcp
+- Connect with Claude Code: `claude mcp add --transport http dc-hub https://dchub.cloud/mcp`
+- MCP Registry id: cloud.dchub/mcp-server
+- Last check: Answered an MCP handshake without credentials and listed 94 tools.
+- Tools: 94 (about 45,106 tokens of definitions)
+- Tool names: accept_capacity_terms, ai_capacity_index, analyze_parcel, analyze_site, bind_email, claim_free_key, cluster_sites_by_latency, compare_isos, compare_sites, deal_autopsy, delete_standing_intent, discover_tools, execute_plan, export_dataset, fetch, find_alternatives, find_sites, generate_site_analysis, get_agent_registry, get_backup_status, get_changes, get_climate_intel, get_composite_site_score, get_dchub_recommendation, get_disaster_risk, get_energy_prices, get_facility, get_facility_risk_delta, get_fiber_intel, get_fiber_readiness, get_gas_economics, get_gas_index, get_gas_intelligence, get_global_power, get_grid_data, get_grid_intelligence, get_grid_scoreboard, get_hosting_capacity, get_infra_projects, get_infrastructure, get_intelligence_index, get_interconnection_queue, get_iso_context, get_market_context, get_market_dcpi_rank, get_market_intel, get_metro_fiber, get_news, get_peering_intel, get_permitting_intel, get_pipeline, get_power_availability_timeline, get_power_pipeline, get_refined_queue, get_renewable_energy, get_retirement_headroom, get_shortlist, get_subsea_cables, get_tax_incentives, get_water_risk, grid_transition_radar, hyperscaler_deals, list_saved_sites, list_standing_intents, list_transactions, plan_fiber_leadin, plan_query, predict_market_trajectory, rank_markets, rank_sites, read_inbox, recover_my_key, register_standing_intent, report_finding, request_capacity_intro, research_task, save_site, save_to_shortlist, score_facility, search, search_facilities, search_intelligence, semantic_search, set_market_alert, set_shortlist_alert, set_site_alert, simulate_scenario, site_selection_canvas, source_capacity, subscribe_digest, suggest_reallocation, summarize_for_citation, unlock_more_data, why_dchub
+- Repository: 3 stars, last push 2026-10-17
+
+### Gemmein
+
+Server-enforced access rules and server-defined AI tools on the owner's provider key, with an integration check that fails when anonymous people can read private data. · Website
+
+- Page: https://mcp.aianytime.net/s/gemmein/
+- Source: https://docs.gemmein.com/r/dir
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+
+### Invokely
+
+Hosted MCP and REST API for official statistics by indicator, place, and period, with a source citation on each figure. The Free plan includes 500 MCP calls/month with no card; REST data queries require Builder, Pro, or prepaid credits, while the separate no-account MCP trial allows 25 calls/day per IP. Endpoint: https://invokely.ai/mcp · Trial endpoint: https://invokely.ai/mcp/trial
+
+- Page: https://mcp.aianytime.net/s/invokely/
+- Source: https://invokely.ai/docs
+- Transport: http
+- Endpoint: https://invokely.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http invokely https://invokely.ai/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### RowSafe
+
+Database health, backups, recovery workflows and managed database provisioning through Streamable HTTP or local rowsafe mcp; a RowSafe account with OAuth or API-key authentication is required. The agent, CLI and MCP server are Apache-2.0; the hosted service is separate · Docs
+
+- Page: https://mcp.aianytime.net/s/rowsafe/
+- Source: https://github.com/rowsafe/rowsafe
+- Transport: http
+- Endpoint: https://api.rowsafe.sh/mcp
+- Connect with Claude Code: `claude mcp add --transport http rowsafe https://api.rowsafe.sh/mcp`
+- MCP Registry id: sh.rowsafe/rowsafe
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 3 stars, last push 2026-10-17
+
+### Shipvela
+
+Publish React, Vite and static websites, and read project status, build logs and usage through OAuth; a Shipvela account is required, a Hobby tier is available, and uploads require owner confirmation. Endpoint: https://shipvela.com/mcp
+
+- Page: https://mcp.aianytime.net/s/shipvela/
+- Source: https://shipvela.com/integrations/assistants
+- Transport: http
+- Endpoint: https://shipvela.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http shipvela https://shipvela.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### SolidPing
+
+Self-hostable uptime monitor whose MCP server creates, runs and diagnoses checks across 43 types, reads incidents, and manages status pages and maintenance windows. Free hosted tier, OAuth 2.1, also runs over stdio. Endpoint: https://solidping.io/api/v1/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/solidping/
+- Source: https://github.com/fclairamb/solidping
+- Transport: http
+- Endpoint: https://solidping.io/api/v1/mcp
+- Connect with Claude Code: `claude mcp add --transport http solidping https://solidping.io/api/v1/mcp`
+- Last check: Answered an MCP handshake without credentials. It did not list its tools to an anonymous client.
+- Repository: 21 stars, last push 2026-10-17
+
+### spinnaker-mcp
+
+Exposes a Spinnaker instance through its Gate API as 37 tools for applications, pipelines, executions, deployment strategies and infrastructure, with an optional read-only toolset. Install: npx -y spinnaker-mcp (set GATE_URL) · Docs
+
+- Page: https://mcp.aianytime.net/s/spinnaker-mcp/
+- Source: https://github.com/GeiserX/spinnaker-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 5 stars, last push 2026-10-10
+
+### ZopDev MCP
+
+Cloud cost and infrastructure governance across AWS, Azure, GCP, Databricks, and Snowflake: 263 tools (155 read, 108 write) spanning cost, resources, schedules, recommendations, budgets, and diagnostics. Read-only by default, with optional scoped writes. Install: claude mcp add zopdev https://api.zop.dev/mcp-server -t http (OAuth 2.1 signs you in; add --header "Authorization: Bearer zn_pat_YOUR_TOKEN" for CI) · Repo · Claude setup
+
+- Page: https://mcp.aianytime.net/s/zopdev-mcp/
+- Source: https://zop.dev/learn/mcp-server
+- Transport: http
+- Endpoint: https://api.zop.dev/mcp-server
+- Connect with Claude Code: `claude mcp add --transport http zopdev-mcp https://api.zop.dev/mcp-server`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 0 stars, last push 2026-10-16
+
+## Commerce, travel & logistics
+
+### BirkinBagStock
+
+Independent Hermès resale index: inventory, market prices, auction calendar and results. Endpoint: https://birkinbagstock.com/mcp (no auth) · Registry: com.birkinbagstock/mcp
+
+- Page: https://mcp.aianytime.net/s/birkinbagstock/
+- Source: https://birkinbagstock.com/llms.txt
+- Transport: http
+- Endpoint: https://birkinbagstock.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http birkinbagstock https://birkinbagstock.com/mcp`
+- MCP Registry id: com.birkinbagstock/mcp
+- Last check: Answered an MCP handshake without credentials and listed 14 tools.
+- Tools: 14 (about 2,246 tokens of definitions)
+- Tool names: compare_listings, find_hermes_care_services, get_authentication_signals, get_buy_url, get_hermes_auction_results, get_hermes_resale_report, get_market_price, get_price_trend, list_birkin_resellers, list_hermes_auctions, list_market_movers, list_popular_specs, search_birkin, set_price_alert
+
+### Brainy Prices
+
+UAE cost of living data: school fees (KHDA), registered rents (DLD), fuel, utilities, telecom plans and relocation costs, with source and date on every answer. Read-only; no auth. Endpoint: https://prices.brainy.ae/mcp/v2
+
+- Page: https://mcp.aianytime.net/s/brainy-prices/
+- Source: https://prices.brainy.ae/developers.html
+- Transport: http
+- Endpoint: https://prices.brainy.ae/mcp/v2
+- Connect with Claude Code: `claude mcp add --transport http brainy-prices https://prices.brainy.ae/mcp/v2`
+- Last check: Answered an MCP handshake without credentials and listed 27 tools.
+- Tools: 27 (about 4,222 tokens of definitions)
+- Tool names: commute_cost, costs_by_area, costs_by_emirate, data_sources, dewa, end_of_service_gratuity, fixed_monthly_costs, free_zone_companies, fuel_prices, fx_rates, grocery_compare_list, grocery_products, grocery_stores, health_insurance, housing_rents, housing_sales, labour_calculator, ministry_shop_prices, mobile_internet_plans, move_to_dubai, residence_visas, schools, shopper_price_reports, start_here, tax_savings_by_country, today, transport_fares
+
+### BuyWhere
+
+Cross-border product search and price comparison across 370M+ listings. No API key. Endpoint: https://api.buywhere.ai/mcp · Install: npx -y @buywhere/mcp-server · Docs
+
+- Page: https://mcp.aianytime.net/s/buywhere/
+- Source: https://github.com/BuyWhere/buywhere-mcp
+- Transport: http
+- Endpoint: https://api.buywhere.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http buywhere https://api.buywhere.ai/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 13 tools.
+- Tools: 13 (about 4,608 tokens of definitions)
+- Tool names: compare_products, compare_products_v2, find_best_price, find_best_price_v2, find_similar, get_deals, get_deals_v2, get_product, get_product_v2, ingest_products, list_categories, search_products, search_products_v2
+- Repository: 15 stars, last push 2026-10-12
+
+### CardDeals
+
+Query and compare real-time discounted digital gift cards across 700+ brands. Endpoint: https://catalog.carddeals.co/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/carddeals/
+- Source: https://github.com/cello305/carddeals-mcp
+- Transport: http
+- Endpoint: https://catalog.carddeals.co/mcp
+- Connect with Claude Code: `claude mcp add --transport http carddeals https://catalog.carddeals.co/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 3 tools.
+- Tools: 3 (about 545 tokens of definitions)
+- Tool names: get_gift_card_deals, lookup_gift_card_deals, search_gift_card_deals
+- Repository: 0 stars, last push 2026-09-07
+
+### Clickwise
+
+Affiliate network: find affiliate programs that fit a site or channel and browse deals without a key; a free publisher key adds tracked links, conversion reports and a product search endpoint (by text or GTIN). Endpoint: https://partners.clickwise.net/api/v1/mcp · Docs · Registry: net.clickwise/mcp
+
+- Page: https://mcp.aianytime.net/s/clickwise/
+- Source: https://github.com/softdevfz/clickwise-api
+- Transport: http
+- Endpoint: https://partners.clickwise.net/api/v1/mcp
+- Connect with Claude Code: `claude mcp add --transport http clickwise https://partners.clickwise.net/api/v1/mcp`
+- MCP Registry id: net.clickwise/mcp
+- Last check: Answered an MCP handshake without credentials and listed 20 tools.
+- Tools: 20 (about 4,137 tokens of definitions)
+- Tool names: apply_to_program, create_tracking_links, find_affiliate_programs, get_catalog_stats, get_deal, get_monetization_feed, get_news, get_payment_status, get_performance_report, get_product_feed, get_tracked_link_request, list_conversions, list_deals, list_my_programs, list_news, list_programs, request_merchant_onboarding, request_tracked_links, search_products, update_profile
+- Repository: 0 stars, last push 2026-10-13
+
+### Google Hotels
+
+Live Google Hotels + Vacation Rentals search with per-OTA nightly rates (Booking.com, Expedia, Agoda, Vrbo, Airbnb, Hotels.com and 10+ other providers) and a 3-month daily price calendar. Install: uvx --from "git+https://github.com/huynhtanan/google-hotels-mcp.git@v0.1.2" google-hotels-mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/google-hotels/
+- Source: https://github.com/huynhtanan/google-hotels-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 1 stars, last push 2026-10-16
+
+### HOTLIKESHOP
+
+Search a catalog of social-media accounts, proxies, and digital services and buy them right inside the chat; free to connect, no key for lookup. Endpoint: https://hotlikeshop.com/api/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/hotlikeshop/
+- Source: https://github.com/tuanone123/hotlikeshop-mcp
+- Transport: http
+- Endpoint: https://hotlikeshop.com/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http hotlikeshop https://hotlikeshop.com/api/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 32 tools.
+- Tools: 32 (about 8,692 tokens of definitions)
+- Tool names: best_sellers, buy_product, check_health_bulk, check_live_facebook, check_order_status, claim_quest, compare_products, create_binance_deposit, create_usdt_deposit, daily_checkin, deep_inspect, gamefi_status, get_2fa, get_mail_code, get_my_balance, get_product, how_to_start, latest_products, list_categories, list_category_products, list_orders, list_quests, quote_order, recommend_products, search_products, similar_products, spin_wheel, submit_complaint, topup_guide, verify_binance_deposit, verify_usdt_deposit, wallet_history
+- Repository: 1 stars, last push 2026-09-09
+
+### MAQAMI Travel
+
+Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel rates and flights, look up airports and hotel details, then send the customer a secure checkout link on book.maqami.co. Endpoint: https://mcp.maqami.co/, no API key required · Website
+
+- Page: https://mcp.aianytime.net/s/maqami-travel/
+- Source: https://github.com/negm17111995/mcp-server
+- Transport: http
+- Endpoint: https://mcp.maqami.co/
+- Connect with Claude Code: `claude mcp add --transport http maqami-travel https://mcp.maqami.co/`
+- Last check: Answered an MCP handshake without credentials and listed 41 tools.
+- Tools: 41 (about 20,154 tokens of definitions)
+- Tool names: cancelExperienceBooking, cancel_hotel_booking, getExperienceBooking, getExperienceBookingCancelPreview, getHotelTaxSchema, get_bookings_bookingid, get_data_chains, get_data_cities, get_data_countries, get_data_currencies, get_data_facilities, get_data_flights_airlines, get_data_flights_airlines_iatas, get_data_flights_airlines_iatas_iatacode, get_data_flights_airports, get_data_flights_airports_iatas, get_data_flights_airports_iatas_iatacode, get_data_hotel, get_data_hotel_ask, get_data_hotel_search, get_data_hotels, get_data_hotels_room_search, get_data_hotels_semantic_search, get_data_hoteltypes, get_data_iatacodes, get_data_languages, get_data_reviews, get_flights_bookings_bookingid, get_flights_bookings_bookingid_cancellations, get_flights_bookings_bookingid_services, get_prebooks_prebookid, listBookings, post_bookings_bookingid_alternative_prebooks, post_data_hotel_highlights, post_flights_bookings_bookingid_cancellations, post_flights_rates, post_flights_verify, post_hotels_min_rates, post_hotels_rates, post_rates_prebook, put_bookings_bookingid_amend
+- Repository: 2 stars, last push 2026-10-07
+
+### OctoTrip Rental Cars
+
+Search and compare rental cars with real-time pricing across providers worldwide, grouped by SIPP category. Endpoint: https://mcp.octotrip.app/rental-cars/mcp, no API key required · Website
+
+- Page: https://mcp.aianytime.net/s/octotrip-rental-cars/
+- Source: https://github.com/octotrip/rental-cars
+- Transport: http
+- Endpoint: https://mcp.octotrip.app/rental-cars/mcp
+- Connect with Claude Code: `claude mcp add --transport http octotrip-rental-cars https://mcp.octotrip.app/rental-cars/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 1 tool.
+- Tools: 1 (about 548 tokens of definitions)
+- Tool names: search
+- Repository: 7 stars, last push 2026-10-05
+
+### Packrift
+
+Packaging procurement: exact-size SKU lookup, carton-fit recommendations, shipping estimates, and dimensional-weight calculations.
+
+- Page: https://mcp.aianytime.net/s/packrift/
+- Source: https://github.com/Packrift/packrift-mcp
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+- Repository: 1 stars, last push 2026-09-27
+
+### Pocket Drives
+
+Search peer-to-peer luxury, exotic, and EV rentals from independent hosts. Endpoint: https://pocketdrives.ai/mcp, no auth.
+
+- Page: https://mcp.aianytime.net/s/pocket-drives/
+- Source: https://github.com/RevList/pocket-drives-mcp
+- Transport: http
+- Endpoint: https://pocketdrives.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http pocket-drives https://pocketdrives.ai/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 9 tools.
+- Tools: 9 (about 1,637 tokens of definitions)
+- Tool names: drives_airport_search, drives_get_quote, drives_host_showroom, drives_location_suggest, drives_search_vehicles, drives_vehicle_availability, drives_vehicle_detail, drives_vehicle_reviews, drives_venue_search
+- Repository: 0 stars, last push 2026-08-21
+
+### pumperly-mcp
+
+Queries fuel prices, finds nearby stations, plans routes and geocodes places through a Pumperly instance (the public pumperly.com or your own), read-only and with no API key. Install: npx -y pumperly-mcp (set PUMPERLY_URL) · Docs
+
+- Page: https://mcp.aianytime.net/s/pumperly-mcp/
+- Source: https://github.com/GeiserX/pumperly-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 3 stars, last push 2026-10-05
+
+### RoboHub
+
+Vendor-neutral catalog of 340+ commercial robots: search, compare specs and maker-verified prices. Endpoint: https://robohub.app/api/mcp (no auth) · Registry: app.robohub/robohub
+
+- Page: https://mcp.aianytime.net/s/robohub/
+- Source: https://robohub.app
+- Transport: http
+- Endpoint: https://robohub.app/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http robohub https://robohub.app/api/mcp`
+- MCP Registry id: app.robohub/robohub
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 944 tokens of definitions)
+- Tool names: compare_robots, get_robot, list_categories, request_vendor_intros, search_robots
+
+### ScentVerdict
+
+Fragrance verdicts, similarity scores, scent profiles, drydowns and local prices for a perfume catalogue. Read-only; no auth. Endpoint: https://scentverdict.com/mcp · Registry: com.scentverdict/fragrances
+
+- Page: https://mcp.aianytime.net/s/scentverdict/
+- Source: https://scentverdict.com/connect
+- Transport: http
+- Endpoint: https://scentverdict.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http scentverdict https://scentverdict.com/mcp`
+- MCP Registry id: com.scentverdict/fragrances
+- Last check: Answered an MCP handshake without credentials and listed 6 tools.
+- Tools: 6 (about 1,957 tokens of definitions)
+- Tool names: compare_fragrances, find_similar_fragrances, get_fragrance, get_scent_profile, recommend_fragrances, search_fragrances
+
+### SkyAccess
+
+Search 5,000+ live empty leg flights, get charter price estimates and booking links. No account or API key. Endpoint: https://mcp.skyaccess.com/mcp · Website · Registry: com.skyaccess/skyaccess
+
+- Page: https://mcp.aianytime.net/s/skyaccess/
+- Source: https://github.com/sky-access/skyaccess-mcp
+- Transport: http
+- Endpoint: https://mcp.skyaccess.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http skyaccess https://mcp.skyaccess.com/mcp`
+- MCP Registry id: com.skyaccess/skyaccess
+- Last check: Answered an MCP handshake without credentials and listed 6 tools.
+- Tools: 6 (about 1,588 tokens of definitions)
+- Tool names: booking_handoff, get_charter_estimate, get_flight, list_routes, request_booking, search_empty_legs
+- Repository: 1 stars, last push 2026-10-06
+
+### StayingAPI
+
+Accommodation data across Airbnb, Booking.com, Vrbo, and Google Hotels: search stays and read live listings, rates, availability and reviews. Endpoint: https://mcp.stayingapi.com/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/stayingapi/
+- Source: https://github.com/stayingapi/hotel-mcp
+- Transport: http
+- Endpoint: https://mcp.stayingapi.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http stayingapi https://mcp.stayingapi.com/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 1 stars, last push 2026-07-21
+
+### Tenmomo
+
+Search US stores for cashback rates and coupon codes, and get a tracked activation link. Endpoint: https://tenmomo.com/mcp
+
+- Page: https://mcp.aianytime.net/s/tenmomo/
+- Source: https://tenmomo.com/mcp
+- Transport: http
+- Endpoint: https://tenmomo.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http tenmomo https://tenmomo.com/mcp`
+- MCP Registry id: com.tenmomo/tenmomo
+- Last check: Answered an MCP handshake without credentials and listed 7 tools.
+- Tools: 7 (about 708 tokens of definitions)
+- Tool names: activate_cashback, get_activation_url, get_deals, get_store_details, get_stores_by_category, list_categories, search_stores
+
+### Vedar Kamchatka
+
+Kamchatka (Russia) travel: tours, accommodation, transfers, trip planning and booking requests, plus volcano status, weather and safety info. Endpoint: https://vedarai.ru/api/mcp (no auth) · Registry: ru.vedarai/mcp
+
+- Page: https://mcp.aianytime.net/s/vedar/
+- Source: https://github.com/tourhabk-ui/pos
+- Transport: http
+- Endpoint: https://vedarai.ru/api/mcp
+- Connect with Claude Code: `claude mcp add --transport http vedar https://vedarai.ru/api/mcp`
+- MCP Registry id: ru.vedarai/mcp
+- Last check: Answered an MCP handshake without credentials and listed 20 tools.
+- Tools: 20 (about 18,895 tokens of definitions)
+- Tool names: create_booking_request, create_lead, create_stay_request, edit_trip_plan, fetch, get_guardian_context, get_place_info, get_request_status, get_tour_availability, get_tour_details, get_tours, get_volcano_status, get_weather, make_trip_plan, request_charter, safety_status, search, search_accommodations, search_gear, search_transfers
+- Repository: 0 stars, last push 2026-10-17
+
+### Wheremind
+
+Hosted maps server: live place search, place details, nearby search, forward and reverse geocoding, and turn-by-turn directions, with no Maps API key to manage. Read-only tools; invite-only beta with OAuth or a stored Bearer header. Endpoint: https://wheremind.ai/mcp · Docs · Registry: ai.wheremind/wheremind
+
+- Page: https://mcp.aianytime.net/s/wheremind/
+- Source: https://wheremind.ai/maps-mcp
+- Transport: http
+- Endpoint: https://wheremind.ai/mcp
+- Connect with Claude Code: `claude mcp add --transport http wheremind https://wheremind.ai/mcp`
+- MCP Registry id: ai.wheremind/wheremind
+- Last check: Answered an MCP handshake without credentials and listed 5 tools.
+- Tools: 5 (about 1,114 tokens of definitions)
+- Tool names: directions, geocode, places_details, places_nearby, places_search_text
+
+## Work & productivity
+
+### AI Applyd
+
+ATS resume scoring, job-description analysis, interview prep, cover letters, resume building, and auto-apply that submits on the employer's own hiring system. Website
+
+- Page: https://mcp.aianytime.net/s/ai-applyd/
+- Source: https://github.com/whateverneveranywhere/aiapplyd-mcp
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+- Repository: 2 stars, last push 2026-10-15
+
+### atlassian-browser-mcp
+
+Wraps mcp-atlassian with a Playwright browser-cookie login, so its Jira and Confluence tools work on Atlassian Server/Data Center behind corporate SSO (Okta, SAML) where API tokens are not available. Install: clone and uv pip install -e ., then ./atlassian-cli login jira once per service · Docs
+
+- Page: https://mcp.aianytime.net/s/atlassian-browser-mcp/
+- Source: https://github.com/GeiserX/atlassian-browser-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 3 stars, last push 2026-10-04
+
+### BKK Staff
+
+Automated resume screening for small businesses: list and create job posts, review and rank applicants (strong / possible / weak), search candidates and email applicants. OAuth 2.1 sign-in. Endpoint: https://app.bkkstaff.com/mcp · Website
+
+- Page: https://mcp.aianytime.net/s/bkk-staff/
+- Source: https://app.bkkstaff.com/mcp
+- Transport: http
+- Endpoint: https://app.bkkstaff.com/mcp
+- Connect with Claude Code: `claude mcp add --transport http bkk-staff https://app.bkkstaff.com/mcp`
+- MCP Registry id: com.bkkstaff/bkk-staff
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### call4me
+
+Places real phone calls to businesses for you (bookings, appointments, cancellations), works through phone menus, and returns the transcript and outcome. Endpoint: https://call4.me/mcp (OAuth) · Docs
+
+- Page: https://mcp.aianytime.net/s/call4me/
+- Source: https://github.com/skeptrunedev/call4me
+- Transport: http
+- Endpoint: https://call4.me/mcp
+- Connect with Claude Code: `claude mcp add --transport http call4me https://call4.me/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 13 stars, last push 2026-10-17
+
+### CareClinic Health Tracker
+
+Review personal medication schedules, symptoms, mood, and confirmed health check-ins through an authorized CareClinic account. Endpoint: https://mcp.careclinic.io/mcp
+
+- Page: https://mcp.aianytime.net/s/careclinic-health-tracker/
+- Source: https://cdn.careclinic.io/mcp/help/index.html
+- Transport: http
+- Endpoint: https://mcp.careclinic.io/mcp
+- Connect with Claude Code: `claude mcp add --transport http careclinic-health-tracker https://mcp.careclinic.io/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 8 tools.
+- Tools: 8 (about 1,877 tokens of definitions)
+- Tool names: careclinic_account, careclinic_capabilities, careclinic_commit_log, careclinic_get_insights, careclinic_preview_log, careclinic_recent_wellness, careclinic_search_catalog, careclinic_today_schedule
+
+### Clera
+
+Search 210,000+ vetted startup candidates, review Clera's picks for your open roles and request intros; candidates search open startup roles. Endpoint: https://mcp.getclera.com (OAuth 2.1, no API key) · Docs · Registry: com.getclera/clera
+
+- Page: https://mcp.aianytime.net/s/clera/
+- Source: https://github.com/getclera/mcp
+- Transport: http
+- Endpoint: https://mcp.getclera.com
+- Connect with Claude Code: `claude mcp add --transport http clera https://mcp.getclera.com`
+- MCP Registry id: com.getclera/clera
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+- Repository: 10 stars, last push 2026-09-21
+
+### Communicate
+
+Read-only discovery of workspace AI support agents through communicate_list_agents, using OAuth client-credentials tokens with the agents:read scope. Endpoint: https://app.communicate.so/mcp · Website · Registry: io.github.uditgoenka/communicate
+
+- Page: https://mcp.aianytime.net/s/communicate/
+- Source: https://developer.communicate.so/docs/mcp
+- Transport: http
+- Endpoint: https://app.communicate.so/mcp
+- Connect with Claude Code: `claude mcp add --transport http communicate https://app.communicate.so/mcp`
+- MCP Registry id: io.github.uditgoenka/communicate
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Connections
+
+Contact book with follow-ups, event pages with ticketing, notes and email for a free Connections account, reached over OAuth sign-in. Endpoint: https://studio.connections.icu/v1/mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/connections/
+- Source: https://studio.connections.icu/connect
+- Transport: http
+- Endpoint: https://studio.connections.icu/v1/mcp
+- Connect with Claude Code: `claude mcp add --transport http connections https://studio.connections.icu/v1/mcp`
+- Last check: Reachable, and asks for an OAuth sign-in before it will talk. Tools were not inspected.
+
+### Desk by Ouroboros Apps
+
+Customer support policy for assistants: approved support answers, refund rules, and escalation limits read before replying; unapproved promises go to human review. OAuth sign-in. Endpoint: https://desk-mcp-continuity2.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/desk-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/desk-mcp
+- Transport: http
+- Endpoint: https://desk-mcp-continuity2.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http desk-by-ouroboros-apps https://desk-mcp-continuity2.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 13 tools.
+- Tools: 13 (about 2,202 tokens of definitions)
+- Tool names: create_support_desk, evaluate_commitment, evaluate_escalation, get_desk_context, list_approved_commitments, list_escalation_limits, list_refund_rules, list_support_desks, save_approved_answer, save_approved_commitment, save_escalation_limit, save_refund_rule, search_approved_answers
+- Repository: 0 stars, last push 2026-10-16
+
+### Milestone by Ouroboros Apps
+
+Freelance project milestones: approved milestones, deliverables, and acceptance criteria; a milestone is only done when the saved criteria are met. OAuth sign-in. Endpoint: https://milestone-continuity2.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/milestone-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/milestone-mcp
+- Transport: http
+- Endpoint: https://milestone-continuity2.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http milestone-by-ouroboros-apps https://milestone-continuity2.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 15 tools.
+- Tools: 15 (about 2,271 tokens of definitions)
+- Tool names: accept_milestone_change, approve_milestones, declare_milestone_complete, declare_next_payment_released, define_milestone, list_milestone_sets, mark_work_done, open_milestone_set, read_milestone_set, record_criterion_met, save_acceptance_criterion, save_deliverable, save_work_item, suggest_milestone_change, write_client_wording
+- Repository: 0 stars, last push 2026-10-11
+
+### Office Suite
+
+Bundle of MCP servers for freelance and back-office work: invoices, spreadsheets, PDFs, time tracking, expense tracking, resumes, and contracts. Hosted
+
+- Page: https://mcp.aianytime.net/s/office-suite/
+- Source: https://github.com/theluckystrike/mcp-servers
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 2 stars, last push 2026-10-16
+
+### PDFtoMarkdown.ai
+
+Converts local PDF, DOCX, PPTX, XLSX, PNG/JPG, HTML and EPUB files into structured Markdown with headings, tables and OCR text, via the PDFtoMarkdown.ai API. API key required; free account includes 10 pages, then pay-per-page credits. Install: npm install -g @happywp/pdftomarkdown-mcp · Docs
+
+- Page: https://mcp.aianytime.net/s/pdftomarkdown-ai/
+- Source: https://github.com/happywpco/pdftomarkdown-mcp
+- Transport: stdio
+- Last check: Runs on your own machine, so there is no endpoint to check.
+- Repository: 0 stars, last push 2026-06-21
+
+### Process Street
+
+Connect agents to Process Street workflows, tasks, runs, data sets, and operational records, with an interactive authorization flow. Docs
+
+- Page: https://mcp.aianytime.net/s/process-street/
+- Source: https://github.com/process-street/process-street-mcp
+- Transport: http
+- Last check: No endpoint is on file for this server, so it is not checked.
+- Repository: 1 stars, last push 2026-08-29
+
+### Scope by Ouroboros Apps
+
+Freelance scope of work: approved scope, rates, deadlines, and change orders, so an assistant cannot promise work or discounts that were not approved. OAuth sign-in. Endpoint: https://scope-continuity2.vercel.app/mcp · Docs · Ouroboros Apps
+
+- Page: https://mcp.aianytime.net/s/scope-by-ouroboros-apps/
+- Source: https://github.com/LAHutchins91/scope-mcp
+- Transport: http
+- Endpoint: https://scope-continuity2.vercel.app/mcp
+- Connect with Claude Code: `claude mcp add --transport http scope-by-ouroboros-apps https://scope-continuity2.vercel.app/mcp`
+- Last check: Answered an MCP handshake without credentials and listed 9 tools.
+- Tools: 9 (about 1,361 tokens of definitions)
+- Tool names: approve_change_order, approve_scope, create_engagement, file_change_order, get_approved_record, list_engagements, save_deadline, save_rate, save_scope_item
+- Repository: 0 stars, last push 2026-10-11

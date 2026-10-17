@@ -1,0 +1,1667 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAQAMI Travel MCP server: status, tools and setup</title>
+<meta name="description" content="MAQAMI Travel MCP server. Answered an MCP handshake without credentials and listed 41 tools. Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel...">
+<meta name="keywords" content="MCP servers, Model Context Protocol, MCP directory, remote MCP servers, MCP server list, awesome mcp servers, AI agents, Claude, Cursor, AI Anytime">
+<meta name="author" content="AI Anytime">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="theme-color" content="#f6f4ee">
+<link rel="canonical" href="https://mcp.aianytime.net/s/maqami-travel/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" title="Directory data" href="../../api/servers.json">
+<link rel="alternate" type="text/plain" title="llms.txt" href="../../llms.txt">
+<meta property="og:site_name" content="Awesome MCP Servers by AI Anytime">
+<meta property="og:title" content="MAQAMI Travel MCP server: status, tools and setup">
+<meta property="og:description" content="MAQAMI Travel MCP server. Answered an MCP handshake without credentials and listed 41 tools. Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel...">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mcp.aianytime.net/s/maqami-travel/">
+<meta property="og:image" content="https://mcp.aianytime.net/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Awesome MCP Servers by AI Anytime: MCP servers we actually connect to, every night.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MAQAMI Travel MCP server: status, tools and setup">
+<meta name="twitter:description" content="MAQAMI Travel MCP server. Answered an MCP handshake without credentials and listed 41 tools. Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel...">
+<meta name="twitter:image" content="https://mcp.aianytime.net/og.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://aianytime.net/#organization", "name": "AI Anytime", "url": "https://aianytime.net", "sameAs": ["https://www.youtube.com/@AIAnytime", "https://github.com/AIAnytime", "https://academy.aianytime.net"]}, {"@type": "SoftwareApplication", "name": "MAQAMI Travel", "description": "Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel rates and flights, look up airports and hotel details, then send the customer a secure checkout link on book.maqami.co. Endpoint: https://mcp.maqami.co/, no API key required · Website", "url": "https://mcp.aianytime.net/s/maqami-travel/", "sameAs": "https://github.com/negm17111995/mcp-server", "applicationCategory": "DeveloperApplication", "applicationSubCategory": "MCP server (Commerce, travel & logistics)", "operatingSystem": "Any", "isPartOf": {"@id": "https://mcp.aianytime.net/#website"}, "softwareVersion": "1.0.9", "featureList": ["cancelExperienceBooking", "cancel_hotel_booking", "getExperienceBooking", "getExperienceBookingCancelPreview", "getHotelTaxSchema", "get_bookings_bookingid", "get_data_chains", "get_data_cities", "get_data_countries", "get_data_currencies", "get_data_facilities", "get_data_flights_airlines", "get_data_flights_airlines_iatas", "get_data_flights_airlines_iatas_iatacode", "get_data_flights_airports", "get_data_flights_airports_iatas", "get_data_flights_airports_iatas_iatacode", "get_data_hotel", "get_data_hotel_ask", "get_data_hotel_search", "get_data_hotels", "get_data_hotels_room_search", "get_data_hotels_semantic_search", "get_data_hoteltypes", "get_data_iatacodes", "get_data_languages", "get_data_reviews", "get_flights_bookings_bookingid", "get_flights_bookings_bookingid_cancellations", "get_flights_bookings_bookingid_services", "get_prebooks_prebookid", "listBookings", "post_bookings_bookingid_alternative_prebooks", "post_data_hotel_highlights", "post_flights_bookings_bookingid_cancellations", "post_flights_rates", "post_flights_verify", "post_hotels_min_rates", "post_hotels_rates", "post_rates_prebook", "put_bookings_bookingid_amend"], "dateModified": "2026-10-17T07:49:59Z"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Directory", "item": "https://mcp.aianytime.net/"}, {"@type": "ListItem", "position": 2, "name": "Commerce, travel & logistics", "item": "https://mcp.aianytime.net/c/commerce-travel/"}, {"@type": "ListItem", "position": 3, "name": "MAQAMI Travel", "item": "https://mcp.aianytime.net/s/maqami-travel/"}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f4ee;--card:#fffdf8;--ink:#121118;--mute:#625f6d;--line:#dedad0;--accent:#5b3df5;--accent-soft:#ebe6ff;
+--lime:#d4f75e;--night:#0d0c12;--night-2:#17151f;--night-line:#2b2935;
+--live:#1a7f37;--auth:#5b3df5;--down:#c0262d;--off:#8a8794;--code:#efece3}
+/* Dark: follows the system unless the visitor picked a theme with the header button. */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}}
+:root[data-theme=dark]{--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}
+.icon .sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .icon .sun{display:block}:root:not([data-theme=light]) .icon .moon{display:none}}
+:root[data-theme=dark] .icon .sun{display:block}:root[data-theme=dark] .icon .moon{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%}
+a{color:var(--accent)}
+code{font:.86em "Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--mute);font-weight:500}
+nav a{margin-left:18px;color:var(--mute);text-decoration:none;font-size:.93rem}
+nav a:first-child{margin-left:0;color:var(--accent);font-weight:600}
+nav a:hover{color:var(--ink)}
+nav{display:flex;align-items:center;flex-wrap:wrap;row-gap:8px}
+.icon{display:inline-grid;place-items:center;width:34px;height:34px;margin-left:10px;padding:0;cursor:pointer;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px}
+nav a+.icon{margin-left:18px}
+.icon:hover{color:var(--accent);border-color:var(--accent)}
+.icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:44px 0 18px}
+h1{font:400 clamp(2.3rem,6vw,3.6rem)/1.05 "Instrument Serif",ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:1.1rem;color:var(--mute);max-width:64ch;margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-weight:600;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:.86rem}
+.note{color:var(--mute);font-size:.86rem;margin:6px 0 0}
+.controls{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.controls input,.controls select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.controls input{flex:1 1 240px}
+.controls select{flex:0 1 auto;max-width:100%}
+#count{color:var(--mute);font-size:.88rem;margin:12px 0}
+.list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--accent)}
+.card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.card p{margin:6px 0 0;color:var(--mute);font-size:.94rem;overflow-wrap:anywhere}
+.tag{font:500 .7rem "Geist Mono",ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 6px}
+.pill{font-size:.76rem;font-weight:600;white-space:nowrap}
+.pill::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
+.live{color:var(--live)}.auth{color:var(--auth)}.down{color:var(--down)}.unprobed{color:var(--off)}
+.unprobed.pill::before{background:none;border:1.5px solid currentColor}
+.facts{margin:8px 0 0;font-size:.84rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+.cmd code{flex:1;min-width:0;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
+button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+.controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
+section{padding:34px 0 0}
+h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 10px}
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:0;list-style:none;margin:14px 0 0}
+.learn li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
+.learn a{font-weight:600}
+.fineprint{margin-top:44px;color:var(--mute);font-size:.86rem}
+footer{margin-top:22px;background:var(--night);color:#b9b6c6;font-size:.92rem;border-top:1px solid var(--night-line)}
+footer .wrap{padding-top:36px;padding-bottom:36px}
+footer a{color:#f6f4ee}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:start}
+.foot h2{font:400 1.7rem/1.1 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:0 0 8px;letter-spacing:0}
+.foot p{margin:0 0 12px;max-width:46ch}
+.foot .links a{margin-right:16px;white-space:nowrap}
+.academy{background:var(--night-2);border:1px solid var(--night-line);border-radius:16px;padding:20px 22px}
+.academy .eyebrow{font:500 .72rem "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.academy h3{font:400 1.5rem/1.15 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:6px 0 8px}
+.academy a.cta{display:inline-block;background:var(--lime);color:#121118;font-weight:600;text-decoration:none;border-radius:999px;padding:9px 18px;margin-top:4px}
+.academy a.cta:hover{filter:brightness(1.06)}
+.crumbs{margin:26px 0 8px;font-size:.9rem}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
+dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
+.days{display:flex;gap:3px;margin-top:6px}
+.days i{width:12px;height:22px;border-radius:3px;background:var(--off)}
+.days .u{background:var(--live)}.days .a{background:var(--auth)}.days .d{background:var(--down)}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.86rem}
+pre code{background:none;padding:0;overflow-wrap:normal}
+.tools{columns:220px;padding-left:18px;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.chips a:hover{border-color:var(--accent);color:var(--accent)}
+.chips a span{color:var(--mute)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mute)}
+[hidden]{display:none!important}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.checks th{font-weight:500}
+table.checks td:last-child{min-width:150px}
+table.params{min-width:560px}
+thead th{color:var(--mute);font-weight:500;font-size:.8rem;white-space:nowrap}
+.state{font-size:.78rem;font-weight:600;white-space:nowrap}
+.state::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:currentColor}
+.state.verified{color:var(--live)}.state.failed{color:var(--down)}.state.untested{color:var(--off)}
+.state.untested::before{background:none;border:1.5px solid currentColor}
+h3{font-size:1.02rem;margin:22px 0 6px}
+.count{font:500 .8rem "Geist Mono",ui-monospace,monospace;color:var(--mute);margin-left:4px}
+.tablist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.tablist button{font:inherit;font-size:.88rem;cursor:pointer;color:var(--mute);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 13px}
+.tablist button.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.tabs.js .panel{display:none}.tabs.js .panel.on{display:block}.tabs.js .panel h3{display:none}
+.tabs:not(.js) .tablist{display:none}
+.panel{margin-top:6px}
+.snippet{position:relative}.snippet .copy{position:absolute;top:8px;right:8px;height:28px}
+.snippet pre{margin:8px 0;padding-right:76px}
+.btn{display:inline-block;background:var(--accent);color:var(--bg);font-weight:600;text-decoration:none;border-radius:999px;padding:7px 16px;font-size:.9rem}
+.tips{padding-left:18px;color:var(--mute);font-size:.92rem}.tips li{margin:4px 0}
+#toolq{font:inherit;width:100%;max-width:360px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:4px 0 10px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.tool summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.tool summary span:last-child{color:var(--mute);font-size:.88rem;flex:1 1 260px;min-width:0}
+.tool .desc{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem;margin:10px 0}
+.tool pre{margin:6px 0 4px}
+.hint{font:500 .68rem "Geist Mono",ui-monospace,monospace;border-radius:5px;padding:1px 6px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.hint.read{color:var(--live);border-color:currentColor}.hint.danger{color:var(--down);border-color:currentColor}
+ul.plain{padding-left:18px;font-size:.92rem;color:var(--mute)}
+.status td,.status th{white-space:nowrap}.status .days i{width:5px;height:16px;border-radius:2px}.status .days{gap:2px;margin:0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="brand" href="../../">Awesome MCP Servers <span>by AI Anytime</span></a>
+<nav><a href="https://academy.aianytime.net">Academy</a><a href="../../#directory">Directory</a><a href="../../status/">Status</a><a href="../../#learn">Learn</a><a href="../../#agents">For agents</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a>
+<button id="refresh" class="icon" type="button" title="Reload for the latest check results" aria-label="Reload page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
+<button id="theme" class="icon" type="button" title="Switch between light and dark" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>
+</div></header>
+<main class="wrap">
+
+<p class="crumbs"><a href="../../#directory">Directory</a> / <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a></p>
+<h1>MAQAMI Travel</h1>
+<p class="lede">Official MCP server for MAQAMI, a hotel and flight booking platform with 3M+ hotels. Search live hotel rates and flights, look up airports and hotel details, then send the customer a secure checkout link on book.maqami.co. Endpoint: <code>https://mcp.maqami.co/</code>, no API key required · <a href="https://maqami.co" rel="nofollow noopener">Website</a></p>
+<p style="margin-top:18px"><span class="pill live">Live</span> &nbsp;Answered an MCP handshake without credentials and listed 41 tools.</p>
+<dl><dt>Category</dt><dd><a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a></dd><dt>Transport</dt><dd><code>http</code></dd><dt>Source</dt><dd><a href="https://github.com/negm17111995/mcp-server" rel="nofollow noopener">https://github.com/negm17111995/mcp-server</a></dd><dt>Endpoint</dt><dd><code>https://mcp.maqami.co/</code></dd><dt>Reports itself as</dt><dd>MAQAMI Travel MCP Server 1.0.9</dd><dt>Protocol</dt><dd>2025-06-18</dd><dt>Tools</dt><dd>41</dd><dt>Context cost</dt><dd>about 20,154 tokens for the tool definitions (estimated at four characters per token)</dd><dt>Tool definitions last changed</dt><dd>no change seen since first check</dd><dt>Handshake time</dt><dd>451 ms</dd><dt>Repository</dt><dd>2 stars · last push 2026-10-07 · MIT</dd><dt>Last checked</dt><dd>2026-10-17 07:49:59 UTC</dd><dt>Listed since</dt><dd>2026-10-12</dd></dl>
+<h2 id="health">Health and compatibility</h2><div class="scroll"><table class="checks"><tbody><tr><th scope='row'>Endpoint reachable</th><td><span class="state verified">Verified</span></td><td>Responded in 451 ms</td></tr><tr><th scope='row'>MCP handshake (initialize)</th><td><span class="state verified">Verified</span></td><td>Completed without credentials</td></tr><tr><th scope='row'>Tool discovery (tools/list)</th><td><span class="state verified">Verified</span></td><td>41 tools listed</td></tr><tr><th scope='row'>Authentication</th><td><span class="state verified">Verified</span></td><td>None needed to connect</td></tr><tr><th scope='row'>Protocol version</th><td><span class="state verified">Verified</span></td><td>2025-06-18</td></tr><tr><th scope='row'>Transport</th><td><span class="state verified">Verified</span></td><td>Streamable HTTP</td></tr><tr><th scope='row'>Capabilities declared</th><td><span class="state verified">Verified</span></td><td>tools</td></tr></tbody></table></div><p class="note">Last checked <time datetime="2026-10-17T07:49:59Z">2026-10-17 07:49:59 UTC</time>. Verified means the check saw it happen; it says nothing about whether the server is safe.</p><h3>Recent history</h3><p class="note">6 daily checks so far; median response 759 ms. Green answered, violet asked for auth, red did not answer.</p><div class="days"><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i></div>
+<h2 id="setup">Set up in your client</h2><div class="tabs"><div class="tablist" role="tablist"><button type="button" role="tab" data-tab="claude-code" class=on>Claude Code</button><button type="button" role="tab" data-tab="claude-desktop">Claude Desktop</button><button type="button" role="tab" data-tab="cursor">Cursor</button><button type="button" role="tab" data-tab="vscode">VS Code</button><button type="button" role="tab" data-tab="windsurf">Windsurf</button><button type="button" role="tab" data-tab="other">Other clients</button></div><div class="panel" data-panel="claude-code"><h3>Claude Code</h3><p>Run this in a terminal:</p><div class="cmd"><code>claude mcp add --transport http maqami-travel https://mcp.maqami.co/</code><button class="copy" data-copy="claude mcp add --transport http maqami-travel https://mcp.maqami.co/">Copy</button></div></div><div class="panel" data-panel="claude-desktop"><h3>Claude Desktop</h3><p>Open <b>Settings → Connectors → Add custom connector</b> and paste this URL:</p><div class="cmd"><code>https://mcp.maqami.co/</code><button class="copy" data-copy="https://mcp.maqami.co/">Copy</button></div><p>Or bridge it through <code>mcp-remote</code> in <code>claude_desktop_config.json</code> (needs Node.js):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://mcp.maqami.co/&quot;
+      ]
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://mcp.maqami.co/&quot;
+      ]
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="cursor"><h3>Cursor</h3><p><a class="btn" href="cursor://anysphere.cursor-deeplink/mcp/install?name=maqami-travel&amp;config=eyJ1cmwiOiAiaHR0cHM6Ly9tY3AubWFxYW1pLmNvLyJ9">Add to Cursor</a></p><p>Or add it to <code>~/.cursor/mcp.json</code> (or <code>.cursor/mcp.json</code> in a project):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="vscode"><h3>VS Code</h3><p><a class="btn" href="vscode:mcp/install?%7B%22name%22%3A%20%22maqami-travel%22%2C%20%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A//mcp.maqami.co/%22%7D">Add to VS Code</a></p><p>Or add it to <code>.vscode/mcp.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;servers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;servers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}</code></pre></div><p>Or from a terminal:</p><div class="cmd"><code>code --add-mcp &#x27;{&quot;name&quot;: &quot;maqami-travel&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;}&#x27;</code><button class="copy" data-copy="code --add-mcp &#x27;{&quot;name&quot;: &quot;maqami-travel&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;}&#x27;">Copy</button></div></div><div class="panel" data-panel="windsurf"><h3>Windsurf</h3><p>Add it to <code>~/.codeium/windsurf/mcp_config.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;serverUrl&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;serverUrl&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="other"><h3>Other clients</h3><p>Most clients accept this shape. The endpoint is:</p><div class="cmd"><code>https://mcp.maqami.co/</code><button class="copy" data-copy="https://mcp.maqami.co/">Copy</button></div><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;maqami-travel&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://mcp.maqami.co/&quot;
+    }
+  }
+}</code></pre></div></div></div><h3>If it does not connect</h3><ul class="tips"><li>Restart the client after editing a config file, and keep keys out of files you commit.</li><li>If the tools do not appear, open the client's MCP log: a 401 means the credentials were not accepted, and a timeout means the server did not answer.</li></ul>
+<h2 id="tools">Tools <span class="count">41</span></h2><p class="note">Names, descriptions and input schemas exactly as the server returned them on 2026-10-17. This is the server author's own text. Nothing is run from this page. Labels such as read-only are declared by the server and are not verified. <a href="../../api/tools/maqami-travel.json">Raw JSON</a></p><input id="toolq" type="search" placeholder="Filter tools" aria-label="Filter tools"><div id="toollist"><details class="tool" data-text="cancelexperiencebooking cancel a confirmed tour or activity booking. first show the customer the refund from `getexperiencebookingcancelpreview` and wait for a clear yes.
+
+requires the `bookingid` and the `email` used to book: the server only returns or changes a booking when they match."><summary><code>cancelExperienceBooking</code><span class="hint write">can modify</span><span class="hint danger">destructive</span><span class="hint world">external access</span><span>Cancel a confirmed tour or activity booking. First show the customer the refund from …</span></summary><p class="desc">Cancel a confirmed tour or activity booking. First show the customer the refund from `getExperienceBookingCancelPreview` and wait for a clear yes.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>MAQAMI experience booking ID from the booking confirmation</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;cancelExperienceBooking&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="cancel_hotel_booking cancel a confirmed hotel booking. first check the cancellation policy with `get_bookings_bookingid` and confirm with the customer: a non-refundable booking, or one past its free-cancellation deadline, can be charged in full.
+
+requires the `bookingid` and the `email` used to book: the server only returns or changes a booking when they match."><summary><code>cancel_hotel_booking</code><span class="hint write">can modify</span><span class="hint danger">destructive</span><span class="hint world">external access</span><span>Cancel a confirmed hotel booking. First check the cancellation policy with `get_bookings_bookingid` and …</span></summary><p class="desc">Cancel a confirmed hotel booking. First check the cancellation policy with `get_bookings_bookingid` and confirm with the customer: a non-refundable booking, or one past its free-cancellation deadline, can be charged in full.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The unique booking identifier to cancel</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;cancel_hotel_booking&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="getexperiencebooking look up a tour or activity booking: status, booking details and the voucher once it is confirmed.
+
+requires the `bookingid` and the `email` used to book: the server only returns or changes a booking when they match."><summary><code>getExperienceBooking</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Look up a tour or activity booking: status, booking details and the voucher once it is confirmed. Requires …</span></summary><p class="desc">Look up a tour or activity booking: status, booking details and the voucher once it is confirmed.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>MAQAMI experience booking ID from the booking confirmation</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;getExperienceBooking&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="getexperiencebookingcancelpreview ## overview
+
+preview the refund amount and cancellation fee for a booking before committing to cancel it.
+
+## when to use
+
+- **cancellation confirmation screens** - show the guest exactly what they&#x27;ll be refunded
+- **support tooling** - check whether a booking is still cancellable before offering a refund
+
+## what you get
+
+- **`cancellable`** - whether the booking can currently be cancelled
+- **`p"><summary><code>getExperienceBookingCancelPreview</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Preview the refund amount and cancellation fee for a booking before committing to cancel it. ## …</span></summary><p class="desc">## Overview
+
+Preview the refund amount and cancellation fee for a booking before committing to cancel it.
+
+## When to Use
+
+- **Cancellation confirmation screens** - Show the guest exactly what they&#x27;ll be refunded
+- **Support tooling** - Check whether a booking is still cancellable before offering a refund
+
+## What You Get
+
+- **`cancellable`** - Whether the booking can currently be cancelled
+- **`policy`** - `cancellationFee`, `refundAmount`, `refundType`, `estimateConfidence`, `currency`, `sellingPrice`
+
+## Quick Start
+
+Use this with the `bookingId` from `POST /experiences/bookings`. This does not cancel the booking - `cancelExperienceBooking` cancels it.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>MAQAMI experience booking ID from the booking confirmation</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;getExperienceBookingCancelPreview&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="gethoteltaxschema ## overview
+
+returns the tax schema of a hotel as normalized static data, independent of the supply provider the rules were learned from. each entry describes one tax or fee: whether it is already included in the room rate, whether it is a percentage of the rate or a fixed amount, and how fixed amounts scale (per adult and/or per night).
+
+## when to use
+
+- **price transparency** - show guests whic"><summary><code>getHotelTaxSchema</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Returns the tax schema of a hotel as normalized static data, independent of the supply provider …</span></summary><p class="desc">## Overview
+
+Returns the tax schema of a hotel as normalized static data, independent of the supply provider the rules were learned from. Each entry describes one tax or fee: whether it is already included in the room rate, whether it is a percentage of the rate or a fixed amount, and how fixed amounts scale (per adult and/or per night).
+
+## When to Use
+
+- **Price transparency** - Show guests which taxes and fees apply at a property
+- **Amount-due-at-property estimates** - Excluded taxes are typically collected at the hotel
+- **Tax auditing** - Compare supplier-declared taxes against the reference schema
+
+## Notes
+
+- Fixed amounts are expressed in USD
+- Percentage rates apply to the room rate (e.g. 13.5 means 13.5%)
+- The schema is learned by an offline pipeline; hotels without learned data return 404
+- When the direct (hotel-declared) source is enabled, taxes declared by the hotel in MAQAMI Cloud take precedence over learned rules and each entry carries `source`, `chargeType`, `appliedPer`, `appliedOn`, `payAtProperty` and validity dates</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelId</code></td><td>string</td><td>required</td><td>Unique identifier of the hotel, in &#x27;lp&#x27; format or numeric.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;getHotelTaxSchema&quot;,
+    &quot;arguments&quot;: {
+      &quot;hotelId&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_bookings_bookingid look up a confirmed hotel booking: status, hotel, dates, rooms, guests, price and cancellation policy.
+
+requires the `bookingid` and the `email` used to book: the server only returns or changes a booking when they match."><summary><code>get_bookings_bookingid</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Look up a confirmed hotel booking: status, hotel, dates, rooms, guests, price and cancellation policy. …</span></summary><p class="desc">Look up a confirmed hotel booking: status, hotel, dates, rooms, guests, price and cancellation policy.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The unique booking identifier (e.g. &#x27;2rSJvdDru&#x27;)</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_bookings_bookingid&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_chains ## overview
+
+get all available hotel chains (e.g., marriott, hilton, ihg). use chain ids to filter hotel searches by brand.
+
+## when to use
+
+- **chain filters** - filter hotels by chain/brand
+- **brand selection** - let users search for specific hotel chains
+- **reference data** - get chain ids for use in search filters
+
+## what you get
+
+- **chain list** - all available hotel chains
+- **chain ids*"><summary><code>get_data_chains</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get all available hotel chains (e.g., Marriott, Hilton, IHG). Use chain IDs to filter hotel …</span></summary><p class="desc">## Overview
+
+Get all available hotel chains (e.g., Marriott, Hilton, IHG). Use chain IDs to filter hotel searches by brand.
+
+## When to Use
+
+- **Chain filters** - Filter hotels by chain/brand
+- **Brand selection** - Let users search for specific hotel chains
+- **Reference data** - Get chain IDs for use in search filters
+
+## What You Get
+
+- **Chain list** - All available hotel chains
+- **Chain IDs** - Numeric IDs for use in search filters
+- **Chain names** - Hotel chain/brand names
+
+## Quick Start
+
+No parameters required. Returns all hotel chains with IDs. Use chain IDs in hotel search filters.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_chains&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_cities ## overview
+
+get a list of all cities within a specific country. perfect for building location dropdowns and city selection interfaces.
+
+## when to use
+
+- **city dropdowns** - populate city selection lists
+- **location filters** - filter hotels by city
+- **geographic data** - get city lists for specific countries
+- **form autocomplete** - build city autocomplete features
+
+## what you get
+
+- **city"><summary><code>get_data_cities</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get a list of all cities within a specific country. Perfect for building location dropdowns and …</span></summary><p class="desc">## Overview
+
+Get a list of all cities within a specific country. Perfect for building location dropdowns and city selection interfaces.
+
+## When to Use
+
+- **City dropdowns** - Populate city selection lists
+- **Location filters** - Filter hotels by city
+- **Geographic data** - Get city lists for specific countries
+- **Form autocomplete** - Build city autocomplete features
+
+## What You Get
+
+- **City list** - All cities in the specified country
+- **City names** - Formatted city names ready for display
+
+## Quick Start
+
+Provide the `countryCode` in ISO-2 format (e.g., &quot;US&quot;, &quot;GB&quot;). Returns all cities in that country. Use the [Get Country List endpoint](/v3.0.0/reference/get_data-countries) to get country codes.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>countryCode</code></td><td>string</td><td>required</td><td>Country code in iso-2 format (example: SG)</td></tr><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_cities&quot;,
+    &quot;arguments&quot;: {
+      &quot;countryCode&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_countries ## overview
+
+get a complete list of all countries available in the system with their iso-2 country codes. essential for building country selection interfaces.
+
+## when to use
+
+- **country dropdowns** - populate country selection lists
+- **location filters** - filter hotels or searches by country
+- **form inputs** - build country selection forms
+- **reference data** - get country codes for use in o"><summary><code>get_data_countries</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get a complete list of all countries available in the system with their ISO-2 country codes. …</span></summary><p class="desc">## Overview
+
+Get a complete list of all countries available in the system with their ISO-2 country codes. Essential for building country selection interfaces.
+
+## When to Use
+
+- **Country dropdowns** - Populate country selection lists
+- **Location filters** - Filter hotels or searches by country
+- **Form inputs** - Build country selection forms
+- **Reference data** - Get country codes for use in other endpoints
+
+## What You Get
+
+- **Country list** - All available countries
+- **ISO-2 codes** - Standard country codes (e.g., &quot;US&quot;, &quot;GB&quot;, &quot;FR&quot;)
+- **Country names** - Full country names
+
+## Quick Start
+
+No parameters required. Returns all countries with their ISO-2 codes.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_countries&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_currencies ## overview
+
+get all available currencies with their codes, names, and the countries where each currency is used. perfect for building currency selection interfaces.
+
+## when to use
+
+- **currency dropdowns** - populate currency selection lists
+- **price display** - show prices in different currencies
+- **currency conversion** - get currency information for conversion
+- **reference data** - get cur"><summary><code>get_data_currencies</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get all available currencies with their codes, names, and the countries where each currency is …</span></summary><p class="desc">## Overview
+
+Get all available currencies with their codes, names, and the countries where each currency is used. Perfect for building currency selection interfaces.
+
+## When to Use
+
+- **Currency dropdowns** - Populate currency selection lists
+- **Price display** - Show prices in different currencies
+- **Currency conversion** - Get currency information for conversion
+- **Reference data** - Get currency codes for use in booking endpoints
+
+## What You Get
+
+- **Currency list** - All available currencies
+- **Currency codes** - ISO currency codes (e.g., &quot;USD&quot;, &quot;EUR&quot;, &quot;GBP&quot;)
+- **Currency names** - Full currency names
+- **Country mapping** - Countries where each currency is used
+
+## Quick Start
+
+No parameters required. Returns all currencies with codes, names, and country mappings.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_currencies&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_facilities ## overview
+
+get all available hotel facilities (amenities) with multi-language translations. use these facility ids to filter hotel searches by amenities.
+
+## when to use
+
+- **facility filters** - build amenity filtering in hotel searches
+- **facility display** - show available facilities with translated names
+- **multi-language support** - display facilities in user&#x27;s language
+- **reference data"><summary><code>get_data_facilities</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get all available hotel facilities (amenities) with multi-language translations. Use these …</span></summary><p class="desc">## Overview
+
+Get all available hotel facilities (amenities) with multi-language translations. Use these facility IDs to filter hotel searches by amenities.
+
+## When to Use
+
+- **Facility filters** - Build amenity filtering in hotel searches
+- **Facility display** - Show available facilities with translated names
+- **Multi-language support** - Display facilities in user&#x27;s language
+- **Reference data** - Get facility IDs for use in search filters
+
+## What You Get
+
+- **Facility list** - All available hotel facilities
+- **Facility IDs** - Numeric IDs for use in search filters
+- **Multi-language names** - Facility names in multiple languages
+- **Translations** - Localized facility names
+
+## Quick Start
+
+No parameters required. Returns all facilities with IDs and multi-language translations. Use facility IDs in hotel search filters.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_facilities&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_flights_airlines ## overview
+
+retrieve a list of airlines with optional filtering by name, alliance, and active status.
+
+## when to use
+
+- **airline directory** - build a searchable list of airlines for display or filtering
+- **alliance filtering** - filter airlines by alliance membership (star alliance, oneworld, skyteam)
+- **active airlines** - retrieve only currently operating airlines
+
+## what you get
+
+- **ful"><summary><code>get_data_flights_airlines</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve a list of airlines with optional filtering by name, alliance, and active status. ## When …</span></summary><p class="desc">## Overview
+
+Retrieve a list of airlines with optional filtering by name, alliance, and active status.
+
+## When to Use
+
+- **Airline directory** - Build a searchable list of airlines for display or filtering
+- **Alliance filtering** - Filter airlines by alliance membership (Star Alliance, oneworld, SkyTeam)
+- **Active airlines** - Retrieve only currently operating airlines
+
+## What You Get
+
+- **Full airline records** including name, IATA/ICAO codes, country, alliance, and logo URL
+- **Alliance membership** for each airline
+- **Active status** to identify currently operating carriers
+- **Filtered results** based on query, alliance, and active status parameters
+
+## Quick Start
+
+Call with no parameters to get all airlines. Use `q` to search by name, `alliance` to filter by alliance, and `activeOnly=true` to exclude inactive carriers.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>q</code></td><td>string</td><td>optional</td><td>Search query (e.g., &#x27;AA&#x27; or &#x27;American&#x27;)</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Maximum number of results</td></tr><tr><td><code>activeOnly</code></td><td>boolean</td><td>optional</td><td>Only return currently active airlines</td></tr><tr><td><code>alliance</code></td><td>string</td><td>optional</td><td>Filter by airline alliance One of: star_alliance, oneworld, skyteam, vanilla_alliance</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_flights_airlines&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_flights_airlines_iatas ## overview
+
+retrieve a lightweight list of airline iata codes with names for autocomplete and lookup purposes.
+
+## when to use
+
+- **autocomplete dropdowns** - populate airline search inputs with a minimal list
+- **client-side filtering** - download the full list once and filter locally
+- **code validation** - build a lookup table of valid airline codes
+
+## what you get
+
+- **iata codes** for all a"><summary><code>get_data_flights_airlines_iatas</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve a lightweight list of airline IATA codes with names for autocomplete and lookup …</span></summary><p class="desc">## Overview
+
+Retrieve a lightweight list of airline IATA codes with names for autocomplete and lookup purposes.
+
+## When to Use
+
+- **Autocomplete dropdowns** - Populate airline search inputs with a minimal list
+- **Client-side filtering** - Download the full list once and filter locally
+- **Code validation** - Build a lookup table of valid airline codes
+
+## What You Get
+
+- **IATA codes** for all airlines in the database
+- **Airline names** paired with each code
+- **Active filtering** available via the `activeOnly` parameter
+
+## Quick Start
+
+Call with no parameters to get all airline IATA codes and names. Use `activeOnly=true` to filter out inactive airlines.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>activeOnly</code></td><td>boolean</td><td>optional</td><td>Only return currently active airlines</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_flights_airlines_iatas&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_flights_airlines_iatas_iatacode ## overview
+
+retrieve full details for a specific airline using its 2-letter iata code.
+
+## when to use
+
+- **airline display** - show airline name, logo, and alliance for a given iata code
+- **flight result enrichment** - fetch airline details to display alongside search results
+- **data validation** - verify an airline code and retrieve its metadata
+
+## what you get
+
+- **airline details** includi"><summary><code>get_data_flights_airlines_iatas_iatacode</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve full details for a specific airline using its 2-letter IATA code. ## When to Use - …</span></summary><p class="desc">## Overview
+
+Retrieve full details for a specific airline using its 2-letter IATA code.
+
+## When to Use
+
+- **Airline display** - Show airline name, logo, and alliance for a given IATA code
+- **Flight result enrichment** - Fetch airline details to display alongside search results
+- **Data validation** - Verify an airline code and retrieve its metadata
+
+## What You Get
+
+- **Airline details** including name, IATA/ICAO codes, and country
+- **Alliance membership** (Star Alliance, oneworld, SkyTeam, or Vanilla Alliance)
+- **Logo URL** for displaying the airline&#x27;s logo in your UI
+- **Active status** indicating whether the airline is currently operating
+
+## Quick Start
+
+Provide the 2-letter IATA code (e.g., `AA` for American Airlines) in the URL path.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>iataCode</code></td><td>string</td><td>required</td><td>2-letter IATA airline code (e.g., AA)</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_flights_airlines_iatas_iatacode&quot;,
+    &quot;arguments&quot;: {
+      &quot;iataCode&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_flights_airports ## overview
+
+search for airports by name, city, or iata code using a text query. returns matching airports for use in autocomplete and search inputs.
+
+## when to use
+
+- **airport autocomplete** - power origin/destination search inputs with type-ahead suggestions
+- **airport discovery** - find airports in a city or region by name
+- **search validation** - look up airports before constructing a flig"><summary><code>get_data_flights_airports</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Search for airports by name, city, or IATA code using a text query. Returns matching airports for …</span></summary><p class="desc">## Overview
+
+Search for airports by name, city, or IATA code using a text query. Returns matching airports for use in autocomplete and search inputs.
+
+## When to Use
+
+- **Airport autocomplete** - Power origin/destination search inputs with type-ahead suggestions
+- **Airport discovery** - Find airports in a city or region by name
+- **Search validation** - Look up airports before constructing a flight search request
+
+## What You Get
+
+- **Matching airports** ranked by relevance to the query
+- **IATA codes** for `legs[].origin` and `legs[].destination` in `post_flights_rates`
+- **City and country** details for display purposes
+- **Geographic coordinates** for map-based interfaces
+
+## Quick Start
+
+Provide a `q` query string (minimum 2 characters) to search by airport name, city, or code. Returns matching airports ordered by relevance.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>q</code></td><td>string</td><td>required</td><td>Search query (minimum 2 characters, e.g., &#x27;JFK&#x27; or &#x27;New York&#x27;)</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_flights_airports&quot;,
+    &quot;arguments&quot;: {
+      &quot;q&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_flights_airports_iatas ## overview
+
+retrieve a lightweight list of airport iata codes with names for autocomplete and lookup purposes.
+
+## when to use
+
+- **autocomplete dropdowns** - populate airport search inputs with a full list of codes and names
+- **client-side filtering** - download the full list once and filter locally
+- **code validation** - build a lookup table of valid airport codes
+
+## what you get
+
+- **iata c"><summary><code>get_data_flights_airports_iatas</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve a lightweight list of airport IATA codes with names for autocomplete and lookup …</span></summary><p class="desc">## Overview
+
+Retrieve a lightweight list of airport IATA codes with names for autocomplete and lookup purposes.
+
+## When to Use
+
+- **Autocomplete dropdowns** - Populate airport search inputs with a full list of codes and names
+- **Client-side filtering** - Download the full list once and filter locally
+- **Code validation** - Build a lookup table of valid airport codes
+
+## What You Get
+
+- **IATA codes** for all airports in the database
+- **Airport names** paired with each code
+- **Filtered results** when the `q` query parameter is provided
+
+## Quick Start
+
+Call with no parameters to get all airport codes and names. Use the `q` parameter to filter by name or code.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>q</code></td><td>string</td><td>required</td><td>Search query</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_flights_airports_iatas&quot;,
+    &quot;arguments&quot;: {
+      &quot;q&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_flights_airports_iatas_iatacode ## overview
+
+retrieve detailed information for a specific airport using its 3-letter iata code.
+
+## when to use
+
+- **airport display** - show airport name, city, and country for a given iata code
+- **flight result enrichment** - fetch airport details to display alongside origin/destination in search results
+- **autocomplete validation** - verify an airport code and retrieve its full details
+
+## wh"><summary><code>get_data_flights_airports_iatas_iatacode</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve detailed information for a specific airport using its 3-letter IATA code. ## When to Use …</span></summary><p class="desc">## Overview
+
+Retrieve detailed information for a specific airport using its 3-letter IATA code.
+
+## When to Use
+
+- **Airport display** - Show airport name, city, and country for a given IATA code
+- **Flight result enrichment** - Fetch airport details to display alongside origin/destination in search results
+- **Autocomplete validation** - Verify an airport code and retrieve its full details
+
+## What You Get
+
+- **Airport details** including name, city, country, and timezone
+- **IATA and ICAO codes** for the airport
+- **Geographic coordinates** (latitude and longitude)
+- **Country and city** information for display purposes
+
+## Quick Start
+
+Provide the 3-letter IATA code (e.g., `JFK` for John F. Kennedy International) in the URL path.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>iataCode</code></td><td>string</td><td>required</td><td>3-letter IATA airport code (e.g., JFK)</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_flights_airports_iatas_iatacode&quot;,
+    &quot;arguments&quot;: {
+      &quot;iataCode&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hotel ## overview
+
+get comprehensive details about a specific hotel including descriptions, amenities, images, location, and ratings. perfect for displaying hotel detail pages.
+
+## when to use
+
+- **hotel detail pages** - show complete hotel information
+- **booking pages** - display hotel details before booking
+- **hotel profiles** - build rich hotel information pages
+- **content display** - show descrip"><summary><code>get_data_hotel</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get comprehensive details about a specific hotel including descriptions, amenities, images, …</span></summary><p class="desc">## Overview
+
+Get comprehensive details about a specific hotel including descriptions, amenities, images, location, and ratings. Perfect for displaying hotel detail pages.
+
+## When to Use
+
+- **Hotel detail pages** - Show complete hotel information
+- **Booking pages** - Display hotel details before booking
+- **Hotel profiles** - Build rich hotel information pages
+- **Content display** - Show descriptions, amenities, and images
+
+## What You Get
+
+- **Complete hotel information** - Name, address, description, and ratings
+- **Amenities list** - All available facilities and services
+- **Image gallery** - Hotel photos and images
+- **Location details** - Address, coordinates, and location information
+- **Hotel metadata** - Star rating, chain information, and classifications
+
+## Quick Start
+
+Provide the `hotelId` as a query parameter. Returns complete hotel details including all metadata, amenities, and images.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelId</code></td><td>string</td><td>required</td><td>Unique ID of a hotel</td></tr><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr><tr><td><code>language</code></td><td>string</td><td>optional</td><td>The language code, indicating in which language the results should be returned. e.g. &#x27;fr&#x27;</td></tr><tr><td><code>advancedAccessibilityOnly</code></td><td>boolean</td><td>optional</td><td>If `true`, accessibility section will be returned</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hotel&quot;,
+    &quot;arguments&quot;: {
+      &quot;hotelId&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hotel_ask ## overview
+
+**beta feature** - ask natural language questions about a specific hotel and get ai-powered answers based on the hotel&#x27;s information.
+
+## when to use
+
+- **hotel q&amp;a** - answer customer questions about hotels
+- **information lookup** - get specific details about amenities, services, or features
+- **conversational interfaces** - build chat interfaces for hotel information
+- **detailed i"><summary><code>get_data_hotel_ask</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview **Beta Feature** - Ask natural language questions about a specific hotel and get AI-powered …</span></summary><p class="desc">## Overview
+
+**Beta Feature** - Ask natural language questions about a specific hotel and get AI-powered answers based on the hotel&#x27;s information.
+
+## When to Use
+
+- **Hotel Q&amp;A** - Answer customer questions about hotels
+- **Information lookup** - Get specific details about amenities, services, or features
+- **Conversational interfaces** - Build chat interfaces for hotel information
+- **Detailed inquiries** - Ask about specific aspects like restaurants, parking, or amenities
+
+## What You Get
+
+- **AI-generated answers** - Relevant responses to your questions
+- **Hotel-specific information** - Answers based on the hotel&#x27;s actual data
+- **Natural language responses** - Human-readable answers
+
+## Example Questions
+
+- &quot;What amenities does this hotel have?&quot;
+- &quot;Is there parking available?&quot;
+- &quot;What does a meal at the restaurant look like?&quot;
+
+## Key Features
+
+- **Web search option** - Enable `allowWebSearch` to get additional information from the web
+- **Hotel context** - Answers are specific to the hotel you&#x27;re asking about
+- **Natural language** - Ask questions conversationally
+
+## Quick Start
+
+Provide the `hotelId` and your `question`. Optionally enable `allowWebSearch` for web-enhanced answers.
+
+**Note:** This is a beta feature and may be subject to changes.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelId</code></td><td>string</td><td>required</td><td>Unique ID of the hotel (MAQAMI format)</td></tr><tr><td><code>query</code></td><td>string</td><td>required</td><td>The question to ask about the hotel</td></tr><tr><td><code>allowWebSearch</code></td><td>boolean</td><td>optional</td><td>Whether to allow web search for additional information. Default is false.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hotel_ask&quot;,
+    &quot;arguments&quot;: {
+      &quot;hotelId&quot;: &quot;...&quot;,
+      &quot;query&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hotel_search find hotels by name or place with a semantic text search. returns up to 5 matches (set `limit` for more) with name, address, city, country and a relevance score. check the name and city before using an `id`. for an exact hotel name, `get_data_hotels` with `hotelname` and `cityname` or `countrycode` is more precise."><summary><code>get_data_hotel_search</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Find hotels by name or place with a semantic text search. Returns up to 5 matches (set `limit` for more) with …</span></summary><p class="desc">Find hotels by name or place with a semantic text search. Returns up to 5 matches (set `limit` for more) with name, address, city, country and a relevance score. Check the name and city before using an `id`. For an exact hotel name, `get_data_hotels` with `hotelName` and `cityName` or `countryCode` is more precise.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>query</code></td><td>string</td><td>required</td><td>The semantic search query (e.g. &#x27;Burj Jumeirah Dubai&#x27;).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Maximum number of matches to return. Defaults to 5.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hotel_search&quot;,
+    &quot;arguments&quot;: {
+      &quot;query&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hotels ## overview
+
+search and retrieve hotel listings based on various criteria. get hotel metadata including names, addresses, ratings, amenities, and images for display in your application.
+
+## when to use
+
+- **hotel listings** - display hotel search results
+- **location-based search** - find hotels by city, coordinates, or place id
+- **hotel discovery** - browse hotels in specific areas
+- **metadata "><summary><code>get_data_hotels</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Search and retrieve hotel listings based on various criteria. Get hotel metadata including names, …</span></summary><p class="desc">## Overview
+
+Search and retrieve hotel listings based on various criteria. Get hotel metadata including names, addresses, ratings, amenities, and images for display in your application.
+
+## When to Use
+
+- **Hotel listings** - Display hotel search results
+- **Location-based search** - Find hotels by city, coordinates, or Place ID
+- **Hotel discovery** - Browse hotels in specific areas
+- **Metadata retrieval** - Get hotel information for display
+
+## What You Get
+
+- **Hotel list** - Matching hotels with complete metadata
+- **Basic information** - Names, addresses, ratings, and locations
+- **Amenities** - Available facilities and features
+- **Images** - Hotel photos for display
+- **Identifiers** - Hotel IDs for use in rate searches
+
+## Search Options
+
+- **By city** - Search hotels in a specific city
+- **By coordinates** - Find hotels near latitude/longitude with radius
+- **By Place ID** - Get hotels within a specific place boundary
+- **By hotel IDs** - Retrieve specific hotels by their IDs
+
+## Quick Start
+
+Provide search criteria (city, coordinates+radius, placeId, or hotelIds). Returns matching hotels with complete metadata.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>countryCode</code></td><td>string</td><td>optional</td><td>Country code ISO-2 code - example (SG)</td></tr><tr><td><code>cityName</code></td><td>string</td><td>optional</td><td>Name of the city</td></tr><tr><td><code>hotelName</code></td><td>string</td><td>optional</td><td>Name of the hotel (loose match, case-insensitive, e.g. &#x27;hilton&#x27;)</td></tr><tr><td><code>offset</code></td><td>integer</td><td>optional</td><td>Specifies the number of rows to skip before starting to return rows</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Specifies the maximum number of results to return. By default, this is set to 200, even if not explicitly defined. If a higher limit is specified, the maximum allowed is 5000 results</td></tr><tr><td><code>lastUpdatedAt</code></td><td>string</td><td>optional</td><td>Retrieve only the hotels that have been updated since the provided date and time (using the RFC3339 format)</td></tr><tr><td><code>longitude</code></td><td>number</td><td>optional</td><td>Longitude geo coordinates</td></tr><tr><td><code>latitude</code></td><td>number</td><td>optional</td><td>Latitude geo coordinates</td></tr><tr><td><code>radius</code></td><td>integer</td><td>optional</td><td>radius in meters (min 1000m)</td></tr><tr><td><code>aiSearch</code></td><td>string</td><td>optional</td><td>Search term for AI search. Uses semantic search to find hotels matching the query intent. Examples: &#x27;Romantic getaway with Italian vibes in London near the London Eye&#x27;, &#x27;Hotels near the Eiffel tower&#x27;</td></tr><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr><tr><td><code>zip</code></td><td>string</td><td>optional</td><td>ZIP code of the location</td></tr><tr><td><code>minRating</code></td><td>number</td><td>optional</td><td>Minimum rating of the hotel. e.g. 8.6</td></tr><tr><td><code>minReviewsCount</code></td><td>number</td><td>optional</td><td>Minimum number of reviews. e.g. 100</td></tr><tr><td><code>facilityIds</code></td><td>string</td><td>optional</td><td>Comma-separated list of facilities. e.g. &#x27;1,2,3&#x27;</td></tr><tr><td><code>hotelTypeIds</code></td><td>string</td><td>optional</td><td>Comma-separated list of hotel types. e.g. &#x27;201,204,208&#x27;</td></tr><tr><td><code>chainIds</code></td><td>string</td><td>optional</td><td>Comma-separated list of hotel chain ids. e.g. &#x27;14675,14677&#x27;</td></tr><tr><td><code>strictFacilitiesFiltering</code></td><td>boolean</td><td>optional</td><td>If `true`, only hotels with all the specified facilities will be returned</td></tr><tr><td><code>starRating</code></td><td>string</td><td>optional</td><td>Comma-separated list of star ratings. Note: star ratings have 2 allowed decimals &#x27;.0&#x27; and &#x27;.5&#x27; from 1 to 5. e.g. &#x27;3.5,4.0,5.0&#x27;</td></tr><tr><td><code>placeId</code></td><td>string</td><td>optional</td><td>Unique ID of a place retrieved from the `/data/places` endpoint. When provided, the API fetches place details and searches for hotels within a 1km radius of the place location center, or a specific hotel when the placeId refers to a property. The response …</td></tr><tr><td><code>language</code></td><td>string</td><td>optional</td><td>The language code, indicating in which language the results should be returned. e.g. &#x27;fr&#x27;</td></tr><tr><td><code>hotelIds</code></td><td>string</td><td>optional</td><td>Comma-separated list of hotel IDs (e.g., &#x27;lp1897,lp1343&#x27;) to fetch specific hotels by their IDs. This is a valid main query parameter that can be used instead of other search criteria.</td></tr><tr><td><code>advancedAccessibilityOnly</code></td><td>boolean</td><td>optional</td><td>If `true`, only hotels with advanced accessibility will be returned</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hotels&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hotels_room_search ## overview
+
+**beta feature** - search hotel rooms using visual and text-based queries. uses image search technology to match your query against room images and find hotels with rooms that match your visual preferences, amenities, or style.
+
+## when to use
+
+- **visual room search** - find rooms based on visual characteristics like &quot;luxury modernist comfort&quot; or &quot;blue accessible bathroom&quot;
+- **style-"><summary><code>get_data_hotels_room_search</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview **Beta Feature** - Search hotel rooms using visual and text-based queries. Uses image search …</span></summary><p class="desc">## Overview
+
+**Beta Feature** - Search hotel rooms using visual and text-based queries. Uses image search technology to match your query against room images and find hotels with rooms that match your visual preferences, amenities, or style.
+
+## When to Use
+
+- **Visual room search** - Find rooms based on visual characteristics like &quot;luxury modernist comfort&quot; or &quot;blue accessible bathroom&quot;
+- **Style-based search** - Search for rooms by design style like &quot;art deco hotel room&quot; or &quot;brutalist room&quot;
+- **Amenity-focused search** - Find rooms with specific features like &quot;twin room with a city view&quot; or &quot;room with a skylight&quot;
+- **Geographic filtering** - Limit results to hotels near a specific location using coordinates or Place ID
+- **City and country filtering** - Filter results by city and/or country
+
+## What You Get
+
+- **Matching hotels** - Hotels grouped by hotel ID with rooms that match your query
+- **Room details** - Room name, image URL, and similarity score (rounded to 3 decimals) for each matching room
+- **Hotel metadata** - ID, name, address, city, country, and rating for each hotel
+- **Geographic filtering** - Optionally limit results to a specific area using coordinates or Place ID
+- **City and country filters** - Filter results by city and/or country code
+
+## Example Queries
+
+- &quot;luxury modernist comfort&quot;
+- &quot;an extremely fun room or art deco hotel room&quot;
+- &quot;luxurious accessible bathroom or blue accessible bathroom with walk in shower&quot;
+- &quot;twin room with a city view&quot;
+- &quot;a room …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>query</code></td><td>string</td><td>required</td><td>Search query describing the room you&#x27;re looking for. Can be visual (e.g., &#x27;luxury modernist comfort&#x27;, &#x27;blue accessible bathroom&#x27;), amenity-based (e.g., &#x27;twin room with a city view&#x27;), or style-based (e.g., &#x27;art deco hotel room&#x27;, &#x27;brutalist room&#x27;)</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Maximum number of results to return (maps to top_k in the API)</td></tr><tr><td><code>placeId</code></td><td>string</td><td>optional</td><td>Place ID. If provided, the search will be limited to hotels within the place&#x27;s viewport boundaries (or the provided `radius` if viewport is unavailable). The place&#x27;s latitude and longitude will be automatically fetched.</td></tr><tr><td><code>latitude</code></td><td>number</td><td>optional</td><td>Latitude coordinate for geographic filtering. Must be provided together with longitude. Ignored if placeId is provided.</td></tr><tr><td><code>longitude</code></td><td>number</td><td>optional</td><td>Longitude coordinate for geographic filtering. Must be provided together with latitude. Ignored if placeId is provided.</td></tr><tr><td><code>radius</code></td><td>number</td><td>optional</td><td>Search radius in kilometers. Only used when latitude/longitude is provided, or when placeId is provided but the place does not have viewport information. When placeId is provided and viewport is available, the viewport boundaries are used instead of this …</td></tr><tr><td><code>city</code></td><td>string</td><td>optional</td><td>Filter results by city name. Can be used alone or together with country.</td></tr><tr><td><code>country</code></td><td>string</td><td>optional</td><td>Filter results by country code (ISO 3166-1 alpha-2 format, e.g., &#x27;FR&#x27;, &#x27;US&#x27;). Can be used alone or together with city.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hotels_room_search&quot;,
+    &quot;arguments&quot;: {
+      &quot;query&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hotels_semantic_search ## overview
+
+**beta feature** - search hotels using natural language queries. uses ai to understand search intent and find hotels that match the meaning, not just keywords.
+
+## when to use
+
+- **natural language search** - let users search with phrases like &quot;romantic getaway in london&quot;
+- **intent-based matching** - find hotels matching the vibe or style, not just location
+- **conversational search*"><summary><code>get_data_hotels_semantic_search</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview **Beta Feature** - Search hotels using natural language queries. Uses AI to understand search …</span></summary><p class="desc">## Overview
+
+**Beta Feature** - Search hotels using natural language queries. Uses AI to understand search intent and find hotels that match the meaning, not just keywords.
+
+## When to Use
+
+- **Natural language search** - Let users search with phrases like &quot;romantic getaway in London&quot;
+- **Intent-based matching** - Find hotels matching the vibe or style, not just location
+- **Conversational search** - Support natural language hotel discovery
+- **Semantic matching** - Get hotels that semantically match the query
+
+## What You Get
+
+- **Matching hotels** - Hotels that semantically match your query
+- **Semantic attributes** - Tags, persona, style, location_type, and story for each hotel
+- **Relevance scores** - How well each hotel matches the query
+- **Hotel metadata** - ID, name, photos, address, city, country
+
+## Example Queries
+
+- &quot;Romantic getaway in London with Italian vibes&quot;
+- &quot;Hotels near Paris&quot;
+- &quot;Family-friendly beachfront hotels&quot;
+
+## Quick Start
+
+Provide a natural language `query` parameter. Returns hotels with semantic matching scores and attributes.
+
+**Note:** This is a beta feature and may be subject to changes.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>query</code></td><td>string</td><td>required</td><td>Semantic search query. This can be a natural language description of what you&#x27;re looking for, e.g. &#x27;romantic getaway in london with italian vibes&#x27;</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Maximum number of results to return. Default is 3.</td></tr><tr><td><code>min_rating</code></td><td>number</td><td>optional</td><td>Minimum hotel rating to filter results. Default is 0 (no minimum rating filter).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hotels_semantic_search&quot;,
+    &quot;arguments&quot;: {
+      &quot;query&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_data_hoteltypes ## overview
+
+get all available hotel type classifications (e.g., resort, boutique, business hotel). use type ids to filter hotel searches.
+
+## when to use
+
+- **type filters** - filter hotels by type in search
+- **type display** - show hotel type classifications
+- **reference data** - get hotel type ids for filtering
+
+## what you get
+
+- **hotel type list** - all available hotel types
+- **type ids**"><summary><code>get_data_hoteltypes</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get all available hotel type classifications (e.g., resort, boutique, business hotel). Use type …</span></summary><p class="desc">## Overview
+
+Get all available hotel type classifications (e.g., resort, boutique, business hotel). Use type IDs to filter hotel searches.
+
+## When to Use
+
+- **Type filters** - Filter hotels by type in search
+- **Type display** - Show hotel type classifications
+- **Reference data** - Get hotel type IDs for filtering
+
+## What You Get
+
+- **Hotel type list** - All available hotel types
+- **Type IDs** - Numeric IDs for use in search filters
+- **Type names** - Hotel type classifications
+
+## Quick Start
+
+No parameters required. Returns all hotel types with IDs. Use type IDs in hotel search filters.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_hoteltypes&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_iatacodes ## overview
+
+get iata (international air transport association) airport codes with airport names, coordinates, and country information. useful for airport-based hotel searches.
+
+## when to use
+
+- **airport searches** - find hotels near airports
+- **location selection** - let users search by airport codes
+- **geographic data** - get airport locations and coordinates
+- **reference data** - get iata "><summary><code>get_data_iatacodes</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get IATA (International Air Transport Association) airport codes with airport names, coordinates, …</span></summary><p class="desc">## Overview
+
+Get IATA (International Air Transport Association) airport codes with airport names, coordinates, and country information. Useful for airport-based hotel searches.
+
+## When to Use
+
+- **Airport searches** - Find hotels near airports
+- **Location selection** - Let users search by airport codes
+- **Geographic data** - Get airport locations and coordinates
+- **Reference data** - Get IATA codes for use in hotel searches
+
+## What You Get
+
+- **Airport list** - All available airports with IATA codes
+- **Airport names** - Full airport names
+- **Coordinates** - Latitude and longitude for each airport
+- **Country codes** - ISO-2 country codes for each airport
+
+## Quick Start
+
+No parameters required. Returns all airports with IATA codes, names, coordinates, and country information.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_iatacodes&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_languages ## overview
+
+get all supported languages for hotel translations and content localization. use language codes to request hotel data in specific languages.
+
+## when to use
+
+- **language selection** - display available languages to users
+- **content localization** - get language codes for api requests
+- **multi-language support** - build language switchers in your application
+- **reference data** - v"><summary><code>get_data_languages</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get all supported languages for hotel translations and content localization. Use language codes …</span></summary><p class="desc">## Overview
+
+Get all supported languages for hotel translations and content localization. Use language codes to request hotel data in specific languages.
+
+## When to Use
+
+- **Language selection** - Display available languages to users
+- **Content localization** - Get language codes for API requests
+- **Multi-language support** - Build language switchers in your application
+- **Reference data** - Validate language codes before making requests
+
+## What You Get
+
+- **Language list** - All supported and enabled languages
+- **Language codes** - ISO 639-1 codes (e.g., &#x27;en&#x27;, &#x27;es&#x27;, &#x27;fr&#x27;)
+- **Language names** - Human-readable language names in English
+
+## Quick Start
+
+No parameters required. Returns all supported languages with codes and names. Use language codes in hotel search and detail requests.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_languages&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="get_data_reviews ## overview
+
+retrieve guest reviews and ratings for a specific hotel. display authentic feedback from previous guests to help users make informed booking decisions.
+
+## when to use
+
+- **review display** - show guest reviews on hotel detail pages
+- **rating aggregation** - display average ratings and review counts
+- **trust building** - show authentic guest feedback
+- **decision support** - help us"><summary><code>get_data_reviews</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve guest reviews and ratings for a specific hotel. Display authentic feedback from previous …</span></summary><p class="desc">## Overview
+
+Retrieve guest reviews and ratings for a specific hotel. Display authentic feedback from previous guests to help users make informed booking decisions.
+
+## When to Use
+
+- **Review display** - Show guest reviews on hotel detail pages
+- **Rating aggregation** - Display average ratings and review counts
+- **Trust building** - Show authentic guest feedback
+- **Decision support** - Help users evaluate hotels before booking
+
+## What You Get
+
+- **Guest reviews** - Individual review text and ratings
+- **Review dates** - When each review was written
+- **Ratings** - Numerical and textual ratings
+- **Guest feedback** - Detailed comments from previous guests
+
+## Quick Start
+
+Provide the `hotelId` as a query parameter. Returns all reviews for that hotel with ratings and comments.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelId</code></td><td>string</td><td>required</td><td>Unique ID of a hotel</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>Specifies the maximum number of results to return. By default, this is set to 200, even if not explicitly defined. If a higher limit is specified, the maximum allowed is 5000 results</td></tr><tr><td><code>offset</code></td><td>integer</td><td>optional</td><td>Specifies the number of reviews to skip, defaults to 0</td></tr><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>request timeout in seconds</td></tr><tr><td><code>getSentiment</code></td><td>boolean</td><td>optional</td><td>If set to true, an AI sentiment analysis of the last 1000 reviews will be returned</td></tr><tr><td><code>language</code></td><td>string</td><td>optional</td><td>ISO 639-1 language code (e.g., &#x27;fr&#x27;, &#x27;es&#x27;, &#x27;de&#x27;) to translate reviews using AI. If not provided, the reviews will be returned in the default language (en). When this parameter is provided, the maximum number of reviews returned is 10.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_data_reviews&quot;,
+    &quot;arguments&quot;: {
+      &quot;hotelId&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_flights_bookings_bookingid look up a confirmed flight booking: status, passengers, flights, booking references, fare rules and price.
+
+requires the `bookingid` and the `email` used to book: the server only returns or changes a booking when they match."><summary><code>get_flights_bookings_bookingid</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Look up a confirmed flight booking: status, passengers, flights, booking references, fare rules and price. …</span></summary><p class="desc">Look up a confirmed flight booking: status, passengers, flights, booking references, fare rules and price.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The unique flight booking identifier</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_flights_bookings_bookingid&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_flights_bookings_bookingid_cancellations ## overview
+
+returns refund eligibility, estimated refund amounts, and penalty details for a booking **without actually cancelling it**. useful before `post_flights_bookings_bookingid_cancellations` to understand the financial impact of cancellation.
+
+## when to use
+
+- **pre-cancellation review** — show the customer the potential maximum refund (not guaranteed) before they confirm cancellation
+- *"><summary><code>get_flights_bookings_bookingid_cancellations</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Returns refund eligibility, estimated refund amounts, and penalty details for a booking **without …</span></summary><p class="desc">## Overview
+
+Returns refund eligibility, estimated refund amounts, and penalty details for a booking **without actually cancelling it**. Useful before `post_flights_bookings_bookingid_cancellations` to understand the financial impact of cancellation.
+
+## When to Use
+
+- **Pre-cancellation review** — Show the customer the potential maximum refund (not guaranteed) before they confirm cancellation
+- **Refund estimation** — Display potential maximum refund and penalty amounts in the booking management UI (refund is not granted until cancel completes)
+- **Eligibility check** — Determine whether the booking is within the void window (`isVoidable`) or eligible for a partial refund (`isRefundable`)
+
+## What You Get
+
+- **`confidence`** — How reliable the quote is (`confirmed`, `estimated`, `heuristic`, `unknown`)
+- **`isRefundable` / `isVoidable`** — Quick eligibility flags
+- **`refund` / `penalty`** — Aggregate amounts with margin applied. `refund` is the potential maximum the airline may refund — not a granted/guaranteed amount
+- **`penalties[]`** — Itemised penalty breakdown when available
+- **`tickets[]`** — Per-ticket detail when available
+- **`destination`** — Where the refund goes
+- **`vouchers[]`** — Airline travel vouchers / credit-shells when `destination` is `voucher`; omitted when absent. Distinct from MAQAMI discount `voucherCode` on prebook
+
+## Concurrent cancellation
+
+If a cancellation was already submitted and is still awaiting provider confirmation, this endpoint …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The unique booking identifier</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_flights_bookings_bookingid_cancellations&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_flights_bookings_bookingid_services ## overview
+
+retrieve the ancillary services (seats, baggage) for an existing flight booking: services that are **already booked** together with the live catalog of services that **can still be booked**.
+
+## when to use
+
+- **post-booking upsell** - show the passenger which seats and bags they can still add after the booking was created
+- **booking management** - display the services already attach"><summary><code>get_flights_bookings_bookingid_services</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Retrieve the ancillary services (seats, baggage) for an existing flight booking: services that …</span></summary><p class="desc">## Overview
+
+Retrieve the ancillary services (seats, baggage) for an existing flight booking: services that are **already booked** together with the live catalog of services that **can still be booked**.
+
+## When to Use
+
+- **Post-booking upsell** - Show the passenger which seats and bags they can still add after the booking was created
+- **Booking management** - Display the services already attached to the booking with the prices that were charged
+- **Availability refresh** - The bookable catalog is fetched live from the provider on every call
+
+## What You Get
+
+- **`groups`** - Bookable services grouped by category (seat, baggage) with post-margin prices and encoded `serviceId`s
+- **`bookedServices`** - Services already attached to the booking; entries booked through the API carry the exact price that was charged at attach time
+- **`expiresAt`** - Validity window of the bookable catalog
+
+## Key Features
+
+- **Read-only**: Safe to call at any time; the catalog reflects live availability
+- **Consistent pricing**: Booked services echo the post-margin amounts the user actually paid
+
+## Quick Start
+
+Provide the `bookingId` from the flight booking confirmation.
+
+On a ticketed booking (status `CONFIRMED`) `groups` lists only what can be sold after ticketing (provider-dependent, usually baggage) and only when `canAddServicesAfterTicketing` is true; buy them with `POST /flights/bookings/{bookingId}/services` and `/services/confirm`.
+
+Requires the `bookingId` and the `email` used to …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The unique booking identifier</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr><tr><td><code>forceRefresh</code></td><td>boolean</td><td>optional</td><td>Bypass the provider&#x27;s 15-minute services cache</td></tr><tr><td><code>includeServicesHistory</code></td><td>boolean</td><td>optional</td><td>Include non-confirmed bookedServices rows (pending, requested, failed, replaced, dropped). By default only confirmed rows are returned.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_flights_bookings_bookingid_services&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_prebooks_prebookid retrieve a hotel prebook by its `prebookid`: final price, cancellation terms, room details and the `checkouturl` (`https://book.maqami.co/booking?prebookid=...`). bookings are paid and confirmed only on maqami&#x27;s website, through the `checkouturl`."><summary><code>get_prebooks_prebookid</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Retrieve a hotel prebook by its `prebookId`: final price, cancellation terms, room details and the …</span></summary><p class="desc">Retrieve a hotel prebook by its `prebookId`: final price, cancellation terms, room details and the `checkoutUrl` (`https://book.maqami.co/booking?prebookId=...`). Bookings are paid and confirmed only on MAQAMI&#x27;s website, through the `checkoutUrl`.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>prebookId</code></td><td>string</td><td>required</td><td>(Required) The unique identifier of the prebook session.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_prebooks_prebookid&quot;,
+    &quot;arguments&quot;: {
+      &quot;prebookId&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="listbookings find a customer&#x27;s hotel bookings by the email address and last name used to book.
+
+both must match the booking holder; nothing is returned otherwise. returns each booking with its `bookingid`, status, hotel, dates, guests, price and cancellation policy.
+
+to look up, change or cancel one booking, use its `bookingid` with the same `email` in the booking tools."><summary><code>listBookings</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Find a customer&#x27;s hotel bookings by the email address and last name used to book. Both must match the booking …</span></summary><p class="desc">Find a customer&#x27;s hotel bookings by the email address and last name used to book.
+
+Both must match the booking holder; nothing is returned otherwise. Returns each booking with its `bookingId`, status, hotel, dates, guests, price and cancellation policy.
+
+To look up, change or cancel one booking, use its `bookingId` with the same `email` in the booking tools.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the bookings.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>required</td><td>The booking holder&#x27;s last name.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;listBookings&quot;,
+    &quot;arguments&quot;: {
+      &quot;email&quot;: &quot;...&quot;,
+      &quot;lastName&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_bookings_bookingid_alternative_prebooks ## overview
+
+**hard amendment** — search for alternative rates at the same hotel and create prebook sessions for a confirmed booking. used when the guest needs to change their check-in/check-out dates or room occupancy.
+
+## when to use
+
+- **date changes** — guest needs different check-in or check-out dates
+- **occupancy changes** — guest needs a different number of adults or children
+- **hard amen"><summary><code>post_bookings_bookingid_alternative_prebooks</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>## Overview **Hard Amendment** — Search for alternative rates at the same hotel and create prebook sessions …</span></summary><p class="desc">## Overview
+
+**Hard Amendment** — Search for alternative rates at the same hotel and create prebook sessions for a confirmed booking. Used when the guest needs to change their check-in/check-out dates or room occupancy.
+
+## When to Use
+
+- **Date changes** — Guest needs different check-in or check-out dates
+- **Occupancy changes** — Guest needs a different number of adults or children
+- **Hard amendments** — Situations where the booking must be cancelled and re-booked with new parameters
+
+## How It Works
+
+1. The system searches for live availability at the same hotel with the new parameters.
+2. Up to `maxPrebooks` alternative rates are selected (sorted by price ascending). Defaults to 3 when omitted; capped at 10 (any larger value is silently clamped to 10).
+3. A prebook session is created for each rate.
+4. The caller receives a list of `prebookId` values with prices to show the guest.
+
+## What You Get
+
+- **Up to `maxPrebooks` prebook sessions** — Each with a `prebookId`, final pricing, cancellation policies, and room details
+- **Price comparison** — `priceDifferencePercent` shows how each alternative compares to the **original booking&#x27;s selling price** (negative = cheaper than what the guest paid, positive = more expensive)
+- **Policy change flags** — `cancellationChanged` and `boardChanged` highlight any policy differences
+
+## Key Notes
+
+- The booking must be in **CONFIRMED** status.
+- If the original booking is non-refundable, only non-refundable alternatives are returned …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>(Required) The unique identifier of the confirmed booking to amend.</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr><tr><td><code>occupancies</code></td><td>object[]</td><td>required</td><td>The desired room occupancies for the amended stay. One entry per room.</td></tr><tr><td><code>checkin</code></td><td>string</td><td>optional</td><td>The new check-in date in YYYY-MM-DD format. Must be before `checkout`.</td></tr><tr><td><code>checkout</code></td><td>string</td><td>optional</td><td>The new check-out date in YYYY-MM-DD format. Must be after `checkin`.</td></tr><tr><td><code>refundableRatesOnly</code></td><td>boolean</td><td>optional</td><td>When true, only fully refundable alternative rates are returned. Defaults to false (or true if the original booking was refundable).</td></tr><tr><td><code>boardType</code></td><td>string</td><td>optional</td><td>Filter results by board/meal-plan type (e.g. `RO` for Room Only, `BB` for Bed &amp; Breakfast). Leave empty to return all board types.</td></tr><tr><td><code>maxPrebooks</code></td><td>integer</td><td>optional</td><td>Maximum number of alternative prebook sessions to create. Defaults to 3 when omitted. Values above 10 are silently capped at 10; values ≤ 0 fall back to the default. The response may contain fewer entries when the hotel does not have enough distinct …</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_bookings_bookingid_alternative_prebooks&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;,
+      &quot;occupancies&quot;: []
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_data_hotel_highlights ## overview
+
+generate short, ai-written &quot;smart highlight&quot; cards for a hotel. each highlight is a title plus a one or two sentence description, generated directly in the requested language.
+
+**pricing**: $0.02 per request
+
+**rate limiting**: this endpoint is rate-limited to **10 requests per minute**. exceeding this limit will result in a `429 too many requests` response.
+
+## when to use
+
+- **hotel"><summary><code>post_data_hotel_highlights</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Generate short, AI-written &quot;Smart Highlight&quot; cards for a hotel. Each highlight is a title plus a …</span></summary><p class="desc">## Overview
+
+Generate short, AI-written &quot;Smart Highlight&quot; cards for a hotel. Each highlight is a title plus a one or two sentence description, generated directly in the requested language.
+
+**Pricing**: $0.02 per request
+
+**Rate Limiting**: This endpoint is rate-limited to **10 requests per minute**. Exceeding this limit will result in a `429 Too Many Requests` response.
+
+## When to Use
+
+- **Hotel detail pages** - Show a few compelling reasons to consider a property
+- **Partner-specific tone** - Adjust voice and emphasis per surface via `tone`, `style` and per-highlight `context`
+
+## What You Get
+
+- Exactly `count` highlights, always, in the requested order
+- `type` echoed back from the request so you can map each card to your own UI
+- `generated` indicating whether the copy is AI-generated or template fallback
+
+## Behaviour
+
+Hotel facts are resolved server-side from `hotelId`; the caller never supplies them. The model sees the name, city, country, street address, parking, and description, plus a sample of facilities, rooms, policies, and nearby places (with a server-computed distance phrase: on the property, short walk, short drive, or longer drive; farther places are omitted), guest sentiment strengths when stored (not drawbacks), and classification (star rating, hotel type, chain). Generated copy is grounded in those facts. Straight apostrophes in titles and descriptions are normalized to typographic apostrophes. Enterprise API keys also omit wifi and the phrase modern …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelId</code></td><td>string</td><td>required</td><td>Unique ID of the hotel (MAQAMI format)</td></tr><tr><td><code>language</code></td><td>string</td><td>required</td><td>Language code. Highlights are generated directly in this language.</td></tr><tr><td><code>count</code></td><td>integer</td><td>optional</td><td>Number of highlights to generate. If `highlights` is supplied, `count` must equal its length.</td></tr><tr><td><code>tone</code></td><td>string</td><td>optional</td><td>Global writing guidance, e.g. `professional and inviting` or `calm and practical`. Truncated to 200 characters (5,000 for enterprise accounts).</td></tr><tr><td><code>style</code></td><td>string</td><td>optional</td><td>Formatting preferences such as title or description length. When supplied, these rules override the default title (2-4 words) and description (~180 characters) lengths. Truncated to 200 characters (5,000 for enterprise accounts).</td></tr><tr><td><code>highlights</code></td><td>object[]</td><td>optional</td><td>Per-highlight guidance. Omit for generic generation. When supplied, its length must equal `count` and the response preserves this order.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_data_hotel_highlights&quot;,
+    &quot;arguments&quot;: {
+      &quot;hotelId&quot;: &quot;...&quot;,
+      &quot;language&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_flights_bookings_bookingid_cancellations cancel a confirmed flight booking. first show the customer the refund estimate from `get_flights_bookings_bookingid_cancellations` and wait for a clear yes.
+
+requires the `bookingid` and the `email` used to book: the server only returns or changes a booking when they match."><summary><code>post_flights_bookings_bookingid_cancellations</code><span class="hint write">can modify</span><span class="hint danger">destructive</span><span class="hint world">external access</span><span>Cancel a confirmed flight booking. First show the customer the refund estimate from …</span></summary><p class="desc">Cancel a confirmed flight booking. First show the customer the refund estimate from `get_flights_bookings_bookingid_cancellations` and wait for a clear yes.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The flight booking identifier to cancel</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address used to make the booking. The server checks it against the booking before returning or changing anything.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_flights_bookings_bookingid_cancellations&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_flights_rates ## overview
+
+search for available flights with real-time pricing from multiple providers. the itinerary **must** be sent as a non-empty `legs` array. each leg follows the provider **searchleg** shape: required `origin`, `destination`, and `date` (yyyy-mm-dd); optional `direction` (`outbound` or `inbound`); optional per-leg `filters` that override global `filters` for that leg only.
+
+**not supporte"><summary><code>post_flights_rates</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Search for available flights with real-time pricing from multiple providers. The itinerary …</span></summary><p class="desc">## Overview
+
+Search for available flights with real-time pricing from multiple providers. The itinerary **must** be sent as a non-empty `legs` array. Each leg follows the provider **SearchLeg** shape: required `origin`, `destination`, and `date` (YYYY-MM-DD); optional `direction` (`OUTBOUND` or `INBOUND`); optional per-leg `filters` that override global `filters` for that leg only.
+
+**Not supported:** top-level `origin`, `destination`, `departureDate`, or `returnDate` — use `legs` only.
+
+## When to Use
+
+- **Listings** — live prices for search results UI
+- **One-way, round-trip, or multi-city** — one leg per segment, in order
+- **Filtering** — cabin class, stops, price, refundability, times (globally or per leg)
+
+## What You Get
+
+- Offers from multiple providers
+- Itineraries with segments, layovers, and durations
+- Price breakdown (fares, taxes, fees) and baggage hints
+
+## Key Features
+
+- Multi-provider aggregation in one request
+- Global `filters`, `sort`
+
+## Quick Start
+
+**Required:** `legs` (at least one object with `origin`, `destination`, `date`), `adults` (≥ 1), `currency`
+
+**Date limit:** each leg `date` must not be more than 11 months from today.
+
+**Round-trip:** two legs (e.g. outbound then return with `direction` `OUTBOUND` / `INBOUND`). **One-way:** one leg.
+
+## Booking
+
+The response includes `searchUrl`, the same search on book.maqami.co. Flights are booked and paid only on MAQAMI&#x27;s website: `post_flights_verify` re-prices the chosen offer and returns its …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>legs</code></td><td>object[]</td><td>required</td><td>Ordered itinerary legs (provider SearchLeg). One-way: one entry. Round-trip: outbound then inbound. Multi-city / open-jaw: additional legs in travel order.</td></tr><tr><td><code>adults</code></td><td>integer</td><td>required</td><td>Number of adults (12+)</td></tr><tr><td><code>children</code></td><td>integer</td><td>optional</td><td>Number of children (2-11)</td></tr><tr><td><code>infants</code></td><td>integer</td><td>optional</td><td>Number of infants (&lt;2)</td></tr><tr><td><code>childrenAges</code></td><td>integer[]</td><td>optional</td><td>Age of each child (2–11 inclusive, per IATA). Length must equal children count. Optional — omit if ages are not relevant.</td></tr><tr><td><code>infantAges</code></td><td>integer[]</td><td>optional</td><td>Age of each infant (under 2, per IATA). Length must equal infants count. Optional — omit if ages are not relevant.</td></tr><tr><td><code>cabinClass</code></td><td>string</td><td>optional</td><td>Cabin class (provider SearchFilters codes only). Same enum as filters.cabinClass. One of: ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST</td></tr><tr><td><code>currency</code></td><td>string</td><td>required</td><td>ISO 4217 currency code</td></tr><tr><td><code>country</code></td><td>string</td><td>optional</td><td>Optional ISO 3166-1 alpha-2 country code for point of sale</td></tr><tr><td><code>filters</code></td><td>object</td><td>optional</td><td>Optional filters to refine search results</td></tr><tr><td><code>sort</code></td><td>object</td><td>optional</td><td>Sort options for results</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_flights_rates&quot;,
+    &quot;arguments&quot;: {
+      &quot;legs&quot;: [],
+      &quot;adults&quot;: 0,
+      &quot;currency&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_flights_verify ## overview
+
+confirm a flight offer is still available and retrieve the latest pricing before proceeding to booking. returns the checkout link for the verified offer.
+
+## when to use
+
+- **pre-booking validation** - confirm offer availability after user selects a flight
+- **price confirmation** - show users the guaranteed price
+- **fare rule retrieval** - get the latest cancellation and change poli"><summary><code>post_flights_verify</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Confirm a flight offer is still available and retrieve the latest pricing before proceeding to …</span></summary><p class="desc">## Overview
+
+Confirm a flight offer is still available and retrieve the latest pricing before proceeding to booking. Returns the checkout link for the verified offer.
+
+## When to Use
+
+- **Pre-booking validation** - Confirm offer availability after user selects a flight
+- **Price confirmation** - Show users the guaranteed price
+- **Fare rule retrieval** - Get the latest cancellation and change policies
+
+## What You Get
+
+- **Verified pricing** with up-to-date fare breakdown
+- **`changes`** (when present) — cabin/fare flags, human-readable `messages`, and **`pricing`** (`old` / `new` full OfferPricing) instead of deprecated scalar currency/prices
+- **Journey `pricing`** — `original` (provider/PCC) and `display` (customer) price breakdown per provider FlattenedJourney
+- **Fare family details** including name and included amenities
+- **Baggage policy** for each passenger type and segment
+- **Booking terms** including cancellation and change fee rules
+
+## Key Features
+
+- **Real-time price check**: Confirms current availability and price with the provider
+- **Updated baggage info**: Returns the latest baggage allowances at time of verification
+- **Fare rules**: Includes cancellation and change fee policies before commitment
+
+## Quick Start
+
+Provide the `offerId` from `post_flights_rates` search results. The verified offer data gives the customer a booking summary.
+
+## Booking
+
+The response includes `checkoutUrl` (`https://book.maqami.co/flights/booking?offerId=...`). Flights are …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>offerId</code></td><td>string</td><td>required</td><td>The offerId from the search results</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_flights_verify&quot;,
+    &quot;arguments&quot;: {
+      &quot;offerId&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_hotels_min_rates ## overview
+
+get the cheapest available rate for each hotel in your list. perfect for displaying price comparisons without loading full rate details.
+
+## when to use
+
+- **show price ranges** on hotel listing pages
+- **quick price comparisons** across multiple hotels
+- **optimize performance** when you only need the lowest price, not all rate options
+- **build price filters** or sorting by price
+
+#"><summary><code>post_hotels_min_rates</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Get the cheapest available rate for each hotel in your list. Perfect for displaying price …</span></summary><p class="desc">## Overview
+
+Get the cheapest available rate for each hotel in your list. Perfect for displaying price comparisons without loading full rate details.
+
+## When to Use
+
+- **Show price ranges** on hotel listing pages
+- **Quick price comparisons** across multiple hotels
+- **Optimize performance** when you only need the lowest price, not all rate options
+- **Build price filters** or sorting by price
+
+## What You Get
+
+- **Minimum rate per hotel** - the cheapest available room option
+- **Basic rate information** - price, currency, and availability
+- **Fast response** - optimized for quick price lookups
+
+## Key Features
+
+- **Lightweight** - Returns only the minimum rate, not all options
+- **Same parameters** as the main rates endpoint for consistency
+- **Perfect for listings** - Ideal when displaying multiple hotels where users just need to see starting prices
+
+## Quick Start
+
+Provide a list of hotel IDs, dates, and guest occupancy. The endpoint returns the cheapest rate available for each hotel.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelIds</code></td><td>string[]</td><td>required</td><td>List of hotel IDs</td></tr><tr><td><code>occupancies</code></td><td>object[]</td><td>required</td><td></td></tr><tr><td><code>checkin</code></td><td>string</td><td>required</td><td>Check in date in YYYY-MM-DD (ISO 8601) format</td></tr><tr><td><code>checkout</code></td><td>string</td><td>required</td><td>Check out date in YYYY-MM-DD (ISO 8601) format</td></tr><tr><td><code>currency</code></td><td>string</td><td>required</td><td>Booking currency</td></tr><tr><td><code>guestNationality</code></td><td>string</td><td>required</td><td>Guest nationality (ISO 2-code)</td></tr><tr><td><code>timeout</code></td><td>number</td><td>optional</td><td>Request timeout in seconds</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_hotels_min_rates&quot;,
+    &quot;arguments&quot;: {
+      &quot;hotelIds&quot;: [],
+      &quot;occupancies&quot;: [],
+      &quot;checkin&quot;: &quot;...&quot;,
+      &quot;checkout&quot;: &quot;...&quot;,
+      &quot;currency&quot;: &quot;...&quot;,
+      &quot;guestNationality&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_hotels_rates ## overview
+
+search for hotel rates and availability across multiple hotels. this is your primary endpoint for finding bookable hotel rooms with real-time pricing.
+
+## when to use
+
+- **display hotel listings** with prices on your search results page
+- **show detailed rate options** for specific hotels users are viewing
+- **support multi-room bookings** for families or groups
+- **filter hotels** by"><summary><code>post_hotels_rates</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>## Overview Search for hotel rates and availability across multiple hotels. This is your primary endpoint for …</span></summary><p class="desc">## Overview
+
+Search for hotel rates and availability across multiple hotels. This is your primary endpoint for finding bookable hotel rooms with real-time pricing.
+
+## When to Use
+
+- **Display hotel listings** with prices on your search results page
+- **Show detailed rate options** for specific hotels users are viewing
+- **Support multi-room bookings** for families or groups
+- **Filter hotels** by location, amenities, ratings, or AI-powered semantic search
+
+## What You Get
+
+- **Real-time rates** with availability and pricing
+- **Multiple room options** per hotel, sorted by price
+- **Complete booking details** including cancellation policies, meal plans, and room types
+- **Hotel information** (name, photos, address, ratings) when searching by filters
+
+## Key Features
+
+- **Multiple search methods**: Search by hotel IDs, city/country, coordinates, Place ID, IATA code, or natural language (AI search)
+- **Flexible filtering**: Filter by star rating, facilities, hotel chains, accessibility, and more
+- **Multi-room support**: Book multiple rooms with different guest configurations in one request
+- **Performance optimized**: Default limit of 200 hotels (expandable to 5,000), recommended timeout of 6-12 seconds
+- **Price consistency**: Optional `sessionId` ensures rates stay consistent across listing and detail searches within a user session
+
+## Quick Start
+
+**Required fields**: `checkin`, `checkout`, `currency`, `guestNationality`, `occupancies`, plus one location method (hotel IDs, …</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>hotelIds</code></td><td>string[]</td><td>optional</td><td>An array of hotel IDs to search for availability and pricing. Get them from `get_data_hotels` or `get_data_hotel_search`.</td></tr><tr><td><code>occupancies</code></td><td>object[]</td><td>required</td><td>An array of objects specifying the number of guests per room. Required.</td></tr><tr><td><code>currency</code></td><td>string</td><td>required</td><td>The currency in which the prices will be displayed.</td></tr><tr><td><code>guestNationality</code></td><td>string</td><td>required</td><td>The guest&#x27;s nationality in ISO 2-letter country code format.</td></tr><tr><td><code>checkin</code></td><td>string</td><td>required</td><td>The check-in date in YYYY-MM-DD format (ISO 8601).</td></tr><tr><td><code>checkout</code></td><td>string</td><td>required</td><td>The check-out date in YYYY-MM-DD format (ISO 8601).</td></tr><tr><td><code>timeout</code></td><td>integer</td><td>optional</td><td>The maximum time in seconds before the request times out. This is when the live request for rates will cut off responses; it will take a few more ms to return the value.</td></tr><tr><td><code>maxRatesPerHotel</code></td><td>integer</td><td>optional</td><td>The number of room rates to return per hotel, sorted by price (cheapest first). Set to 1 to just get the cheapest rate for each hotel, this is helpful for listing pages. Try increasing this if you are missing rate types, and be aware that the cap is applied …</td></tr><tr><td><code>boardType</code></td><td>string</td><td>optional</td><td>Filter results by board type(s). Can be a single value (e.g., &#x27;BI&#x27;) or comma-separated values (e.g., &#x27;BI,HB&#x27;) for OR logic. Example values: RO (Room Only), BI (Breakfast Included), HB (Half Board), FB (Full Board), AI (All Inclusive), DI (Dinner Included), LI …</td></tr><tr><td><code>refundableRatesOnly</code></td><td>boolean</td><td>optional</td><td>If true, only refundable rates (RFN) will be included in the response.</td></tr><tr><td><code>roomAmenities</code></td><td>number[]</td><td>optional</td><td>Legacy room-level amenity filter. Only rates from rooms that match the specified amenities will be returned. Use amenityFilterLogic to control flat AND/OR behavior. If roomAmenitiesFilter is provided, it takes precedence over this field.</td></tr><tr><td><code>roomAmenitiesFilter</code></td><td>string</td><td>optional</td><td>Grouped room-level amenity filter. Use &#x27;-&#x27; for OR within a group and &#x27;,&#x27; for AND across groups. Example: &#x27;1-2,3-4&#x27; means (1 OR 2) AND (3 OR 4). If provided, this field takes precedence over roomAmenities and amenityFilterLogic.</td></tr><tr><td><code>amenityFilterLogic</code></td><td>string</td><td>optional</td><td>Legacy logic applied to roomAmenities. &#x27;AND&#x27;: room must have all specified amenities. &#x27;OR&#x27;: room must have at least one specified amenity. Ignored when roomAmenitiesFilter is provided. One of: AND, OR</td></tr><tr><td><code>bedTypes</code></td><td>string[]</td><td>optional</td><td>Filter results by bed types extracted from room names. Only rates from rooms matching the specified bed types will be returned. Example values: &#x27;double&#x27;, &#x27;twin&#x27;, &#x27;king&#x27;, &#x27;queen&#x27;, &#x27;single&#x27;.</td></tr><tr><td><code>sort</code></td><td>object[]</td><td>optional</td><td>Sorting criteria for the results. Multiple criteria can be provided, processed in order. The default sorting is by top picks (weighted by search popularity, review quality, and content completeness). Use &#x27;revenue&#x27; to sort by historical booking value and …</td></tr><tr><td><code>roomMapping</code></td><td>boolean</td><td>optional</td><td>Enable room mapping to retrieve the mappedRoomId for each room. This allows you to link a rate to its specific room by combining it with hotel details, providing access to room images and additional information</td></tr><tr><td><code>hotelName</code></td><td>string</td><td>optional</td><td>A case-insensitive search for a hotel&#x27;s name (e.g., &#x27;Hilton&#x27;).</td></tr><tr><td><code>countryCode</code></td><td>string</td><td>optional</td><td>The country code in ISO 2-letter format (e.g., &#x27;SG&#x27; for Singapore). Instead of using hotel IDs, you can search by country/city. This is a valid main query.</td></tr><tr><td><code>cityName</code></td><td>string</td><td>optional</td><td>The name of the city to search for hotels in. Pairs with countryCode to do a country/city search.</td></tr><tr><td><code>latitude</code></td><td>number</td><td>optional</td><td>The latitude coordinate for location-based hotel searches.  Instead of using hotel IDs, you can search by lat/long and a radius around that spot. This is a valid main query.</td></tr><tr><td><code>longitude</code></td><td>number</td><td>optional</td><td>The longitude coordinate for location-based hotel searches. Pairs with latitude to do a lat/long search.</td></tr><tr><td><code>radius</code></td><td>integer</td><td>optional</td><td>The search radius in meters for location-based searches. Pairs with latitude to do a lat/long search.</td></tr><tr><td><code>iataCode</code></td><td>string</td><td>optional</td><td>The IATA code of the search location, typically an airport code. Instead of using hotel IDs, you can search by IATA code. This is a valid main query.</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>The maximum number of results to return. Defaults to 200, max allowed is 5000.</td></tr><tr><td><code>offset</code></td><td>integer</td><td>optional</td><td>The number of results to skip for pagination. This paginates the passed hotels not the results returned so the actual returned results will vary.</td></tr><tr><td><code>aiSearch</code></td><td>string</td><td>optional</td><td>AI-powered hotel search based on a natural language query. Uses semantic search to find hotels matching the query intent. Examples: &#x27;Romantic getaway with Italian vibes in London near the London Eye&#x27;, &#x27;hotels near Paris&#x27;. This is a valid main query.</td></tr><tr><td><code>minReviewsCount</code></td><td>integer</td><td>optional</td><td>The minimum number of reviews a hotel must have to be included in results. This is a filter on top of the main query.</td></tr><tr><td><code>minRating</code></td><td>number</td><td>optional</td><td>The minimum rating (on a scale of 0-5) required for hotels in search results. This is a filter on top of the main query.</td></tr><tr><td><code>zip</code></td><td>string</td><td>optional</td><td>The zip code of the search location. This is a filter on top of the main query.</td></tr><tr><td><code>placeId</code></td><td>string</td><td>optional</td><td>The unique Place ID of the search location. Instead of using hotel IDs, pass a Place ID to get all the hotels in the specified region. This is a valid main query.</td></tr><tr><td><code>starRating</code></td><td>number[]</td><td>optional</td><td>An array of hotel star ratings to include. Ratings are rounded to the nearest half-star (e.g., [3.5, 4.0, 4.5, 5.0]). This is a filter on top of the main query.</td></tr><tr><td><code>hotelTypeIds</code></td><td>number[]</td><td>optional</td><td>An array of hotel type IDs to filter the search results. This is a filter on top of the main query.</td></tr><tr><td><code>chainIds</code></td><td>number[]</td><td>optional</td><td>An array of hotel chain IDs to filter the search results. This is a filter on top of the main query.</td></tr><tr><td><code>facilities</code></td><td>number[]</td><td>optional</td><td>An array of facility IDs. Results will include hotels with at least one of these facilities by default. This is a filter on top of the main query.</td></tr><tr><td><code>strictFacilityFiltering</code></td><td>boolean</td><td>optional</td><td>If enabled, only hotels with all specified facilities will be returned.</td></tr><tr><td><code>stream</code></td><td>boolean</td><td>optional</td><td>If true, enables streaming mode where response data is sent incrementally instead of as a single payload.</td></tr><tr><td><code>advancedAccessibilityOnly</code></td><td>boolean</td><td>optional</td><td>If true, only hotels with advanced accessibility features will be returned.</td></tr><tr><td><code>feed</code></td><td>string</td><td>optional</td><td>Which rate feed to search. Leave unset to use the default feed.</td></tr><tr><td><code>includeHotelData</code></td><td>boolean</td><td>optional</td><td>If `true`, includes hotel data (name, main photo, address, rating) in the response even when searching by direct hotel IDs. By default, hotel data is only included when searching by filters (e.g., using `aiSearch`, `countryCode`, `cityName`, etc.). Setting …</td></tr><tr><td><code>sessionId</code></td><td>string</td><td>optional</td><td>Optional client-generated session identifier that ensures price consistency for the user&#x27;s search session. Pass the same `sessionId` with the same `checkin` and `checkout` across related requests in that session.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_hotels_rates&quot;,
+    &quot;arguments&quot;: {
+      &quot;occupancies&quot;: [],
+      &quot;currency&quot;: &quot;...&quot;,
+      &quot;guestNationality&quot;: &quot;...&quot;,
+      &quot;checkin&quot;: &quot;...&quot;,
+      &quot;checkout&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="post_rates_prebook ## overview
+
+locks the chosen hotel rate and returns the final price, cancellation terms and a checkout link on maqami&#x27;s website.
+
+## when to use
+
+when the customer has chosen a hotel, room, dates and guests and reviewed the price and cancellation terms.
+
+## quick start
+
+pass the `offerid` from `post_hotels_rates` exactly as it was returned.
+
+## what you get
+
+- **prebookid** - the locked rate
+- **"><summary><code>post_rates_prebook</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>## Overview Locks the chosen hotel rate and returns the final price, cancellation terms and a checkout link …</span></summary><p class="desc">## Overview
+
+Locks the chosen hotel rate and returns the final price, cancellation terms and a checkout link on MAQAMI&#x27;s website.
+
+## When to Use
+
+When the customer has chosen a hotel, room, dates and guests and reviewed the price and cancellation terms.
+
+## Quick Start
+
+Pass the `offerId` from `post_hotels_rates` exactly as it was returned.
+
+## What You Get
+
+- **prebookId** - The locked rate
+- **Final price and cancellation terms** - For the customer to review
+- **checkoutUrl** - `https://book.maqami.co/booking?prebookId=...`
+
+## Payment
+
+Bookings are paid and confirmed only on MAQAMI&#x27;s website. The `checkoutUrl` opens checkout for this exact rate, where the customer enters guest details, pays securely and receives the confirmation. This tool takes no payment details and does not confirm the booking.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>timeout</code></td><td>integer</td><td>optional</td><td></td></tr><tr><td><code>offerId</code></td><td>string</td><td>required</td><td>The offerId from post_hotels_rates on this server, passed exactly as returned.</td></tr><tr><td><code>voucherCode</code></td><td>string</td><td>optional</td><td>An optional voucher code to apply discounts to the booking. The vouchers API allows creation of these discounts</td></tr><tr><td><code>bedTypeIds</code></td><td>integer[]</td><td>optional</td><td>An optional array of bed type IDs to specify preferred bed configurations for the rooms being booked. The availability of specific bed types depends on the hotel&#x27;s inventory.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;post_rates_prebook&quot;,
+    &quot;arguments&quot;: {
+      &quot;offerId&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="put_bookings_bookingid_amend correct the booking holder&#x27;s name, email or phone on a confirmed hotel booking, for example to fix a typo.
+
+it does not change dates, rooms or guests. to show the customer prices for other dates or guests, use `post_bookings_bookingid_alternative_prebooks`.
+
+pass the `bookingid`, the `email` currently on the booking and the corrected `holder` (`firstname`, `lastname`, `email`, optional `phone`). c"><summary><code>put_bookings_bookingid_amend</code><span class="hint write">can modify</span><span class="hint danger">destructive</span><span class="hint world">external access</span><span>Correct the booking holder&#x27;s name, email or phone on a confirmed hotel booking, for example to fix a typo. It …</span></summary><p class="desc">Correct the booking holder&#x27;s name, email or phone on a confirmed hotel booking, for example to fix a typo.
+
+It does not change dates, rooms or guests. To show the customer prices for other dates or guests, use `post_bookings_bookingid_alternative_prebooks`.
+
+Pass the `bookingId`, the `email` currently on the booking and the corrected `holder` (`firstName`, `lastName`, `email`, optional `phone`). Confirm the new details with the customer before calling.
+
+Requires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>bookingId</code></td><td>string</td><td>required</td><td>The booking ID from the booking confirmation.</td></tr><tr><td><code>email</code></td><td>string</td><td>required</td><td>The email address currently on the booking, used to verify the customer. A new email goes in holder.email.</td></tr><tr><td><code>lastName</code></td><td>string</td><td>optional</td><td>The booking holder&#x27;s last name, if the customer gives it. Optional.</td></tr><tr><td><code>holder</code></td><td>object</td><td>required</td><td>The corrected booking holder. Send firstName, lastName and email even if only one of them changes.</td></tr><tr><td><code>remarks</code></td><td>string</td><td>optional</td><td>Optional note for the amendment.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;put_bookings_bookingid_amend&quot;,
+    &quot;arguments&quot;: {
+      &quot;bookingId&quot;: &quot;...&quot;,
+      &quot;email&quot;: &quot;...&quot;,
+      &quot;holder&quot;: {}
+    }
+  }
+}</code></pre></details></div>
+<h2>Badge</h2>
+<p>Maintain this server? Put its live status in your README:</p>
+<p><img src="../../badge/maqami-travel.svg" alt="MCP status badge" height="20"></p>
+<div class="cmd"><code>[![MCP status](https://mcp.aianytime.net/badge/maqami-travel.svg)](https://mcp.aianytime.net/s/maqami-travel/)</code><button class="copy" data-copy="[![MCP status](https://mcp.aianytime.net/badge/maqami-travel.svg)](https://mcp.aianytime.net/s/maqami-travel/)">Copy</button></div>
+<p class="note" style="margin-top:22px"><a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/servers/maqami-travel.json">Edit this entry</a> · <a href="https://github.com/AIAnytime/Awesome-MCP-Servers/issues/new?template=report-entry.yml">Report a problem</a></p>
+<section>
+<h2>More in Commerce, travel &amp; logistics</h2>
+<ul class="chips"><li><a href="../octotrip-rental-cars/">OctoTrip Rental Cars</a></li><li><a href="../packrift/">Packrift</a></li><li><a href="../pocket-drives/">Pocket Drives</a></li><li><a href="../pumperly-mcp/">pumperly-mcp</a></li><li><a href="../robohub/">RoboHub</a></li><li><a href="../scentverdict/">ScentVerdict</a></li><li><a href="../../c/commerce-travel/">All of Commerce, travel &amp; logistics</a></li></ul>
+</section>
+
+<p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
+<a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="../../api/servers.json">JSON</a> · <a href="../../llms.txt">llms.txt</a> · <a href="../../llms-full.txt">llms-full.txt</a></p>
+<p class="fineprint" style="margin-top:8px">Browse: <a href="../../c/developer-tools/">Agents, IDEs &amp; developer tools</a> · <a href="../../c/search/">Search &amp; discovery</a> · <a href="../../c/knowledge-memory/">Knowledge, memory &amp; context</a> · <a href="../../c/media/">Media &amp; generation</a> · <a href="../../c/security/">Security</a> · <a href="../../c/finance/">Finance &amp; markets</a> · <a href="../../c/marketing/">Marketing, content &amp; social</a> · <a href="../../c/cloud-data/">Cloud, ops &amp; data</a> · <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a> · <a href="../../c/productivity/">Work &amp; productivity</a> · <a href="../../c/no-auth/">No account needed</a> · <a href="../../c/local/">Local servers</a></p>
+</main>
+<footer><div class="wrap foot">
+<div>
+<h2>AI Anytime</h2>
+<p>Practical AI for all. AI education, research and enablement, rooted in open source. This directory is built and maintained by AI Anytime.</p>
+<p class="links"><a href="https://aianytime.net">aianytime.net</a><a href="https://www.youtube.com/@AIAnytime">YouTube</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a></p>
+</div>
+<div class="academy">
+<span class="eyebrow">AI Anytime Academy</span>
+<h3>Become an AI engineer by building.</h3>
+<p>Structured career tracks, browser coding labs, an AI mentor and AI-reviewed portfolio projects. Start for free.</p>
+<a class="cta" href="https://academy.aianytime.net">Explore the Academy</a>
+</div>
+</div></footer>
+<script>
+document.addEventListener('click',e=>{const b=e.target.closest('button.copy');if(!b)return;
+navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=t,1200)});});
+document.getElementById('theme').addEventListener('click',()=>{const r=document.documentElement;
+const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}});
+document.getElementById('refresh').addEventListener('click',()=>location.reload());
+
+document.querySelectorAll('.tabs').forEach(tabs=>{tabs.classList.add('js');
+const show=id=>{tabs.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+tabs.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('on',p.dataset.panel===id));};
+let saved=null;try{saved=localStorage.getItem('client')}catch(e){}
+show(saved&&tabs.querySelector('[data-tab="'+saved+'"]')?saved:tabs.querySelector('[data-tab]').dataset.tab);
+tabs.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;show(b.dataset.tab);try{localStorage.setItem('client',b.dataset.tab)}catch(e){}});});
+const tq=document.getElementById('toolq');
+if(tq)tq.addEventListener('input',()=>{const terms=tq.value.toLowerCase().split(/\s+/).filter(Boolean);
+document.querySelectorAll('#toollist .tool').forEach(t=>{t.hidden=!terms.every(x=>t.dataset.text.includes(x));});});
+</script>
+</body>
+</html>

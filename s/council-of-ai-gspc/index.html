@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Council of AI (GSPC) MCP server: status, tools and setup</title>
+<meta name="description" content="Council of AI (GSPC) MCP server. Answered an MCP handshake without credentials and listed 19 tools. Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures...">
+<meta name="keywords" content="MCP servers, Model Context Protocol, MCP directory, remote MCP servers, MCP server list, awesome mcp servers, AI agents, Claude, Cursor, AI Anytime">
+<meta name="author" content="AI Anytime">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="theme-color" content="#f6f4ee">
+<link rel="canonical" href="https://mcp.aianytime.net/s/council-of-ai-gspc/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" title="Directory data" href="../../api/servers.json">
+<link rel="alternate" type="text/plain" title="llms.txt" href="../../llms.txt">
+<meta property="og:site_name" content="Awesome MCP Servers by AI Anytime">
+<meta property="og:title" content="Council of AI (GSPC) MCP server: status, tools and setup">
+<meta property="og:description" content="Council of AI (GSPC) MCP server. Answered an MCP handshake without credentials and listed 19 tools. Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures...">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mcp.aianytime.net/s/council-of-ai-gspc/">
+<meta property="og:image" content="https://mcp.aianytime.net/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Awesome MCP Servers by AI Anytime: MCP servers we actually connect to, every night.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Council of AI (GSPC) MCP server: status, tools and setup">
+<meta name="twitter:description" content="Council of AI (GSPC) MCP server. Answered an MCP handshake without credentials and listed 19 tools. Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures...">
+<meta name="twitter:image" content="https://mcp.aianytime.net/og.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://aianytime.net/#organization", "name": "AI Anytime", "url": "https://aianytime.net", "sameAs": ["https://www.youtube.com/@AIAnytime", "https://github.com/AIAnytime", "https://academy.aianytime.net"]}, {"@type": "SoftwareApplication", "name": "Council of AI (GSPC)", "description": "Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures and Merkle inclusion; read tools need no key, evidence tools are x402-metered. Endpoint: https://councilof.ai/mcp · Install: npx -y csoai-gspc-mcp · Registry: io.github.CSOAI-ORG/gspc", "url": "https://mcp.aianytime.net/s/council-of-ai-gspc/", "sameAs": "https://github.com/CSOAI-ORG/councilof-ai/tree/master/mcp/gspc-server", "applicationCategory": "DeveloperApplication", "applicationSubCategory": "MCP server (Security)", "operatingSystem": "Any", "isPartOf": {"@id": "https://mcp.aianytime.net/#website"}, "softwareVersion": "1.4.4", "featureList": ["art50_marking_evidence", "board_totals", "commission_card", "evidence_bundle", "evidence_bundle_preview", "get_axis", "get_card", "get_root", "list_cards", "mcp_trust", "measurement_index", "receipts_batch", "route", "rwa_evidence", "server_evidence", "verify_capsule", "verify_card", "verify_inclusion", "x402_trust"], "dateModified": "2026-10-17T07:49:56Z"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Directory", "item": "https://mcp.aianytime.net/"}, {"@type": "ListItem", "position": 2, "name": "Security", "item": "https://mcp.aianytime.net/c/security/"}, {"@type": "ListItem", "position": 3, "name": "Council of AI (GSPC)", "item": "https://mcp.aianytime.net/s/council-of-ai-gspc/"}]}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f4ee;--card:#fffdf8;--ink:#121118;--mute:#625f6d;--line:#dedad0;--accent:#5b3df5;--accent-soft:#ebe6ff;
+--lime:#d4f75e;--night:#0d0c12;--night-2:#17151f;--night-line:#2b2935;
+--live:#1a7f37;--auth:#5b3df5;--down:#c0262d;--off:#8a8794;--code:#efece3}
+/* Dark: follows the system unless the visitor picked a theme with the header button. */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}}
+:root[data-theme=dark]{--bg:#0d0c12;--card:#17151f;--ink:#f6f4ee;--mute:#a9a6b5;--line:#2b2935;
+--accent:#a594ff;--accent-soft:#241d4d;--live:#d4f75e;--auth:#a594ff;--down:#ff8a80;--off:#7d7a89;--code:#211f2b}
+.icon .sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .icon .sun{display:block}:root:not([data-theme=light]) .icon .moon{display:none}}
+:root[data-theme=dark] .icon .sun{display:block}:root[data-theme=dark] .icon .moon{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%}
+a{color:var(--accent)}
+code{font:.86em "Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--mute);font-weight:500}
+nav a{margin-left:18px;color:var(--mute);text-decoration:none;font-size:.93rem}
+nav a:first-child{margin-left:0;color:var(--accent);font-weight:600}
+nav a:hover{color:var(--ink)}
+nav{display:flex;align-items:center;flex-wrap:wrap;row-gap:8px}
+.icon{display:inline-grid;place-items:center;width:34px;height:34px;margin-left:10px;padding:0;cursor:pointer;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px}
+nav a+.icon{margin-left:18px}
+.icon:hover{color:var(--accent);border-color:var(--accent)}
+.icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:44px 0 18px}
+h1{font:400 clamp(2.3rem,6vw,3.6rem)/1.05 "Instrument Serif",ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:1.1rem;color:var(--mute);max-width:64ch;margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-weight:600;font-size:1.6rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:.86rem}
+.note{color:var(--mute);font-size:.86rem;margin:6px 0 0}
+.controls{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.controls input,.controls select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.controls input{flex:1 1 240px}
+.controls select{flex:0 1 auto;max-width:100%}
+#count{color:var(--mute);font-size:.88rem;margin:12px 0}
+.list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--accent)}
+.card h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.card p{margin:6px 0 0;color:var(--mute);font-size:.94rem;overflow-wrap:anywhere}
+.tag{font:500 .7rem "Geist Mono",ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 6px}
+.pill{font-size:.76rem;font-weight:600;white-space:nowrap}
+.pill::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
+.live{color:var(--live)}.auth{color:var(--auth)}.down{color:var(--down)}.unprobed{color:var(--off)}
+.unprobed.pill::before{background:none;border:1.5px solid currentColor}
+.facts{margin:8px 0 0;font-size:.84rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cmd{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+.cmd code{flex:1;min-width:0;padding:7px 10px;white-space:nowrap;overflow-x:auto;overflow-wrap:normal}
+button.copy{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:0 12px}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+.controls input:focus,.controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
+section{padding:34px 0 0}
+h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 10px}
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:0;list-style:none;margin:14px 0 0}
+.learn li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
+.learn a{font-weight:600}
+.fineprint{margin-top:44px;color:var(--mute);font-size:.86rem}
+footer{margin-top:22px;background:var(--night);color:#b9b6c6;font-size:.92rem;border-top:1px solid var(--night-line)}
+footer .wrap{padding-top:36px;padding-bottom:36px}
+footer a{color:#f6f4ee}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:start}
+.foot h2{font:400 1.7rem/1.1 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:0 0 8px;letter-spacing:0}
+.foot p{margin:0 0 12px;max-width:46ch}
+.foot .links a{margin-right:16px;white-space:nowrap}
+.academy{background:var(--night-2);border:1px solid var(--night-line);border-radius:16px;padding:20px 22px}
+.academy .eyebrow{font:500 .72rem "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.academy h3{font:400 1.5rem/1.15 "Instrument Serif",ui-serif,Georgia,serif;color:#f6f4ee;margin:6px 0 8px}
+.academy a.cta{display:inline-block;background:var(--lime);color:#121118;font-weight:600;text-decoration:none;border-radius:999px;padding:9px 18px;margin-top:4px}
+.academy a.cta:hover{filter:brightness(1.06)}
+.crumbs{margin:26px 0 8px;font-size:.9rem}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
+dt{color:var(--mute)}dd{margin:0;overflow-wrap:anywhere}
+.days{display:flex;gap:3px;margin-top:6px}
+.days i{width:12px;height:22px;border-radius:3px;background:var(--off)}
+.days .u{background:var(--live)}.days .a{background:var(--auth)}.days .d{background:var(--down)}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.86rem}
+pre code{background:none;padding:0;overflow-wrap:normal}
+.tools{columns:220px;padding-left:18px;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.chips a:hover{border-color:var(--accent);color:var(--accent)}
+.chips a span{color:var(--mute)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mute)}
+[hidden]{display:none!important}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.checks th{font-weight:500}
+table.checks td:last-child{min-width:150px}
+table.params{min-width:560px}
+thead th{color:var(--mute);font-weight:500;font-size:.8rem;white-space:nowrap}
+.state{font-size:.78rem;font-weight:600;white-space:nowrap}
+.state::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:currentColor}
+.state.verified{color:var(--live)}.state.failed{color:var(--down)}.state.untested{color:var(--off)}
+.state.untested::before{background:none;border:1.5px solid currentColor}
+h3{font-size:1.02rem;margin:22px 0 6px}
+.count{font:500 .8rem "Geist Mono",ui-monospace,monospace;color:var(--mute);margin-left:4px}
+.tablist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.tablist button{font:inherit;font-size:.88rem;cursor:pointer;color:var(--mute);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 13px}
+.tablist button.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.tabs.js .panel{display:none}.tabs.js .panel.on{display:block}.tabs.js .panel h3{display:none}
+.tabs:not(.js) .tablist{display:none}
+.panel{margin-top:6px}
+.snippet{position:relative}.snippet .copy{position:absolute;top:8px;right:8px;height:28px}
+.snippet pre{margin:8px 0;padding-right:76px}
+.btn{display:inline-block;background:var(--accent);color:var(--bg);font-weight:600;text-decoration:none;border-radius:999px;padding:7px 16px;font-size:.9rem}
+.tips{padding-left:18px;color:var(--mute);font-size:.92rem}.tips li{margin:4px 0}
+#toolq{font:inherit;width:100%;max-width:360px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:4px 0 10px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.tool summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.tool summary span:last-child{color:var(--mute);font-size:.88rem;flex:1 1 260px;min-width:0}
+.tool .desc{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem;margin:10px 0}
+.tool pre{margin:6px 0 4px}
+.hint{font:500 .68rem "Geist Mono",ui-monospace,monospace;border-radius:5px;padding:1px 6px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.hint.read{color:var(--live);border-color:currentColor}.hint.danger{color:var(--down);border-color:currentColor}
+ul.plain{padding-left:18px;font-size:.92rem;color:var(--mute)}
+.status td,.status th{white-space:nowrap}.status .days i{width:5px;height:16px;border-radius:2px}.status .days{gap:2px;margin:0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="brand" href="../../">Awesome MCP Servers <span>by AI Anytime</span></a>
+<nav><a href="https://academy.aianytime.net">Academy</a><a href="../../#directory">Directory</a><a href="../../status/">Status</a><a href="../../#learn">Learn</a><a href="../../#agents">For agents</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a>
+<button id="refresh" class="icon" type="button" title="Reload for the latest check results" aria-label="Reload page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
+<button id="theme" class="icon" type="button" title="Switch between light and dark" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>
+</div></header>
+<main class="wrap">
+
+<p class="crumbs"><a href="../../#directory">Directory</a> / <a href="../../c/security/">Security</a></p>
+<h1>Council of AI (GSPC)</h1>
+<p class="lede">Reads a public board of signed AI behaviour measurement cards and verifies Ed25519 signatures and Merkle inclusion; read tools need no key, evidence tools are x402-metered. Endpoint: <code>https://councilof.ai/mcp</code> · Install: <code>npx -y csoai-gspc-mcp</code> · Registry: <code>io.github.CSOAI-ORG/gspc</code></p>
+<p style="margin-top:18px"><span class="pill live">Live</span> &nbsp;Answered an MCP handshake without credentials and listed 19 tools.</p>
+<dl><dt>Category</dt><dd><a href="../../c/security/">Security</a></dd><dt>Transport</dt><dd><code>http</code></dd><dt>Source</dt><dd><a href="https://github.com/CSOAI-ORG/councilof-ai/tree/master/mcp/gspc-server" rel="nofollow noopener">https://github.com/CSOAI-ORG/councilof-ai/tree/master/mcp/gspc-server</a></dd><dt>Endpoint</dt><dd><code>https://councilof.ai/mcp</code></dd><dt>MCP Registry</dt><dd><code>io.github.CSOAI-ORG/gspc</code></dd><dt>Reports itself as</dt><dd>csoai-gspc-mcp 1.4.4</dd><dt>Protocol</dt><dd>2025-06-18</dd><dt>Tools</dt><dd>19</dd><dt>Context cost</dt><dd>about 5,740 tokens for the tool definitions (estimated at four characters per token)</dd><dt>Tool definitions last changed</dt><dd>2026-10-15</dd><dt>Handshake time</dt><dd>101 ms</dd><dt>Repository</dt><dd>3 stars · last push 2026-10-17 · MIT</dd><dt>Last checked</dt><dd>2026-10-17 07:49:56 UTC</dd><dt>Listed since</dt><dd>2026-10-12</dd></dl>
+<h2 id="health">Health and compatibility</h2><div class="scroll"><table class="checks"><tbody><tr><th scope='row'>Endpoint reachable</th><td><span class="state verified">Verified</span></td><td>Responded in 101 ms</td></tr><tr><th scope='row'>MCP handshake (initialize)</th><td><span class="state verified">Verified</span></td><td>Completed without credentials</td></tr><tr><th scope='row'>Tool discovery (tools/list)</th><td><span class="state verified">Verified</span></td><td>19 tools listed</td></tr><tr><th scope='row'>Authentication</th><td><span class="state verified">Verified</span></td><td>None needed to connect</td></tr><tr><th scope='row'>Protocol version</th><td><span class="state verified">Verified</span></td><td>2025-06-18</td></tr><tr><th scope='row'>Transport</th><td><span class="state verified">Verified</span></td><td>Streamable HTTP</td></tr><tr><th scope='row'>Capabilities declared</th><td><span class="state verified">Verified</span></td><td>tools</td></tr></tbody></table></div><p class="note">Last checked <time datetime="2026-10-17T07:49:56Z">2026-10-17 07:49:56 UTC</time>. Verified means the check saw it happen; it says nothing about whether the server is safe.</p><h3>Recent history</h3><p class="note">6 daily checks so far; median response 133 ms. Green answered, violet asked for auth, red did not answer.</p><div class="days"><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i><i class='u'></i></div>
+<h2 id="setup">Set up in your client</h2><div class="tabs"><div class="tablist" role="tablist"><button type="button" role="tab" data-tab="claude-code" class=on>Claude Code</button><button type="button" role="tab" data-tab="claude-desktop">Claude Desktop</button><button type="button" role="tab" data-tab="cursor">Cursor</button><button type="button" role="tab" data-tab="vscode">VS Code</button><button type="button" role="tab" data-tab="windsurf">Windsurf</button><button type="button" role="tab" data-tab="other">Other clients</button></div><div class="panel" data-panel="claude-code"><h3>Claude Code</h3><p>Run this in a terminal:</p><div class="cmd"><code>claude mcp add --transport http council-of-ai-gspc https://councilof.ai/mcp</code><button class="copy" data-copy="claude mcp add --transport http council-of-ai-gspc https://councilof.ai/mcp">Copy</button></div></div><div class="panel" data-panel="claude-desktop"><h3>Claude Desktop</h3><p>Open <b>Settings → Connectors → Add custom connector</b> and paste this URL:</p><div class="cmd"><code>https://councilof.ai/mcp</code><button class="copy" data-copy="https://councilof.ai/mcp">Copy</button></div><p>Or bridge it through <code>mcp-remote</code> in <code>claude_desktop_config.json</code> (needs Node.js):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://councilof.ai/mcp&quot;
+      ]
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;mcp-remote&quot;,
+        &quot;https://councilof.ai/mcp&quot;
+      ]
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="cursor"><h3>Cursor</h3><p><a class="btn" href="cursor://anysphere.cursor-deeplink/mcp/install?name=council-of-ai-gspc&amp;config=eyJ1cmwiOiAiaHR0cHM6Ly9jb3VuY2lsb2YuYWkvbWNwIn0%3D">Add to Cursor</a></p><p>Or add it to <code>~/.cursor/mcp.json</code> (or <code>.cursor/mcp.json</code> in a project):</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="vscode"><h3>VS Code</h3><p><a class="btn" href="vscode:mcp/install?%7B%22name%22%3A%20%22council-of-ai-gspc%22%2C%20%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A//councilof.ai/mcp%22%7D">Add to VS Code</a></p><p>Or add it to <code>.vscode/mcp.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;servers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;servers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}</code></pre></div><p>Or from a terminal:</p><div class="cmd"><code>code --add-mcp &#x27;{&quot;name&quot;: &quot;council-of-ai-gspc&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;}&#x27;</code><button class="copy" data-copy="code --add-mcp &#x27;{&quot;name&quot;: &quot;council-of-ai-gspc&quot;, &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;}&#x27;">Copy</button></div></div><div class="panel" data-panel="windsurf"><h3>Windsurf</h3><p>Add it to <code>~/.codeium/windsurf/mcp_config.json</code>:</p><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;serverUrl&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;serverUrl&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}</code></pre></div></div><div class="panel" data-panel="other"><h3>Other clients</h3><p>Most clients accept this shape. The endpoint is:</p><div class="cmd"><code>https://councilof.ai/mcp</code><button class="copy" data-copy="https://councilof.ai/mcp">Copy</button></div><div class="snippet"><button class="copy" data-copy="{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}">Copy</button><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;council-of-ai-gspc&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://councilof.ai/mcp&quot;
+    }
+  }
+}</code></pre></div></div></div><h3>If it does not connect</h3><ul class="tips"><li>Restart the client after editing a config file, and keep keys out of files you commit.</li><li>If the tools do not appear, open the client's MCP log: a 401 means the credentials were not accepted, and a timeout means the server did not answer.</li></ul>
+<h2 id="tools">Tools <span class="count">19</span></h2><p class="note">Names, descriptions and input schemas exactly as the server returned them on 2026-10-17. This is the server author's own text. Nothing is run from this page. Labels such as read-only are declared by the server and are not verified. <a href="../../api/tools/council-of-ai-gspc.json">Raw JSON</a></p><input id="toolq" type="search" placeholder="Filter tools" aria-label="Filter tools"><div id="toollist"><details class="tool" data-text="art50_marking_evidence paid (x402 or csoai ltd invoice). article 50 marking-evidence pack via https://councilof.ai/api/art50/marking-evidence: which machine-readable marks the named methods detect in these bytes right now. scope: c2pa and iptc metadata only (c2pa manifest store, assertion hashes, hard binding, claim signature; iptc digitalsourcetype); no watermark, fingerprint or other kind of mark is read. not_detected"><summary><code>art50_marking_evidence</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>PAID (x402 or CSOAI LTD invoice). Article 50 marking-evidence pack via …</span></summary><p class="desc">PAID (x402 or CSOAI LTD invoice). Article 50 marking-evidence pack via https://councilof.ai/api/art50/marking-evidence: which machine-readable marks the named methods DETECT in these bytes right now. Scope: C2PA and IPTC metadata only (C2PA manifest store, assertion hashes, hard binding, claim signature; IPTC digitalSourceType); no watermark, fingerprint or other kind of mark is read. NOT_DETECTED is not unmarked: Article 50(2) is technology-neutral, so a mark this pack cannot read may be present, and metadata is often stripped on re-save. Disclosure: CSOAI is a member of the C2PA, whose specification is one of the two methods read. The pack carries the verbatim Art 50(2) text hash and the dates it turns on. Point-in-time detection — never a conformity opinion, never a compliance word of any kind. preview=true is free and returns the same measurement unsigned. Without x_payment the tool returns the 402 challenge. If the route is not deployed on this origin the tool says NOT_DEPLOYED rather than inventing a result.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>url</code></td><td>string</td><td>optional</td><td>Public HTTP(S) URL of the generative output to measure (≤20 MiB). The server fetches only this declared measurement subject.</td></tr><tr><td><code>bytes_b64</code></td><td>string</td><td>optional</td><td>Alternatively the output bytes, base64 (≤20 MiB decoded).</td></tr><tr><td><code>manifest_b64</code></td><td>string</td><td>optional</td><td>Alternatively a detached C2PA manifest store, base64 (manifest-only mode).</td></tr><tr><td><code>preview</code></td><td>boolean</td><td>optional</td><td>true = free unsigned measurement (no card sha, no signature).</td></tr><tr><td><code>x_payment</code></td><td>string</td><td>optional</td><td>The X-PAYMENT header value signed against accepts[] from the previous 402. Omit to receive the challenge.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;art50_marking_evidence&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="board_totals live gspc board totals from https://councilof.ai/api/gspc. returns the slot count and the measured count as two labelled numbers with their kind — a slot is a declared position on the board, a measurement is a real run behind it; the two are never summed and never swapped — plus the board&#x27;s separation line, and as_of dates for the board and for this fetch. compact by default; pass detail &quot;full&quot; fo"><summary><code>board_totals</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Live GSPC board totals from https://councilof.ai/api/gspc. Returns the slot count and the measured count as …</span></summary><p class="desc">Live GSPC board totals from https://councilof.ai/api/gspc. Returns the slot count and the measured count as two labelled numbers WITH their kind — a slot is a declared position on the board, a measurement is a real run behind it; the two are never summed and never swapped — plus the board&#x27;s separation line, and as_of dates for the board and for this fetch. Compact by default; pass detail &quot;full&quot; for the long-form count grammar, the per-family counts and the board&#x27;s full measured_on block. We measure, never certify. If the board cannot be fetched the answer is a distinct UNREACHABLE state: no cached number is ever presented as live.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>detail</code></td><td>string</td><td>optional</td><td>summary (default): counts, public_count, the separation line, dates and source. full: also count_grammar, by_family and the board&#x27;s measured_on block. One of: summary, full</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;board_totals&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="commission_card paid (x402). commission one signed card-v0 receipt (surface ras.commission) for a named subject on the frozen bank via https://councilof.ai/api/request-attestation. re-serves every signed measurement card already on file for the subject; a payment never mints a measured cell (fresh_run stays unmeasured until a published run exists). without x_payment the tool returns the 402 challenge (accepts[] w"><summary><code>commission_card</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>PAID (x402). Commission one signed card-v0 receipt (surface ras.commission) for a named subject on the frozen …</span></summary><p class="desc">PAID (x402). Commission one signed card-v0 receipt (surface ras.commission) for a named subject on the frozen bank via https://councilof.ai/api/request-attestation. Re-serves every signed measurement card already on file for the subject; a payment never mints a MEASURED cell (fresh_run stays UNMEASURED until a published run exists). Without x_payment the tool returns the 402 challenge (accepts[] with asset, amount, payTo) plus a free preview of the cards already on file. Measurement, not certification — never a rank, a grade or a certificate. Verification stays free.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>subject</code></td><td>string</td><td>required</td><td>Subject to commission: a model id, instrument id or card sha (1-120 chars of [A-Za-z0-9._:/@+-]).</td></tr><tr><td><code>axis</code></td><td>string</td><td>optional</td><td>Optional axis slug; omit for the subject-level commission.</td></tr><tr><td><code>x_payment</code></td><td>string</td><td>optional</td><td>The X-PAYMENT header value (base64 x402 payload) signed by your wallet against accepts[] from the previous 402. Omit to receive the challenge.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;commission_card&quot;,
+    &quot;arguments&quot;: {
+      &quot;subject&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="evidence_bundle paid (x402). for one obligation (article-50, article-53 gpai transparency, dora or cra) and an optional subject via https://councilof.ai/api/evidence-bundle: selected existing card objects with signature fields and any retained inclusion proofs, an oscal assessment-results wrapper and an assembly manifest. assembly does not verify input-card signatures. a returned unsigned manifest reports its sig"><summary><code>evidence_bundle</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>PAID (x402). For ONE obligation (article-50, article-53 GPAI transparency, dora or cra) and an optional …</span></summary><p class="desc">PAID (x402). For ONE obligation (article-50, article-53 GPAI transparency, dora or cra) and an optional subject via https://councilof.ai/api/evidence-bundle: selected existing card objects with signature fields and any retained inclusion proofs, an OSCAL assessment-results wrapper and an assembly manifest. Assembly does not verify input-card signatures. A returned unsigned manifest reports its signing status and unsigned reason. If signing throws after settlement, the route returns PAID_NOT_DELIVERED without a delivered bundle or manifest; preserve the settlement receipt and reconcile before reissue, without automatically retrying or paying again. Zero selected cards stays an empty bundle; preview=true here, or the free evidence_bundle_preview tool, shows the count first. No new measurement, full OSCAL conformance or conformity determination is established. Article 53 output is evidence for review, not a legal determination; grants no status. Without x_payment the tool returns the actual 402 challenge; read its terms for each request. Supported-card verification is free at https://councilof.ai/gspc-verify. Measurement, not certification.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>obligation</code></td><td>string</td><td>required</td><td>article-50, article-53, dora or cra. One of: article-50, article-53, dora, cra</td></tr><tr><td><code>subject</code></td><td>string</td><td>optional</td><td>Optional: a model id, vendor or instrument the cards must name.</td></tr><tr><td><code>preview</code></td><td>boolean</td><td>optional</td><td>true = the free preview (relevant-card count and first cards); nothing is charged.</td></tr><tr><td><code>x_payment</code></td><td>string</td><td>optional</td><td>The X-PAYMENT header value signed against accepts[] from the previous 402. Omit to receive the challenge.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;evidence_bundle&quot;,
+    &quot;arguments&quot;: {
+      &quot;obligation&quot;: &quot;article-50&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="evidence_bundle_preview for one obligation (article-50, article-53 gpai transparency, dora or cra) and an optional subject: the obligation record, its counsel-gate status and the already-signed measurement cards that are relevant to it (count plus the first cards, each with its verify link), read live from https://councilof.ai/api/evidence-bundle. relevant-to is never a determination: no answer says satisfied or not sati"><summary><code>evidence_bundle_preview</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>For ONE obligation (article-50, article-53 GPAI transparency, dora or cra) and an optional subject: the …</span></summary><p class="desc">For ONE obligation (article-50, article-53 GPAI transparency, dora or cra) and an optional subject: the obligation record, its counsel-gate status and the already-signed measurement cards that are relevant to it (count plus the first cards, each with its verify link), read live from https://councilof.ai/api/evidence-bundle. Relevant-to is never a determination: no answer says satisfied or not satisfied, and zero relevant cards is answered EMPTY, never as an error and never as a clean bill. Article 53 output is evidence for review, not a legal determination. Evidence for obligation work — not a conformity assessment, certification, audit opinion or compliance determination; grants no status. Measurement, not certification. Verification of any card is free at https://councilof.ai/gspc-verify.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>obligation</code></td><td>string</td><td>required</td><td>article-50 (AI-generated content marking), article-53 (GPAI provider documentation), dora (ICT third-party oversight) or cra (Cyber Resilience Act). One of: article-50, article-53, dora, cra</td></tr><tr><td><code>subject</code></td><td>string</td><td>optional</td><td>Optional: a model id, vendor or instrument the cards must name. Omit for the obligation-wide selection.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;evidence_bundle_preview&quot;,
+    &quot;arguments&quot;: {
+      &quot;obligation&quot;: &quot;article-50&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_axis one axis row from the live gspc board at https://councilof.ai/api/gspc — every axis the board carries, behavioural and financial families alike, addressed by the axis id exactly as the board spells it: n, accuracy, interval, measured or unmeasured status, family, kind, the bank or run-artifact url behind the row, and dates. an unmeasured axis is a first-class answer — a declared slot with no run b"><summary><code>get_axis</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>One axis row from the live GSPC board at https://councilof.ai/api/gspc — every axis the board carries, …</span></summary><p class="desc">One axis row from the live GSPC board at https://councilof.ai/api/gspc — every axis the board carries, behavioural and financial families alike, addressed by the axis id exactly as the board spells it: n, accuracy, interval, MEASURED or UNMEASURED status, family, kind, the bank or run-artifact URL behind the row, and dates. An unmeasured axis is a first-class answer — a declared slot with no run behind it, published so the gap is visible — never an error and never a zero. Never a certification.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>axis</code></td><td>string</td><td>required</td><td>The axis name as it appears on the board, e.g. governance, safety, jail, provenance-controls. Case-insensitive. An unknown name returns the list of names the board actually carries.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_axis&quot;,
+    &quot;arguments&quot;: {
+      &quot;axis&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_card get one public-root card-v0 leaf by sha256 (64 hex) from https://councilof.ai/cards/{sha16}.json. unmeasured cells stay visible. states: valid (fetched); not_in_this_corpus (the id is in the signed card index, not the public root, so use verify_card on it); invalid (in neither the live root nor the signed card index); uncheckable (a source could not be read). not a gspc measurement-card."><summary><code>get_card</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>GET one public-root card-v0 leaf by sha256 (64 hex) from https://councilof.ai/cards/{sha16}.json. UNMEASURED …</span></summary><p class="desc">GET one public-root card-v0 leaf by sha256 (64 hex) from https://councilof.ai/cards/{sha16}.json. UNMEASURED cells stay visible. States: VALID (fetched); NOT_IN_THIS_CORPUS (the id is in the signed card index, not the public root, so use verify_card on it); INVALID (in neither the live root nor the signed card index); UNCHECKABLE (a source could not be read). Not a GSPC measurement-card.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>sha256</code></td><td>string</td><td>required</td><td>64-char hex payload SHA-256 of the card-v0 leaf.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_card&quot;,
+    &quot;arguments&quot;: {
+      &quot;sha256&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="get_root get the permissionless public-root at https://councilof.ai/root.json. returns merkle_root, card_count, as_of, and unmeasured notes. separate from gspc. three states: valid (fetched), unreachable (could not fetch), uncheckable (body unreadable). never a certificate."><summary><code>get_root</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>GET the permissionless public-root at https://councilof.ai/root.json. Returns merkle_root, card_count, as_of, …</span></summary><p class="desc">GET the permissionless public-root at https://councilof.ai/root.json. Returns merkle_root, card_count, as_of, and UNMEASURED notes. Separate from GSPC. Three states: VALID (fetched), UNREACHABLE (could not fetch), UNCHECKABLE (body unreadable). Never a certificate.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;get_root&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="list_cards the published signed-card index (https://councilof.ai/signed/card_index.json): what the index declares (n_cards) and how many rows it actually carries, reported next to — never reconciled with — the count the card store endpoint (https://councilof.ai/api/cards) reports for itself. two labelled numbers from two surfaces; if they disagree, this tool shows the disagreement rather than picking one. op"><summary><code>list_cards</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>The published signed-card index (https://councilof.ai/signed/card_index.json): what the index declares …</span></summary><p class="desc">The published signed-card index (https://councilof.ai/signed/card_index.json): what the index declares (n_cards) and how many rows it actually carries, reported next to — never reconciled with — the count the card store endpoint (https://councilof.ai/api/cards) reports for itself. Two labelled numbers from two surfaces; if they disagree, this tool shows the disagreement rather than picking one. Optional filters return recent rows: axis, limit. Each row carries card_url, the signed body; pass it, or the row&#x27;s 64-hex card id, to verify_card.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>axis</code></td><td>string</td><td>optional</td><td>Only list rows whose axis matches this name (case-insensitive).</td></tr><tr><td><code>limit</code></td><td>integer</td><td>optional</td><td>How many rows to include in the listing (newest first). Default 10. The two counts are always reported in full regardless of this limit.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;list_cards&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="mcp_trust get the latest mcp handshake trust snapshot (https://councilof.ai/interop/mcp-trust/latest.json): counts of how many internet-facing mcp servers answer a correct initialize handshake, how many respond with an auth challenge, and how many are unreachable. counts only by doctrine — host details withheld by design. a partial round or a cap change is disclosed in the snapshot. measurement, never certi"><summary><code>mcp_trust</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>GET the latest MCP handshake trust snapshot (https://councilof.ai/interop/mcp-trust/latest.json): counts of …</span></summary><p class="desc">GET the latest MCP handshake trust snapshot (https://councilof.ai/interop/mcp-trust/latest.json): counts of how many internet-facing MCP servers answer a correct initialize handshake, how many respond with an auth challenge, and how many are unreachable. Counts only by doctrine — host details withheld by design. A partial round or a cap change is disclosed in the snapshot. Measurement, never certification. Three states: VALID (fetched), UNREACHABLE (could not fetch), UNCHECKABLE (body unreadable).</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;mcp_trust&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="measurement_index read the latest signed measurement-capsule index published at https://councilof.ai/measurement-capsules/latest.json: the index root over every capsule, each batch (adapter, kind, capsule count, measurement states, batch merkle root, record sha256, record signature and opentimestamps state), the index&#x27;s own board signature re-verified here against the pinned did:web:csoai.org#board-attestation-1 ke"><summary><code>measurement_index</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Read the latest signed measurement-capsule index published at …</span></summary><p class="desc">Read the latest signed measurement-capsule index published at https://councilof.ai/measurement-capsules/latest.json: the index root over every capsule, each batch (adapter, kind, capsule count, measurement states, batch Merkle root, record sha256, record signature and OpenTimestamps state), the index&#x27;s own board signature re-verified here against the pinned did:web:csoai.org#board-attestation-1 key, and the anchor states published beside it (OpenTimestamps, Rekor, XRPL) — PENDING is never called attested. States only: measurement, not endorsement; no verdict, score or ranking. NOT_PUBLISHED when no index is served; UNREACHABLE when the source could not be fetched.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;measurement_index&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="receipts_batch paid (x402 or csoai ltd invoice). a historical batch of the estate&#x27;s measurement receipts via https://councilof.ai/api/receipts/batch: every signed card-v0 leaf whose as_of falls in [from,to] (≤200), each with its merkle inclusion path and the public root(s) that carried it, plus the root index for the window and one manifest card citing the batch sha256. manifest signing is conditional: a returne"><summary><code>receipts_batch</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>PAID (x402 or CSOAI LTD invoice). A historical batch of the estate&#x27;s measurement receipts via …</span></summary><p class="desc">PAID (x402 or CSOAI LTD invoice). A historical batch of the estate&#x27;s measurement receipts via https://councilof.ai/api/receipts/batch: every signed card-v0 leaf whose as_of falls in [from,to] (≤200), each with its Merkle inclusion path and the public root(s) that carried it, plus the root index for the window and one manifest card citing the batch sha256. Manifest signing is conditional: a returned unsigned manifest declares manifest_card.sig_ed25519:null and unsigned_reason, with signature unmeasured. Manifest root inclusion remains unmeasured. If signing throws after settlement, the route returns PAID_NOT_DELIVERED with no batch or manifest delivered; preserve the settlement receipt and reconcile before reissue, without automatically retrying or paying again. preview=true is free and returns count, span, root count and the sha256 of the exact bytes the paid call returns. Recent leaves are free at /root.json, /cards/ and /api/proof?sha= — the batch sells assembly across history, never a conclusion. This tool returns historical measurement leaves, not payment receipts. /api/receipts/latest reports aggregate receipt-store state when available; its counts do not verify a particular payment, delivery or buyer acceptance. Without x_payment the tool returns the 402 challenge.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>from</code></td><td>string</td><td>required</td><td>Window start, ISO-8601. Required.</td></tr><tr><td><code>to</code></td><td>string</td><td>optional</td><td>Window end, ISO-8601. Defaults to now.</td></tr><tr><td><code>preview</code></td><td>boolean</td><td>optional</td><td>true = free: count, span, roots and batch sha256 without the leaves.</td></tr><tr><td><code>x_payment</code></td><td>string</td><td>optional</td><td>The X-PAYMENT header value signed against accepts[] from the previous 402. Omit to receive the challenge.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;receipts_batch&quot;,
+    &quot;arguments&quot;: {
+      &quot;from&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="route gspc route (free, decide-only). applies your policy and the fixed gspc floor to a candidate set and returns the chosen candidate, the basis of the choice and an unsigned route record (csoai.evidence-event/0.1, profile csoai.route-evidence/0.1). candidates are the gspc mcp tools by default, or ones you declare: your models, your local gpu, mcp tools, a2a agents, x402 resources. policy is cedar: pre"><summary><code>route</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>GSPC Route (free, decide-only). Applies YOUR policy and the fixed GSPC floor to a candidate set and returns …</span></summary><p class="desc">GSPC Route (free, decide-only). Applies YOUR policy and the fixed GSPC floor to a candidate set and returns the chosen candidate, the basis of the choice and an unsigned route record (csoai.evidence-event/0.1, profile csoai.route-evidence/0.1). Candidates are the GSPC MCP tools by default, or ones you declare: your models, your local GPU, MCP tools, A2A agents, x402 resources. Policy is Cedar: presets read-only, local-only, eu-only, no-unmeasured, plus forbid_providers and allow_kinds; anything the router does not understand grants nothing. For the quality axis you name it reads the live board (https://councilof.ai/api/gspc). With no candidates declared, the GSPC tool whose purpose matches the task is chosen (basis task_match); when no tool&#x27;s purpose matches, the answer is UNTESTED and nothing is chosen, never a pick by name. For candidates you declare, routing is not ranking: a choice is called a separated leader only when the board separated that comparison; otherwise it is TIE or UNTESTED and your tie_break decides. A candidate the board holds no number for is UNTESTED, never 0. Sponsor, bid and placement fields are ignored. The task text is hashed, never stored. Nothing is executed, called or charged; mode execute answers NOT_ENABLED. Measurement, not certification.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>task</code></td><td>string</td><td>optional</td><td>The task. Hashed (sha256) and never stored or echoed.</td></tr><tr><td><code>task_sha256</code></td><td>string</td><td>optional</td><td>Alternative to task: its sha256.</td></tr><tr><td><code>data_class</code></td><td>string</td><td>optional</td><td>Default public. A non-public class is routed only to candidates that declare it in data_class_allowed. One of: public, internal, confidential, pii</td></tr><tr><td><code>needs_write</code></td><td>boolean</td><td>optional</td><td></td></tr><tr><td><code>candidates</code></td><td>object[]</td><td>optional</td><td>Omit to route among the GSPC MCP tools. A candidate field the router does not know makes that candidate UNCHECKABLE (never permitted); sponsor/bid/placement fields are ignored.</td></tr><tr><td><code>policy</code></td><td>object</td><td>optional</td><td>presets [read-only, local-only, eu-only, no-unmeasured], forbid_providers [..], allow_kinds [..], confirm_destructive, caller_wallet. Unknown keys grant nothing.</td></tr><tr><td><code>objective</code></td><td>object</td><td>optional</td><td></td></tr><tr><td><code>mode</code></td><td>string</td><td>optional</td><td>decide (default). execute is not enabled and answers NOT_ENABLED. One of: decide, execute</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;route&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details><details class="tool" data-text="rwa_evidence paid (x402). per-request signed evidence card of one xrpl issued asset&#x27;s deterministic on-ledger state via https://councilof.ai/api/rwa/evidence: accountroot lsf* flags, domain, the two-way xrp-ledger.toml check (pass / fail / uncheckable — unreachable is never fail), gateway_balances obligation, holders as the free reader has them, every raw fetch sha256&#x27;d. preview=true is free (unsigned state). "><summary><code>rwa_evidence</code><span class="hint write">can modify</span><span class="hint world">external access</span><span>PAID (x402). Per-request signed evidence card of ONE XRPL issued asset&#x27;s deterministic on-ledger state via …</span></summary><p class="desc">PAID (x402). Per-request signed evidence card of ONE XRPL issued asset&#x27;s deterministic on-ledger state via https://councilof.ai/api/rwa/evidence: AccountRoot lsf* flags, Domain, the two-way xrp-ledger.toml check (PASS / FAIL / UNCHECKABLE — unreachable is never FAIL), gateway_balances obligation, holders as the free reader has them, every raw fetch sha256&#x27;d. preview=true is free (unsigned state). Historical state at fetched_at — not a rating, not a guarantee, not a conformity mark; /api/xrpl and /root.json stay free. Without x_payment the tool returns the 402 challenge. If the route is not deployed on this origin the tool says NOT_DEPLOYED.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>asset</code></td><td>string</td><td>required</td><td>Symbol (as listed by https://councilof.ai/api/xrpl) or issuer r-address.</td></tr><tr><td><code>preview</code></td><td>boolean</td><td>optional</td><td>true = free unsigned state.</td></tr><tr><td><code>x_payment</code></td><td>string</td><td>optional</td><td>The X-PAYMENT header value signed against accepts[] from the previous 402. Omit to receive the challenge.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;rwa_evidence&quot;,
+    &quot;arguments&quot;: {
+      &quot;asset&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="server_evidence trust per server, not totals: every published measurement capsule about one endpoint url across all batches — mcp contract-parity dimensions (auth, payment, protocol, tools, version), a2a card-signature state, self-parity cells for csoai&#x27;s own doors, and any later adapter (e.g. tool drift) — each with its measurement_state, observed_at, correction_pointer, limitations, batch merkle root and an inc"><summary><code>server_evidence</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Trust per server, not totals: every published measurement capsule about ONE endpoint URL across all batches — …</span></summary><p class="desc">Trust per server, not totals: every published measurement capsule about ONE endpoint URL across all batches — MCP contract-parity dimensions (AUTH, PAYMENT, PROTOCOL, TOOLS, VERSION), A2A card-signature state, self-parity cells for CSOAI&#x27;s own doors, and any later adapter (e.g. tool drift) — each with its measurement_state, observed_at, correction_pointer, limitations, batch Merkle root and an inclusion pointer for independent verification. Read from a static per-endpoint shard keyed by sha256 of the normalised URL. An endpoint with no capsule answers NOT_MEASURED with an empty list — never an error and never a clean bill. No verdict, score or ranking: measurement, not endorsement.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>endpoint_url</code></td><td>string</td><td>required</td><td>Public HTTP(S) endpoint URL whose already-published measurement capsules should be read, e.g. https://example.com/mcp.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;server_evidence&quot;,
+    &quot;arguments&quot;: {
+      &quot;endpoint_url&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="verify_capsule verify one measurement capsule. pass capsule_json as the capsule&#x27;s json text (exact: number lexemes are kept) or as an object. recomputes capsule_id (sha256 of the canonical json without capsule_id), picks the rule by the capsule&#x27;s schema (csoai.measurement-capsule/0.2: rfc 6962 merkle with 0x00/0x01 domain separation; the superseded v0.1 capsule schema: the v0.1 rule), finds the published batch o"><summary><code>verify_capsule</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Verify one measurement capsule. Pass capsule_json as the capsule&#x27;s JSON TEXT (exact: number lexemes are kept) …</span></summary><p class="desc">Verify one measurement capsule. Pass capsule_json as the capsule&#x27;s JSON TEXT (exact: number lexemes are kept) or as an object. Recomputes capsule_id (sha256 of the canonical JSON without capsule_id), picks the rule by the capsule&#x27;s schema (csoai.measurement-capsule/0.2: RFC 6962 Merkle with 0x00/0x01 domain separation; the superseded v0.1 capsule schema: the v0.1 rule), finds the published batch of the same kind, recomputes that batch&#x27;s root from its published leaves, and returns the audit path of this capsule against the root named by the signed index. States: INCLUDED, NOT_INCLUDED, ID_MISMATCH, UNCHECKABLE, NOT_PUBLISHED. Verifying is free forever. It proves the bytes were published and bound; what they measured is the capsule&#x27;s own measurement_state and limitations — measurement, not endorsement.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>capsule_json</code></td><td>string | object</td><td>required</td><td>The capsule: its JSON text (preferred, byte-exact) or the parsed object.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;verify_capsule&quot;,
+    &quot;arguments&quot;: {
+      &quot;capsule_json&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="verify_card verify a signed gspc.measurement-card under the published rule (https://councilof.ai/signed/how-to-verify.md): recompute the id from the canonical body bytes, then check the ed25519 signature under a key pinned in this verifier and published in the did:web:csoai.org did document: #card-attestation-1 (the card key of the signed card index) or #card-attestation-2 (the card key added on rotation, 27 "><summary><code>verify_card</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Verify a signed gspc.measurement-card under the published rule …</span></summary><p class="desc">Verify a signed gspc.measurement-card under the published rule (https://councilof.ai/signed/HOW-TO-VERIFY.md): recompute the id from the canonical body bytes, then check the Ed25519 signature under a key PINNED in this verifier and published in the did:web:csoai.org DID document: #card-attestation-1 (the card key of the signed card index) or #card-attestation-2 (the card key added on rotation, 27 Sep 2026; a card names the key it was signed under), plus the board key for the cards it signed. pinned_key in the result names the key that matched. A card that carries its own key proves only that the file is self-consistent — anyone can alter a body and sign it with a key they just generated — so an inline key outside the pinned set is reported INVALID, and a DID key reference outside it UNCHECKABLE. Three verdicts, never two: VALID, INVALID (with the reason), or UNCHECKABLE when the check could not be completed — &#x27;could not check&#x27; is a different claim from &#x27;forged&#x27;. Accepts the card as a JSON object, a JSON string, a councilof.ai / csoai.org URL, or a 64-hex card id (the record id shown on the site and the card field of list_cards), which resolves to https://councilof.ai/signed/cards/{id}.json. Never a certification.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>card</code></td><td>object | string</td><td>required</td><td>The signed card: an object, a JSON string, a councilof.ai / csoai.org URL to one, or a 64-hex card id (resolved to https://councilof.ai/signed/cards/{id}.json).</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;verify_card&quot;,
+    &quot;arguments&quot;: {
+      &quot;card&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="verify_inclusion check a sha256 against the live public-root merkle via get /api/proof?sha=. three states only: valid (included), invalid (not a leaf), uncheckable (proof endpoint unreachable). does not claim ed25519 unless sig_ed25519 is present and checked separately. never a grade."><summary><code>verify_inclusion</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>Check a sha256 against the live public-root merkle via GET /api/proof?sha=. Three states only: VALID …</span></summary><p class="desc">Check a sha256 against the live public-root merkle via GET /api/proof?sha=. Three states only: VALID (included), INVALID (not a leaf), UNCHECKABLE (proof endpoint unreachable). Does not claim Ed25519 unless sig_ed25519 is present and checked separately. Never a grade.</p><div class="scroll"><table class="params"><thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead><tbody><tr><td><code>sha256</code></td><td>string</td><td>required</td><td>64-char hex digest to test for inclusion.</td></tr></tbody></table></div><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;verify_inclusion&quot;,
+    &quot;arguments&quot;: {
+      &quot;sha256&quot;: &quot;...&quot;
+    }
+  }
+}</code></pre></details><details class="tool" data-text="x402_trust get the latest x402 catalog trust snapshot: counts of how many catalogued x402 resources open a correct 402 challenge vs how many are phantom on the wire. counts only by doctrine — host details withheld; a 402 is not delivery; measurement, never certification."><summary><code>x402_trust</code><span class="hint read">read-only</span><span class="hint world">external access</span><span>GET the latest x402 catalog trust snapshot: counts of how many catalogued x402 resources open a correct 402 …</span></summary><p class="desc">GET the latest x402 catalog trust snapshot: counts of how many catalogued x402 resources open a correct 402 challenge vs how many are phantom on the wire. Counts only by doctrine — host details withheld; a 402 is NOT delivery; measurement, never certification.</p><p class="note">Takes no parameters.</p><p class="note">Example call (required arguments only, placeholder values):</p><pre><code>{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;x402_trust&quot;,
+    &quot;arguments&quot;: {}
+  }
+}</code></pre></details></div>
+<h2>Badge</h2>
+<p>Maintain this server? Put its live status in your README:</p>
+<p><img src="../../badge/council-of-ai-gspc.svg" alt="MCP status badge" height="20"></p>
+<div class="cmd"><code>[![MCP status](https://mcp.aianytime.net/badge/council-of-ai-gspc.svg)](https://mcp.aianytime.net/s/council-of-ai-gspc/)</code><button class="copy" data-copy="[![MCP status](https://mcp.aianytime.net/badge/council-of-ai-gspc.svg)](https://mcp.aianytime.net/s/council-of-ai-gspc/)">Copy</button></div>
+<p class="note" style="margin-top:22px"><a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/servers/council-of-ai-gspc.json">Edit this entry</a> · <a href="https://github.com/AIAnytime/Awesome-MCP-Servers/issues/new?template=report-entry.yml">Report a problem</a></p>
+<section>
+<h2>More in Security</h2>
+<ul class="chips"><li><a href="../darkmoon/">Darkmoon</a></li><li><a href="../skycloak-mcp/">Skycloak MCP</a></li><li><a href="../sunglasses/">Sunglasses</a></li><li><a href="../../c/security/">All of Security</a></li></ul>
+</section>
+
+<p class="fineprint">Checks record what a server answered, not whether it is safe. A listing is not a security audit; read a server's source and permissions before you connect it.
+<a href="https://github.com/AIAnytime/Awesome-MCP-Servers/blob/main/CONTRIBUTING.md">Add a server</a> · <a href="../../api/servers.json">JSON</a> · <a href="../../llms.txt">llms.txt</a> · <a href="../../llms-full.txt">llms-full.txt</a></p>
+<p class="fineprint" style="margin-top:8px">Browse: <a href="../../c/developer-tools/">Agents, IDEs &amp; developer tools</a> · <a href="../../c/search/">Search &amp; discovery</a> · <a href="../../c/knowledge-memory/">Knowledge, memory &amp; context</a> · <a href="../../c/media/">Media &amp; generation</a> · <a href="../../c/security/">Security</a> · <a href="../../c/finance/">Finance &amp; markets</a> · <a href="../../c/marketing/">Marketing, content &amp; social</a> · <a href="../../c/cloud-data/">Cloud, ops &amp; data</a> · <a href="../../c/commerce-travel/">Commerce, travel &amp; logistics</a> · <a href="../../c/productivity/">Work &amp; productivity</a> · <a href="../../c/no-auth/">No account needed</a> · <a href="../../c/local/">Local servers</a></p>
+</main>
+<footer><div class="wrap foot">
+<div>
+<h2>AI Anytime</h2>
+<p>Practical AI for all. AI education, research and enablement, rooted in open source. This directory is built and maintained by AI Anytime.</p>
+<p class="links"><a href="https://aianytime.net">aianytime.net</a><a href="https://www.youtube.com/@AIAnytime">YouTube</a><a href="https://github.com/AIAnytime/Awesome-MCP-Servers">GitHub</a></p>
+</div>
+<div class="academy">
+<span class="eyebrow">AI Anytime Academy</span>
+<h3>Become an AI engineer by building.</h3>
+<p>Structured career tracks, browser coding labs, an AI mentor and AI-reviewed portfolio projects. Start for free.</p>
+<a class="cta" href="https://academy.aianytime.net">Explore the Academy</a>
+</div>
+</div></footer>
+<script>
+document.addEventListener('click',e=>{const b=e.target.closest('button.copy');if(!b)return;
+navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=t,1200)});});
+document.getElementById('theme').addEventListener('click',()=>{const r=document.documentElement;
+const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}});
+document.getElementById('refresh').addEventListener('click',()=>location.reload());
+
+document.querySelectorAll('.tabs').forEach(tabs=>{tabs.classList.add('js');
+const show=id=>{tabs.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+tabs.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('on',p.dataset.panel===id));};
+let saved=null;try{saved=localStorage.getItem('client')}catch(e){}
+show(saved&&tabs.querySelector('[data-tab="'+saved+'"]')?saved:tabs.querySelector('[data-tab]').dataset.tab);
+tabs.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;show(b.dataset.tab);try{localStorage.setItem('client',b.dataset.tab)}catch(e){}});});
+const tq=document.getElementById('toolq');
+if(tq)tq.addEventListener('input',()=>{const terms=tq.value.toLowerCase().split(/\s+/).filter(Boolean);
+document.querySelectorAll('#toollist .tool').forEach(t=>{t.hidden=!terms.every(x=>t.dataset.text.includes(x));});});
+</script>
+</body>
+</html>
