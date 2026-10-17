@@ -1,0 +1,8 @@
+{
+  "name": "Selvedge",
+  "url": "https://github.com/masondelan/selvedge",
+  "category": "knowledge-memory",
+  "transport": "stdio",
+  "description": "Local SQLite decision memory for coding agents to save and retrieve rationale, rejected approaches, and entity history. Install: `uvx --from selvedge selvedge-server`.",
+  "registry": "io.github.masondelan/selvedge"
+}
