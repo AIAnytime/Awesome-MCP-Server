@@ -1,0 +1,9 @@
+{
+  "name": "BKK Staff",
+  "url": "https://app.bkkstaff.com/mcp",
+  "category": "productivity",
+  "transport": "http",
+  "description": "Automated resume screening for small businesses: list and create job posts, review and rank applicants (strong / possible / weak), search candidates and email applicants. OAuth 2.1 sign-in. Endpoint: `https://app.bkkstaff.com/mcp` · [Website](https://www.bkkstaff.com)",
+  "endpoint": "https://app.bkkstaff.com/mcp",
+  "registry": "com.bkkstaff/bkk-staff"
+}
