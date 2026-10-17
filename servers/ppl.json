@@ -1,0 +1,9 @@
+{
+  "name": "ppl",
+  "url": "https://github.com/ppl-crm/ppl",
+  "category": "knowledge-memory",
+  "transport": "http",
+  "description": "Personal CRM for AI agents: relationship briefings, person digests, search, and full CRUD for contacts, notes, tasks, reminders, calls, gifts, and journal entries. OAuth 2.1 with dynamic client registration; free beta up to 1,000 contacts. Endpoint: `https://withppl.com/mcp` · [Docs](https://withppl.com/agents) · Registry: `io.github.ppl-crm/ppl`",
+  "endpoint": "https://withppl.com/mcp",
+  "registry": "io.github.ppl-crm/ppl"
+}
