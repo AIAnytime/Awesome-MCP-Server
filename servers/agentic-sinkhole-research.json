@@ -1,0 +1,9 @@
+{
+  "name": "agentic sinkhole research",
+  "url": "https://docs.rocketship.sh/llms.txt",
+  "category": "developer-tools",
+  "transport": "http",
+  "description": "Zero-auth inbox, state, webhook, and wake tools for agent sandboxes: research honeypot, no login, traffic logged, do not send secrets. Endpoint: `https://mcp.rocketship.sh/mcp` · [Docs](https://docs.rocketship.sh/llms.txt) · Registry: `sh.rocketship/agentic-sinkhole-research`",
+  "endpoint": "https://mcp.rocketship.sh/mcp",
+  "registry": "sh.rocketship/agentic-sinkhole-research"
+}
