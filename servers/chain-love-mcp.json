@@ -1,0 +1,8 @@
+{
+  "name": "Chain.Love MCP",
+  "url": "https://github.com/Chain-Love/chain.love-mcp",
+  "category": "search",
+  "transport": "http",
+  "description": "Discover and compare Web3 infrastructure across supported networks. Endpoint: `https://app.chain.love/mcp` \u00b7 [Docs](https://www.chain.love/mcp-gateway)",
+  "endpoint": "https://app.chain.love/mcp"
+}
