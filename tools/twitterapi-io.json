@@ -1,0 +1,350 @@
+{
+ "server": "TwitterAPI.io",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "get_trends",
+   "title": "Get Trending Topics",
+   "description": "Fetch current trending topics/hashtags for a location. Pass a Yahoo Where-On-Earth ID (woeid). Common: 1=Worldwide, 23424977=USA, 23424975=UK, 23424856=Japan, 23424848=India, 23424881=South Korea. Use woeid=1 for global trends if you don't know a specific location.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "woeid": {
+      "type": "integer",
+      "description": "Yahoo Where-On-Earth ID for the location. Common values: 1 = Worldwide, 23424977 = USA, 23424975 = UK, 23424856 = Japan. Use 1 for global trends if unsure."
+     },
+     "count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "description": "Max trends to return (default API behavior; may be silently capped by API)."
+     }
+    },
+    "required": [
+     "woeid"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_tweet_quotes",
+   "title": "Get Tweet Quotes",
+   "description": "Fetch quote-tweets (tweets that quote the given tweetId). Useful for finding commentary on a tweet, measuring reach beyond direct replies. Supports time bounds (sinceTime/untilTime, Unix seconds). Paginates via cursor (~20 per page).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tweetId": {
+      "type": "string",
+      "description": "Numeric ID of the tweet to fetch quote-tweets for."
+     },
+     "sinceTime": {
+      "type": "integer",
+      "description": "Unix timestamp (seconds) lower bound."
+     },
+     "untilTime": {
+      "type": "integer",
+      "description": "Unix timestamp (seconds) upper bound."
+     },
+     "includeReplies": {
+      "type": "boolean",
+      "description": "Include reply-type quote-tweets in addition to top-level. Default false."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor; omit for first page (~20 per page)."
+     }
+    },
+    "required": [
+     "tweetId"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_tweet_replies",
+   "title": "Get Tweet Replies",
+   "description": "Fetch replies to a specific tweet. Pass the numeric tweetId of the root tweet; returns top-level replies (about 20 per page) with full tweet objects. Use this for thread analysis, sentiment on a viral post, or building reply trees.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tweetId": {
+      "type": "string",
+      "description": "Numeric ID of the tweet to fetch replies for."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor; omit for first page (~20 replies per page)."
+     },
+     "queryType": {
+      "type": "string",
+      "enum": [
+       "Latest",
+       "Top"
+      ],
+      "description": "'Latest' or 'Top' — sort order of replies. Default 'Latest'."
+     }
+    },
+    "required": [
+     "tweetId"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_tweet_retweeters",
+   "title": "Get Tweet Retweeters",
+   "description": "Fetch users who retweeted a specific tweet (the simple 'retweet' action, not quote-tweets — for those use get_tweet_quotes). Returns user profiles with metadata. Paginates via cursor (~100 per page).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tweetId": {
+      "type": "string",
+      "description": "Numeric ID of the tweet to fetch retweeters for."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor; omit for first page (~100 per page)."
+     }
+    },
+    "required": [
+     "tweetId"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_tweets_by_ids",
+   "title": "Batch Get Tweets by IDs",
+   "description": "Batch-fetch full tweet objects by their numeric tweet IDs. Pass a comma-separated string of up to 100 IDs. Use this when you already have specific tweet IDs (e.g., from a search result, a URL, or a webhook event) and need the full tweet data — author, text, engagement counts, media, etc.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tweet_ids": {
+      "type": "string",
+      "description": "Comma-separated tweet IDs (e.g. '1234567890,9876543210'). Batch fetch up to 100 tweets in one call. Tweet IDs are numeric strings."
+     }
+    },
+    "required": [
+     "tweet_ids"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_user_about",
+   "title": "Get User About Page",
+   "description": "Fetch the extended 'about' / profile page data for a Twitter/X user by screen name. Returns extra profile metadata beyond what get_user_info gives (when available). Use get_user_info first; only call this if you need additional about-page fields.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "userName": {
+      "type": "string",
+      "description": "Twitter/X screen name without @ — fetches the user's profile 'about' / bio page."
+     }
+    },
+    "required": [
+     "userName"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_user_followers",
+   "title": "Get User Followers",
+   "description": "Fetch followers of a Twitter/X user in reverse chronological order (newest first), each with full profile metadata (name, bio, follower count, verified status, etc.). Paginates via cursor. Use this to analyze who follows an account, build follower audiences, or sample for competitive analysis. For large accounts use pagination; you will not get all followers in one call.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "userName": {
+      "type": "string",
+      "description": "Twitter/X screen name without @ — fetches followers of this user."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor from previous response's next_cursor. Omit for first page."
+     },
+     "pageSize": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Followers per page (default 200, max 200). Each follower includes full profile metadata (name, bio, follower count, etc.)."
+     }
+    },
+    "required": [
+     "userName"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_user_followings",
+   "title": "Get User Followings",
+   "description": "Fetch the accounts a Twitter/X user follows, with full profile metadata. Paginates via cursor. Use this to map a user's interest graph (who they follow signals what they care about).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "userName": {
+      "type": "string",
+      "description": "Twitter/X screen name without @ — fetches accounts this user follows."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor; omit for first page."
+     },
+     "pageSize": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Followings per page (default 200, max 200). Each includes full profile metadata."
+     }
+    },
+    "required": [
+     "userName"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_user_info",
+   "title": "Get User Profile",
+   "description": "Fetch basic profile info for a Twitter/X user by their screen name (handle). Returns user ID, display name, bio, follower/following counts, verified status, profile picture, banner, location, website, and account creation date. Use this as the starting point for any user analysis.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "userName": {
+      "type": "string",
+      "description": "Twitter/X screen name (handle) WITHOUT the leading @ sign. Example: 'elonmusk', not '@elonmusk'."
+     }
+    },
+    "required": [
+     "userName"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_user_last_tweets",
+   "title": "Get User's Recent Tweets",
+   "description": "⚠️ ONLY for 'latest / recent / what's new' queries about a user. DO NOT use for date-range queries (e.g. 'tweets from January 2026', 'tweets last week', 'tweets between X and Y', 'tweets in 2025'). For specific dates / older tweets, use **search_tweets** with query like 'from:elonmusk since:2026-01-01 until:2026-02-01'.\n\nFetch the MOST RECENT tweets posted by a Twitter/X user, sorted by created_at descending (newest first). Provide EITHER userName (screen name, no @) OR userId (numeric). Use userId when known — handles can change. Set includeReplies=true to include the user's reply tweets in addition to top-level tweets. Paginates via cursor (~20 per page).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "userName": {
+      "type": "string",
+      "description": "Twitter/X screen name without @ (e.g. 'elonmusk'). Provide EITHER userName OR userId."
+     },
+     "userId": {
+      "type": "string",
+      "description": "Twitter/X numeric user ID (e.g. '44196397'). Provide EITHER userName OR userId. Prefer userId if known — handles can change."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor; omit for first page."
+     },
+     "includeReplies": {
+      "type": "boolean",
+      "description": "Include the user's reply tweets in addition to top-level tweets. Default false — only top-level tweets."
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_user_mentions",
+   "title": "Get Mentions of a User",
+   "description": "Fetch tweets that mention a specific Twitter/X user (i.e. tweets containing @userName). Useful for brand monitoring, sentiment tracking on a public figure, or finding conversations involving an account. Supports time-bound queries via sinceTime/untilTime (Unix seconds). Paginates via cursor.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "userName": {
+      "type": "string",
+      "description": "Twitter/X screen name without @ — fetches tweets that mention this user (@userName)."
+     },
+     "sinceTime": {
+      "type": "integer",
+      "description": "Unix timestamp (seconds) lower bound — only mentions after this time. Omit for no lower bound."
+     },
+     "untilTime": {
+      "type": "integer",
+      "description": "Unix timestamp (seconds) upper bound. Omit for no upper bound."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor; omit for first page (~20 per page)."
+     }
+    },
+    "required": [
+     "userName"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_tweets",
+   "title": "Search Tweets",
+   "description": "🎯 PRIMARY CHOICE for date-range / historical / keyword-based tweet queries. Use this (NOT get_user_last_tweets) whenever user asks about a SPECIFIC TIME RANGE or historical tweets:\n  • 'tweets from January 2026' → query='from:elonmusk since:2026-01-01 until:2026-02-01'\n  • 'tweets between X and Y' → 'from:USER since:X until:Y'\n  • 'tweets last week / last month' → translate to since:/until: dates\n  • 'tweets containing keyword X by user Y' → 'from:Y X'\n  • 'older tweets' / 'archive' / 'in 2025' → use date range, not pagination\n\nDate format: YYYY-MM-DD (UTC midnight). 'until:' is exclusive (until:2026-02-01 = up to Jan 31).\n\nGeneral: Search Twitter/X for tweets matching a query. Supports the full Twitter advanced search syntax (from:, to:, since:, until:, lang:, filter:, has:, -, OR, etc). Returns ~20 tweets per page in reverse chronological order ('Latest') or by engagement ('Top'). Use this for keyword research, monitoring mentions of a brand/topic, finding tweets in a date range, or any open-ended tweet discovery.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Twitter advanced search query string. Supports operators: from:USER, to:USER, since:YYYY-MM-DD, until:YYYY-MM-DD, lang:en, filter:replies, -filter:retweets, has:images, etc. Example: 'from:elonmusk since:2026-01-01 has:images'"
+     },
+     "queryType": {
+      "type": "string",
+      "enum": [
+       "Latest",
+       "Top"
+      ],
+      "description": "'Latest' returns most recent tweets first; 'Top' returns highest-engagement tweets first. Default to 'Latest' for time-sensitive queries."
+     },
+     "cursor": {
+      "type": "string",
+      "description": "Pagination cursor from a previous response's next_cursor field. Omit for first page. Each page returns ~20 tweets."
+     }
+    },
+    "required": [
+     "query",
+     "queryType"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

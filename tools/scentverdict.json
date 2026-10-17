@@ -1,0 +1,295 @@
+{
+ "server": "ScentVerdict",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "compare_fragrances",
+   "title": "Compare Two Fragrances",
+   "description": "Compare exactly two fragrances side by side using ScentVerdict's own note data: which notes they share, which differ, both verdicts, and both prices for the user's country. Use this whenever the user is choosing between two named fragrances, or asks which of two is better, or how two differ. Use find_similar_fragrances instead when they want alternatives to one fragrance rather than a head to head.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slugA": {
+      "description": "Slug of the first fragrance.",
+      "type": "string"
+     },
+     "slugB": {
+      "description": "Slug of the second fragrance.",
+      "type": "string"
+     },
+     "country": {
+      "description": "The user's country as an ISO 3166-1 alpha-2 code, for example US, DE or GB. Prices are for this country, in the shop's own currency. Pass it whenever you know where the user is. When omitted, the client's location hint is used if it sent one, otherwise GB.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "default": null
+     }
+    },
+    "required": [
+     "slugA",
+     "slugB"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "find_similar_fragrances",
+   "title": "Find Similar Fragrances",
+   "description": "Find fragrances similar to one the user already knows, optionally steered in a direction such as cheaper, fresher, longer lasting or less sweet. Use this whenever the user names a fragrance and wants something like it: a cheaper alternative, a budget version, something that smells similar, or a gift for someone whose current fragrance they know ('he wears X, what else would suit him'). Each match carries a similarity score computed by ScentVerdict for that specific pair. The cheaper direction lists pairings ScentVerdict has curated first, then similar fragrances priced below the anchor where we hold its price. Each match carries its bottle price for the user's country, in the shop's own currency. Use recommend_fragrances instead when the user names no fragrance to anchor on.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "anchorSlug": {
+      "description": "Slug of the fragrance to anchor on. Use search_fragrances first if you do not have one.",
+      "type": "string"
+     },
+     "direction": {
+      "description": "How to steer results away from the anchor. Defaults to the closest overall match.",
+      "type": "string",
+      "enum": [
+       "Similar",
+       "Cheaper",
+       "Fresher",
+       "LongerLasting",
+       "MoreIntense",
+       "LessSweet"
+      ],
+      "default": "Similar"
+     },
+     "limit": {
+      "description": "Maximum results. Default 5, maximum 10.",
+      "type": "integer",
+      "default": 5
+     },
+     "country": {
+      "description": "The user's country as an ISO 3166-1 alpha-2 code, for example US, DE or GB. Prices are for this country, in the shop's own currency. Pass it whenever you know where the user is. When omitted, the client's location hint is used if it sent one, otherwise GB.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "default": null
+     }
+    },
+    "required": [
+     "anchorSlug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_fragrance",
+   "title": "Look Up a Fragrance",
+   "description": "Look up one fragrance in ScentVerdict's catalogue: its notes, ScentVerdict's own verdict, concentration, launch year, and the lowest current price for a full-size bottle for the user's country, in the shop's own currency. Use this whenever the user names a fragrance and asks what it is, what it smells like, what is in it, what it costs, or whether it is any good. Use search_fragrances first if the name is partial or could mean several variants. Use get_scent_profile instead when the question is about how it develops over the wear.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "description": "The fragrance slug, for example bleu-de-chanel. Use search_fragrances if you do not have one.",
+      "type": "string"
+     },
+     "country": {
+      "description": "The user's country as an ISO 3166-1 alpha-2 code, for example US, DE or GB. Prices are for this country, in the shop's own currency. Pass it whenever you know where the user is. When omitted, the client's location hint is used if it sent one, otherwise GB.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "default": null
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_scent_profile",
+   "title": "Scent Profile and Drydown",
+   "description": "Get how a fragrance develops over the wear: opening, heart and base phases, the notes in each, and how many hours each note persists on skin. Use this when the user asks how something evolves, how long it lasts, how it changes through the day, or what the drydown is like. The per-note hours are values held by ScentVerdict against each note rather than a general impression of the fragrance, and they are estimates. Use get_fragrance instead for the verdict, price and general description.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "description": "The fragrance slug. Use search_fragrances if you do not have one.",
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "recommend_fragrances",
+   "title": "Recommend Fragrances",
+   "description": "Recommend fragrances matching what the user describes: season, occasion, budget, strength, staying power and notes they like. Use this when the user wants a suggestion but names no fragrance to work from - for example something for winter, for the office, or under a budget. Season, occasion and intensity are scored numerically per fragrance in ScentVerdict, and the budget is applied against current bottle prices for the user's country, so the constraints are filtered rather than approximated. Each priced row carries its price in the shop's own currency, and the bottle size and price per millilitre wherever the retailer published a size. Pass as many of the constraints as the user gave; all are optional. Use find_similar_fragrances instead when they name a fragrance to anchor on.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "season": {
+      "description": "Season the fragrance is for.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "enum": [
+       "Spring",
+       "Summer",
+       "Autumn",
+       "Winter",
+       null
+      ],
+      "default": null
+     },
+     "occasion": {
+      "description": "Occasion the fragrance is for.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "enum": [
+       "Office",
+       "Date",
+       "Casual",
+       "Formal",
+       "Sport",
+       null
+      ],
+      "default": null
+     },
+     "budgetMax": {
+      "description": "Maximum price for a full-size bottle, in the currency of the user's country (USD for US, EUR for DE, GBP for GB). Only prices in that currency are filtered.",
+      "type": [
+       "number",
+       "null"
+      ],
+      "default": null
+     },
+     "genderPresentation": {
+      "description": "Who the fragrance presents as.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "enum": [
+       "Masculine",
+       "Feminine",
+       "Unisex",
+       null
+      ],
+      "default": null
+     },
+     "intensity": {
+      "description": "How strong the fragrance should be.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "enum": [
+       "Sheer",
+       "Light",
+       "Moderate",
+       "Strong",
+       "Potent",
+       null
+      ],
+      "default": null
+     },
+     "longevityMin": {
+      "description": "Minimum staying power.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "enum": [
+       "Fleeting",
+       "Short",
+       "Moderate",
+       "Long",
+       "Beast",
+       null
+      ],
+      "default": null
+     },
+     "noteLoved": {
+      "description": "A single note the user likes, for example vanilla.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "default": null
+     },
+     "limit": {
+      "description": "Maximum results. Default 5, maximum 10.",
+      "type": "integer",
+      "default": 5
+     },
+     "country": {
+      "description": "The user's country as an ISO 3166-1 alpha-2 code, for example US, DE or GB. Prices are for this country, in the shop's own currency. Pass it whenever you know where the user is. When omitted, the client's location hint is used if it sent one, otherwise GB.",
+      "type": [
+       "string",
+       "null"
+      ],
+      "default": null
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search_fragrances",
+   "title": "Search Fragrances by Name",
+   "description": "Resolve a fragrance name to catalogue entries. Call this FIRST whenever a name is partial, misspelled, or could mean more than one product, then pass the returned slug to another tool. Many fragrances share a name across concentrations and launch years, and flankers hide behind qualifiers, so guessing the variant silently produces the wrong answer for the rest of the conversation. Results carry concentration and launch year precisely so you can tell them apart, and you should offer the user the choice when several match. Use get_fragrance instead when you already hold an exact slug.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "description": "Name or partial name to look up. Minimum 2 characters.",
+      "type": "string"
+     },
+     "limit": {
+      "description": "Maximum results. Default 8, maximum 20.",
+      "type": "integer",
+      "default": 8
+     }
+    },
+    "required": [
+     "query"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

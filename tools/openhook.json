@@ -1,0 +1,1069 @@
+{
+ "server": "Openhook",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "access_hosted_inbox",
+   "title": "Access hosted inbox",
+   "description": "Hosted only: issue a private inbox token for an inbox you own. Keep the returned token private.",
+   "inputSchema": {
+    "properties": {
+     "account_key": {
+      "title": "Account Key",
+      "type": "string"
+     },
+     "inbox_id": {
+      "title": "Inbox Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "account_key",
+     "inbox_id"
+    ],
+    "type": "object",
+    "title": "access_hosted_inboxArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "check_for_callbacks",
+   "title": "Check for new callbacks",
+   "description": "Check for callbacks newer than a sequence cursor without waiting.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "since": {
+      "default": 0,
+      "title": "Since",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "check_for_callbacksArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "configure_webhook",
+   "title": "Configure webhook inbox",
+   "description": "Set HTTP responses and optional SHA256 HMAC verification, preserving unspecified fields.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "default_status": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Default Status"
+     },
+     "default_content": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "items": {},
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Default Content"
+     },
+     "default_content_type": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Default Content Type"
+     },
+     "cors": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Cors"
+     },
+     "verification_secret": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Verification Secret"
+     },
+     "signature_provider": {
+      "anyOf": [
+       {
+        "enum": [
+         "generic",
+         "github",
+         "stripe",
+         "linear"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Signature Provider"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "configure_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "create_webhook",
+   "title": "Create webhook inbox",
+   "description": "Create an inbox. Save its private token; share only public capture addresses. A hosted Pro account_key creates a persistent owned inbox.",
+   "inputSchema": {
+    "properties": {
+     "expiry": {
+      "default": 604800,
+      "title": "Expiry",
+      "type": "integer"
+     },
+     "name": {
+      "default": "",
+      "title": "Name",
+      "type": "string"
+     },
+     "account_key": {
+      "default": "",
+      "title": "Account Key",
+      "type": "string"
+     }
+    },
+    "type": "object",
+    "title": "create_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "delete_all_requests",
+   "title": "Delete all captured events",
+   "description": "Clear stored events, keeping the inbox's addresses and settings.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "delete_all_requestsArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "delete_request",
+   "title": "Delete captured event",
+   "description": "Permanently delete one event belonging to this inbox.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "request_id": {
+      "title": "Request Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "request_id"
+    ],
+    "type": "object",
+    "title": "delete_requestArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "delete_webhook",
+   "title": "Delete webhook inbox",
+   "description": "Permanently delete this inbox and its stored events.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "delete_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "download_request_file",
+   "title": "Download captured content",
+   "description": "Retrieve exact captured bytes as base64, including binary bodies or raw MIME.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "request_id": {
+      "title": "Request Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "request_id"
+    ],
+    "type": "object",
+    "title": "download_request_fileArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "export_webhook_data",
+   "title": "Export captured events",
+   "description": "Export a bounded page of full events; resume with next_since. Browser export streams the entire inbox.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "format": {
+      "default": "json",
+      "enum": [
+       "json",
+       "csv"
+      ],
+      "title": "Format",
+      "type": "string"
+     },
+     "since": {
+      "default": 0,
+      "title": "Since",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "export_webhook_dataArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "extract_links_from_request",
+   "title": "Extract captured links",
+   "description": "Extract HTTP links and verification codes without visiting the URLs.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "request_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Request Id"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "extract_links_from_requestArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "generate_oob_payloads",
+   "title": "Get out-of-band callback addresses",
+   "description": "Read callback addresses for authorized out-of-band testing.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "generate_oob_payloadsArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_hosted_inboxes",
+   "title": "List hosted inboxes",
+   "description": "Hosted only: list your persistent inboxes and usage using a private account agent key.",
+   "inputSchema": {
+    "properties": {
+     "account_key": {
+      "title": "Account Key",
+      "type": "string"
+     }
+    },
+    "required": [
+     "account_key"
+    ],
+    "type": "object",
+    "title": "get_hosted_inboxesArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_request",
+   "title": "Read captured event",
+   "description": "Read a complete event; omit request_id to inspect the newest one.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "request_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Request Id"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "get_requestArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_webhook_activity",
+   "title": "Read inbox activity",
+   "description": "Read durable receipt and mutation history with a cursor. Bodies and secrets are excluded.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "since": {
+      "default": 0,
+      "title": "Since",
+      "type": "integer"
+     },
+     "limit": {
+      "default": 100,
+      "title": "Limit",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "get_webhook_activityArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_webhook_email",
+   "title": "Get inbox email address",
+   "description": "Read the email address, available when this deployment runs SMTP.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "get_webhook_emailArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_webhook_info",
+   "title": "Inspect webhook inbox",
+   "description": "Read addresses, expiry, response settings, and retained event count.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "get_webhook_infoArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_webhook_requests",
+   "title": "List captured events",
+   "description": "Read events with pagination or a durable sequence cursor.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "limit": {
+      "default": 50,
+      "title": "Limit",
+      "type": "integer"
+     },
+     "page": {
+      "default": 1,
+      "title": "Page",
+      "type": "integer"
+     },
+     "since": {
+      "default": 0,
+      "title": "Since",
+      "type": "integer"
+     },
+     "request_type": {
+      "anyOf": [
+       {
+        "enum": [
+         "web",
+         "email",
+         "dns"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Request Type"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "get_webhook_requestsArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "register_github_webhook",
+   "title": "Register GitHub webhook",
+   "description": "Create a signed GitHub repository subscription and native inbox. Requires webhook-write permission.",
+   "inputSchema": {
+    "properties": {
+     "access_token": {
+      "title": "Access Token",
+      "type": "string"
+     },
+     "repository": {
+      "title": "Repository",
+      "type": "string"
+     },
+     "events": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Events",
+      "type": "array"
+     },
+     "account_key": {
+      "default": "",
+      "title": "Account Key",
+      "type": "string"
+     }
+    },
+    "required": [
+     "access_token",
+     "repository",
+     "events"
+    ],
+    "type": "object",
+    "title": "register_github_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "register_linear_webhook",
+   "title": "Register Linear webhook",
+   "description": "Create a signed Linear subscription and native inbox. Requires admin scope; optional team filter.",
+   "inputSchema": {
+    "properties": {
+     "access_token": {
+      "title": "Access Token",
+      "type": "string"
+     },
+     "resource_types": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Resource Types",
+      "type": "array"
+     },
+     "team_id": {
+      "default": "",
+      "title": "Team Id",
+      "type": "string"
+     },
+     "account_key": {
+      "default": "",
+      "title": "Account Key",
+      "type": "string"
+     }
+    },
+    "required": [
+     "access_token",
+     "resource_types"
+    ],
+    "type": "object",
+    "title": "register_linear_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "register_stripe_webhook",
+   "title": "Register Stripe webhook",
+   "description": "Create a signed Stripe webhook endpoint and native inbox. Provider credentials are not stored.",
+   "inputSchema": {
+    "properties": {
+     "access_token": {
+      "title": "Access Token",
+      "type": "string"
+     },
+     "events": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Events",
+      "type": "array"
+     },
+     "account_key": {
+      "default": "",
+      "title": "Account Key",
+      "type": "string"
+     }
+    },
+    "required": [
+     "access_token",
+     "events"
+    ],
+    "type": "object",
+    "title": "register_stripe_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "respond_to_next_request",
+   "title": "Configure next callback response",
+   "description": "Respond to the next request using ?openhook_wait=1, within its 20-second response window.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "content": {
+      "title": "Content",
+      "type": "string"
+     },
+     "status": {
+      "default": 200,
+      "title": "Status",
+      "type": "integer"
+     },
+     "content_type": {
+      "default": "text/plain",
+      "title": "Content Type",
+      "type": "string"
+     },
+     "timeout_seconds": {
+      "default": 60,
+      "title": "Timeout Seconds",
+      "type": "number"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "content"
+    ],
+    "type": "object",
+    "title": "respond_to_next_requestArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "rotate_webhook_token",
+   "title": "Rotate inbox token",
+   "description": "Revoke the old private token and return a new one; capture addresses stay unchanged.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "rotate_webhook_tokenArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search_requests",
+   "title": "Search captured events",
+   "description": "Search captured bodies, URLs, and headers for a literal substring.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "query": {
+      "title": "Query",
+      "type": "string"
+     },
+     "request_type": {
+      "anyOf": [
+       {
+        "enum": [
+         "web",
+         "email",
+         "dns"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Request Type"
+     },
+     "limit": {
+      "default": 50,
+      "title": "Limit",
+      "type": "integer"
+     },
+     "page": {
+      "default": 1,
+      "title": "Page",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "query"
+    ],
+    "type": "object",
+    "title": "search_requestsArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "send_requests",
+   "title": "Create test events",
+   "description": "Create up to ten marked test HTTP events in this inbox.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "payloads": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Payloads",
+      "type": "array"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "payloads"
+    ],
+    "type": "object",
+    "title": "send_requestsArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "server_status",
+   "title": "Inspect server status",
+   "description": "Inspect native storage, retention, and enabled capture transports.",
+   "inputSchema": {
+    "properties": {},
+    "type": "object",
+    "title": "server_statusArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "unregister_webhook",
+   "title": "Unregister provider webhook",
+   "description": "Remove the registered provider subscription and permanently delete its native inbox and events.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "access_token": {
+      "title": "Access Token",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "access_token"
+    ],
+    "type": "object",
+    "title": "unregister_webhookArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "update_request",
+   "title": "Annotate captured event",
+   "description": "Annotate an event without changing its original captured body.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "request_id": {
+      "title": "Request Id",
+      "type": "string"
+     },
+     "note": {
+      "title": "Note",
+      "type": "string"
+     }
+    },
+    "required": [
+     "webhook_token",
+     "request_id",
+     "note"
+    ],
+    "type": "object",
+    "title": "update_requestArguments"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "wait_for_email",
+   "title": "Wait for email",
+   "description": "Wait for an email received by Openhook's SMTP listener.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "timeout_seconds": {
+      "default": 60,
+      "title": "Timeout Seconds",
+      "type": "number"
+     },
+     "since": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Since"
+     },
+     "return_existing": {
+      "default": false,
+      "title": "Return Existing",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "wait_for_emailArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "wait_for_request",
+   "title": "Wait for a callback",
+   "description": "Wait up to 120 seconds; pass next_since when reconnecting to avoid missing events.",
+   "inputSchema": {
+    "properties": {
+     "webhook_token": {
+      "title": "Webhook Token",
+      "type": "string"
+     },
+     "timeout_seconds": {
+      "default": 60,
+      "title": "Timeout Seconds",
+      "type": "number"
+     },
+     "request_type": {
+      "anyOf": [
+       {
+        "enum": [
+         "web",
+         "email",
+         "dns"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Request Type"
+     },
+     "since": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Since"
+     },
+     "return_existing": {
+      "default": false,
+      "title": "Return Existing",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "webhook_token"
+    ],
+    "type": "object",
+    "title": "wait_for_requestArguments"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "resources": [
+  {
+   "description": "When to use Openhook, create an inbox, wait with a cursor, forward events and handle credentials safely.",
+   "mimeType": "text/markdown",
+   "name": "openhook_agent_guide",
+   "title": "Openhook agent guide",
+   "uri": "openhook://docs/guide"
+  },
+  {
+   "description": "Live tool names, descriptions and JSON input schemas generated from this MCP server.",
+   "mimeType": "text/markdown",
+   "name": "openhook_tool_reference",
+   "title": "Openhook tool reference",
+   "uri": "openhook://docs/tools"
+  },
+  {
+   "description": "Free and hosted Pro plans, capacity limits, retention, self-hosting and billing availability.",
+   "mimeType": "text/markdown",
+   "name": "openhook_pricing",
+   "title": "Openhook plans and limits",
+   "uri": "openhook://docs/pricing"
+  }
+ ],
+ "prompts": []
+}

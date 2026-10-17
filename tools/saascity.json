@@ -1,0 +1,508 @@
+{
+ "server": "SaaSCity",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "check_badge",
+   "title": "Check the SaaSCity badge",
+   "description": "Check whether the SaaSCity badge is live on a site. Reads the given URL and, for a deep page, the site homepage too, rendering JavaScript if the static HTML misses it. A verified badge turns the listing link dofollow.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "Site URL to scan (the listing URL; the homepage is read as well)"
+     }
+    },
+    "required": [
+     "url"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "check_launch_readiness",
+   "title": "Check launch readiness",
+   "description": "Audit a product homepage before launching it: HTTPS, noindex, title and meta description, og:image (fetched to confirm it loads), X card, favicon, canonical, mobile viewport, h1, JSON-LD, robots.txt, sitemap, parked or 404 pages, response time, and whether the page is empty without JavaScript. Returns a 0-100 score, a verdict and a fix for every problem. Reads the static HTML the way directory scrapers and link-preview bots do.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "Homepage URL; the https:// prefix is optional"
+     }
+    },
+    "required": [
+     "url"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "find_alternatives",
+   "title": "Find alternatives to a listing",
+   "description": "Other SaaSCity listings in the same category as a given listing, most upvoted first. Useful for competitor research and positioning.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "description": "Slug of the listing to find alternatives for"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 10,
+      "description": "How many to return"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "find_launch_directories",
+   "title": "Find launch directories",
+   "description": "Filter 1,666 startup, SaaS and AI directories by category, minimum Ahrefs DR, link type (dofollow/nofollow), price and badge-swap requirement. Returns submit URLs. Link type and price are \"unknown\" where nobody has verified them yet - treat those as unverified, not as free or dofollow.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Match against directory name or domain, e.g. \"hunt\" or \"betalist\""
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "AI Tools",
+       "Community",
+       "Design Tools",
+       "Developer Tools",
+       "General Directory",
+       "Launchpad",
+       "Marketing Tools",
+       "Marketplace",
+       "Open Source",
+       "SaaS Tools",
+       "Software Discovery",
+       "Software Reviews",
+       "Tech / Startups"
+      ],
+      "description": "Directory category"
+     },
+     "min_dr": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "description": "Minimum Ahrefs Domain Rating"
+     },
+     "link_type": {
+      "type": "string",
+      "enum": [
+       "any",
+       "dofollow",
+       "nofollow"
+      ],
+      "default": "any",
+      "description": "dofollow = verified followed link"
+     },
+     "pricing": {
+      "type": "string",
+      "enum": [
+       "any",
+       "free",
+       "free_or_freemium",
+       "paid"
+      ],
+      "default": "any",
+      "description": "free_or_freemium = there is a no-cost route"
+     },
+     "exclude_badge_exchange": {
+      "type": "boolean",
+      "default": false,
+      "description": "Drop directories whose free listing requires their badge on your site"
+     },
+     "sort": {
+      "type": "string",
+      "enum": [
+       "dr",
+       "name"
+      ],
+      "default": "dr",
+      "description": "dr = strongest first"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20,
+      "description": "Results per page"
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Skip this many results (pagination)"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_launch_directory",
+   "title": "Look up a launch directory",
+   "description": "Look up one directory by domain or URL: Ahrefs DR, dofollow or nofollow, price, whether it wants a badge swap, the submit URL, and a human verdict where one exists. Use it to vet a directory before paying for a listing.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "domain": {
+      "type": "string",
+      "description": "Directory domain or any URL on it, e.g. \"uneed.best\" or \"https://www.producthunt.com/posts/new\""
+     }
+    },
+    "required": [
+     "domain"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_launch_weeks",
+   "title": "Get launch weeks",
+   "description": "SaaSCity launch-week queue: the next 12 Mondays, how many free slots each has left, and which are full. Use it to tell a founder when a free listing would go live.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_leaderboard",
+   "title": "Get the launch leaderboard",
+   "description": "SaaSCity's most upvoted launches for this week's launch, the last 30 days, or all time, optionally within one category.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "period": {
+      "type": "string",
+      "enum": [
+       "week",
+       "month",
+       "all_time"
+      ],
+      "default": "week",
+      "description": "week = this Monday's launch"
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "ai",
+       "saas",
+       "productivity",
+       "devtools",
+       "design",
+       "marketing",
+       "fintech",
+       "health",
+       "mobile",
+       "games",
+       "web3",
+       "molt",
+       "directories",
+       "other"
+      ],
+      "description": "Listing category id"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 10,
+      "description": "How many to return"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_listing",
+   "title": "Get a SaaSCity listing",
+   "description": "One live SaaSCity listing by slug: title, tagline, full description, category, upvote points, link type (dofollow/nofollow), listing page and product site.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "description": "Listing slug, the last part of saascity.io/live/<slug>"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_offers",
+   "title": "Get listing offers",
+   "description": "SaaSCity listing offers with real prices - free queue, Quick Pass, Premium - and exactly what each buys (queue position, dofollow link, city-map building, launch post). Only a human can pay, on the claim page.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_submission_status",
+   "title": "Get submission status",
+   "description": "Where a SaaSCity submission stands: a draft by claim token (unclaimed, claimed and in review, or expired) or a live listing by slug (launch week, badge, link type, points).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "claim_token": {
+      "type": "string",
+      "description": "Token from submit_project (the mcp_... part of the claim URL)"
+     },
+     "slug": {
+      "type": "string",
+      "description": "Slug of a live listing"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "recommend_launch_directories",
+   "title": "Recommend launch directories",
+   "description": "Hand-picked launch directories for a product type, grouped by when to submit (launch day first, evergreen after). Every pick carries a human-written verdict, including the ones that are not worth paying for, plus Ahrefs DR, link type and price. Start here; use find_launch_directories to go wider across all 1,666 sites.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "product_type": {
+      "type": "string",
+      "enum": [
+       "any",
+       "saas",
+       "ai",
+       "devtools"
+      ],
+      "default": "any",
+      "description": "saas = B2B/B2C software, ai = AI tool or app, devtools = sold to developers, any = general"
+     },
+     "free_only": {
+      "type": "boolean",
+      "default": false,
+      "description": "Only picks with a free or freemium route"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search_listings",
+   "title": "Search SaaSCity listings",
+   "description": "Search products listed on SaaSCity by keyword and/or category. Returns title, tagline, category, upvote points, the listing page and the product site. Useful for market research (\"what else exists in this space?\") before a launch.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Keyword matched against title and tagline"
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "ai",
+       "saas",
+       "productivity",
+       "devtools",
+       "design",
+       "marketing",
+       "fintech",
+       "health",
+       "mobile",
+       "games",
+       "web3",
+       "molt",
+       "directories",
+       "other"
+      ],
+      "description": "Listing category id"
+     },
+     "sort": {
+      "type": "string",
+      "enum": [
+       "points",
+       "newest"
+      ],
+      "default": "points",
+      "description": "points = most upvoted first"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 10,
+      "description": "Results per page"
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Skip this many results (pagination)"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "submit_project",
+   "title": "Submit a project to SaaSCity",
+   "description": "List a product on the SaaSCity launch directory. Creates an inert draft and returns a claim URL; the human opens it to sign in, confirm the listing and pick a launch Monday. Nothing is published or charged until they do, and every listing is reviewed by a person. Free to submit. Free subdomain hosts (github.io, netlify.app...) and domains that already have a listing are refused.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 60,
+      "description": "Product name"
+     },
+     "tagline": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 100,
+      "description": "One line on what it does and for whom"
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "ai",
+       "saas",
+       "productivity",
+       "devtools",
+       "design",
+       "marketing",
+       "fintech",
+       "health",
+       "mobile",
+       "games",
+       "web3",
+       "molt",
+       "directories",
+       "other"
+      ],
+      "description": "Listing category id"
+     },
+     "description": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 5000,
+      "description": "Plain text: the problem, who it is for, what makes it different"
+     },
+     "website_url": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Product homepage, https, on its own domain"
+     },
+     "twitter_url": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "X/Twitter profile URL (optional)"
+     },
+     "github_url": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Public repo URL (optional)"
+     },
+     "tags": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "maxLength": 40
+      },
+      "maxItems": 10,
+      "description": "Up to 10 short keywords (optional)"
+     }
+    },
+    "required": [
+     "title",
+     "tagline",
+     "category",
+     "description",
+     "website_url"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "prompts": [
+  {
+   "name": "plan_launch",
+   "title": "Plan a product launch",
+   "description": "Audit a site, fix what blocks launch, pick directories and produce a dated launch checklist."
+  },
+  {
+   "name": "submit_to_saascity",
+   "title": "Submit to SaaSCity",
+   "description": "Draft a SaaSCity listing from the product site, confirm it with the human, then submit it."
+  }
+ ]
+}

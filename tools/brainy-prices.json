@@ -1,0 +1,1562 @@
+{
+ "server": "Brainy Prices",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "commute_cost",
+   "description": "Monthly/annual car commute cost (fuel+Salik), or published area routes. No parking.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "km_per_day": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000
+     },
+     "days_per_week": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 7,
+      "default": 5
+     },
+     "l_per_100km": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 40,
+      "default": 8
+     },
+     "fuel": {
+      "enum": [
+       "super98",
+       "special95",
+       "eplus91",
+       "diesel"
+      ],
+      "default": "special95"
+     },
+     "salik_per_day": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 30
+     },
+     "emirate_id": {
+      "enum": [
+       "dubai",
+       "abu_dhabi",
+       "sharjah",
+       "ajman",
+       "umm_al_quwain",
+       "ras_al_khaimah",
+       "fujairah"
+      ]
+     },
+     "from_area": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1
+     },
+     "to_hub_id": {
+      "enum": [
+       "downtown_difc",
+       "internet_city_marina",
+       "jafza_dubai_south",
+       "dxb_deira"
+      ]
+     },
+     "sort": {
+      "enum": [
+       "distance_km",
+       "car_monthly_aed",
+       "from_area"
+      ],
+      "default": "distance_km"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "to_area": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "costs_by_area",
+   "description": "Dubai areas ranked by monthly cost: rent, fees, bills (+school). Not full budgets.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "bedrooms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "property_type": {
+      "enum": [
+       "apartment",
+       "villa"
+      ]
+     },
+     "include_school": {
+      "type": "boolean"
+     },
+     "zone_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "transport": {
+      "enum": [
+       "car_commute_no_tolls",
+       "car_commute_with_salik",
+       "public_transport_one_zone",
+       "public_transport_two_zones"
+      ]
+     },
+     "min_contracts": {
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 100000
+     },
+     "sort": {
+      "enum": [
+       "total_monthly_aed",
+       "-total_monthly_aed",
+       "rent_monthly_aed",
+       "total_with_school_monthly_aed",
+       "name"
+      ],
+      "default": "total_monthly_aed"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "area": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "costs_by_emirate",
+   "description": "Compare emirates: rent, utilities, schools. Non-Dubai rent unknown.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "emirate_id": {
+      "enum": [
+       "dubai",
+       "abu_dhabi",
+       "sharjah",
+       "ajman",
+       "umm_al_quwain",
+       "ras_al_khaimah",
+       "fujairah"
+      ]
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "data_sources",
+   "description": "Where each number comes from: publishers, licences, dates, paused sources.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "status": {
+      "enum": [
+       "ok",
+       "paused",
+       "unreadable",
+       "not_published"
+      ]
+     },
+     "license_status": {
+      "enum": [
+       "confirmed",
+       "restricted",
+       "unconfirmed",
+       "paused"
+      ]
+     },
+     "dataset_id": {
+      "$ref": "#/$defs/Code"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "source_id": {
+      "$ref": "#/$defs/Code"
+     }
+    },
+    "$defs": {
+     "Code": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$",
+      "maxLength": 80
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "dewa",
+   "description": "DEWA electricity/water: tariff slabs, or bill estimate from kwh (+water, VAT, fee).",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "kwh": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000000
+     },
+     "water_m3": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 1000000
+     },
+     "water_gallons": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 100000000,
+      "description": "Imperial gallons."
+     },
+     "annual_rent_aed": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 100000000
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "end_of_service_gratuity",
+   "description": "UAE private-sector end-of-service gratuity estimate (Decree-Law 33/2021 art. 51): basic wage + dates → amount or range; not legal advice.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "basic_monthly_aed": {
+      "type": "number",
+      "exclusiveMinimum": 0
+     },
+     "start_date": {
+      "type": "string",
+      "format": "date"
+     },
+     "end_date": {
+      "type": "string",
+      "format": "date"
+     },
+     "unpaid_days": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+     },
+     "total_monthly_wage_aed": {
+      "type": "number"
+     },
+     "work_pattern": {
+      "enum": [
+       "full-time",
+       "part-time",
+       "other-pay"
+      ],
+      "default": "full-time"
+     }
+    },
+    "required": [
+     "basic_monthly_aed",
+     "start_date",
+     "end_date"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "fixed_monthly_costs",
+   "description": "Monthly fixed costs for a household profile, with assumptions. Not a full budget.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "profile": {
+      "enum": [
+       "single",
+       "couple",
+       "family4"
+      ]
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "free_zone_companies",
+   "description": "Free zone company setup: package prices, annual/monthly cost, visas.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "published": {
+      "enum": [
+       "one_visa",
+       "partial",
+       "none",
+       "paused"
+      ]
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "emirate": {
+      "enum": [
+       "dubai",
+       "abu_dhabi",
+       "sharjah",
+       "ajman",
+       "umm_al_quwain",
+       "ras_al_khaimah",
+       "fujairah"
+      ]
+     },
+     "zone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "fuel_prices",
+   "description": "UAE petrol/diesel prices this month and last, change, 50/70 L tank cost, history.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "sort": {
+      "enum": [
+       "month",
+       "-month"
+      ],
+      "default": "-month"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "include_history": {
+      "type": "boolean"
+     },
+     "from": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+     },
+     "to": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "fx_rates",
+   "description": "AED exchange rates (CBUAE, dated). Not bank quotes.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "grocery_compare_list",
+   "description": "Cheapest store for a shopping list: per-store subtotals, delivery fees, minimums. Observed + labelled estimates.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "maxLength": 120,
+       "minLength": 1
+      },
+      "minItems": 1,
+      "maxItems": 40
+     },
+     "area": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "maxLength": 80
+     }
+    },
+    "required": [
+     "items"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "grocery_products",
+   "description": "Dubai supermarket prices: search by name; product_id for per-store pack/unit offers, dates, history. Not MOET.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "comparison": {
+      "enum": [
+       "exact",
+       "equivalent"
+      ]
+     },
+     "store_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "available_only": {
+      "type": "boolean"
+     },
+     "sort": {
+      "enum": [
+       "relevance",
+       "name",
+       "-name",
+       "lowest_price_aed",
+       "-lowest_price_aed"
+      ],
+      "default": "relevance"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "product_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "availability": {
+      "enum": [
+       "available",
+       "unavailable",
+       "unknown"
+      ]
+     },
+     "query": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1
+     },
+     "include_offers": {
+      "type": "boolean"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "grocery_stores",
+   "description": "Grocery stores: delivery fees, free-delivery thresholds, minimum orders.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "delivery_rule_status": {
+      "enum": [
+       "valid",
+       "stale",
+       "invalid",
+       "none"
+      ]
+     },
+     "sort": {
+      "enum": [
+       "name",
+       "-name"
+      ],
+      "default": "name"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "store_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "health_insurance",
+   "description": "Dubai health insurance rules: who pays, basic plan band/benefits, fines. Not quotes.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "emirate": {
+      "enum": [
+       "dubai",
+       "abu_dhabi",
+       "sharjah",
+       "ajman",
+       "umm_al_quwain",
+       "ras_al_khaimah",
+       "fujairah"
+      ]
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "housing_rents",
+   "description": "Rent in a Dubai area: registered annual/monthly medians and contract counts. Not listings.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "zone_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "property_type": {
+      "enum": [
+       "apartment",
+       "villa"
+      ]
+     },
+     "bedrooms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "min_contracts": {
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 100000
+     },
+     "sort": {
+      "enum": [
+       "median_annual_aed",
+       "-median_annual_aed",
+       "-contracts",
+       "zone_name"
+      ],
+      "default": "median_annual_aed"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "q": {
+      "type": "string",
+      "maxLength": 80,
+      "minLength": 1
+     },
+     "zone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+     },
+     "contract": {
+      "enum": [
+       "new",
+       "renewal"
+      ]
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "housing_sales",
+   "description": "Sale prices by Dubai area: ready/off-plan registered medians. Not listings.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "zone_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "property_type": {
+      "enum": [
+       "apartment",
+       "villa"
+      ]
+     },
+     "bedrooms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "market": {
+      "enum": [
+       "ready",
+       "off_plan"
+      ]
+     },
+     "sort": {
+      "enum": [
+       "median_price_aed",
+       "-median_price_aed",
+       "median_aed_per_sqft",
+       "-median_aed_per_sqft",
+       "-transactions",
+       "zone_name"
+      ],
+      "default": "median_price_aed"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "zone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "labour_calculator",
+   "description": "UAE labour law estimates (Decree-Law 33/2021): overtime pay, annual leave, final settlement. Not legal advice.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "calculator": {
+      "enum": [
+       "overtime",
+       "annual_leave",
+       "final_settlement"
+      ]
+     },
+     "basic_monthly_aed": {
+      "type": "number"
+     },
+     "total_monthly_wage_aed": {
+      "type": "number"
+     },
+     "start_date": {
+      "type": "string"
+     },
+     "end_date": {
+      "type": "string"
+     },
+     "leave_taken_days": {
+      "type": "number"
+     },
+     "unused_leave_days": {
+      "type": "number"
+     },
+     "notice_days": {
+      "type": "integer"
+     },
+     "notice_worked_days": {
+      "type": "integer"
+     },
+     "notice_cut_by": {
+      "enum": [
+       "employer",
+       "worker"
+      ]
+     },
+     "wages_owed_aed": {
+      "type": "number"
+     },
+     "day_hours": {
+      "type": "number"
+     },
+     "night_hours": {
+      "type": "number"
+     }
+    },
+    "required": [
+     "calculator",
+     "basic_monthly_aed"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "ministry_shop_prices",
+   "description": "MOET-published shop prices of Dubai essentials by chain/category.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "q": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1
+     },
+     "category": {
+      "enum": [
+       "bread",
+       "chicken",
+       "cooking_oil",
+       "dairy",
+       "eggs",
+       "legumes",
+       "rice",
+       "sugar"
+      ]
+     },
+     "chain_id": {
+      "enum": [
+       "al_maya",
+       "carrefour",
+       "emirates_coop",
+       "lulu",
+       "nesto",
+       "safeer",
+       "spinneys",
+       "union_coop"
+      ]
+     },
+     "product_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "sort": {
+      "enum": [
+       "name",
+       "category"
+      ],
+      "default": "name"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "mobile_internet_plans",
+   "description": "UAE mobile and home internet plans: VAT-inclusive price, data, contract.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "operator": {
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+     },
+     "min_data_gb": {
+      "type": "number",
+      "minimum": 0
+     },
+     "status": {
+      "enum": [
+       "ranked",
+       "unverified",
+       "excluded"
+      ]
+     },
+     "sort": {
+      "enum": [
+       "price_aed_per_month",
+       "aed_per_gb",
+       "-data_gb",
+       "name"
+      ],
+      "default": "price_aed_per_month"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "plan_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "type": {
+      "enum": [
+       "mobile_postpaid",
+       "mobile_prepaid",
+       "home_internet"
+      ]
+     },
+     "max_aed": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100000
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "move_to_dubai",
+   "description": "Move to Dubai? Home vs Dubai net pay, taxes, FX, costs, savings. No country: models. Owner: household=business_owner + profit. Not tax advice.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "country": {
+      "type": "string",
+      "maxLength": 2,
+      "minLength": 2,
+      "pattern": "^[A-Z]{2}$"
+     },
+     "gross_annual": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 10000000000000
+     },
+     "currency": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[A-Z]{3}$"
+     },
+     "household": {
+      "anyOf": [
+       {
+        "type": [
+         "object",
+         "null"
+        ],
+        "additionalProperties": false,
+        "properties": {
+         "status": {
+          "enum": [
+           "single",
+           "married"
+          ]
+         },
+         "children": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+         }
+        }
+       },
+       {
+        "const": "business_owner"
+       }
+      ]
+     },
+     "area": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "maxLength": 80
+     },
+     "bedrooms": {
+      "type": [
+       "integer",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 10
+     },
+     "property_type": {
+      "enum": [
+       "apartment",
+       "villa",
+       null
+      ]
+     },
+     "variant": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "maxLength": 40
+     },
+     "dubai_gross_annual_aed": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "exclusiveMinimum": 0,
+      "maximum": 10000000000000
+     },
+     "home_monthly_costs": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 10000000000000
+     },
+     "profit": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 10000000000000
+     },
+     "spouse_employed": {
+      "type": "boolean",
+      "default": false
+     },
+     "iso2": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+     },
+     "status": {
+      "enum": [
+       "complete",
+       "incomplete"
+      ]
+     },
+     "sort": {
+      "enum": [
+       "name",
+       "iso2"
+      ],
+      "default": "name"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "residence_visas",
+   "description": "UAE residence visas by route: payer, requirements, fees, medical/insurance bands.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "route_id": {
+      "enum": [
+       "employment",
+       "family",
+       "golden",
+       "remote",
+       "freelance",
+       "investor"
+      ]
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "include_common_fees": {
+      "type": "boolean"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "schools",
+   "description": "Dubai school fees: KHDA tuition by grade/year, bus fees, distance. q: school name; near: zone; school_id: detail. Year ≠ Grade; uniforms paused.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "q": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1,
+      "description": "school name or part of it"
+     },
+     "area": {
+      "type": "string",
+      "maxLength": 80,
+      "minLength": 1
+     },
+     "curriculum": {
+      "type": "string",
+      "maxLength": 60,
+      "minLength": 1
+     },
+     "grade": {
+      "type": "string",
+      "maxLength": 30,
+      "minLength": 1
+     },
+     "rating": {
+      "type": "string",
+      "maxLength": 40
+     },
+     "near": {
+      "type": "string",
+      "maxLength": 80,
+      "minLength": 1,
+      "description": "Zone, not school."
+     },
+     "radius_km": {
+      "enum": [
+       5,
+       10,
+       15,
+       20,
+       30
+      ],
+      "default": 10
+     },
+     "sort": {
+      "enum": [
+       "name",
+       "distance_km",
+       "annual_fee_aed",
+       "-annual_fee_aed"
+      ],
+      "default": "name"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "school_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "max_fee_aed": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000000
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "shopper_price_reports",
+   "description": "Community price reports by product/store, with date and promos.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "product_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "store_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+     },
+     "purchased_since": {
+      "type": "string",
+      "format": "date"
+     },
+     "sort": {
+      "enum": [
+       "-purchased_on",
+       "purchased_on",
+       "unit_price_aed"
+      ],
+      "default": "-purchased_on"
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "area": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "start_here",
+   "description": "Call first: coverage, the 5 most useful calls with ready arguments, data freshness and how to cite.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "tax_savings_by_country",
+   "description": "Tax saved by moving to Dubai, per country, typical pay. Not tax advice.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "country": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+     },
+     "household": {
+      "enum": [
+       "employee",
+       "business_owner"
+      ]
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "today",
+   "description": "Today's headline Dubai cost figures, each with source.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "transport_fares",
+   "description": "Taxi fare estimate, or metro/bus fares, parking and toll tariffs. Not app quotes.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "km": {
+      "type": "number",
+      "minimum": 0.1,
+      "maximum": 300
+     },
+     "booking": {
+      "enum": [
+       "street_day",
+       "street_night",
+       "ehail_offpeak",
+       "ehail_peak",
+       "ehail_night"
+      ]
+     },
+     "wait_minutes": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180
+     },
+     "to_sharjah": {
+      "type": "boolean"
+     },
+     "emirate": {
+      "enum": [
+       "dubai",
+       "abu_dhabi",
+       "sharjah",
+       "ajman",
+       "umm_al_quwain",
+       "ras_al_khaimah",
+       "fujairah"
+      ]
+     },
+     "operator_id": {
+      "enum": [
+       "salik",
+       "darb"
+      ]
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20
+     },
+     "mode": {
+      "enum": [
+       "taxi",
+       "public",
+       "parking",
+       "tolls"
+      ]
+     }
+    },
+    "required": [
+     "mode"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "resources": [
+  {
+   "uri": "brainy-prices://catalog/datasets",
+   "name": "catalog_datasets",
+   "description": "Metadata-only index of dataset cards and tools, no rows.",
+   "mimeType": "application/json"
+  },
+  {
+   "uri": "brainy-prices://changes/current",
+   "name": "changes_current",
+   "description": "Latest20 metadata-only changes, no row diffs.",
+   "mimeType": "application/json"
+  },
+  {
+   "uri": "brainy-prices://methodology/costs",
+   "name": "methodology_costs",
+   "description": "Fixed partial costs, component assumptions and missing emirate coverage.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "brainy-prices://methodology/groceries",
+   "name": "methodology_groceries",
+   "description": "Observed offers, units, exact/equivalent, cohort, delivery and single-store methodology.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "brainy-prices://methodology/housing",
+   "name": "methodology_housing",
+   "description": "Registered DLD rents/sales, samples, quartiles, period and license.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "brainy-prices://methodology/relocation",
+   "name": "methodology_relocation",
+   "description": "Dated tax/FX calculations, residency assumptions, exclusions, no personal input storage.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "brainy-prices://methodology/schools",
+   "name": "methodology_schools",
+   "description": "Historical KHDA Year/Grade tuition, OSM straight-line distance, bus/uniform scope and rights.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "brainy-prices://policies/access",
+   "name": "policies_access",
+   "description": "Anonymous/free-key quotas, double opt-in and no bulk access policy.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "brainy-prices://policies/sources",
+   "name": "policies_sources",
+   "description": "Rights metadata and deliberate pauses by source, not the underlying datasets.",
+   "mimeType": "application/json"
+  }
+ ],
+ "prompts": [
+  {
+   "name": "check_sources",
+   "description": "Inspect metadata, methods and source permissions for a topic without downloading its dataset."
+  },
+  {
+   "name": "compare_areas",
+   "description": "Compare fixed cost components for a supplied housing scenario without inventing rental coverage outside Dubai."
+  },
+  {
+   "name": "compare_grocery_list",
+   "description": "Compare only the grocery items a user actually supplied; distinguish observed offers, official reference prices and buyer reports."
+  },
+  {
+   "name": "compare_moving_from",
+   "description": "Compare a supplied home-country salary scenario with Dubai, using dated tax, FX and partial costs; ask for missing personal assumptions."
+  },
+  {
+   "name": "school_shortlist",
+   "description": "Shortlist nearby schools by the exact published Year/Grade label, historical tuition and approximate straight-line distance."
+  }
+ ]
+}

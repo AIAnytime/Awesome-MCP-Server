@@ -1,0 +1,350 @@
+{
+ "server": "Motomarks",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "build_image_url",
+   "title": "Build Motomarks Image CDN URL",
+   "description": "Build a deterministic Motomarks image CDN URL authenticated with the caller's publishable key.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URL-friendly brand slug, e.g. toyota."
+     },
+     "type": {
+      "default": "full",
+      "description": "Logo variant.",
+      "type": "string",
+      "enum": [
+       "full",
+       "badge",
+       "wordmark"
+      ]
+     },
+     "format": {
+      "default": "webp",
+      "description": "Output image format.",
+      "type": "string",
+      "enum": [
+       "webp",
+       "png"
+      ]
+     },
+     "size": {
+      "default": "md",
+      "description": "Output image size.",
+      "type": "string",
+      "enum": [
+       "xs",
+       "sm",
+       "md",
+       "lg",
+       "xl"
+      ]
+     },
+     "aspect": {
+      "default": "square",
+      "description": "Output aspect ratio.",
+      "type": "string",
+      "enum": [
+       "square",
+       "height"
+      ]
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "complete_sign_up",
+   "title": "Complete Motomarks sign-up",
+   "description": "Verify the six-digit email code from sign_up. Creates the account when the email is new, then returns API keys so the client can reconnect as that user.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "email": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The same email address passed to sign_up."
+     },
+     "code": {
+      "type": "string",
+      "description": "Six-digit verification code from the email."
+     }
+    },
+    "required": [
+     "email",
+     "code"
+    ]
+   }
+  },
+  {
+   "name": "describe_api_endpoint",
+   "title": "Describe Motomarks API Endpoint",
+   "description": "Return the HTTP endpoint, auth mode, params, and example for a Motomarks REST operation.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "operation": {
+      "type": "string",
+      "enum": [
+       "searchBrands",
+       "getBrand",
+       "listAssets",
+       "imageCdn"
+      ],
+      "description": "The Motomarks API operation to describe."
+     }
+    },
+    "required": [
+     "operation"
+    ]
+   }
+  },
+  {
+   "name": "get_account",
+   "title": "Get Motomarks Account",
+   "description": "Get the authenticated caller's Motomarks account: plan, attribution status, today's API usage against the daily limit, and active API keys (secret keys masked).",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   }
+  },
+  {
+   "name": "get_brand",
+   "title": "Get Motomarks Brand",
+   "description": "Get full details for a published Motomarks brand by slug: description, colors, palette, social links, company facts, FAQs, and optionally its assets.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URL-friendly brand slug, e.g. toyota."
+     },
+     "includeAssets": {
+      "default": false,
+      "description": "Also include a compact asset summary.",
+      "type": "boolean"
+     },
+     "includeCdnUrls": {
+      "default": true,
+      "description": "Include generated CDN image URLs.",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "list_brand_assets",
+   "title": "List Motomarks Brand Assets",
+   "description": "List available Motomarks logo assets for a brand and optionally include generated CDN image URLs.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URL-friendly brand slug, e.g. toyota."
+     },
+     "type": {
+      "description": "Optional asset type filter.",
+      "type": "string",
+      "enum": [
+       "full",
+       "badge",
+       "wordmark",
+       "sub-brand"
+      ]
+     },
+     "format": {
+      "description": "Optional asset format filter.",
+      "type": "string",
+      "enum": [
+       "webp",
+       "png",
+       "svg"
+      ]
+     },
+     "aspect": {
+      "description": "Optional asset aspect filter.",
+      "type": "string",
+      "enum": [
+       "square",
+       "height"
+      ]
+     },
+     "includeCdnUrls": {
+      "default": true,
+      "description": "Include generated CDN URLs for webp/png assets.",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "search_brands",
+   "title": "Search Motomarks Brands",
+   "description": "Search published Motomarks brands by name, company, or slug. Optionally filter by vehicle type and include ready-to-use CDN image URLs.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "query": {
+      "description": "Brand name, company name, or slug to search for.",
+      "type": "string"
+     },
+     "vehicleType": {
+      "description": "Filter to brands that include this vehicle type (or any of these types).",
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "car",
+         "motorcycle",
+         "truck",
+         "boat",
+         "rv"
+        ]
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "enum": [
+          "car",
+          "motorcycle",
+          "truck",
+          "boat",
+          "rv"
+         ]
+        }
+       }
+      ]
+     },
+     "limit": {
+      "default": 10,
+      "description": "Maximum number of brands to return.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "includeImageUrls": {
+      "default": false,
+      "description": "Include generated CDN image URLs for each brand.",
+      "type": "boolean"
+     },
+     "type": {
+      "default": "full",
+      "description": "Logo variant for generated CDN image URLs.",
+      "type": "string",
+      "enum": [
+       "full",
+       "badge",
+       "wordmark"
+      ]
+     },
+     "format": {
+      "default": "webp",
+      "description": "Image format for generated CDN URLs.",
+      "type": "string",
+      "enum": [
+       "webp",
+       "png"
+      ]
+     },
+     "size": {
+      "default": "md",
+      "description": "Image size for generated CDN URLs.",
+      "type": "string",
+      "enum": [
+       "xs",
+       "sm",
+       "md",
+       "lg",
+       "xl"
+      ]
+     },
+     "aspect": {
+      "default": "square",
+      "description": "Image aspect ratio for generated CDN URLs.",
+      "type": "string",
+      "enum": [
+       "square",
+       "height"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "name": "sign_up",
+   "title": "Sign up for Motomarks",
+   "description": "Create a free Motomarks account or start sign-in for an existing email. Sends a six-digit verification code. No password or credit card. After the user reads the code, call complete_sign_up.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "email": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Email address that will own the Motomarks account."
+     }
+    },
+    "required": [
+     "email"
+    ]
+   }
+  }
+ ],
+ "resources": [
+  {
+   "uri": "motomarks://docs/image-cdn",
+   "name": "image-cdn-docs",
+   "title": "Motomarks Image CDN",
+   "description": "CDN URL format and query parameters for Motomarks brand images.",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "motomarks://docs/api-v1",
+   "name": "api-v1-docs",
+   "title": "Motomarks API v1",
+   "description": "Motomarks API v1 auth and endpoint summary.",
+   "mimeType": "text/markdown"
+  }
+ ],
+ "prompts": [
+  {
+   "name": "create_motomarks_account",
+   "title": "Create Motomarks Account",
+   "description": "Walk a user through creating a free Motomarks account from this MCP session."
+  },
+  {
+   "name": "find_brand_logo",
+   "title": "Find Brand Logo",
+   "description": "Guide an agent through finding a Motomarks brand logo and selecting an asset variant."
+  },
+  {
+   "name": "embed_brand_image",
+   "title": "Embed Brand Image",
+   "description": "Create HTML, React, or Markdown snippets using a Motomarks CDN URL."
+  }
+ ]
+}

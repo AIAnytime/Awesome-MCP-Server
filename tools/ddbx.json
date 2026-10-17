@@ -1,0 +1,214 @@
+{
+ "server": "ddbx",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "fetch",
+   "title": "Fetch a ddbx filing",
+   "description": "The full thin-tier record for one id returned by search.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_company",
+   "title": "Insider activity at one company",
+   "description": "Recent insider dealings at one UK- or US-listed company, with a short description of the business and a link to its ddbx company page.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "market": {
+      "type": "string",
+      "enum": [
+       "UK",
+       "US"
+      ]
+     },
+     "ticker": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16,
+      "description": "e.g. \"TSCO\" (UK) or \"AAPL\" (US)."
+     },
+     "limit": {
+      "default": 20,
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+     }
+    },
+    "required": [
+     "market",
+     "ticker"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_daily_summary",
+   "title": "Daily insider-dealing summary",
+   "description": "ddbx's written recap of a trading day's insider dealings (UK or US), with the filings it cites. Omit date for the latest.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "market": {
+      "default": "UK",
+      "type": "string",
+      "enum": [
+       "UK",
+       "US"
+      ]
+     },
+     "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "session": {
+      "description": "afternoon is the end-of-day recap; morning covers the opening session.",
+      "type": "string",
+      "enum": [
+       "morning",
+       "afternoon"
+      ]
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_dealing",
+   "title": "Get one insider dealing",
+   "description": "One filing by the id returned from search_dealings or get_company (e.g. \"UK:…\", \"US:f4-…\").",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search",
+   "title": "Search ddbx",
+   "description": "Find recent insider dealings at a company by name or ticker (UK and US). Returns ids to pass to fetch.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     }
+    },
+    "required": [
+     "query"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search_dealings",
+   "title": "Search insider dealings",
+   "description": "List recent insider share dealings in one market, newest first. By default only filings ddbx rated as signal (significant, noteworthy or minor); set signal_only=false for every screened open-market filing. Filter by ticker and by disclosure date.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "market": {
+      "type": "string",
+      "enum": [
+       "UK",
+       "US",
+       "SE",
+       "NL",
+       "USG"
+      ],
+      "description": "UK = LSE directors; US = SEC Form 4 insiders; SE = Sweden; NL = Netherlands; USG = members of the US Congress."
+     },
+     "ticker": {
+      "description": "Issuer ticker, e.g. \"BARC\" or \"BARC.L\" (UK), \"NVDA\" (US).",
+      "type": "string",
+      "maxLength": 16
+     },
+     "since": {
+      "description": "Only filings disclosed on or after this date.",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "before": {
+      "description": "Only filings disclosed before this date (use to page back).",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "signal_only": {
+      "default": true,
+      "type": "boolean"
+     },
+     "limit": {
+      "default": 20,
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+     }
+    },
+    "required": [
+     "market"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

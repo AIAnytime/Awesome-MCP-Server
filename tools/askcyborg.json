@@ -1,0 +1,151 @@
+{
+ "server": "AskCyborg",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "compare_companies",
+   "description": "Compare 2-5 companies side by side on Cyborg Score, industry, key insights, and competitive positioning. Useful for portfolio decisions, M&A short-listing, or competitive analysis.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "companies": {
+      "type": "array",
+      "description": "List of 2-5 company names or slugs to compare.",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 2,
+      "maxItems": 5
+     }
+    },
+    "required": [
+     "companies"
+    ]
+   }
+  },
+  {
+   "name": "find_competitors",
+   "description": "Find the named competitors of a company that AskCyborg's analyst panel identified as material to the target's strategic position. Returns each competitor with the one-line strategic tagline AskCyborg uses to characterize them. Useful for competitive landscape analysis, M&A short-listing, or pricing reference checks.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company": {
+      "type": "string",
+      "description": "Company name, ticker, or slug (e.g. 'OpenAI', 'AAPL', 'spacex')."
+     }
+    },
+    "required": [
+     "company"
+    ]
+   }
+  },
+  {
+   "name": "get_company_report",
+   "description": "Retrieve AskCyborg's structured research report for a single company. Includes executive summary, Cyborg Score with rationale, strategic profile, top insights, competitive positioning, and recent developments. Returns a paywall-aware summary; the full 30-page report and analyst-debate audio are available at the returned URL.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company": {
+      "type": "string",
+      "description": "Company name or ticker (e.g. 'OpenAI', 'AAPL', 'SpaceX'). Slug form accepted (e.g. 'openai')."
+     }
+    },
+    "required": [
+     "company"
+    ]
+   }
+  },
+  {
+   "name": "get_cyborg_score",
+   "description": "Retrieve just the Cyborg Score (1-10) for a company. The Cyborg Score is AskCyborg's proprietary rating, synthesized from hundreds of data points across business model, financials, leadership, competitive position, technology, marketing, and ESG. Use this when the user wants a quick rating without the full report context.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company": {
+      "type": "string",
+      "description": "Company name or ticker."
+     }
+    },
+    "required": [
+     "company"
+    ]
+   }
+  },
+  {
+   "name": "get_recent_developments",
+   "description": "Retrieve the most recent material developments (news, deals, leadership changes, product launches, financial events) that AskCyborg's analyst panel flagged as decision-relevant for this company. Each entry is dated and concise. Use this for news catch-up before a meeting, for monitoring portfolio companies, or to spot recent strategic shifts.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company": {
+      "type": "string",
+      "description": "Company name, ticker, or slug."
+     }
+    },
+    "required": [
+     "company"
+    ]
+   }
+  },
+  {
+   "name": "get_top_insights",
+   "description": "Retrieve just the top analyst-debate insights for a company — the punchiest, decision-relevant claims that AskCyborg's analyst panel surfaced after stress-testing the company. Faster and more focused than get_company_report when you just need 'what should I know about this company in 60 seconds'.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company": {
+      "type": "string",
+      "description": "Company name, ticker, or slug."
+     }
+    },
+    "required": [
+     "company"
+    ]
+   }
+  },
+  {
+   "name": "search_by_industry",
+   "description": "Find companies in AskCyborg's corpus that operate in a specific industry. Returns up to N companies with their Cyborg Score and one-line strategic profile, ranked by Cyborg Score. Use this for sector mapping, comparable analysis, or to discover companies you didn't know existed in a space.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "industry": {
+      "type": "string",
+      "description": "Industry name or keyword (e.g. 'semiconductor', 'fintech', 'biotech', 'enterprise SaaS', 'aerospace')."
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Max results to return. Default 10, max 25.",
+      "minimum": 1,
+      "maximum": 25
+     }
+    },
+    "required": [
+     "industry"
+    ]
+   }
+  },
+  {
+   "name": "search_companies",
+   "description": "Search AskCyborg's corpus of company research by name or industry keyword. Returns up to N matches with company name, Cyborg Score, one-line strategic profile, and the URL to the full preview report. Use this first when the user mentions a company you want to research, or to discover companies in a category.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Company name (e.g. 'OpenAI', 'Stripe'), partial name, or industry keyword (e.g. 'semiconductor', 'biotech')."
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Max results to return. Default 10, max 25.",
+      "minimum": 1,
+      "maximum": 25
+     }
+    },
+    "required": [
+     "query"
+    ]
+   }
+  }
+ ]
+}

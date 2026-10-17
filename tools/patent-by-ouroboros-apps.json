@@ -1,0 +1,161 @@
+{
+ "server": "Patent by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "find_patent_citations",
+   "title": "Find citing and cited patents",
+   "description": "List documents cited by a US patent and documents that cite it, using USPTO grant references and USPTO office-action citations. The PatentsView citation graph is paused. Not legal advice.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "patentNumber": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 32,
+      "description": "Patent or publication number."
+     },
+     "direction": {
+      "type": "string",
+      "enum": [
+       "citing",
+       "cited_by",
+       "both"
+      ],
+      "description": "citing: documents that cite this patent. cited_by: documents this patent cites. both is the default."
+     }
+    },
+    "required": [
+     "patentNumber"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_patent",
+   "title": "Get patent details",
+   "description": "Fetch one US patent's title, abstract, claims, status, family, and citations from USPTO. Missing text is omitted rather than filled in. Not legal advice.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "patentNumber": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 32,
+      "description": "US patent or publication number, such as US10000000 or 10000000."
+     }
+    },
+    "required": [
+     "patentNumber"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_patents",
+   "title": "Search patents",
+   "description": "Search public US patent records by keywords, claim language, CPC class, assignee, inventor, or grant date. Every number in the result was returned by USPTO. Not legal advice.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "keywords": {
+      "type": "string",
+      "maxLength": 400,
+      "description": "Words to find in the application or title and abstract."
+     },
+     "claims": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Claim language. USPTO matches these words across the file wrapper."
+     },
+     "cpc": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "CPC symbol, such as H04L or C07H19/207."
+     },
+     "assignee": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Applicant or assignee name."
+     },
+     "inventor": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Inventor name."
+     },
+     "dateFrom": {
+      "type": "string",
+      "maxLength": 10,
+      "description": "Grant or publication date from, YYYY-MM-DD."
+     },
+     "dateTo": {
+      "type": "string",
+      "maxLength": 10,
+      "description": "Grant or publication date to, YYYY-MM-DD."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "description": "Maximum hits, 1 to 25."
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_prior_art",
+   "title": "Search prior art",
+   "description": "Turn an idea description into a public-patent search and return the closest records the offices actually returned, with Google Patents links. Ranking counts overlapping words. It is not a patentability opinion. Not legal advice.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "idea": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 4000,
+      "description": "What the invention is, in plain language."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "description": "Maximum patents to return."
+     }
+    },
+    "required": [
+     "idea"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

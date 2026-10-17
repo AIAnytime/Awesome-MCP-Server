@@ -1,0 +1,1288 @@
+{
+ "server": "squirrelscan",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "add_website",
+   "title": "Add a website",
+   "description": "Register a website with the organization without running an audit (run_audit registers automatically, so this is only needed to set a site up ahead of time). Returns the website_id; idempotent per domain, so calling it again returns the existing website. Pass kind to classify it as owned or prospect up front. On a plan with scheduled audits, a NEW site is registered with recurring weekly audits already on, and each of those runs costs credits: tell the user before calling this; update_website_settings with schedule \"off\" turns them off. The result's scheduled_audits field reports what was actually set.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "Website URL to register, e.g. https://example.com (scheme optional)."
+     },
+     "kind": {
+      "description": "Classify the site: 'owned' for something the user runs and monitors, 'prospect' for a lead or competitor. Filterable in list_websites. Unclassified sites read as 'owned', so only an explicit 'prospect' makes a site show up in a prospect cleanup. Re-calling with a different value reclassifies it.",
+      "type": "string",
+      "enum": [
+       "owned",
+       "prospect"
+      ]
+     },
+     "scope": {
+      "description": "The website's stored crawl scope, used by every later audit of it. 'discover' follows links; 'sitemap' audits only the URLs the sitemap publishes. Omit to leave an existing site's setting unchanged (a new site starts on 'discover'). Re-calling with a different value updates it.",
+      "type": "string",
+      "enum": [
+       "discover",
+       "sitemap"
+      ]
+     }
+    },
+    "required": [
+     "url"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "comment_on_issue",
+   "title": "Comment on an issue",
+   "description": "Post a comment on a website issue to record analysis, a proposed fix, or what you changed, so the team sees it in the dashboard issue thread. Markdown is supported.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "description": "Website id the issue belongs to."
+     },
+     "issue_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Issue number from list_issues."
+     },
+     "body": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000,
+      "description": "Comment body (markdown supported)."
+     }
+    },
+    "required": [
+     "website_id",
+     "issue_number",
+     "body"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "compare_audits",
+   "title": "Compare two audits",
+   "description": "Compare two completed audits of one website and get what changed. Defaults to the website's latest completed audit against the one before it; pass base/head run ids to compare any two. Each finding gets one of seven kinds: new, resolved, worsened, improved, unchanged (both audits published it), still_open (still there, but one audit did not list it: the evidence store says it is open although the newer audit did not republish it, or the older audit's capped report sampled it out; `sampledOut` marks a clipped one, which is never counted as new; a sampled class that fails more often is listed in `sampledClassGrowth` and still counts as a change), or not_crawled (the page was not visited, so the issue is neither fixed nor still broken). resolutionEvidence says what backed the resolved verdicts; when it is \"none\" nothing is reported as fixed. Score movement is broken down by category. A website with only one audit returns first_run with an empty finding list; an audit where nothing moved returns changed: false. Unchanged, still-open and not-crawled rows are omitted unless requested.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "description": "Website id from list_websites or run_audit."
+     },
+     "base": {
+      "description": "Older run id. Default: the completed run before head.",
+      "type": "string"
+     },
+     "head": {
+      "description": "Newer run id. Default: the website's latest completed run.",
+      "type": "string"
+     },
+     "include_unchanged": {
+      "description": "Include unchanged findings.",
+      "type": "boolean"
+     },
+     "include_still_open": {
+      "description": "Include still-open findings (present per the evidence store, not republished).",
+      "type": "boolean"
+     },
+     "include_not_crawled": {
+      "description": "Include not-crawled findings.",
+      "type": "boolean"
+     },
+     "limit": {
+      "description": "Max findings returned (default 100). Totals are never capped.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 500
+     }
+    },
+    "required": [
+     "website_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "compare_entities",
+   "title": "Compare two audits' entities",
+   "description": "Compare two audits of a site and get the change set: entities added and removed, entities that gained or lost an @id, occurrence changes, new and resolved conflicts and dangling references, summary deltas, and the pages each audit saw that the other did not. Defaults to the previous audit versus the latest. An entity is only reported as removed when every page that declared it was crawled again; anything unproven is reported separately as not crawled, so a smaller crawl never reads as a site that deleted its structured data. Each gainedId and lostId entry carries a coverage field saying whether the newer audit visited every page that declared the old version and found the replacement there. Absence of a gainedId entry is not proof a fix failed: the match needs the type and the name to be unchanged, so changing the @id and the name in one edit appears as a removal plus an addition instead. Fix-and-verify loop: call list_entities with problem=\"no-id\" to find entities declared on several pages with nothing to tie them together, give each one an absolute @id, re-run the audit with run_audit, then call compare_entities and check that gainedId contains the keys you fixed. gainedId is the only confirmation that the fix landed: an entity that gained an @id changes key, so it would otherwise look like one removal plus one addition. Check each entry's coverage field before calling it done: \"proven\" means the newer audit visited every page that declared the broken version AND found the replacement on all of them, \"partial\" means one of those could not be established.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "from_run_id": {
+      "description": "The older audit. Defaults to the one before the newer audit, for the same site. When both runs are named they are ordered chronologically whichever field named them, so a diff always reads forward in time; read fromRunId and toRunId on the result for the direction actually used.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "to_run_id": {
+      "description": "The newer audit. Defaults to the latest audit that stored at least one entity. When both runs are named they are ordered chronologically whichever field named them.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "occurrence_threshold": {
+      "description": "Smallest occurrence change worth reporting. Default 1, meaning every change. Raise it on a site that publishes constantly, where a site-wide entity moves by one on every audit and would otherwise fill the change set with noise. Affects occurrenceDeltas only: entities added, removed, or changing their @id are reported whatever this is set to.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+     },
+     "website_id": {
+      "description": "The registered website to read, on the hosted server. Ignored by the local server, which reads the project store. When both this and run_id are given, run_id wins and this is ignored; naming a run of a different website is answered about the run.",
+      "type": "string",
+      "maxLength": 2048
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "create_api_key",
+   "title": "Create an API key",
+   "description": "Mint a new squirrelscan API key for this organization (requires credentials carrying the keys:write scope, which OAuth sign-in grants). The key is returned EXACTLY ONCE: show it to the user immediately and suggest saving it as the SQUIRRELSCAN_API_KEY environment variable for the CLI, CI, and MCP. Minted keys cannot themselves mint keys.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Human-readable label shown in the dashboard, e.g. \"ci\" or \"claude-code\"."
+     },
+     "scopes": {
+      "description": "Scopes to grant (default: audits:write, audits:read, credits:read, org:read). Grantable: audits:write, audits:read, credits:read, org:read, org:write.",
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "expires_in_days": {
+      "description": "Expire the key after this many days (default: never expires).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 365
+     }
+    },
+    "required": [
+     "name"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "delete_website",
+   "title": "Delete a website",
+   "description": "Delete a website from the organization (soft delete: past audits, reports, and issues are preserved, and published report links keep working). Frees a slot under the plan's website limit. Re-adding the same domain later registers a fresh website with a new website_id. Call once without confirm to see what will happen; call again with confirm: true to delete. To remove many sites at once, use delete_websites.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "pattern": "^(?:[0-9A-HJKMNP-TV-Z]{8}|[0-9A-HJKMNP-TV-Z]{26})$",
+      "description": "Website id from list_websites, run_audit, or add_website."
+     },
+     "confirm": {
+      "description": "Approve the deletion. Omit on the first call to see the effect; set true to delete after the user approves.",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "website_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "delete_websites",
+   "title": "Delete websites in bulk",
+   "description": "Delete up to 50 websites in one call, for cleaning up a dashboard that has filled with one-off or prospect audits. Same soft delete as delete_website (past audits, reports, and issues are preserved, published report links keep working, slots are freed) and the same two-step confirm: call once without confirm to see the domain behind every id, then again with confirm: true. EVERY result echoes the domain, so read them back to the user before and after: an id is not a name, and this is the tool most likely to be pointed at the wrong list. The preview also shows each site's kind and an owned_count: unclassified sites read as owned, so an 'owned' entry in a list you built from prospects is the clearest sign the wrong ids were assembled. Ids that do not resolve are reported per-id, never as a whole-call failure. To pick the ids, list_websites with kind: \"prospect\" returns only sites explicitly marked disposable.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_ids": {
+      "minItems": 1,
+      "maxItems": 50,
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Website ids from list_websites (1 to 50). Duplicates are collapsed."
+     },
+     "confirm": {
+      "description": "Approve the deletions. Omit on the first call to see which domain each id resolves to; set true to delete after the user approves.",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "website_ids"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_audit_status",
+   "title": "Get audit status",
+   "description": "Poll a running audit by run_id (from run_audit or list_audits). Status queued/pending/running means keep polling (every 15-30 seconds): the response includes a progress field (phase, message, page/link counts) when available. Status queued means cloud audits are busy and the run is waiting for a slot: it starts by itself, and its queue field gives its position, a rough eta_minutes (null when unknown) and a message to pass on. Do not start the audit again. Status completed means the report is ready: call get_report with the same run_id. Status failed/cancelled includes the error and completion reason. A failed run also carries failure_reason_code (one of dns, tls, connection, timeout, http_4xx, http_5xx, redirect, robots, audit_timeout, stalled, unknown) and failure_next_step, so you can act on the cause rather than parsing the error sentence, plus failure_diagnostics: attribution (target_site, squirrelscan, mixed or unknown; never guess past it), category, stage, the observations that support it, what remains uncertain, and the bounded list of fetch attempts; legacy is true when the run predates recorded evidence. A cancelled run has none of these, because it was stopped rather than defeated by the site. Once the run has a report, health_score and issues_found are read from that published report, so they equal get_report's summary.healthScore and its failed+warnings (#1700). health_score is null for a blocked or unreachable site: that audit has no meaningful grade. A completed run also carries a schedule field describing the website's recurring audits: state is off, active, capped, unschedulable or paused, cadence_label reads as a sentence, settings_url is where the user changes the cadence or turns it off, and cap says how many scheduled sites the plan funds and how many are spent. estimated_cost is the most those runs spend per run, week and month. Recurring audits turn on by themselves after a site's first successful audit and each run costs credits, so pass that on rather than leaving the user to discover the charge.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "run_id": {
+      "type": "string",
+      "description": "Run id returned by run_audit or listed by list_audits."
+     }
+    },
+    "required": [
+     "run_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_credit_balance",
+   "title": "Get credit balance",
+   "description": "Get the organization's credit balance: monthly credits (reset each billing period) and pack credits (purchased, never expire). Audits spend credits pay-as-you-go while they run; run_audit shows an upper-bound estimate before starting. An audit costs 50 credits plus 2 per audited page, however the page is fetched, plus 1 per distinct external link the cloud verifies when external link checking is on (a link it cannot verify costs nothing). A balance under 52 (a one-page audit) cannot start one, and a balance that covers fewer pages than requested starts a smaller audit. Read-only.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {},
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_entity",
+   "title": "Get one declared entity",
+   "description": "Get one entity as the map recorded it: the properties the map keeps (name, url, logo, image, sameAs, telephone, email, address, description), the pages that declare it, the properties whose values disagree between those pages, and the references in and out of it. The map keeps those nine and @type and nothing else, so a property missing here may still be in the page's JSON-LD, and a disagreement in a property outside that set is not detected. Accepts the entity key, its @id, or its name. Use this after list_entities to see why an entity was flagged, before deciding what to change. Edges and declaring pages are capped; the counts tell you when. Fix-and-verify loop: call list_entities with problem=\"no-id\" to find entities declared on several pages with nothing to tie them together, give each one an absolute @id, re-run the audit with run_audit, then call compare_entities and check that gainedId contains the keys you fixed. gainedId is the only confirmation that the fix landed: an entity that gained an @id changes key, so it would otherwise look like one removal plus one addition. Check each entry's coverage field before calling it done: \"proven\" means the newer audit visited every page that declared the broken version AND found the replacement on all of them, \"partial\" means one of those could not be established.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "run_id": {
+      "description": "A specific audit run to read. Defaults to the latest audit that stored at least one entity, which is NOT always the latest audit: an audit that stored none is passed over, because the store cannot tell a site that declares nothing from an audit that predates the entity map. When one is passed over, warnings names it. If you are checking whether a change landed, name the run.",
+      "type": "string"
+     },
+     "website_id": {
+      "description": "The registered website to read, on the hosted server. Ignored by the local server, which reads the project store. When both this and run_id are given, run_id wins and this is ignored; naming a run of a different website is answered about the run.",
+      "type": "string"
+     },
+     "key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "description": "The entity key, its @id, or its name. Resolved in that order of certainty: an exact @id match, then an exact key match, then the key formed by prefixing the value with \"id:\", then an exact case-insensitive name, and only then a case-insensitive substring of a name. The first match wins."
+     }
+    },
+    "required": [
+     "key"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_entity_findings",
+   "title": "Get the entity rule findings",
+   "description": "Get the schema/entity-* rule verdicts for an audit: what is wrong with the site's entity graph, which entity keys and pages each finding affects, and the fix text for each. Use this instead of re-deriving the problems from the graph yourself. Each finding names one problem across the whole site rather than one per entity, so a count of 1 can still mean hundreds of pages. The keys and pages on a finding are a SAMPLE: the rule that produced it clipped its own lists before this tool saw them, so the pages listed are never the complete affected set and no field reports how many were left out. Use list_entities with the matching problem filter for the full set. analyzed says whether the rules ran at all: false means this audit was never analyzed, so empty findings are an absence of evidence rather than a clean result. Fix-and-verify loop: call list_entities with problem=\"no-id\" to find entities declared on several pages with nothing to tie them together, give each one an absolute @id, re-run the audit with run_audit, then call compare_entities and check that gainedId contains the keys you fixed. gainedId is the only confirmation that the fix landed: an entity that gained an @id changes key, so it would otherwise look like one removal plus one addition. Check each entry's coverage field before calling it done: \"proven\" means the newer audit visited every page that declared the broken version AND found the replacement on all of them, \"partial\" means one of those could not be established.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "run_id": {
+      "description": "A specific audit run to read. Defaults to the latest audit that stored at least one entity, which is NOT always the latest audit: an audit that stored none is passed over, because the store cannot tell a site that declares nothing from an audit that predates the entity map. When one is passed over, warnings names it. If you are checking whether a change landed, name the run.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "website_id": {
+      "description": "The registered website to read, on the hosted server. Ignored by the local server, which reads the project store. When both this and run_id are given, run_id wins and this is ignored; naming a run of a different website is answered about the run.",
+      "type": "string",
+      "maxLength": 2048
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_entity_graph",
+   "title": "Export the entity graph",
+   "description": "Get the whole entity graph, or a filtered part of it, in a chosen format: json for the canonical document, jsonld for a validator, mermaid or markdown to read in a conversation, dot or graphml for a graph tool. Defaults to json. Takes the same filters as list_entities. mermaid caps declared entities at 150 and markdown caps rows at 50, and both say so in truncation; json, jsonld, dot and graphml apply no node cap. No cap is not the same as complete: every format renders the stored map, and on the local server that map carries no per-edge page list and no per-page reference list, so those arrays are empty because they were never stored rather than because nothing matched. mermaid's cap bounds declared entities only, so one entity referencing thousands of undeclared ids still renders thousands of placeholder nodes. Not every server implements every format: one that does not will say so rather than return an empty or partial graph, so read the error rather than treating a refusal as a site with nothing to draw. Fix-and-verify loop: call list_entities with problem=\"no-id\" to find entities declared on several pages with nothing to tie them together, give each one an absolute @id, re-run the audit with run_audit, then call compare_entities and check that gainedId contains the keys you fixed. gainedId is the only confirmation that the fix landed: an entity that gained an @id changes key, so it would otherwise look like one removal plus one addition. Check each entry's coverage field before calling it done: \"proven\" means the newer audit visited every page that declared the broken version AND found the replacement on all of them, \"partial\" means one of those could not be established.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "run_id": {
+      "description": "A specific audit run to read. Defaults to the latest audit that stored at least one entity, which is NOT always the latest audit: an audit that stored none is passed over, because the store cannot tell a site that declares nothing from an audit that predates the entity map. When one is passed over, warnings names it. If you are checking whether a change landed, name the run.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "type": {
+      "description": "Only entities carrying one of these @type values. Case-insensitive. Several values are an OR: an entity matching any one of them is kept.",
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2048
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "maxLength": 2048
+        }
+       }
+      ]
+     },
+     "page": {
+      "description": "Only entities declared on a page matching one of these values. A value that is an absolute http(s) URL or starts with \"/\" is a PREFIX match: the full URL for the first, the page path and query for the second, so \"/blog\" matches https://example.com/blog/post but not https://example.com/tag/blog. Any other value is a SUBSTRING match against the URL, so \"blog\" matches both. Case-sensitive. Not a glob. Several values are an OR.",
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2048
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "maxLength": 2048
+        }
+       }
+      ]
+     },
+     "problem": {
+      "description": "Only entities with one of these problems: no-id, conflict, dangling, single-page, split-identity. Several values are an OR.",
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "no-id",
+         "conflict",
+         "dangling",
+         "single-page",
+         "split-identity"
+        ]
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "enum": [
+          "no-id",
+          "conflict",
+          "dangling",
+          "single-page",
+          "split-identity"
+         ]
+        }
+       }
+      ]
+     },
+     "q": {
+      "description": "Only entities whose name or @id contains this text. Case-insensitive substring, not a pattern.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "include_page_local": {
+      "description": "Include entities that describe one page rather than the site's subject matter, such as a page's own WebPage or BreadcrumbList. False by default because they usually outnumber everything else.",
+      "type": "boolean"
+     },
+     "format": {
+      "description": "How to render the graph: json, jsonld, mermaid, dot, graphml, markdown. Defaults to json.",
+      "type": "string",
+      "enum": [
+       "json",
+       "jsonld",
+       "mermaid",
+       "dot",
+       "graphml",
+       "markdown"
+      ]
+     },
+     "website_id": {
+      "description": "The registered website to read, on the hosted server. Ignored by the local server, which reads the project store. When both this and run_id are given, run_id wins and this is ignored; naming a run of a different website is answered about the run.",
+      "type": "string",
+      "maxLength": 2048
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_issue",
+   "title": "Get issue detail",
+   "description": "Fetch one issue by website_id + issue number, including its full description, recommendation, affected pages, occurrence detail from the latest report (which page/image/URL, snippets), and comment thread. `occurrence_count` is the true total; the listed occurrences are a sample when `occurrences_truncated` is true, and on a capped report `full_detail` says where every occurrence is. Use comment_on_issue to add analysis or a fix note to the thread.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "description": "Website id the issue belongs to."
+     },
+     "issue_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Issue number from list_issues."
+     },
+     "occurrence_limit": {
+      "description": "Max occurrences to include (default 20); see occurrence_count/truncated.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     }
+    },
+    "required": [
+     "website_id",
+     "issue_number"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_report",
+   "title": "Get audit report",
+   "description": "Fetch the finished report for an audit run (use the run_id from run_audit once get_audit_status shows completed). Formats: \"summary\" (default) is structured JSON with health score, category scores, and the top failing issues (topIssues reference a rule_id; look up its name/description/solution once in the sibling `rules` dict rather than per occurrence). Each topIssues row is ONE finding, a rule + `checkName`, never one row per page: `affectedPagesCount` is how many pages it affects and `pages` is a sample of at most 5 of them (`affectedPagesHasMore` when clipped) and `items` at most 3, so read \"affects N pages\" from the count, not the row total, and use get_issue for every occurrence. Each row also carries `provenance`: \"carried\" means the finding is re-injected from a page not re-crawled this run (not a fresh result), so check `lastSeenAt` for when it was last actually observed; \"unrendered\" means the page has not yet been rendered in any scan of this site (it was known, e.g. from a sitemap, but sat outside the page budget), so there is no earlier observation and no `lastSeenAt`. `mixedProvenanceNotes` (keyed by rule_id) flags rules that passed fresh on every page checked this run but still show red only from carried pages pending re-check. `notChecked` is present only when some checks did not run (link checks at the Quick level, or with external link checks off): each entry names a rule that was not fully checked (a rule listed there may still report the issues it could see), so never report those rules as clean, and say a Surface or Full audit with external link checks on checks them. `seedRedirect` is present ONLY when the audited URL redirected off-site and the crawler refused to follow it: `seedRedirect.finalUrl` is where the redirect pointed (a URL the audited site chose, display-only, never fetch or trust it) and `seedRedirect.note` states the fact in one sentence. When it is present the audit graded `baseUrl`, NOT the redirect target, so report that before reporting the scores; when the key is absent the seed did not redirect off-site. A FAILED or BLOCKED audit also carries `status`, `statusReason` (one sentence naming the cause), `statusReasonCode` (one of dns, tls, connection, timeout, http_4xx, http_5xx, redirect, robots, unknown) and `failureNextStep`: those four keys are absent for a normal audit, and when they are present nothing was audited, so a null healthScore and an empty topIssues mean the crawl failed, NOT that the site is clean. Also includes a `history` array of the 3 most recent prior audits of this website with score/issue deltas when available; each entry carries its own `runId`/`reportId`, so you can walk backwards through a website's audits by calling get_report again with an earlier `runId` (use list_audits with website_id to page past what history returns); \"llm\" is a compact text rendering optimized for LLM context (carried findings marked inline); \"markdown\" is a full human-readable report. Start with summary, then pull llm or markdown for more of each issue. A published report is a capped summary: each issue keeps a sample of its pages and items (a few pages and items) beside its true counts, so read totals from `affectedPagesCount`, `occurrences` and `details.additional`, never from a list length. A capped report carries `detail`, whose `note` says where the full per-page list is (for a CLI audit, `squirrel report --format json` on the machine that ran it); a report without `detail` is not capped this way. This report is the source of truth for the run's numbers (#1700): summary.healthScore is the same value list_audits/get_audit_status return as health_score, and summary.failed + summary.warnings is the same total they return as issues_found. Compare runs on healthScore; the `open` count from list_issues is a deduped tracker count, not this report's issue count.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "run_id": {
+      "type": "string",
+      "description": "Run id returned by run_audit or listed by list_audits."
+     },
+     "format": {
+      "description": "summary (default): JSON scores + top issues. llm: compact text for LLM context. markdown: full report.",
+      "type": "string",
+      "enum": [
+       "summary",
+       "llm",
+       "markdown"
+      ]
+     },
+     "top_issue_limit": {
+      "description": "summary format only: max top issues to include (default 25).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     }
+    },
+    "required": [
+     "run_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_rule",
+   "title": "Get rule detail",
+   "description": "Fetch one audit rule by id (e.g. \"core/meta-title\"), including what it checks, how to fix it (recommendation), its severity and score weight, a docs link, and whether it is a cloud (credit-billed) rule. Rule ids appear in report topIssues and issue rule_id fields.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "rule_id": {
+      "type": "string",
+      "description": "Rule id like \"crawl/canonical-chain\" (category/slug)."
+     }
+    },
+    "required": [
+     "rule_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_website_settings",
+   "title": "Get website settings",
+   "description": "Read one website's stored audit settings: its audit level (quick, surface, full or custom) with the page cap, crawl strategy, rendering and external link checks it sets, the crawl depth, crawl scope, include/exclude patterns and internal link checks, whether broken link alerts are on (broken_link_alerts, Pro and Team), and its recurring-audit schedule. runs_as is how the next audit runs on the organization's plan (a level or page cap the plan does not run is held to the plan there, with a notice) and credits_per_run_max is the most one audit of it can cost. schedule says whether recurring audits are on; pending_first_audit: true means they switch on by themselves after the site's first successful audit, and estimated_cost is the most they spend per run, week and month.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "pattern": "^(?:[0-9A-HJKMNP-TV-Z]{8}|[0-9A-HJKMNP-TV-Z]{26})$",
+      "description": "Website id from list_websites, run_audit or add_website."
+     }
+    },
+    "required": [
+     "website_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_audits",
+   "title": "List audits",
+   "description": "List the organization's audit runs: currently active (queued/pending/running; queued means waiting for a free cloud slot, and it starts by itself) plus recent runs of any status. Pass website_id (from list_websites) to get one website's full audit history, oldest runs included, and page through it with limit/offset using the returned total/has_more. This is the way to reach the preserved reports of a soft-deleted website: its runs still list under its old website_id. total/has_more describe the `recent` array only, and `recent` already includes any queued/pending/running run, so `active` is a live view of those same runs and not extra items to add to the count. Use the run ids with get_audit_status or get_report, and website ids with list_issues. Numbers on a recent run come from its published report (#1700): health_score is that report's overall score (the same value as get_report's summary.healthScore; null when the site was blocked or down, which earns no grade) and issues_found is the report's failing + warning checks (its summary.failed + summary.warnings). health_score is the metric to compare run over run: it is the only one rescored consistently across the whole site. Do NOT compare issues_found with the `open` count from list_issues: the issue tracker folds a rule failing on many pages into one open issue and carries issues forward until they are re-checked, so its count is legitimately much smaller and moves independently.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "description": "Only return runs of this website (id from list_websites, run_audit, or add_website). Works for soft-deleted websites too.",
+      "type": "string"
+     },
+     "limit": {
+      "description": "Max recent runs to return (default 20, max 100).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "offset": {
+      "description": "Pagination offset into the recent runs (default 0). Use with total/has_more.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_credit_transactions",
+   "title": "List credit transactions",
+   "description": "Audit the organization's credit accounting log: grants (signup/monthly/pack/promo), debits (audit_base 50cr + audit_page 2cr per audited page + external_link 1cr per checked link + folded 0-cost services; older audits carry render rows instead of audit_page), refunds, and adjustments, newest first, paginated. Each debit/refund carries `run_id` so you can group a single audit's spend. Use this to explain why an audit cost what it cost or to reconcile a balance. For one audit's per-feature breakdown, use get_report (its `cost` field). Read-only.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "limit": {
+      "description": "Max transactions to return (default 25, max 100).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "cursor": {
+      "description": "Opaque pagination cursor from a previous page's `next_cursor`.",
+      "type": "string"
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_entities",
+   "title": "List declared entities",
+   "description": "List the entities a site declares in its JSON-LD, collapsed across every crawled page into one graph, so an Organization declared identically on 60 pages is one row rather than 60. Declarations collapse by resolved @id, or by type and name when there is no @id, so the SAME real-world thing can still occupy several rows when its declared identity differs between pages: a relative @id such as \"#organization\" resolves against each page and yields one row per page. That is the split-identity problem, not a quirk of this tool. Filter by @type, by declaring page, by problem class, or by a text match on the name. Page-local entities (a page's own WebPage, BreadcrumbList and unnamed images) usually outnumber the site's actual subject matter and are hidden unless include_page_local is true. Returns the site-wide summary (it does not change with the filters), a filtered block with the node and edge counts that survived them, a page of nodes, total, and hasMore; keep requesting pages while hasMore is true rather than describing a site from one page. Fix-and-verify loop: call list_entities with problem=\"no-id\" to find entities declared on several pages with nothing to tie them together, give each one an absolute @id, re-run the audit with run_audit, then call compare_entities and check that gainedId contains the keys you fixed. gainedId is the only confirmation that the fix landed: an entity that gained an @id changes key, so it would otherwise look like one removal plus one addition. Check each entry's coverage field before calling it done: \"proven\" means the newer audit visited every page that declared the broken version AND found the replacement on all of them, \"partial\" means one of those could not be established.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "run_id": {
+      "description": "A specific audit run to read. Defaults to the latest audit that stored at least one entity, which is NOT always the latest audit: an audit that stored none is passed over, because the store cannot tell a site that declares nothing from an audit that predates the entity map. When one is passed over, warnings names it. If you are checking whether a change landed, name the run.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "type": {
+      "description": "Only entities carrying one of these @type values. Case-insensitive. Several values are an OR: an entity matching any one of them is kept.",
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2048
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "maxLength": 2048
+        }
+       }
+      ]
+     },
+     "page": {
+      "description": "Only entities declared on a page matching one of these values. A value that is an absolute http(s) URL or starts with \"/\" is a PREFIX match: the full URL for the first, the page path and query for the second, so \"/blog\" matches https://example.com/blog/post but not https://example.com/tag/blog. Any other value is a SUBSTRING match against the URL, so \"blog\" matches both. Case-sensitive. Not a glob. Several values are an OR.",
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2048
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "maxLength": 2048
+        }
+       }
+      ]
+     },
+     "problem": {
+      "description": "Only entities with one of these problems: no-id, conflict, dangling, single-page, split-identity. Several values are an OR.",
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "no-id",
+         "conflict",
+         "dangling",
+         "single-page",
+         "split-identity"
+        ]
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "enum": [
+          "no-id",
+          "conflict",
+          "dangling",
+          "single-page",
+          "split-identity"
+         ]
+        }
+       }
+      ]
+     },
+     "q": {
+      "description": "Only entities whose name or @id contains this text. Case-insensitive substring, not a pattern.",
+      "type": "string",
+      "maxLength": 2048
+     },
+     "include_page_local": {
+      "description": "Include entities that describe one page rather than the site's subject matter, such as a page's own WebPage or BreadcrumbList. False by default because they usually outnumber everything else.",
+      "type": "boolean"
+     },
+     "limit": {
+      "description": "Entities to return. Default 25, maximum 100.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "offset": {
+      "description": "Entities to skip, for paging through a result larger than limit. Default 0. Ordering is by page count descending, then by key, and is stable across calls on one audit, so paging does not repeat or skip a row.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     },
+     "website_id": {
+      "description": "The registered website to read, on the hosted server. Ignored by the local server, which reads the project store. When both this and run_id are given, run_id wins and this is ignored; naming a run of a different website is answered about the run.",
+      "type": "string",
+      "maxLength": 2048
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_issues",
+   "title": "List website issues",
+   "description": "List a website's open audit issues (like a bug tracker: each issue is one failing rule with occurrences across pages, numbered per website). Returns issues sorted by severity. `total`, `returned` and `has_more` describe the issues matching YOUR filters; `website_totals` (by_status, active_by_severity: open and in_progress) always counts the whole website regardless of filters, so the two can differ (it replaces the earlier `severity_summary` and `status_counts` fields). Rows omit the long `recommendation` (use get_rule with the row's rule_id, or get_issue, or pass include_recommendation: true). Use the issue number with get_issue for full detail and comments. Filter by status/severity/category to narrow down. This is a per-website tracker spanning audits, not a per-run count: one rule failing on 600 pages is ONE issue here, and an issue stays open until an audit re-checks it. So the open count is expected to be far smaller than a run's issues_found (list_audits) or a report's failed+warnings, and the two are not comparable (#1700). To compare runs, use health_score from list_audits.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "description": "Website id from list_websites, run_audit, or list_audits."
+     },
+     "status": {
+      "description": "Filter by issue status (omit for all statuses).",
+      "type": "string",
+      "enum": [
+       "open",
+       "in_progress",
+       "resolved",
+       "dismissed",
+       "wontfix"
+      ]
+     },
+     "severity": {
+      "description": "Filter by severity.",
+      "type": "string",
+      "enum": [
+       "critical",
+       "high",
+       "medium",
+       "low"
+      ]
+     },
+     "category": {
+      "description": "Filter by rule category code (e.g. seo, performance, security).",
+      "type": "string"
+     },
+     "limit": {
+      "description": "Page size (default 50).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "offset": {
+      "description": "Pagination offset (default 0).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     },
+     "include_recommendation": {
+      "description": "Include each issue's full recommendation text (default false; see get_rule).",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "website_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_notifications",
+   "title": "List notifications",
+   "description": "Read the organization's notification feed, newest first: what finished, what broke, and what changed since you last looked. Categories include audit_complete, issues_detected, audit_failed, broken_links, schedule_paused. Use this to catch up at the start of a session (\"did last night's scheduled audit run?\", \"what failed?\") instead of polling every website. Each entry carries the category, the human-readable title and body, a data payload with the ids involved (website_id, run_id, report_id), and whether a human has read it in the dashboard. Filter with category, or unread_only to see just what nobody has looked at yet. Paginated with limit/offset, or poll for new events: every response carries next_cursor, and passing it back as after returns only notifications created since, oldest first (offset is ignored). Read-only: this never marks anything read.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "limit": {
+      "description": "Max notifications to return (default 20, max 100).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "offset": {
+      "description": "Rows to skip (default 0).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     },
+     "after": {
+      "description": "Opaque cursor from a previous response's next_cursor. Returns only newer notifications, oldest first.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+     },
+     "unread_only": {
+      "description": "Only notifications no one has read in the dashboard yet.",
+      "type": "boolean"
+     },
+     "category": {
+      "description": "Restrict to these categories, e.g. [\"audit_failed\"]. Omit for every category.",
+      "minItems": 1,
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 64
+      }
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_rules",
+   "title": "List audit rules",
+   "description": "Browse the catalog of 300+ audit rules that run during an audit, grouped into categories (crawlability, meta tags, performance, security, accessibility, content, and more). Filter by category code or search by keyword to find what a specific rule checks. Use get_rule for one rule's full detail.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "category": {
+      "description": "Filter to one category code (see the categories list in the response).",
+      "type": "string"
+     },
+     "search": {
+      "description": "Case-insensitive keyword match on rule id, name, and description.",
+      "type": "string"
+     },
+     "include_categories": {
+      "description": "Include the categories list (code, name, rule_count). Default: included only when no category or search filter is given.",
+      "type": "boolean"
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_websites",
+   "title": "List websites",
+   "description": "List websites the organization has audited, with their latest run status, health score, and owned/prospect kind. Each row carries last_run_id (the latest run, any status) and last_report_run_id / last_report_id (the latest completed run whose report has not been deleted). Pass last_report_run_id to get_report to read a website's newest report without knowing a run id in advance, or list_audits with website_id for its full history. Use the website_id with list_issues/get_issue. Websites registered but never audited do not appear; run_audit or add_website registers a new one. Ephemeral one-shot audits never appear. Returns total/has_more for pagination. Filter by kind to separate sites the user runs from one-off prospect audits: kind: \"prospect\" returns ONLY sites explicitly marked as such, so it is the safe way to build a bulk-delete list.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "limit": {
+      "description": "Page size (default 50).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "offset": {
+      "description": "Pagination offset (default 0).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     },
+     "kind": {
+      "description": "Filter by classification. Unclassified sites count as 'owned', so 'prospect' never returns a site nobody explicitly marked disposable. Omit for all websites.",
+      "type": "string",
+      "enum": [
+       "owned",
+       "prospect"
+      ]
+     }
+    },
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "run_audit",
+   "title": "Run a cloud audit",
+   "description": "Run a cloud audit of a website (crawl + 300+ rule analysis + report). Credits are spent as the audit runs (pay-as-you-go). The dry run is optional: pass confirm: true on the first call to start straight away. Without confirm, an audit whose estimate is over the org's auto-run threshold comes back as status \"confirmation_required\" with the estimate to show the user; one at or under the threshold just starts. That response carries \"sufficient\": true means the organization can pay, so show the estimate and call again with confirm: true; false means it cannot, and the response then carries the cost, the balance, the credit reset date and an upgrade_url for that organization. Relay those, and do NOT retry with confirm: true, which is refused. Pick the audit with level: quick (25 pages from the seed and sitemaps with external link checks, without the cloud checks), surface (100 pages, one per URL pattern, with the cloud checks and external link checks) or full (500 pages, every page it can reach; Pro and Team only: on the Free plan a full request crawls one page per URL pattern instead, up to the plan's page ceiling, and says so in level_notice). Without level the website's own level applies (a new website starts on surface). Every level checks external links, quick included, unless the website's external link setting or this run's external_links turns them off; each distinct external link the cloud verifies costs 1 credit (a link it cannot verify costs nothing), at most one per page of the page budget, and the estimate includes it. Use max_pages to size the crawl (max_pages: 1 audits just the entry URL, the cheapest run). Audits are asynchronous and take minutes: poll get_audit_status with the returned run_id, then fetch results with get_report. The website is registered automatically on first audit. A started run carries a schedule field describing the site's recurring audits: when state is active say so, since each of those runs costs credits, and settings_url is where the user turns them off. pending_first_audit: true means they switch on by themselves after this site's first successful audit, estimated_cost is the most they spend per run, week and month, and update_website_settings with schedule \"off\" turns them off.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "Website URL to audit, e.g. https://example.com (scheme optional)."
+     },
+     "confirm": {
+      "description": "Approve the credit spend. Set true to start immediately. Omitting it returns an estimate first for anything over the auto-run threshold, and starts the audit anyway for anything at or under it.",
+      "type": "boolean"
+     },
+     "scope": {
+      "description": "Which URLs to audit. 'discover' (the default) follows links from the pages it finds. 'sitemap' audits only the URLs the site's sitemap publishes, which is what you want when the sitemap is the list the user cares about and link discovery would spend the budget elsewhere. Overrides the website's stored setting for this run only.",
+      "type": "string",
+      "enum": [
+       "discover",
+       "sitemap"
+      ]
+     },
+     "max_credits": {
+      "description": "Spend guard: refuse to start if the upper-bound estimate exceeds this many credits.",
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+     },
+     "level": {
+      "description": "Audit level for this run: quick (25 pages, without the cloud checks), surface (100 pages with the cloud checks and external link checks) or full (500 pages). Default: the website's own level. Do not combine with coverage.",
+      "type": "string",
+      "enum": [
+       "quick",
+       "surface",
+       "full"
+      ]
+     },
+     "coverage": {
+      "description": "Deprecated, use level. The old cloud depth: fast (10 pages), surface (50), deep (250) or full (500), each with the cloud checks, keeping the website's own overrides.",
+      "type": "string",
+      "enum": [
+       "fast",
+       "surface",
+       "deep",
+       "full"
+      ]
+     },
+     "max_pages": {
+      "description": "Cap the crawl at this many pages for this run. Overrides the coverage profile's page count, so max_pages: 1 audits just the entry URL for the cheapest possible run. A value above the plan's per-audit page ceiling is clamped to the ceiling and reported back in a notice, not rejected.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+     },
+     "render": {
+      "description": "Render pages in a headless browser (default true). Catches JavaScript-dependent issues; costs extra credits per page.",
+      "type": "boolean"
+     },
+     "external_links": {
+      "description": "Check links to other sites for this run: true at any level, false to skip them (default: the website's setting). Each distinct external link the cloud verifies costs 1 credit (a link it cannot verify costs nothing), at most one per page of the run's page budget, and the estimate includes that. Skipped links are listed as not checked in the report.",
+      "type": "boolean"
+     },
+     "internal_links": {
+      "description": "Status-check internal link targets the crawl did not fetch (a HEAD request each, a one-byte GET only when the server refuses HEAD, following redirects that stay in scope; free; it never requests links that look like actions or carry a token). Default: the website's setting, on unless switched off. Pass false for a site whose links change state when requested.",
+      "type": "boolean"
+     },
+     "ephemeral": {
+      "description": "One-shot check: run the audit and return the report without adding the site to the organization's website list, and without consuming a slot against the plan's website limit. Use for any 'just check this URL' audit the user is not going to monitor. The site is removed automatically once the audit finishes; get_audit_status and get_report keep working on the run_id. Ignored if the domain is already registered, in which case the audit runs against the existing tracked site (nothing is ever deleted) and the response reports ephemeral: false.",
+      "type": "boolean"
+     },
+     "kind": {
+      "description": "Classify the site: 'owned' for something the user runs and monitors, 'prospect' for a lead or competitor audited once. Filterable in list_websites so a prospect cleanup can never sweep up a live site. Unclassified sites read as 'owned'. Ignored when ephemeral is true (an ephemeral site never joins the list).",
+      "type": "string",
+      "enum": [
+       "owned",
+       "prospect"
+      ]
+     }
+    },
+    "required": [
+     "url"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "send_feedback",
+   "title": "Send feedback",
+   "description": "Send feedback to the squirrelscan team: a bug, a missing feature, what worked, what was confusing, missing report data, or tool ergonomics. Use it when the user wants to report something or share their experience. Works with any authenticated credentials, including read-only API keys.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "category": {
+      "type": "string",
+      "enum": [
+       "bug_report",
+       "feature_request",
+       "what_worked",
+       "confusing",
+       "missing_data",
+       "tool_ergonomics",
+       "other"
+      ],
+      "description": "bug_report (a defect in squirrelscan itself: wrong or missing rule result, crash, broken tool), feature_request (something squirrelscan should do but doesn't), what_worked (something worked well), confusing (unclear response/behavior), missing_data (a report or tool response was missing something you needed), tool_ergonomics (awkward tool shape/args/naming), or other."
+     },
+     "message": {
+      "description": "Free-text feedback (truncated at 2000 chars).",
+      "type": "string",
+      "minLength": 1
+     },
+     "run_id": {
+      "description": "Audit run id this feedback relates to, if any (from run_audit/get_report). Verified against your credentials' runs before being attached.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+     },
+     "website_id": {
+      "description": "Website id this feedback relates to, if any (from list_websites). Verified against your org's websites before being attached.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+     }
+    },
+    "required": [
+     "category",
+     "message"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "update_website_settings",
+   "title": "Update website settings",
+   "description": "Change one website's stored audit settings: level, max_pages, render, external_links, max_depth, scope, include_patterns, exclude_patterns and internal_links, broken_link_alerts (Pro and Team; switching it off is allowed on every plan), and schedule (off, daily, weekly or monthly) for its recurring audits. Omitted fields are left unchanged. Values are checked the same way the dashboard's settings are and held to the organization's plan; the result reports what is stored afterwards, which fields were applied, and any plan clamp. Turning recurring audits on, changing their cadence, or a change that raises the most one audit can cost returns status \"confirmation_required\" with the estimated credit cost and changes nothing until it is sent again with the same arguments plus confirm: true. schedule: \"off\" and changes that cost nothing more apply at once.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "website_id": {
+      "type": "string",
+      "pattern": "^(?:[0-9A-HJKMNP-TV-Z]{8}|[0-9A-HJKMNP-TV-Z]{26})$",
+      "description": "Website id from list_websites, run_audit or add_website."
+     },
+     "level": {
+      "description": "Audit level preset. Setting one resets the level's settings to the preset, with any max_pages, render or external_links in the same call applied on top.",
+      "type": "string",
+      "enum": [
+       "quick",
+       "surface",
+       "full"
+      ]
+     },
+     "max_pages": {
+      "description": "Page budget of each audit, 1 to 10000. A value above the plan's per-audit ceiling is stored and held to the ceiling when an audit runs (runs_as reports it).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+     },
+     "render": {
+      "description": "Rendering: off fetches over HTTP only, auto renders the pages that need JavaScript, all renders every page.",
+      "type": "string",
+      "enum": [
+       "off",
+       "auto",
+       "all"
+      ]
+     },
+     "external_links": {
+      "description": "Check links that leave the site. In the cloud each distinct destination costs a credit.",
+      "type": "boolean"
+     },
+     "max_depth": {
+      "description": "How many links deep the crawl follows from the start page, 1 to 10; null removes the limit.",
+      "anyOf": [
+       {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "scope": {
+      "description": "'discover' follows links from the pages it finds; 'sitemap' audits only the URLs the site's sitemap publishes.",
+      "type": "string",
+      "enum": [
+       "discover",
+       "sitemap"
+      ]
+     },
+     "include_patterns": {
+      "description": "Crawl only URLs matching these patterns: paths like /blog/* or absolute URLs on this site. Replaces the stored list; an empty list removes the restriction.",
+      "maxItems": 200,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "maxLength": 500
+      }
+     },
+     "exclude_patterns": {
+      "description": "Never crawl URLs matching these patterns, such as /cdn-cgi/* or /api/*. Replaces the stored list; an empty list clears it.",
+      "maxItems": 200,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "maxLength": 500
+      }
+     },
+     "internal_links": {
+      "description": "Status-check internal link targets the crawl did not fetch (a HEAD request each, a one-byte GET only when the server refuses HEAD; free; never links that look like actions or carry a token). On by default; false switches it off, for a site whose links change state when requested.",
+      "type": "boolean"
+     },
+     "broken_link_alerts": {
+      "description": "Alert the website's owner, after each scheduled audit, about links it reports broken that the previous scheduled audit did not find broken (one email and one notification per audit; links that could not be verified never count). On by default on Pro and Team; turning it on is refused on Free. Costs nothing.",
+      "type": "boolean"
+     },
+     "schedule": {
+      "description": "Recurring audits: off, daily, weekly or monthly. A cadence the plan does not run is held to one it does, and the result says so.",
+      "type": "string",
+      "enum": [
+       "off",
+       "daily",
+       "weekly",
+       "monthly"
+      ]
+     },
+     "confirm": {
+      "description": "Approve a change that turns recurring audits on, changes their cadence, or raises the most one audit can cost. Without it such a change returns the estimate and is not applied.",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "website_id"
+    ],
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "whoami",
+   "title": "Who am I",
+   "description": "Identify the current credentials: how you are authenticated, which organization you act for, the plan, and the current credit balance. Useful at the start of a session, to see which organization the other tools act for.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {},
+    "additionalProperties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "resources": [
+  {
+   "uri": "skill://audit-website/agents/openai.yaml",
+   "name": "audit-website/agents/openai.yaml",
+   "mimeType": "application/yaml"
+  },
+  {
+   "uri": "skill://audit-website/assets/icon-large.png",
+   "name": "audit-website/assets/icon-large.png",
+   "mimeType": "image/png"
+  },
+  {
+   "uri": "skill://audit-website/assets/icon-small.svg",
+   "name": "audit-website/assets/icon-small.svg",
+   "mimeType": "image/svg+xml"
+  },
+  {
+   "uri": "skill://audit-website/README.md",
+   "name": "audit-website/README.md",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "skill://audit-website/references/OUTPUT-FORMAT.md",
+   "name": "audit-website/references/OUTPUT-FORMAT.md",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "skill://audit-website/SKILL.md",
+   "name": "audit-website",
+   "mimeType": "text/markdown",
+   "description": "Audit a website with the squirrelscan CLI and fix the findings in code. Runs SEO, performance, security, technical, content, accessibility, and 16 other rule categories (300+ rules), returns an LLM-optimized report, then drives an iterative fix loop, mapping issues to source files, applying fixes, and re-auditing until the site scores well. Use to discover and assess website or webapp issues and drive them to fixed."
+  },
+  {
+   "uri": "skill://squirrelscan/agents/openai.yaml",
+   "name": "squirrelscan/agents/openai.yaml",
+   "mimeType": "application/yaml"
+  },
+  {
+   "uri": "skill://squirrelscan/assets/icon-large.png",
+   "name": "squirrelscan/assets/icon-large.png",
+   "mimeType": "image/png"
+  },
+  {
+   "uri": "skill://squirrelscan/assets/icon-small.svg",
+   "name": "squirrelscan/assets/icon-small.svg",
+   "mimeType": "image/svg+xml"
+  },
+  {
+   "uri": "skill://squirrelscan/references/entity-map-fixes.md",
+   "name": "squirrelscan/references/entity-map-fixes.md",
+   "mimeType": "text/markdown"
+  },
+  {
+   "uri": "skill://squirrelscan/SKILL.md",
+   "name": "squirrelscan",
+   "mimeType": "text/markdown",
+   "description": "squirrelscan audits websites for SEO, performance, security, accessibility, content, and structured data issues (300+ rules) and scores site health, via the squirrel CLI. Use when the user wants to check, audit, or improve a website's SEO, ranking, speed, or health, and for anything squirrelscan itself, installing or updating the CLI, login and API keys, running audits, publishing and sharing reports, cloud credits, MCP server setup, configuration, or troubleshooting. Also covers the entity map:"
+  }
+ ],
+ "prompts": []
+}

@@ -1,0 +1,861 @@
+{
+ "server": "Clickwise",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "apply_to_program",
+   "title": "Apply to a program",
+   "description": "Ask to join a program (program_id from list_my_programs with include_available, or a campaign_id). Clickwise reviews the fit; the result is approved or pending. Requires your own Clickwise affiliate API key on the MCP connection (X-API-Key header or Authorization: Bearer); acts only on your account.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "program_id": {
+      "type": "integer"
+     },
+     "campaign_id": {
+      "type": [
+       "string",
+       "integer"
+      ]
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "create_tracking_links",
+   "title": "Create tracking links",
+   "description": "Use this when you already have a Clickwise affiliate API key and want tracking links for programs you are approved in: one per item (the same program and subid return the same link), optionally deep-linking to a landing_url on the merchant's site. Each item reports its own status; a failed item never blocks the others. Without an account use request_tracked_links. Requires your own Clickwise affiliate API key on the MCP connection (X-API-Key header or Authorization: Bearer); acts only on your account.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "links": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+       "type": "object",
+       "properties": {
+        "campaign_id": {
+         "type": [
+          "string",
+          "integer"
+         ],
+         "description": "From list_my_programs."
+        },
+        "program_id": {
+         "type": "integer",
+         "description": "Alternative to campaign_id."
+        },
+        "subid": {
+         "type": "string",
+         "maxLength": 100,
+         "description": "Your placement/sub ID."
+        },
+        "landing_url": {
+         "type": "string",
+         "maxLength": 2000,
+         "description": "Deep link target on the merchant's own domain."
+        }
+       },
+       "additionalProperties": false
+      }
+     }
+    },
+    "required": [
+     "links"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "find_affiliate_programs",
+   "title": "Find affiliate programs",
+   "description": "Use this first when someone without a Clickwise account asks which merchants to promote: it ranks live programs by fit for a described site, app, newsletter or social channel. Does not require signup. For the whole catalogue page by page use list_programs; for the programs your API key is already approved in use list_my_programs.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "publisher_url": {
+      "type": "string",
+      "description": "Where the affiliate will publish: URL, app URL, social profile, newsletter page, etc."
+     },
+     "topic": {
+      "type": "string",
+      "description": "Audience or content topic, e.g. travel deals, AI shopping assistant, sneakers."
+     },
+     "category": {
+      "type": "string",
+      "description": "Preferred vertical/category."
+     },
+     "country": {
+      "type": "string",
+      "description": "Main audience country, ISO 3166-1 alpha-2 if known."
+     },
+     "channel": {
+      "type": "string",
+      "description": "Publishing channel: site, app, newsletter, Instagram, TikTok, coupon, cashback, etc."
+     },
+     "merchant": {
+      "type": "string",
+      "description": "Optional merchant name/domain filter."
+     },
+     "network": {
+      "type": "string",
+      "description": "Optional source network slug; applies only to signed-in affiliates."
+     },
+     "traffic_monthly": {
+      "type": "integer",
+      "description": "Estimated monthly visits/reach."
+     },
+     "traffic_daily": {
+      "type": "integer",
+      "description": "Estimated daily visits/reach."
+     },
+     "include_unready": {
+      "type": "boolean",
+      "default": false,
+      "description": "Also return published matched programs whose links are not available yet; can_issue_link_now indicates availability."
+     },
+     "limit": {
+      "type": "integer",
+      "default": 8,
+      "minimum": 1,
+      "maximum": 20
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_catalog_stats",
+   "title": "Get catalog statistics",
+   "description": "Public GTIN catalog counts as of generated_at, using the same stored snapshot as /api/v1/public/catalog-stats/. Fixed one-hour validity; snapshot_stale marks older counts served for less than six hours. No affiliate data or amounts.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_deal",
+   "title": "Get deal",
+   "description": "Fetch the full record for a single deal by its slug. Returns title, description, code, discount, target_url, etc., in the requested language.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     },
+     "lang": {
+      "type": "string",
+      "enum": [
+       "en",
+       "es",
+       "pt",
+       "fr",
+       "de",
+       "it"
+      ],
+      "default": "en"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_monetization_feed",
+   "title": "Get monetization feed",
+   "description": "Use this when a publisher without an account wants links ready to render on a site or app: it creates a provisional Clickwise affiliate and tracked links, as request_tracked_links does, and also returns cards, an HTML embed snippet and a JSON feed. Email is optional; the account is claimed later for payout. For plain links use request_tracked_links; with an existing API key use create_tracking_links.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "publisher_url": {
+      "type": "string",
+      "description": "The app/site/profile where the feed will be embedded."
+     },
+     "topic": {
+      "type": "string",
+      "description": "Audience/content topic, e.g. travel deals, AI shopping assistant, sneakers."
+     },
+     "category": {
+      "type": "string",
+      "description": "Preferred vertical/category."
+     },
+     "country": {
+      "type": "string",
+      "description": "Main audience country, ISO 3166-1 alpha-2."
+     },
+     "program_ids": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      },
+      "description": "Optional specific program IDs; omit to let Clickwise pick fitting merchants."
+     },
+     "sub_id": {
+      "type": "string",
+      "description": "Optional placement/sub ID for attribution."
+     },
+     "claim_email": {
+      "type": "string",
+      "description": "Optional email to claim the account (and payout) later."
+     },
+     "limit": {
+      "type": "integer",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 10,
+      "description": "How many cards to return."
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_news",
+   "title": "Get news article",
+   "description": "Fetch the full record for a single news article by its slug.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     },
+     "lang": {
+      "type": "string",
+      "enum": [
+       "en",
+       "es",
+       "pt",
+       "fr",
+       "de",
+       "it"
+      ],
+      "default": "en"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_payment_status",
+   "title": "Get my payment status",
+   "description": "Use this when an affiliate asks when they get paid: approved commission not yet paid (per currency and in USD), commission still pending review, the next payment as an estimate with its threshold, and the payment method as its type (a bank account shows only its last 4 digits). Read-only; never returns account numbers, PayPal addresses, postal or tax data. Requires your own Clickwise affiliate API key on the MCP connection (X-API-Key header or Authorization: Bearer); acts only on your account.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_performance_report",
+   "title": "Get performance report",
+   "description": "Your conversions and commission (what you earn), grouped by day, week, month, subid, campaign or status, for up to 366 days (default: last 30). Daily/weekly/monthly series include empty periods. Requires your own Clickwise affiliate API key on the MCP connection (X-API-Key header or Authorization: Bearer); acts only on your account.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "group_by": {
+      "type": "string",
+      "enum": [
+       "day",
+       "week",
+       "month",
+       "subid",
+       "campaign",
+       "status"
+      ],
+      "default": "day"
+     },
+     "date_from": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "YYYY-MM-DD"
+     },
+     "date_to": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "YYYY-MM-DD"
+     },
+     "subid": {
+      "type": "string",
+      "maxLength": 100
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "approved",
+       "declined"
+      ]
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_product_feed",
+   "title": "Get product feed URL",
+   "description": "Create or refresh a GTIN product feed for your authenticated affiliate and one country, and return its signed URL (json, csv, tsv or xml) with Clickwise /dl/ tracked product links. The same request returns the same URL. Requires your affiliate API key. Current freshness, permissions, assignments and delivery caps apply.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "country"
+    ],
+    "properties": {
+     "country": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2}$"
+     },
+     "category": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "format": {
+      "type": "string",
+      "enum": [
+       "json",
+       "csv",
+       "tsv",
+       "xml"
+      ],
+      "default": "json"
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_tracked_link_request",
+   "title": "Get tracked-link request",
+   "description": "Fetch a link request, affiliate RefId, review status, and issued links using its access secret.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "application_id": {
+      "type": "integer"
+     },
+     "access_secret": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "application_id",
+     "access_secret"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_conversions",
+   "title": "List conversions",
+   "description": "Your individual conversions (default: last 90 days) with status, commission, currency and subid, plus a per-subid rollup. Requires your own Clickwise affiliate API key on the MCP connection (X-API-Key header or Authorization: Bearer); acts only on your account.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "date_from": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "YYYY-MM-DD"
+     },
+     "date_to": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "YYYY-MM-DD"
+     },
+     "subid": {
+      "type": "string",
+      "maxLength": 100
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "approved",
+       "declined"
+      ]
+     },
+     "page": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 500,
+      "default": 100
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_deals",
+   "title": "List deals",
+   "description": "List active Clickwise deals and offers, optionally filtered by language, category, country or merchant.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "lang": {
+      "type": "string",
+      "enum": [
+       "en",
+       "es",
+       "pt",
+       "fr",
+       "de",
+       "it"
+      ],
+      "default": "en"
+     },
+     "category": {
+      "type": "string",
+      "description": "e.g. fashion, travel, electronics, health"
+     },
+     "country": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 (US, ES, BR, ...)"
+     },
+     "merchant": {
+      "type": "string",
+      "description": "Merchant name or domain"
+     },
+     "network": {
+      "type": "string",
+      "description": "Optional source network slug; applies only to signed-in affiliates."
+     },
+     "limit": {
+      "type": "integer",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 100
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_my_programs",
+   "title": "List my programs",
+   "description": "Use this when you hold a Clickwise affiliate API key and need the programs that key is approved to promote, with link readiness and your existing link count; set include_available to add the ones you can apply to. For discovery without an account use find_affiliate_programs or list_programs. Requires your own Clickwise affiliate API key on the MCP connection (X-API-Key header or Authorization: Bearer); acts only on your account.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "search": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Merchant/campaign name filter."
+     },
+     "include_available": {
+      "type": "boolean",
+      "default": false
+     },
+     "page": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+     },
+     "page_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 200,
+      "default": 50
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_news",
+   "title": "List program news",
+   "description": "List Clickwise news announcements about affiliate programs (policy changes, launches, shutdowns, commission updates).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "lang": {
+      "type": "string",
+      "enum": [
+       "en",
+       "es",
+       "pt",
+       "fr",
+       "de",
+       "it"
+      ],
+      "default": "en"
+     },
+     "severity": {
+      "type": "string",
+      "enum": [
+       "info",
+       "warn",
+       "critical"
+      ]
+     },
+     "network": {
+      "type": "string"
+     },
+     "limit": {
+      "type": "integer",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 100
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_programs",
+   "title": "List programs",
+   "description": "Use this to browse the whole live catalogue page by page, filtered by merchant, category or country, when find_affiliate_programs' ranked top matches are not enough. No key needed; it shows programs anyone can join. For the programs your API key is approved in use list_my_programs.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "merchant": {
+      "type": "string",
+      "description": "Merchant name or domain"
+     },
+     "category": {
+      "type": "string"
+     },
+     "country": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2"
+     },
+     "network": {
+      "type": "string",
+      "description": "Optional source network slug; applies only to signed-in affiliates."
+     },
+     "ready_only": {
+      "type": "boolean",
+      "default": true,
+      "description": "Only programs that can issue a tracked link right now."
+     },
+     "page": {
+      "type": "integer",
+      "default": 1,
+      "minimum": 1
+     },
+     "page_size": {
+      "type": "integer",
+      "default": 24,
+      "minimum": 1,
+      "maximum": 60
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "request_merchant_onboarding",
+   "title": "Request merchant onboarding",
+   "description": "Start a Clickwise merchant (advertiser) onboarding application. Describe the store; an automated evaluator replies with a follow-up question, an approval or a decline. Returns the status and an access secret to continue.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company_name": {
+      "type": "string"
+     },
+     "website": {
+      "type": "string"
+     },
+     "message": {
+      "type": "string",
+      "description": "Free-text about the store / what they sell — the AI can drive the whole interview from this."
+     },
+     "contact_email": {
+      "type": "string",
+      "description": "Optional; lets the merchant claim/continue later."
+     },
+     "country": {
+      "type": "string"
+     },
+     "vertical": {
+      "type": "string"
+     },
+     "networks_used": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Affiliate networks the merchant already works with, if any."
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "request_tracked_links",
+   "title": "Request tracked links",
+   "description": "Use this when you have no Clickwise account yet and want tracked links now: it creates a provisional affiliate and returns links for the programs that can issue one immediately. Email is optional; the account is claimed and payout details are added later (update_profile). With an API key use create_tracking_links; for ready-made cards and an embed use get_monetization_feed.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "program_ids": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      },
+      "description": "Program IDs returned by find_affiliate_programs. If omitted, Clickwise picks fitting programs."
+     },
+     "publisher_url": {
+      "type": "string",
+      "description": "Where the affiliate will publish. URL/profile/app is strongly recommended."
+     },
+     "placement_description": {
+      "type": "string",
+      "description": "Short description of how/where links will be used."
+     },
+     "topic": {
+      "type": "string"
+     },
+     "category": {
+      "type": "string"
+     },
+     "country": {
+      "type": "string"
+     },
+     "channel": {
+      "type": "string"
+     },
+     "traffic_monthly": {
+      "type": "integer"
+     },
+     "traffic_daily": {
+      "type": "integer"
+     },
+     "sub_id": {
+      "type": "string",
+      "description": "Optional placement/sub ID for attribution."
+     },
+     "claim_email": {
+      "type": "string",
+      "description": "Optional email to claim the account later; not required to get links."
+     },
+     "limit": {
+      "type": "integer",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 10
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_products",
+   "title": "Search catalog products",
+   "description": "Search fresh GTIN products in the catalog your affiliate can deliver (freshness, permissions and caps apply). Requires your affiliate API key in X-API-Key or Bearer authorization; a sandbox key (cw_sbx_, free at partners.clickwise.net/developers) also works and returns example links that never earn. Every key gets exactly the REST GET /api/v1/publisher/products/ format (with gtin: /products/lookup/): products with id, gtin, title, price and currency, url (a Clickwise /dl/ tracked link created for your affiliate the first time a product is returned), image, merchant (id, name and its public website domain), availability, country, brand, category, regular_price, description, size, color and group_id (shared by the sizes of one model and colour), plus count, total and total_exact. Search by text, brand or category, or list one market by country alone; min_price and max_price filter by price in each product's own currency (inclusive, no conversion) and currency keeps one currency; with gtin every market carrying that GTIN is searched; offset paginates.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "gtin": {
+      "type": "string",
+      "maxLength": 14
+     },
+     "text": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "brand": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "country": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2}$"
+     },
+     "category": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "min_price": {
+      "type": [
+       "number",
+       "string"
+      ],
+      "description": "Inclusive lower price bound, in each product's own currency (no conversion). Number from 0 with up to 4 decimals."
+     },
+     "max_price": {
+      "type": [
+       "number",
+       "string"
+      ],
+      "description": "Inclusive upper price bound, in each product's own currency (no conversion). Number from 0 with up to 4 decimals."
+     },
+     "currency": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{3}$",
+      "description": "ISO 4217 code: only products priced in this currency (the price range then applies to it)."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 20
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 50000,
+      "default": 0
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "update_profile",
+   "title": "Update creator profile",
+   "description": "Update a creator's monetization profile (claim email, display name, website, country, payment method) using the application_id + access_secret returned by request_tracked_links. Overwrites the fields provided. Lets a creator's assistant complete claim/payout details without leaving chat.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "application_id": {
+      "type": "integer"
+     },
+     "access_secret": {
+      "type": "string"
+     },
+     "claim_email": {
+      "type": "string"
+     },
+     "display_name": {
+      "type": "string"
+     },
+     "website_url": {
+      "type": "string"
+     },
+     "country": {
+      "type": "string"
+     },
+     "payment_method": {
+      "type": "object",
+      "description": "e.g. {\"Type\": \"Paypal\", \"Paypal_ID\": \"you@example.com\", \"Paypal_Name\": \"Your Name\"}"
+     }
+    },
+    "required": [
+     "application_id",
+     "access_secret"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

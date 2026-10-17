@@ -1,0 +1,176 @@
+{
+ "server": "RoboHub",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "compare_robots",
+   "title": "Compare two robots",
+   "description": "Side-by-side spec comparison of two robots by slug, plus RoboHub's editorial verdict when available.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug_a": {
+      "type": "string",
+      "description": "First robot slug."
+     },
+     "slug_b": {
+      "type": "string",
+      "description": "Second robot slug."
+     }
+    },
+    "required": [
+     "slug_a",
+     "slug_b"
+    ]
+   }
+  },
+  {
+   "name": "get_robot",
+   "title": "Get robot details",
+   "description": "Full catalog record for one robot by slug: description, specs, SDKs, use cases, verified manufacturer list prices (MSRP) where published, with their date and source; other robots are quote-only or have no public price (see price_provenance) and links.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "description": "Robot slug as returned by search_robots (e.g. 'unitree-g1')."
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "list_categories",
+   "title": "List robot categories",
+   "description": "All robot categories with counts and a few example robots each. Good first call to understand catalog coverage.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {}
+   }
+  },
+  {
+   "name": "request_vendor_intros",
+   "title": "Request vendor introductions",
+   "description": "Record a B2B sourcing request with RoboHub on behalf of the user, for manual review by RoboHub's team. Vendor-neutral and free for buyers. Requests from this server are unverified, so RoboHub sends the buyer no confirmation email and guarantees no reply window. Only call this with the user's explicit consent and their real contact details; submissions are rate limited per client and fabricated requests are discarded.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "company": {
+      "type": "string",
+      "description": "Company name."
+     },
+     "contact_name": {
+      "type": "string",
+      "description": "Full name of the contact person."
+     },
+     "email": {
+      "type": "string",
+      "description": "Work email address where the shortlist should be sent."
+     },
+     "industry": {
+      "type": "string",
+      "enum": [
+       "manufacturing",
+       "warehouse",
+       "healthcare",
+       "agriculture",
+       "security",
+       "hospitality",
+       "construction",
+       "energy",
+       "research",
+       "other"
+      ],
+      "description": "Closest industry bucket for the deployment."
+     },
+     "use_case": {
+      "type": "string",
+      "description": "What the robots should do, with as much operational detail as possible (environment, scale, constraints)."
+     },
+     "budget_range": {
+      "type": "string",
+      "enum": [
+       "under-25k",
+       "25-100k",
+       "100-500k",
+       "500k-2m",
+       "above-2m",
+       "exploring"
+      ],
+      "description": "Approximate budget bracket in USD."
+     },
+     "timeline": {
+      "type": "string",
+      "enum": [
+       "immediate",
+       "3-months",
+       "6-months",
+       "12-months",
+       "exploring"
+      ],
+      "description": "Deployment timeline."
+     },
+     "country": {
+      "type": "string",
+      "description": "Country of deployment (optional)."
+     },
+     "robot_slug": {
+      "type": "string",
+      "description": "Slug of a specific robot the user is interested in (optional)."
+     },
+     "notes": {
+      "type": "string",
+      "description": "Anything else relevant (optional)."
+     }
+    },
+    "required": [
+     "company",
+     "contact_name",
+     "email",
+     "industry",
+     "use_case",
+     "budget_range",
+     "timeline"
+    ]
+   }
+  },
+  {
+   "name": "search_robots",
+   "title": "Search robots",
+   "description": "Search RoboHub's catalog of commercial robots by free-text query and optional filters. Returns compact summaries with catalog URLs. When max_price_usd is set: Only robots with a verified manufacturer list price (MSRP) at or below this USD amount; estimates and quote-only robots are excluded.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Free-text search over name, manufacturer, category, use cases and description (e.g. 'warehouse pallet AMR', 'quadruped inspection')."
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "humanoid",
+       "quadruped",
+       "industrial",
+       "drone",
+       "home",
+       "educational",
+       "agricultural",
+       "medical"
+      ],
+      "description": "Restrict to one category."
+     },
+     "max_price_usd": {
+      "type": "number",
+      "description": "Only robots with a verified manufacturer list price (MSRP) at or below this USD amount; estimates and quote-only robots are excluded"
+     },
+     "limit": {
+      "type": "number",
+      "description": "Max results to return (default 10, max 25)."
+     }
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "server": "RestoSignals",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "coverage",
+   "description": "List the states RestoSignals currently has data for and how many scored venues each holds (with a count of hot leads, opening_score >= 80). Call this FIRST to see live inventory before new_openings — querying a state with no data returns nothing. Free (0 credits).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {}
+   }
+  },
+  {
+   "name": "new_openings",
+   "description": "Find restaurants/bars about to open in a state, ranked by opening_score (0-100). Fuses liquor licenses, food permits and new-business filings into one scored venue. signal_types on each lead are 'liquor', 'food_permit' and 'business'. Live states: NY, TX, IL, OR, CO, WA, CA (call `coverage` for the current list). 1 credit per returned lead.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "state": {
+      "type": "string",
+      "description": "Two-letter state, e.g. NY, TX, IL, OR, CO, WA, CA. Use `coverage` to see live states."
+     },
+     "min_score": {
+      "type": "integer",
+      "default": 30,
+      "description": "Minimum opening_score (0-100). Fused multi-signal venues rank highest; 30 includes recent issued-liquor leads, 80+ is a hot multi-signal lead."
+     },
+     "limit": {
+      "type": "integer",
+      "default": 10,
+      "description": "Max leads to return (<=100). Each lead costs 1 credit."
+     }
+    },
+    "required": [
+     "state"
+    ]
+   }
+  },
+  {
+   "name": "venue_signals",
+   "description": "Return the raw underlying signals (liquor/permit/business filings) that were fused into one venue, for transparency. 1 credit.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "venue_id": {
+      "type": "integer",
+      "description": "A venue id from new_openings."
+     }
+    },
+    "required": [
+     "venue_id"
+    ]
+   }
+  },
+  {
+   "name": "watch_area",
+   "description": "Register a webhook that fires when a new matching venue opens in an area. criteria = {state, city, signal_type, min_opening_score}. Free.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "HTTPS endpoint to POST matching venues to."
+     },
+     "criteria": {
+      "type": "object",
+      "description": "{state, city, signal_type, min_opening_score}."
+     }
+    },
+    "required": [
+     "url",
+     "criteria"
+    ]
+   }
+  }
+ ]
+}

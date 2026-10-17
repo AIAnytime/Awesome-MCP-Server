@@ -1,0 +1,88 @@
+{
+ "server": "OctoTrip Rental Cars",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "search",
+   "description": "Searches live rental-car offers for a pickup location and rental period, optionally with a different dropoff location, pickup/dropoff times, driver age, currency, and language. Use this when the user wants to compare available rental cars, prices, vendors, categories, or booking links for a specific trip. Do not use it for flights, hotels, public transport, or general travel planning unless the user has car-rental intent. The tool queries external provider APIs in real time, returns price-ranked results grouped by SIPP/category, and may include affiliate booking links. It does not book cars, modify reservations, charge users, or store user data.",
+   "inputSchema": {
+    "properties": {
+     "location": {
+      "description": "Pickup location, such as a city, airport, station, address, or landmark.",
+      "title": "Location",
+      "type": "string"
+     },
+     "pickup_date": {
+      "description": "Pickup date. Accepts common date formats such as YYYY-MM-DD, DD.MM.YYYY, or natural-language dates.",
+      "title": "Pickup Date",
+      "type": "string"
+     },
+     "dropoff_date": {
+      "description": "Dropoff date. Must be after the pickup date.",
+      "title": "Dropoff Date",
+      "type": "string"
+     },
+     "dropoff_location": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "description": "Optional different dropoff location. If omitted, the pickup location is used.",
+      "title": "Dropoff Location"
+     },
+     "pickup_time": {
+      "default": "12:00",
+      "description": "Pickup time in 24-hour HH:MM format. Defaults to 12:00.",
+      "title": "Pickup Time",
+      "type": "string"
+     },
+     "dropoff_time": {
+      "default": "12:00",
+      "description": "Dropoff time in 24-hour HH:MM format. Defaults to 12:00.",
+      "title": "Dropoff Time",
+      "type": "string"
+     },
+     "currency": {
+      "default": "EUR",
+      "description": "Preferred ISO 4217 currency code for prices, such as EUR, USD, or GBP. Defaults to EUR.",
+      "title": "Currency",
+      "type": "string"
+     },
+     "language": {
+      "default": "en",
+      "description": "Preferred response language code, such as en or de. Defaults to en.",
+      "title": "Language",
+      "type": "string"
+     },
+     "age": {
+      "default": 30,
+      "description": "Driver age. Defaults to 30. Younger drivers may incur surcharges.",
+      "minimum": 18,
+      "title": "Age",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "location",
+     "pickup_date",
+     "dropoff_date"
+    ],
+    "title": "searchArguments",
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ],
+ "resources": [],
+ "prompts": []
+}

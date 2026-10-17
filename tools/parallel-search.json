@@ -1,0 +1,129 @@
+{
+ "server": "Parallel Search",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "web_fetch",
+   "description": "Purpose: Fetch and extract relevant content\nfrom specific web URLs. Use only when web_search excerpts are insufficient\nfor the task at hand.\n\nIdeal Use Cases:\n- The user asked about a specific URL or page\n- You need exact wording or quotes that excerpts may have truncated\n- You need full-page analysis (long article, document, or page structure)\n- web_search excerpts are conflicting or clearly insufficient to answer\n\nFor multiple independent extraction objectives, make separate web_fetch calls\nconcurrently. Put related URLs that share one objective in a single call.\n",
+   "inputSchema": {
+    "properties": {
+     "urls": {
+      "description": "List of URLs to extract content from. Must be\nvalid HTTP/HTTPS URLs. Up to 20 URLs per request.",
+      "items": {
+       "type": "string"
+      },
+      "title": "Urls",
+      "type": "array"
+     },
+     "objective": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "description": "Natural-language description of what\ninformation you're looking for from the URLs. Limit to 200 characters.",
+      "title": "Objective"
+     },
+     "search_queries": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "description": "Optional keyword search queries (3-6\nwords each) used together with objective to focus excerpts on the most\nrelevant content. Pass the queries from the prior web_search call that\nsurfaced these URLs, if applicable.",
+      "title": "Search Queries"
+     },
+     "full_content": {
+      "default": false,
+      "description": "Prefer leaving this off. The default\nexcerpt mode returns LLM-optimized snippets focused on your objective — they\nare much smaller, cheaper, and usually all you need. Only set to true when\nyou explicitly need the entire page as markdown (e.g. reading a long article\nin full, or running a document through a downstream summarizer).\n\nWarning: enabling full content can return a large amount of content —\noften tens of thousands of tokens for a long article. This may exceed your\nMCP client's tool-output limit and will substantially increase response\nsize and latency.",
+      "title": "Full Content",
+      "type": "boolean"
+     },
+     "allow_live_fetch": {
+      "default": true,
+      "description": "Whether live fetching is allowed. Leave\ntrue for the freshest available content. Set false to use cached content only,\nwhich makes web_fetch much faster by avoiding the source website, but may return\nolder content.",
+      "title": "Allow Live Fetch",
+      "type": "boolean"
+     },
+     "session_id": {
+      "type": "string",
+      "description": "Stable identifier for the current conversation. Generate a random value (UUID or 32+ character hex string) at the start of your session and reuse the exact same value on every web_search / web_fetch call. Do NOT change it between turns. Used for free-tier rate limiting and correlating your tool calls in our logs; ignored on paid-tier keys.",
+      "maxLength": 100
+     },
+     "model_name": {
+      "type": "string",
+      "description": "The identifier of the LLM model making this tool call (e.g. 'claude-opus-4.7', 'gpt-5.5', 'gemini-2.5-pro'). Before the first call, verify the exact active model slug from trusted runtime/session metadata or active client configuration. Pass the full slug verbatim; never shorten or substitute a model-family alias like 'gpt-5'. Used for product analytics only; does not affect search behavior.",
+      "maxLength": 100
+     }
+    },
+    "required": [
+     "urls"
+    ],
+    "title": "v1_extract_toolArguments",
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "web_search",
+   "description": "Purpose: Perform web searches and return\nLLM-friendly results, including excerpts that are usually sufficient to\nanswer directly without a follow-up fetch.\n\nIdeal Use Cases:\n- Answering questions that require fresh or current information\n- Research, comparison, documentation, and troubleshooting questions\n- Broad tasks where multiple `search_queries` can be issued in a single call\n\nFor multiple independent objectives, make one web_search call per objective\nconcurrently. Put related query variations for the same objective in a single\ncall's search_queries list.\n",
+   "inputSchema": {
+    "properties": {
+     "objective": {
+      "description": "Natural-language description of what the web search is trying to find.\nTry to make the search objective atomic, looking for a specific piece of information. May include guidance about preferred sources or freshness.",
+      "title": "Objective",
+      "type": "string"
+     },
+     "search_queries": {
+      "description": "Concise keyword search queries, 3-6 words\neach, which may include search operators. At least one query is required;\nprovide 2-3 for best results. For broad tasks, you can include multiple\nrelated queries in a single call instead of chaining web_search calls. The\nqueries should be related to the objective.",
+      "items": {
+       "type": "string"
+      },
+      "title": "Search Queries",
+      "type": "array"
+     },
+     "session_id": {
+      "type": "string",
+      "description": "Stable identifier for the current conversation. Generate a random value (UUID or 32+ character hex string) at the start of your session and reuse the exact same value on every web_search / web_fetch call. Do NOT change it between turns. Used for free-tier rate limiting and correlating your tool calls in our logs; ignored on paid-tier keys.",
+      "maxLength": 100
+     },
+     "model_name": {
+      "type": "string",
+      "description": "The identifier of the LLM model making this tool call (e.g. 'claude-opus-4.7', 'gpt-5.5', 'gemini-2.5-pro'). Before the first call, verify the exact active model slug from trusted runtime/session metadata or active client configuration. Pass the full slug verbatim; never shorten or substitute a model-family alias like 'gpt-5'. Used for product analytics only; does not affect search behavior.",
+      "maxLength": 100
+     }
+    },
+    "required": [
+     "objective",
+     "search_queries"
+    ],
+    "title": "v1_search_toolArguments",
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ],
+ "resources": [],
+ "prompts": []
+}

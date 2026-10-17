@@ -1,0 +1,775 @@
+{
+ "server": "Wondel.ai Skills MCP",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "get_journey",
+   "title": "Get a guided journey",
+   "description": "One guided journey as a phase plan: the ordered skills, the decision question each phase answers, the docs/ file it writes, and which phases are go/no-go gates. Pass slug for a known journey, or goal to have one picked.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "slug": {
+      "description": "Journey slug, e.g. \"grow-website\"",
+      "type": "string"
+     },
+     "goal": {
+      "description": "What you are trying to achieve, if you do not know which journey fits",
+      "type": "string"
+     },
+     "context": {
+      "type": "string",
+      "description": "Why are you calling this tool? One line on the user's actual task, in their words — not a restatement of the tool name."
+     }
+    },
+    "required": [
+     "context"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_skill",
+   "title": "Get skill metadata",
+   "description": "Metadata for one skill or journey: its definition, when to use it, when not to, and related slugs. Deliberately cheap (~300 tokens) so you can check a candidate before committing context to it. Pass sections to widen, or sections:[\"all\"] for the whole page. This does not return the skill instructions — load_skill does.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "description": "Skill or journey slug, e.g. \"refactoring-ui\" or \"create-business\""
+     },
+     "sections": {
+      "description": "Which parts to return. Default: definition, use_when, not_for, related. \"all\" returns the full page.",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "definition",
+        "use_when",
+        "not_for",
+        "key_concepts",
+        "prompts",
+        "faqs",
+        "book",
+        "related",
+        "phases",
+        "all"
+       ]
+      }
+     },
+     "context": {
+      "type": "string",
+      "description": "Why are you calling this tool? One line on the user's actual task, in their words — not a restatement of the tool name."
+     }
+    },
+    "required": [
+     "slug",
+     "context"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "load_skill",
+   "title": "Load skill instructions",
+   "description": "The skill's actual instructions — the upstream SKILL.md, ready to follow in this session with nothing installed. The response also lists the skill's reference files with their token cost, so you can pull deeper material on demand by calling again with part set to a filename.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "description": "Skill or journey slug"
+     },
+     "part": {
+      "description": "\"core\" (default) for SKILL.md, or a reference filename from a previous response",
+      "type": "string"
+     },
+     "context": {
+      "type": "string",
+      "description": "Why are you calling this tool? One line on the user's actual task, in their words — not a restatement of the tool name."
+     }
+    },
+    "required": [
+     "slug",
+     "context"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "recommend_skills",
+   "title": "Recommend skills for a task",
+   "description": "Route a task to the right skills. Describe the job in your own words and this returns which skills to load first, which to skip whenever a skill's own \"not for\" line rules it out for this task — quoted verbatim — and a guided journey when the task spans a whole project rather than one step. This is the tool to reach for first.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "task": {
+      "type": "string",
+      "minLength": 4,
+      "description": "The job to be done, in your own words — a full sentence beats a keyword"
+     },
+     "stack": {
+      "description": "Language, framework or platform, if it narrows the answer",
+      "type": "string"
+     },
+     "phase": {
+      "description": "Where in the work you are",
+      "type": "string",
+      "enum": [
+       "audit",
+       "build",
+       "launch"
+      ]
+     },
+     "max": {
+      "description": "How many skills to return (default 3)",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+     },
+     "context": {
+      "type": "string",
+      "description": "Why are you calling this tool? One line on the user's actual task, in their words — not a restatement of the tool name."
+     }
+    },
+    "required": [
+     "task",
+     "context"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search_skills",
+   "title": "Search skills",
+   "description": "Search 51 book-based agent skills and 14 guided journeys by keyword or phrase. Each skill is matched against its own trigger text, so plain task language works (\"my UI looks amateur\", \"pricing\", \"dark mode\"). Returns compact hits, each quoting the line that matched. Use recommend_skills instead when you have a task rather than a keyword.",
+   "inputSchema": {
+    "type": "object",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+     "query": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Keyword, phrase, slug or plain description of the problem"
+     },
+     "kind": {
+      "description": "Restrict to single skills or guided journeys",
+      "type": "string",
+      "enum": [
+       "skill",
+       "journey",
+       "all"
+      ]
+     },
+     "category": {
+      "description": "Restrict to one domain",
+      "type": "string",
+      "enum": [
+       "design",
+       "marketing",
+       "sales",
+       "product",
+       "strategy",
+       "team",
+       "code",
+       "architecture"
+      ]
+     },
+     "limit": {
+      "description": "Maximum hits (default 8)",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+     },
+     "context": {
+      "type": "string",
+      "description": "Why are you calling this tool? One line on the user's actual task, in their words — not a restatement of the tool name."
+     }
+    },
+    "required": [
+     "query",
+     "context"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "resources": [
+  {
+   "uri": "wondel://catalog",
+   "name": "catalog",
+   "title": "Wondel skill catalog",
+   "description": "Index of all 65 skills and journeys — slug, name, one-liner, category. ~15 KB. Use get_skill for when-to-use detail.",
+   "mimeType": "application/json"
+  },
+  {
+   "uri": "wondel://journeys",
+   "name": "journeys",
+   "title": "Guided journey plans",
+   "description": "The 14 journeys with their phases, gates and artifacts.",
+   "mimeType": "application/json"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Practical UI design system",
+   "mimeType": "text/markdown",
+   "uri": "skill://refactoring-ui",
+   "name": "Refactoring UI"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Native iOS app design guidelines",
+   "mimeType": "text/markdown",
+   "uri": "skill://ios-hig-design",
+   "name": "iOS HIG Design"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Usability evaluation and principles",
+   "mimeType": "text/markdown",
+   "uri": "skill://ux-heuristics",
+   "name": "UX Heuristics"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Web typography principles and implementation",
+   "mimeType": "text/markdown",
+   "uri": "skill://web-typography",
+   "name": "Web Typography"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Foundational design principles: affordances, signifiers, feedback",
+   "mimeType": "text/markdown",
+   "uri": "skill://design-everyday-things",
+   "name": "Design of Everyday Things"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Award-winning 10/10 web design",
+   "mimeType": "text/markdown",
+   "uri": "skill://top-design",
+   "name": "Top Design"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Clear brand messaging using story structure",
+   "mimeType": "text/markdown",
+   "uri": "skill://storybrand-messaging",
+   "name": "StoryBrand Messaging"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "SUCCESs framework for memorable messaging",
+   "mimeType": "text/markdown",
+   "uri": "skill://made-to-stick",
+   "name": "Made to Stick"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Word-of-mouth and virality using STEPPS",
+   "mimeType": "text/markdown",
+   "uri": "skill://contagious",
+   "name": "Contagious"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "End-to-end marketing plan: prospect to raving fan",
+   "mimeType": "text/markdown",
+   "uri": "skill://one-page-marketing",
+   "name": "1-Page Marketing Plan"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Quiz/assessment funnel lead generation",
+   "mimeType": "text/markdown",
+   "uri": "skill://scorecard-marketing",
+   "name": "Scorecard Marketing"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Product positioning: unique value, target customers",
+   "mimeType": "text/markdown",
+   "uri": "skill://obviously-awesome",
+   "name": "Obviously Awesome"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Grand Slam Offer creation: Value Equation, pricing, guarantees",
+   "mimeType": "text/markdown",
+   "uri": "skill://hundred-million-offers",
+   "name": "$100M Offers"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Tactical negotiation for high-stakes conversations",
+   "mimeType": "text/markdown",
+   "uri": "skill://negotiation",
+   "name": "Negotiation"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Persuasion science and ethical influence",
+   "mimeType": "text/markdown",
+   "uri": "skill://influence-psychology",
+   "name": "Influence Psychology"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Outbound sales process and Cold Calling 2.0",
+   "mimeType": "text/markdown",
+   "uri": "skill://predictable-revenue",
+   "name": "Predictable Revenue"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Conversion rate optimization methodology",
+   "mimeType": "text/markdown",
+   "uri": "skill://cro-methodology",
+   "name": "CRO Methodology"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "JTBD framework for product innovation",
+   "mimeType": "text/markdown",
+   "uri": "skill://jobs-to-be-done",
+   "name": "Jobs to Be Done"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Habit-forming product design",
+   "mimeType": "text/markdown",
+   "uri": "skill://hooked-ux",
+   "name": "Hooked UX"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Behavior design for user retention using B=MAP",
+   "mimeType": "text/markdown",
+   "uri": "skill://improve-retention",
+   "name": "Improve Retention"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Build-Measure-Learn methodology",
+   "mimeType": "text/markdown",
+   "uri": "skill://lean-startup",
+   "name": "Lean Startup"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "5-day process for validating ideas through prototyping",
+   "mimeType": "text/markdown",
+   "uri": "skill://design-sprint",
+   "name": "Design Sprint"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Technology adoption lifecycle and go-to-market",
+   "mimeType": "text/markdown",
+   "uri": "skill://crossing-the-chasm",
+   "name": "Crossing the Chasm"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Create uncontested market space with value innovation",
+   "mimeType": "text/markdown",
+   "uri": "skill://blue-ocean-strategy",
+   "name": "Blue Ocean Strategy"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Entrepreneurial Operating System for running a business",
+   "mimeType": "text/markdown",
+   "uri": "skill://traction-eos",
+   "name": "Traction EOS"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Intrinsic motivation: Autonomy, Mastery, Purpose",
+   "mimeType": "text/markdown",
+   "uri": "skill://drive-motivation",
+   "name": "Drive Motivation"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Writing readable, maintainable code",
+   "mimeType": "text/markdown",
+   "uri": "skill://clean-code",
+   "name": "Clean Code"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Practical software craftsmanship",
+   "mimeType": "text/markdown",
+   "uri": "skill://pragmatic-programmer",
+   "name": "Pragmatic Programmer"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Improving code design through systematic refactoring",
+   "mimeType": "text/markdown",
+   "uri": "skill://refactoring-patterns",
+   "name": "Refactoring"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Reducing complexity through thoughtful software design",
+   "mimeType": "text/markdown",
+   "uri": "skill://software-design-philosophy",
+   "name": "Software Design"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Building maintainable, testable software architectures",
+   "mimeType": "text/markdown",
+   "uri": "skill://clean-architecture",
+   "name": "Clean Architecture"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Modeling complex business domains in software",
+   "mimeType": "text/markdown",
+   "uri": "skill://domain-driven-design",
+   "name": "Domain-Driven Design"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Designing reliable, scalable data systems",
+   "mimeType": "text/markdown",
+   "uri": "skill://ddia-systems",
+   "name": "Data-Intensive Apps"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Scalable system design patterns and trade-offs",
+   "mimeType": "text/markdown",
+   "uri": "skill://system-design",
+   "name": "System Design"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Production-ready software patterns for stability and resilience",
+   "mimeType": "text/markdown",
+   "uri": "skill://release-it",
+   "name": "Release It!"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Browser networking performance optimization",
+   "mimeType": "text/markdown",
+   "uri": "skill://high-perf-browser",
+   "name": "High Perf Browser"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Habits for continuous product discovery",
+   "mimeType": "text/markdown",
+   "uri": "skill://continuous-discovery",
+   "name": "Continuous Discovery"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Building products customers love",
+   "mimeType": "text/markdown",
+   "uri": "skill://inspired-product",
+   "name": "Inspired"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Customer conversations that reveal the truth",
+   "mimeType": "text/markdown",
+   "uri": "skill://mom-test",
+   "name": "The Mom Test"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Lean, opinionated product development from Getting Real to Shape Up",
+   "mimeType": "text/markdown",
+   "uri": "skill://37signals-way",
+   "name": "The 37signals Way"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Collaborative, experiment-driven UX design",
+   "mimeType": "text/markdown",
+   "uri": "skill://lean-ux",
+   "name": "Lean UX"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Designing details that delight users",
+   "mimeType": "text/markdown",
+   "uri": "skill://microinteractions",
+   "name": "Microinteractions"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Jobs-style reviews: ruthless simplicity, focus, binary verdicts",
+   "mimeType": "text/markdown",
+   "uri": "skill://steve-jobs-design-review",
+   "name": "Steve Jobs Design Review"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Network effects: launch and scale networked products",
+   "mimeType": "text/markdown",
+   "uri": "skill://cold-start-problem",
+   "name": "Cold Start Problem"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Strategy kernel: diagnosis, guiding policy, coherent action",
+   "mimeType": "text/markdown",
+   "uri": "skill://good-strategy-bad-strategy",
+   "name": "Good Strategy Bad Strategy"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Managerial leverage, 1:1s, OKRs, task-relevant maturity",
+   "mimeType": "text/markdown",
+   "uri": "skill://high-output-management",
+   "name": "High Output Management"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Org design for fast flow: four team types, three interaction modes",
+   "mimeType": "text/markdown",
+   "uri": "skill://team-topologies",
+   "name": "Team Topologies"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Startup metrics and the One Metric That Matters",
+   "mimeType": "text/markdown",
+   "uri": "skill://lean-analytics",
+   "name": "Lean Analytics"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Design the product around validated willingness to pay",
+   "mimeType": "text/markdown",
+   "uri": "skill://monetizing-innovation",
+   "name": "Monetizing Innovation"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Safely change untested code: seams and characterization tests",
+   "mimeType": "text/markdown",
+   "uri": "skill://working-with-legacy-code",
+   "name": "Legacy Code"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Audit and write developer docs: reader fit, procedures, API reference",
+   "mimeType": "text/markdown",
+   "uri": "skill://technical-documentation",
+   "name": "Technical Documentation"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Raw idea → validated, positioned, priced business",
+   "mimeType": "text/markdown",
+   "uri": "skill://create-business",
+   "name": "Create a Business"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Blank page → high-converting website",
+   "mimeType": "text/markdown",
+   "uri": "skill://create-website",
+   "name": "Create a Website"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Idea → validated, well-architected app",
+   "mimeType": "text/markdown",
+   "uri": "skill://create-app",
+   "name": "Create an App"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Diagnose and fix a plateaued business",
+   "mimeType": "text/markdown",
+   "uri": "skill://improve-business",
+   "name": "Improve a Business"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Diagnose, fix, and prove website improvements",
+   "mimeType": "text/markdown",
+   "uri": "skill://improve-website",
+   "name": "Improve a Website"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Product, UX, copy, and in-app persuasion — fix what users feel",
+   "mimeType": "text/markdown",
+   "uri": "skill://improve-app",
+   "name": "Improve an App"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Build a repeatable growth engine",
+   "mimeType": "text/markdown",
+   "uri": "skill://grow-business",
+   "name": "Grow a Business"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Convert, capture, and compound website traffic",
+   "mimeType": "text/markdown",
+   "uri": "skill://grow-website",
+   "name": "Grow a Website"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Retention-first app growth",
+   "mimeType": "text/markdown",
+   "uri": "skill://grow-app",
+   "name": "Grow an App"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Vibe-coded prototype → production-ready code",
+   "mimeType": "text/markdown",
+   "uri": "skill://improve-code-quality",
+   "name": "Improve Code Quality"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Pay down debt in place without stopping shipping",
+   "mimeType": "text/markdown",
+   "uri": "skill://remove-technical-debt",
+   "name": "Remove Technical Debt"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Deliberate architecture for a new system",
+   "mimeType": "text/markdown",
+   "uri": "skill://design-code-architecture",
+   "name": "Design Code Architecture"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Leaking flow → measured, tested funnel",
+   "mimeType": "text/markdown",
+   "uri": "skill://conversion-optimization",
+   "name": "Conversion Optimization"
+  },
+  {
+   "title": "Skill instructions",
+   "description": "Slow, tangled codebase → fast and cleanly bounded",
+   "mimeType": "text/markdown",
+   "uri": "skill://architecture-optimization",
+   "name": "Architecture Optimization"
+  }
+ ],
+ "prompts": [
+  {
+   "name": "create-business",
+   "title": "Create a Business — 10-phase journey",
+   "description": "Raw idea → validated, positioned, priced business"
+  },
+  {
+   "name": "create-website",
+   "title": "Create a Website — 10-phase journey",
+   "description": "Blank page → high-converting website"
+  },
+  {
+   "name": "create-app",
+   "title": "Create an App — 10-phase journey",
+   "description": "Idea → validated, well-architected app"
+  },
+  {
+   "name": "improve-business",
+   "title": "Improve a Business — 8-phase journey",
+   "description": "Diagnose and fix a plateaued business"
+  },
+  {
+   "name": "improve-website",
+   "title": "Improve a Website — 8-phase journey",
+   "description": "Diagnose, fix, and prove website improvements"
+  },
+  {
+   "name": "improve-app",
+   "title": "Improve an App — 9-phase journey",
+   "description": "Product, UX, copy, and in-app persuasion — fix what users feel"
+  },
+  {
+   "name": "grow-business",
+   "title": "Grow a Business — 9-phase journey",
+   "description": "Build a repeatable growth engine"
+  },
+  {
+   "name": "grow-website",
+   "title": "Grow a Website — 8-phase journey",
+   "description": "Convert, capture, and compound website traffic"
+  },
+  {
+   "name": "grow-app",
+   "title": "Grow an App — 8-phase journey",
+   "description": "Retention-first app growth"
+  },
+  {
+   "name": "improve-code-quality",
+   "title": "Improve Code Quality — 9-phase journey",
+   "description": "Vibe-coded prototype → production-ready code"
+  },
+  {
+   "name": "remove-technical-debt",
+   "title": "Remove Technical Debt — 8-phase journey",
+   "description": "Pay down debt in place without stopping shipping"
+  },
+  {
+   "name": "design-code-architecture",
+   "title": "Design Code Architecture — 8-phase journey",
+   "description": "Deliberate architecture for a new system"
+  },
+  {
+   "name": "conversion-optimization",
+   "title": "Conversion Optimization — 7-phase journey",
+   "description": "Leaking flow → measured, tested funnel"
+  },
+  {
+   "name": "architecture-optimization",
+   "title": "Architecture Optimization — 8-phase journey",
+   "description": "Slow, tangled codebase → fast and cleanly bounded"
+  },
+  {
+   "name": "pick-skill",
+   "title": "Pick a skill for this task",
+   "description": "Choose and load the right skill for a task you describe."
+  },
+  {
+   "name": "audit-with",
+   "title": "Audit with one skill",
+   "description": "Load a named skill and apply it as an audit."
+  }
+ ]
+}

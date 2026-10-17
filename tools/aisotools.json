@@ -1,0 +1,105 @@
+{
+ "server": "AISOTools",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "compare_ai_tools",
+   "description": "Side-by-side comparison of 2-5 AI tools: pricing, rating, features, pros and cons. Use when the user is choosing between named products.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tools": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "2-5 slugs or display names."
+     }
+    },
+    "required": [
+     "tools"
+    ],
+    "additionalProperties": false
+   }
+  },
+  {
+   "name": "find_ai_tool_alternatives",
+   "description": "Alternatives to a given AI tool, drawn from the catalog's curated alternative lists and falling back to same-category tools. Use when the user wants to replace or switch off a product.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tool": {
+      "type": "string",
+      "description": "Slug or display name to find alternatives for."
+     },
+     "limit": {
+      "type": "number",
+      "description": "Maximum alternatives, 1-20. Defaults to 8."
+     }
+    },
+    "required": [
+     "tool"
+    ],
+    "additionalProperties": false
+   }
+  },
+  {
+   "name": "get_ai_tool",
+   "description": "Full catalog record for one AI tool: description, features, pros, cons, who it is best for, pricing tiers, and alternatives. Accepts a slug or a display name.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "tool": {
+      "type": "string",
+      "description": "Slug ('claude-code') or display name ('Claude Code')."
+     }
+    },
+    "required": [
+     "tool"
+    ],
+    "additionalProperties": false
+   }
+  },
+  {
+   "name": "list_ai_tool_categories",
+   "description": "Every category in the AISOTools catalog with its slug, subcategories, and how many tools it contains. Use the slugs to filter search_ai_tools.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+   }
+  },
+  {
+   "name": "search_ai_tools",
+   "description": "Search the AISOTools catalog of AI tools by keyword, category, and pricing model. Returns ranked summaries with the canonical aisotools.com page for each result. Use this first when the user asks which AI tool does something. `matched` is how many tools matched in total and `returned` is how many came back — when `truncated` is true there are more, so do not tell the user the catalog only contains what this page returned; raise `limit` (max 50) instead.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Free-text search, e.g. 'video editing', 'transcription', or a product name."
+     },
+     "category": {
+      "type": "string",
+      "description": "Restrict to one category slug. Call list_ai_tool_categories for the valid values."
+     },
+     "pricing": {
+      "type": "string",
+      "enum": [
+       "free",
+       "freemium",
+       "paid",
+       "open-source"
+      ],
+      "description": "Restrict to one pricing model."
+     },
+     "limit": {
+      "type": "number",
+      "description": "Maximum results, 1-50. Defaults to 10."
+     }
+    },
+    "additionalProperties": false
+   }
+  }
+ ]
+}

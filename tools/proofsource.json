@@ -1,0 +1,427 @@
+{
+ "server": "Proofsource",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "add_brand",
+   "title": "Check my brand in AI answers",
+   "description": "Start measuring a brand: does ChatGPT, Perplexity, Claude or Google AI mention it, and who does AI recommend instead? Give the brand's website (or its app store, Google Maps, YouTube or Instagram link). It reads the site, picks the buyer questions, and starts the first scan across the AI engines. Reading the site takes 1-2 minutes; if it is still running, call again with the same link and it picks up the same run, never a second one. Returns the brand_id; then use get_scan_status.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "description": {
+      "description": "Optional: what the brand sells, in a sentence. Only needed when add_brand says it couldn't read the website.",
+      "maxLength": 1000,
+      "type": "string"
+     },
+     "link": {
+      "description": "The brand's website, like acme.com, or its app store, Google Maps, YouTube or Instagram link.",
+      "maxLength": 2048,
+      "type": "string"
+     }
+    },
+    "required": [
+     "link"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_prompt",
+   "title": "Track a new buyer question",
+   "description": "Adds a buyer question to a topic so it is asked on every engine in the plan from the next run. Counts toward the plan's question limit. Calling again with the same text returns the existing question, never a duplicate.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "confirm_new_engines": {
+      "description": "Set true to confirm using an engine this workspace has never used before.",
+      "type": "boolean"
+     },
+     "target_engines": {
+      "description": "Optional: limit to these engines. Omit for the plan's engines.",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "text": {
+      "description": "The question, phrased the way a buyer would ask an AI assistant.",
+      "maxLength": 500,
+      "type": "string"
+     },
+     "topic_id": {
+      "description": "Topic id from list_topics.",
+      "type": "string"
+     }
+    },
+    "required": [
+     "topic_id",
+     "text"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_changes",
+   "title": "What changed in my AI visibility?",
+   "description": "What moved over the window: the daily mention-rate trend, how much the engines' answers changed, notable changes on competitors' websites, and new pages about the category.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "window_days": {
+      "description": "Trailing window in whole UTC days ending today. Default 30.",
+      "maximum": 90,
+      "minimum": 1,
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_citations",
+   "title": "Which sources do AI answers cite?",
+   "description": "The websites AI answers cite for the brand's buyer questions, ranked by share of citations and by how many answers cite them, and where the brand's own site ranks.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "engines": {
+      "description": "Optional: only these engines (e.g. openai, perplexity, anthropic, google_aio). Default: the engines the dashboard headline counts (ChatGPT, Perplexity, Claude, Google AI Overviews, plus any the plan adds); the reply's counted_engines names them.",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "limit": {
+      "description": "Max sites per ranking. Default 25.",
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+     },
+     "window_days": {
+      "description": "Trailing window in whole UTC days ending today. Default 30.",
+      "maximum": 90,
+      "minimum": 1,
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_competitors",
+   "title": "Who does AI recommend instead of me?",
+   "description": "The competitors AI answers name for the brand's buyer questions, per engine, with each one's share of voice against the brand and how it changed over the window.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "engines": {
+      "description": "Optional: only these engines (e.g. openai, perplexity, anthropic, google_aio). Default: the engines the dashboard headline counts (ChatGPT, Perplexity, Claude, Google AI Overviews, plus any the plan adds); the reply's counted_engines names them.",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "window_days": {
+      "description": "Trailing window in whole UTC days ending today. Default 30.",
+      "maximum": 90,
+      "minimum": 1,
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_fix_verification",
+   "title": "Did my fix work?",
+   "description": "Each fix marked shipped for the brand with its mention rate before and after and a verdict: moved (beyond normal answer churn), within_noise, or awaiting_samples. Fixes marked \"Not a fix\" are left out; auto-detected page changes carry source auto_detected.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "fix_event_id": {
+      "description": "Optional: just this fix.",
+      "type": "string"
+     },
+     "limit": {
+      "description": "Most recent fixes to return. Default 20.",
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_report_link",
+   "title": "Get a shareable AI visibility report",
+   "description": "A link to the brand's AI visibility report to share with a team or client: how often AI answers mention the brand, which competitors they name instead, and which sources they cite. Returns the newest finished report's own unlisted link. Reports are built automatically after a brand's first scan.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands or add_brand. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_scan_status",
+   "title": "Is my brand's scan done?",
+   "description": "Progress of a brand's first scan after add_brand: the stage, how many AI answers are in out of how many expected, per engine, and when it should finish. Once complete, use get_visibility for the results.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands or add_brand. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_visibility",
+   "title": "Is my brand mentioned in AI answers?",
+   "description": "How often ChatGPT, Perplexity, Claude and Google AI mention the brand when buyers ask about its category. by=engine (default): mention rate, share of voice, average position, citation share and sentiment per engine, with the change from the previous period. by=question: each buyer question's mention rate and rank.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "by": {
+      "description": "engine (default) or question.",
+      "enum": [
+       "engine",
+       "question"
+      ],
+      "type": "string"
+     },
+     "engines": {
+      "description": "Optional: only these engines (e.g. openai, perplexity, anthropic, google_aio). Default: the engines the dashboard headline counts (ChatGPT, Perplexity, Claude, Google AI Overviews, plus any the plan adds); the reply's counted_engines names them.",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "window_days": {
+      "description": "Trailing window in whole UTC days ending today. Default 30.",
+      "maximum": 90,
+      "minimum": 1,
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_brands",
+   "title": "List my tracked brands",
+   "description": "The brands this workspace tracks in AI answers, with ids and websites. Call first; every other tool takes a brand_id.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {},
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_fix_opportunities",
+   "title": "What should I fix to show up in AI answers?",
+   "description": "The gaps that keep AI engines from citing or recommending the brand, each with its evidence and the suggested fix. Gives the gap_id mark_fix_shipped needs.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "include_closed": {
+      "description": "Also return gaps that were checked and no longer apply. Default false.",
+      "type": "boolean"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_topics",
+   "title": "Which buyer questions are tracked?",
+   "description": "The topics and buyer questions this workspace asks ChatGPT, Perplexity, Claude and Google AI for a brand. Gives the topic_id create_prompt needs.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "mark_fix_shipped",
+   "title": "I shipped a fix",
+   "description": "Records that a fix shipped, against a gap_id from list_fix_opportunities or a published content_draft_id, so get_fix_verification can measure whether it moved the brand's mention rate. Calling again with the same fix and description returns the existing record.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand_id": {
+      "description": "Brand id from list_brands. May be omitted when the workspace tracks a single brand.",
+      "type": "string"
+     },
+     "content_draft_id": {
+      "description": "A published content draft (one of gap_id or content_draft_id).",
+      "type": "string"
+     },
+     "description": {
+      "description": "What shipped, in one or two sentences.",
+      "maxLength": 1000,
+      "type": "string"
+     },
+     "gap_id": {
+      "description": "The gap finding the fix addresses (one of gap_id or content_draft_id).",
+      "type": "string"
+     },
+     "shipped_at": {
+      "description": "When it shipped: RFC 3339 timestamp or YYYY-MM-DD. Default now.",
+      "type": "string"
+     }
+    },
+    "required": [
+     "description"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "see_example",
+   "title": "See an example AI visibility card",
+   "description": "Shows what Proofsource measures, without signing in: a real visibility card for one example brand (Tesla), from answers collected from ChatGPT, Perplexity, Claude and Google AI Overviews. It shows how often AI answers mention the brand, per engine, which competitors they name instead, and sample answers. Use it when someone asks whether their brand shows up in AI answers and has not signed in. It always shows the example brand; to check their own brand they sign in.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "brand": {
+      "description": "Optional: the brand the person asked about. The example card is shown either way, with a note to sign in to check that brand.",
+      "maxLength": 200,
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "resources": [
+  {
+   "description": "An AI visibility card: how often AI answers mention the brand, per engine, the competitors named instead, and sample answers. The card shows the numbers, so do not repeat them in full.",
+   "mimeType": "text/html;profile=mcp-app",
+   "name": "visibility",
+   "title": "AI visibility card",
+   "uri": "ui://proofsource/visibility"
+  }
+ ]
+}

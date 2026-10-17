@@ -1,0 +1,305 @@
+{
+ "server": "CareJobs.Now Healthcare Jobs",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "get_healthcare_employer",
+   "title": "Healthcare employer",
+   "description": "One employer (or AI-training program or job board): what it is, where it hires, its open jobs right now by kind of job, the pay its jobs post, its newest and best-paid open jobs, and links to its page and every open job.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "employer": {
+      "type": "string",
+      "description": "An employer (or AI-training program or job board): its slug, e.g. 'hca-healthcare', 'kaiser-permanente', or its name. list_healthcare_employers finds the slugs."
+     }
+    },
+    "required": [
+     "employer"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_healthcare_job_market",
+   "title": "Healthcare job market",
+   "description": "How many healthcare jobs are open right now, how many were first listed in the last 7 days and how many are listed per week, with the open jobs by kind of job, by US state and by employer (with each employer's slug for the other tools).",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_healthcare_jobs_by_state",
+   "title": "Healthcare jobs by state",
+   "description": "With no state, every US state's open healthcare jobs and employers. With a state, its open jobs by kind of job, the hourly pay its jobs post, the towns and employers with the most jobs and its newest jobs. With a state and a kind of job, the same for that job in that state (e.g. CNA jobs in Ohio).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "state": {
+      "type": "string",
+      "description": "A US state: its two-letter code (e.g. 'TX', 'NY') or its name ('Texas')."
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "nurses",
+       "nurse-practitioners",
+       "physicians",
+       "nursing-assistants",
+       "caregivers",
+       "therapy-rehab",
+       "mental-health",
+       "pharmacy",
+       "imaging",
+       "lab",
+       "surgical-techs",
+       "emts-paramedics",
+       "medical-assistants",
+       "dental",
+       "admin",
+       "allied-health",
+       "ai-training"
+      ],
+      "description": "With a state: one kind of job, one of: 'nurses' (Nurses), 'nurse-practitioners' (NPs & PAs), 'physicians' (Doctors), 'nursing-assistants' (CNAs & PCTs), 'caregivers' (Caregivers), 'therapy-rehab' (Therapy & rehab), 'mental-health' (Mental health), 'pharmacy' (Pharmacy), 'imaging' (Imaging), 'lab' (Lab), 'surgical-techs' (Surgical), 'emts-paramedics' (EMS), 'medical-assistants' (Medical assistants), 'dental' (Dental), 'admin' (Front desk & admin), 'allied-health' (Allied health), 'ai-training' (AI training)."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 10,
+      "description": "How many of the newest jobs to return for a state (1 to 25)."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_healthcare_pay",
+   "title": "Healthcare pay by kind of job and employer",
+   "description": "What healthcare jobs post as pay today, measured from the hourly rates open jobs state (before shift differentials and bonuses): with no arguments, the median and typical range for every kind of job (a market rate only where at least three employers post one); with a kind of job, that job's pay and the employers that post the most for it; with an employer, its pay overall and by kind of job; with both, that employer's pay for that job.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "type": "string",
+      "enum": [
+       "nurses",
+       "nurse-practitioners",
+       "physicians",
+       "nursing-assistants",
+       "caregivers",
+       "therapy-rehab",
+       "mental-health",
+       "pharmacy",
+       "imaging",
+       "lab",
+       "surgical-techs",
+       "emts-paramedics",
+       "medical-assistants",
+       "dental",
+       "admin",
+       "allied-health",
+       "ai-training"
+      ],
+      "description": "Kind of job, one of: 'nurses' (Nurses), 'nurse-practitioners' (NPs & PAs), 'physicians' (Doctors), 'nursing-assistants' (CNAs & PCTs), 'caregivers' (Caregivers), 'therapy-rehab' (Therapy & rehab), 'mental-health' (Mental health), 'pharmacy' (Pharmacy), 'imaging' (Imaging), 'lab' (Lab), 'surgical-techs' (Surgical), 'emts-paramedics' (EMS), 'medical-assistants' (Medical assistants), 'dental' (Dental), 'admin' (Front desk & admin), 'allied-health' (Allied health), 'ai-training' (AI training)."
+     },
+     "employer": {
+      "type": "string",
+      "description": "An employer (or AI-training program or job board): its slug, e.g. 'hca-healthcare', 'kaiser-permanente', or its name. list_healthcare_employers finds the slugs."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_healthcare_employers",
+   "title": "Find healthcare employers",
+   "description": "The hospitals, health systems, clinic groups and care companies whose jobs CareJobs.Now reads, most open jobs first, with where each hires, its open jobs and its posted pay. Filter by name, kind of care, US state (employers with open jobs there) or kind of job (employers with open jobs of it). Also lists the AI-training programs and the job boards read, as such.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Part of the name, e.g. 'Kaiser', 'children', 'dialysis'."
+     },
+     "type": {
+      "type": "string",
+      "enum": [
+       "employer",
+       "ai-program",
+       "job-board"
+      ],
+      "description": "'employer' (hospitals, clinics and care companies; the default without a query), 'ai-program' (programs paying health professionals for remote AI work) or 'job-board' (sources of other employers' jobs)."
+     },
+     "care": {
+      "type": "string",
+      "enum": [
+       "health-system",
+       "childrens-hospital",
+       "outpatient",
+       "specialty-care",
+       "behavioral-health",
+       "autism-care",
+       "home-care",
+       "senior-care",
+       "rehab",
+       "dental",
+       "pharmacy-retail",
+       "kidney-care",
+       "labs-imaging",
+       "telehealth",
+       "ai-training",
+       "job-boards"
+      ],
+      "description": "Kind of care, one of: 'health-system' (Hospitals & health systems), 'childrens-hospital' (Children's hospitals), 'outpatient' (Clinics, primary & urgent care), 'specialty-care' (Specialty & physician practices), 'behavioral-health' (Mental health care), 'autism-care' (Autism & ABA therapy), 'home-care' (Home health & hospice), 'senior-care' (Senior living), 'rehab' (Physical therapy & rehab), 'dental' (Dental), 'pharmacy-retail' (Pharmacy & retail health), 'kidney-care' (Dialysis & kidney care), 'labs-imaging' (Labs & imaging), 'telehealth' (Virtual care), 'ai-training' (AI training programs), 'job-boards' (Job boards we also read)."
+     },
+     "state": {
+      "type": "string",
+      "description": "A US state: its two-letter code (e.g. 'TX', 'NY') or its name ('Texas')."
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "nurses",
+       "nurse-practitioners",
+       "physicians",
+       "nursing-assistants",
+       "caregivers",
+       "therapy-rehab",
+       "mental-health",
+       "pharmacy",
+       "imaging",
+       "lab",
+       "surgical-techs",
+       "emts-paramedics",
+       "medical-assistants",
+       "dental",
+       "admin",
+       "allied-health",
+       "ai-training"
+      ],
+      "description": "Kind of job, one of: 'nurses' (Nurses), 'nurse-practitioners' (NPs & PAs), 'physicians' (Doctors), 'nursing-assistants' (CNAs & PCTs), 'caregivers' (Caregivers), 'therapy-rehab' (Therapy & rehab), 'mental-health' (Mental health), 'pharmacy' (Pharmacy), 'imaging' (Imaging), 'lab' (Lab), 'surgical-techs' (Surgical), 'emts-paramedics' (EMS), 'medical-assistants' (Medical assistants), 'dental' (Dental), 'admin' (Front desk & admin), 'allied-health' (Allied health), 'ai-training' (AI training)."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 20,
+      "description": "How many to return (1 to 100)."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_healthcare_jobs",
+   "title": "Search healthcare jobs",
+   "description": "Search the open healthcare jobs at 259 US hospitals, health systems, clinic groups and care companies (nurses, CNAs, doctors, NPs and PAs, therapists, techs, pharmacy, caregivers, front office and more), plus the listings of the job boards the site reads, each naming its employer. Returns each job's title, employer, kind of job, posted pay, shift where the posting states it, place, and a link to its page on CareJobs.Now, where the user applies. All filters are optional.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Words every job must carry in its title, place, department or schedule, e.g. 'ICU', 'night', 'travel', 'pediatric', 'Houston'."
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "nurses",
+       "nurse-practitioners",
+       "physicians",
+       "nursing-assistants",
+       "caregivers",
+       "therapy-rehab",
+       "mental-health",
+       "pharmacy",
+       "imaging",
+       "lab",
+       "surgical-techs",
+       "emts-paramedics",
+       "medical-assistants",
+       "dental",
+       "admin",
+       "allied-health",
+       "ai-training"
+      ],
+      "description": "Kind of job, one of: 'nurses' (Nurses), 'nurse-practitioners' (NPs & PAs), 'physicians' (Doctors), 'nursing-assistants' (CNAs & PCTs), 'caregivers' (Caregivers), 'therapy-rehab' (Therapy & rehab), 'mental-health' (Mental health), 'pharmacy' (Pharmacy), 'imaging' (Imaging), 'lab' (Lab), 'surgical-techs' (Surgical), 'emts-paramedics' (EMS), 'medical-assistants' (Medical assistants), 'dental' (Dental), 'admin' (Front desk & admin), 'allied-health' (Allied health), 'ai-training' (AI training)."
+     },
+     "employer": {
+      "type": "string",
+      "description": "An employer (or AI-training program or job board): its slug, e.g. 'hca-healthcare', 'kaiser-permanente', or its name. list_healthcare_employers finds the slugs."
+     },
+     "state": {
+      "type": "string",
+      "description": "A US state: its two-letter code (e.g. 'TX', 'NY') or its name ('Texas')."
+     },
+     "remote": {
+      "type": "boolean",
+      "description": "Only remote (work-from-home) jobs, such as telehealth, case management, coding and billing."
+     },
+     "min_hourly_usd": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "description": "Only jobs whose posted hourly ceiling reaches this many US dollars."
+     },
+     "sort": {
+      "type": "string",
+      "enum": [
+       "mixed",
+       "newest",
+       "highest_pay"
+      ],
+      "default": "mixed",
+      "description": "'mixed' (the board's order, employers interleaved), 'newest' or 'highest_pay'."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 10,
+      "description": "How many jobs to return (1 to 25)."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

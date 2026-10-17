@@ -1,0 +1,92 @@
+{
+ "server": "ReadGZH",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "readgzh.get",
+   "description": "Get a cached WeChat article by its short slug/URL path via ReadGZH. Use when you have a slug like 'minicpm-o-4-5' from a previous read.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string",
+      "description": "The article slug, e.g. 'minicpm-o-4-5'"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "readgzh.list",
+   "description": "List recently cached WeChat articles via ReadGZH. Returns titles, authors, and links. Useful for browsing what articles have been previously read and cached.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "limit": {
+      "type": "number",
+      "description": "Number of articles to return (default 10, max 50)"
+     }
+    },
+    "required": []
+   }
+  },
+  {
+   "name": "readgzh.list_by_account",
+   "description": "List cached WeChat articles published by one Official Account (公众号) via ReadGZH. IMPORTANT: this only covers articles already cached by ReadGZH — WeChat has no public API for a full account archive, so the result is not exhaustive. Use it to find other articles by the same author after reading one.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "account": {
+      "type": "string",
+      "description": "The WeChat Official Account name (author), e.g. '机器之心'. Partial match is supported."
+     },
+     "limit": {
+      "type": "number",
+      "description": "Max results to return (default 10, max 50)"
+     }
+    },
+    "required": [
+     "account"
+    ]
+   }
+  },
+  {
+   "name": "readgzh.read",
+   "description": "Read and extract the full text content of a WeChat Official Account (微信公众号) article via ReadGZH (readgzh.site). Provide a WeChat article URL and get back the title, author, publish time, and full article text in Markdown format. The article will be automatically cached for future reads.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "The full URL of the WeChat article, e.g. https://mp.weixin.qq.com/s/xxxx"
+     }
+    },
+    "required": [
+     "url"
+    ]
+   }
+  },
+  {
+   "name": "readgzh.search",
+   "description": "Search cached WeChat articles by keyword via ReadGZH. Searches in article titles and content. Returns matching articles with snippets.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Search keyword to find in article titles or content"
+     },
+     "limit": {
+      "type": "number",
+      "description": "Max results to return (default 5, max 20)"
+     }
+    },
+    "required": [
+     "query"
+    ]
+   }
+  }
+ ]
+}

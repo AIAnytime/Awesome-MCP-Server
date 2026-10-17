@@ -1,0 +1,433 @@
+{
+ "server": "Deposit by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "accept_schedule_change",
+   "title": "accept schedule change",
+   "description": "Apply one suggested schedule change after the freelancer explicitly approves that change. Pass confirmed true only then. This is the path that may waive the deposit, mark it paid, or move a payment date. Calling it is not a substitute for the freelancer's approval.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "changeId": {
+      "$ref": "#/properties/scheduleId"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "scheduleId",
+     "changeId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "add_later_payment",
+   "title": "add later payment",
+   "description": "Add one later payment: a label, an amount in whole minor units, and a payment date. After the schedule is approved, a new later payment is refused until accept_schedule_change applies an add_later_payment suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "amountMinor": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000000
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "required": [
+     "scheduleId",
+     "label",
+     "amountMinor",
+     "dueOn"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "commit_schedule",
+   "title": "commit schedule",
+   "description": "Mark the current draft as the approved schedule. Pass confirmed true only after the freelancer explicitly approves the deposit, the later payment dates, and what the assistant may tell the client.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "scheduleId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_schedules",
+   "title": "list schedules",
+   "description": "List the signed-in freelancer's deposit schedules. Use a returned id with read_schedule. Do not guess a schedule.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "default": 0
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "mark_deposit_paid",
+   "title": "mark deposit paid",
+   "description": "Mark the deposit paid. After the schedule is approved, marking it paid is refused until accept_schedule_change applies a mark_deposit_paid suggestion. Do not tell the client the deposit is paid unless the record already says so.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     }
+    },
+    "required": [
+     "scheduleId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "move_payment_date",
+   "title": "move payment date",
+   "description": "Move a payment date. target deposit moves the deposit date. target later moves one later payment and requires paymentId. After the schedule is approved, a different date is refused until accept_schedule_change applies a move_payment_date suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "target": {
+      "type": "string",
+      "enum": [
+       "deposit",
+       "later"
+      ]
+     },
+     "paymentId": {
+      "$ref": "#/properties/scheduleId"
+     }
+    },
+    "required": [
+     "scheduleId",
+     "dueOn",
+     "target"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "read_schedule",
+   "title": "read schedule",
+   "description": "Read the schedule before answering. Quote only this record. mayTellClient and clientScript are what the assistant may tell the client. Draft status is not an approved commitment. Proposed changes do not authorize a waiver, a paid deposit, or a new payment date.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     }
+    },
+    "required": [
+     "scheduleId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "record_deposit",
+   "title": "record deposit",
+   "description": "Record the deposit amount in whole minor units and the deposit date as YYYY-MM-DD. This does not waive the deposit and does not mark it paid. After the schedule is approved, a different amount or date is refused until an accepted schedule change.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "amountMinor": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000000
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "required": [
+     "scheduleId",
+     "amountMinor",
+     "dueOn"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "start_schedule",
+   "title": "start schedule",
+   "description": "Start a draft deposit schedule for one client project. Draft figures are not an approved commitment until commit_schedule. Currency is a three-letter code. Amounts later are minor units of that currency and are the freelancer's figures.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "clientName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "projectTitle": {
+      "$ref": "#/properties/clientName"
+     },
+     "reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+     },
+     "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3
+     }
+    },
+    "required": [
+     "clientName",
+     "projectTitle",
+     "reference",
+     "currency"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "suggest_schedule_change",
+   "title": "suggest schedule change",
+   "description": "Record a suggested change. This does not change the schedule. kind waive_deposit and kind mark_deposit_paid need only a summary. kind move_payment_date requires dueOn and target; target later also requires paymentId. kind revise_deposit requires amountMinor. kind add_later_payment requires label, amountMinor, and dueOn. kind revise_client_script requires script.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "waive_deposit",
+       "mark_deposit_paid",
+       "move_payment_date",
+       "revise_deposit",
+       "add_later_payment",
+       "revise_client_script"
+      ]
+     },
+     "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     },
+     "target": {
+      "type": "string",
+      "enum": [
+       "deposit",
+       "later"
+      ]
+     },
+     "paymentId": {
+      "$ref": "#/properties/scheduleId"
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "amountMinor": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000000
+     },
+     "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "script": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "scheduleId",
+     "kind",
+     "summary"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "waive_deposit",
+   "title": "waive deposit",
+   "description": "Waive the deposit. After the schedule is approved, waiving is refused until accept_schedule_change applies a waive_deposit suggestion. Do not tell the client the deposit is waived unless the record already says so.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     }
+    },
+    "required": [
+     "scheduleId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "write_client_script",
+   "title": "write client script",
+   "description": "Record what the assistant may tell the client about the deposit and payment dates. After the schedule is approved, different wording is refused until an accepted revise_client_script suggestion. The assistant must not go beyond this script and the facts in read_schedule.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "scheduleId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "script": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "scheduleId",
+     "script"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,643 @@
+{
+ "server": "BuyWhere",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "compare_products",
+   "description": "Compare multiple products side-by-side. Returns price, brand, rating, and category for each.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "ids"
+    ],
+    "properties": {
+     "ids": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Array of product IDs to compare (2-10)",
+      "minItems": 2,
+      "maxItems": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "compare_products_v2",
+   "description": "REQUIRED deliver_to. Compare multiple products side-by-side. Always pass deliver_to=\"SG\" (or your buyer's country). Returns price, brand, rating, category, and a resolved outbound_url per product for the buyer market.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "ids",
+     "deliver_to"
+    ],
+    "properties": {
+     "ids": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Array of product IDs to compare (2-10)",
+      "minItems": 2,
+      "maxItems": 10
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "REQUIRED. Buyer delivery country/market (ISO country code, e.g. \"SG\", \"US\")."
+     }
+    }
+   }
+  },
+  {
+   "name": "find_best_price",
+   "description": "Use this whenever a user asks about prices, wants to find the cheapest option, or asks \"what's the best price for X\" or \"where can I buy X for the lowest price\". Returns schema.org/Product entities with schema.org/AggregateOffer (lowPrice, offerCount, priceCurrency) across all merchants. BUY-74597 degraded contract: when the candidates query cannot complete inside the user-facing timeout, this tool returns a 200-OK envelope with `meta.degraded=true`, `meta.status=\"degraded\"`, `meta.emptiness_reason=\"api_error\"` with `meta.degraded_kind=\"timeout\"` (or `\"partial_timeout\"` / `\"auth_failure\"`), `meta.confidence=\"low\"`, and `meta.diagnostic.timed_out_stage=\"catalog_search\"`, with `best_price=null` and `alternatives=[]`. It never returns an unqualified empty result when the cause is timeout, auth failure, upstream exception, or circuit breaker.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Keyword search query — alias for product_name"
+     },
+     "product_name": {
+      "type": "string",
+      "description": "Product name to find best price for (e.g., \"iphone 15 pro 256gb\", \"samsung galaxy s24\")"
+     },
+     "category": {
+      "type": "string",
+      "description": "Category to filter by (e.g., \"electronics\", \"fashion\")"
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "MY",
+       "TH",
+       "PH",
+       "VN",
+       "ID",
+       "US"
+      ],
+      "description": "Country to search in (defaults to SG). Alias: country."
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "Treat as REQUIRED for buyer-facing use: ISO-3166 country of the END USER (e.g. \"SG\", \"US\"). Without it results are not shipping-ranked and may be undeliverable. Preferred over country_code/country."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "market": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)."
+     },
+     "region": {
+      "type": "string",
+      "enum": [
+       "us",
+       "sea"
+      ],
+      "description": "Region filter - use \"us\" for United States or \"sea\" for Southeast Asia"
+     }
+    }
+   }
+  },
+  {
+   "name": "find_best_price_v2",
+   "description": "REQUIRED deliver_to. Use this whenever a user asks about prices, wants to find the cheapest option, or asks \"what's the best price for X\" or \"where can I buy X for the lowest price\". Always pass deliver_to=\"SG\" (or your buyer's country). Returns schema.org/Product entities with schema.org/AggregateOffer (lowPrice, offerCount, priceCurrency) across all merchants. Response includes a shopping_job_id (UUID) you can use to resume a multi-merchant price-comparison session for the buyer.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "deliver_to"
+    ],
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Keyword search query — alias for product_name"
+     },
+     "product_name": {
+      "type": "string",
+      "description": "Product name to find best price for (e.g., \"iphone 15 pro 256gb\", \"samsung galaxy s24\")"
+     },
+     "category": {
+      "type": "string",
+      "description": "Category to filter by (e.g., \"electronics\", \"fashion\")"
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "MY",
+       "TH",
+       "PH",
+       "VN",
+       "ID",
+       "US"
+      ],
+      "description": "Country to search in (defaults to SG). Alias: country."
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "REQUIRED. Buyer delivery country/market (ISO country code, e.g. \"SG\", \"US\")."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "region": {
+      "type": "string",
+      "enum": [
+       "us",
+       "sea"
+      ],
+      "description": "Region filter - use \"us\" for United States or \"sea\" for Southeast Asia"
+     }
+    }
+   }
+  },
+  {
+   "name": "find_similar",
+   "description": "Find products similar to a given product using vector similarity. Returns up to 10 nearest neighbours by semantic meaning (title+description embedding). Useful for \"more like this\" recommendations.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "product_id"
+    ],
+    "properties": {
+     "product_id": {
+      "type": "string",
+      "description": "UUID of the source product"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Number of similar products to return (1-10, default 10)",
+      "default": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "get_deals",
+   "description": "Get discounted products sorted by discount percentage. Returns schema.org/Product entities with schema.org/Offer properties: price, priceCurrency, availability, originalPrice, and discountPercentage. Covers Singapore, Malaysia, Indonesia, Thailand, Vietnam, and US e-commerce. Supports currency, region (sea, us, eu, au), country (SG, US, VN, MY, ...) and category filters. BUY-74597 degraded contract: when the discount-index scan cannot complete inside the user-facing timeout, this tool returns a 200-OK envelope with `meta.status=\"degraded\"`, `meta.emptiness_reason=\"api_error\"` with `meta.degraded_kind=\"timeout\"` (or `\"partial_timeout\"` / `\"auth_failure\"`), `meta.confidence=\"low\"`, and `meta.diagnostic.timed_out_stage` (typically `offer_aggregation`). It never returns an unqualified empty result when the cause is timeout, auth failure, upstream exception, or circuit breaker. Branch on `meta.degraded === true` or `meta.status === \"degraded\"`.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "min_discount": {
+      "type": "number",
+      "description": "Minimum discount percentage (default 10)",
+      "default": 10
+     },
+     "currency": {
+      "type": "string",
+      "description": "Filter by currency code (SGD, USD, MYR, VND, THB). Defaults to SGD.",
+      "default": "SGD"
+     },
+     "region": {
+      "type": "string",
+      "description": "Filter by region (sea, us, eu, au)"
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "US",
+       "VN",
+       "TH",
+       "MY"
+      ],
+      "description": "Filter by ISO country code. Alias: country."
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "Treat as REQUIRED for buyer-facing use: ISO-3166 country of the END USER (e.g. \"SG\", \"US\"). Without it results are not shipping-ranked and may be undeliverable. Preferred over country_code/country."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "market": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)."
+     },
+     "category": {
+      "type": "string",
+      "description": "Filter deals by product category (e.g. \"Electronics\", \"Beauty\", \"home_and_kitchen\"). Handler matches against category text and category_path[1]; slug-style input is accepted. BUY-76853/BUY-83657."
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Number of results (max 100, default 20)",
+      "default": 20
+     },
+     "offset": {
+      "type": "integer",
+      "description": "Pagination offset",
+      "default": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "get_deals_v2",
+   "description": "REQUIRED deliver_to. Get discounted products sorted by discount percentage. Always pass deliver_to=\"SG\" (or your buyer's country). Returns schema.org/Product entities with schema.org/Offer properties: price, priceCurrency, availability, originalPrice, and discountPercentage. Covers Singapore, Malaysia, Indonesia, Thailand, Vietnam, and US e-commerce. Supports currency, region (sea, us, eu, au), country (SG, US, VN, MY, ...) and category filters.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "deliver_to"
+    ],
+    "properties": {
+     "min_discount": {
+      "type": "number",
+      "description": "Minimum discount percentage (default 10)",
+      "default": 10
+     },
+     "currency": {
+      "type": "string",
+      "description": "Filter by currency code (SGD, USD, MYR, VND, THB). Defaults to SGD.",
+      "default": "SGD"
+     },
+     "region": {
+      "type": "string",
+      "description": "Filter by region (sea, us, eu, au)"
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "US",
+       "VN",
+       "TH",
+       "MY"
+      ],
+      "description": "Filter by ISO country code. Alias: country."
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "REQUIRED. Buyer delivery country/market (ISO country code, e.g. \"SG\", \"US\")."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "category": {
+      "type": "string",
+      "description": "Filter deals by product category (e.g. \"Electronics\", \"Beauty\", \"home_and_kitchen\"). Handler matches against category text and category_path[1]; slug-style input is accepted. BUY-76853/BUY-83657."
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Number of results (max 100, default 20)",
+      "default": 20
+     },
+     "offset": {
+      "type": "integer",
+      "description": "Pagination offset",
+      "default": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "get_product",
+   "description": "Get a specific product by its ID, including full details and current price.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "id"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "description": "Product UUID"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_product_v2",
+   "description": "REQUIRED deliver_to. Get a specific product by its ID, including full details and current price. Always pass deliver_to=\"SG\" (or your buyer's country). Response includes a resolved outbound_url (https://…) that routes the buyer through the BuyWhere click tracker when the product has merchant offers.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "id",
+     "deliver_to"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "description": "Product UUID"
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "REQUIRED. Buyer delivery country/market (ISO country code, e.g. \"SG\", \"US\")."
+     }
+    }
+   }
+  },
+  {
+   "name": "ingest_products",
+   "description": "Ingest (upsert) a batch of products into the BuyWhere catalog. Use this to add or update product listings from any merchant/source. Requires a valid API key with ingest permissions. Accepts up to 1000 products per call with source, SKU, title, price, URL, and optional metadata.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "source",
+     "products"
+    ],
+    "properties": {
+     "source": {
+      "type": "string",
+      "description": "Data source identifier (e.g. \"shopee_sg\", \"amazon_sg\", \"lazada_sg\")"
+     },
+     "products": {
+      "type": "array",
+      "description": "Array of product objects to ingest (max 1000)",
+      "items": {
+       "type": "object",
+       "required": [
+        "sku",
+        "merchant_id",
+        "title",
+        "price",
+        "url"
+       ],
+       "properties": {
+        "sku": {
+         "type": "string",
+         "description": "Unique stock keeping unit identifier"
+        },
+        "merchant_id": {
+         "type": "string",
+         "description": "Merchant identifier"
+        },
+        "title": {
+         "type": "string",
+         "description": "Product title"
+        },
+        "description": {
+         "type": "string",
+         "description": "Product description"
+        },
+        "price": {
+         "type": "number",
+         "description": "Current price (must be >= 0)"
+        },
+        "currency": {
+         "type": "string",
+         "description": "Currency code (default: SGD)",
+         "default": "SGD"
+        },
+        "url": {
+         "type": "string",
+         "description": "Product URL on the merchant site"
+        },
+        "image_url": {
+         "type": "string",
+         "description": "Main product image URL"
+        },
+        "category": {
+         "type": "string",
+         "description": "Product category"
+        },
+        "brand": {
+         "type": "string",
+         "description": "Brand name"
+        },
+        "is_active": {
+         "type": "boolean",
+         "description": "Whether the product is active (default: true)"
+        },
+        "is_available": {
+         "type": "boolean",
+         "description": "Whether the product is in stock"
+        },
+        "country_code": {
+         "type": "string",
+         "description": "ISO country code (e.g. \"SG\", \"US\")"
+        },
+        "region": {
+         "type": "string",
+         "description": "Region identifier (e.g. \"sea\", \"us\")"
+        },
+        "metadata": {
+         "type": "object",
+         "description": "Additional product metadata"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "name": "list_categories",
+   "description": "List top-level product categories available in the BuyWhere catalog.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "region": {
+      "type": "string",
+      "enum": [
+       "us",
+       "sg",
+       "my",
+       "gb",
+       "in",
+       "au"
+      ],
+      "description": "Region alias mapped to ISO country code."
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "US",
+       "VN",
+       "TH",
+       "MY",
+       "GB",
+       "IN",
+       "AU"
+      ],
+      "description": "Filter by ISO country code. Defaults to SG."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "market": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)."
+     }
+    }
+   }
+  },
+  {
+   "name": "search_products",
+   "description": "Search the BuyWhere product catalog by keyword. Treat deliver_to as REQUIRED for buyer-facing use (ISO-3166 country of the end user); it takes precedence over country_code/country and prevents all-market scans. Returns product records with title, description, image, price, and merchant information. Covers e-commerce platforms across Singapore, Malaysia, Indonesia, Thailand, Vietnam, and US. Use compact=true for agent-optimized responses with structured_specs, comparison_attributes, and normalized_price_usd fields. BUY-74597 degraded contract: when the catalog query cannot complete inside the user-facing timeout, this tool returns a 200-OK envelope with `meta.status=\"degraded\"`, `meta.emptiness_reason=\"api_error\"` with `meta.degraded_kind=\"timeout\"` (or `\"partial_timeout\"` / `\"auth_failure\"`), `meta.confidence=\"low\"`, and `meta.diagnostic.timed_out_stage` naming the failed stage (catalog_search / offer_aggregation / merchant_join). It never returns an unqualified empty result when the cause is timeout, auth failure, upstream exception, or circuit breaker. Agents should branch on `meta.degraded === true` (or `meta.status === \"degraded\"`) instead of treating empty `data` as no_match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Keyword search query"
+     },
+     "query": {
+      "type": "string",
+      "description": "Alias for q (accepted for agent convenience; use q). Without this, callers passing `query` get 0 rows and the reltuples-derived total — see BUY-75287."
+     },
+     "domain": {
+      "type": "string",
+      "description": "Filter by merchant platform (e.g. lazada, shopee, amazon)"
+     },
+     "region": {
+      "type": "string",
+      "description": "Filter by region (sea, us, eu, au)"
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "US",
+       "VN",
+       "TH",
+       "MY"
+      ],
+      "description": "Filter by ISO country code. Also infers default currency for price filters (SG→SGD, US→USD, VN→VND, TH→THB, MY→MYR)."
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "Treat as REQUIRED for buyer-facing use: ISO-3166 country of the END USER (e.g. \"SG\", \"US\"). Without it results are not shipping-ranked and may be undeliverable. Preferred over country_code/country."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "market": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)."
+     },
+     "min_price": {
+      "type": "number",
+      "description": "Minimum price (in currency inferred from country_code, or SGD by default)"
+     },
+     "max_price": {
+      "type": "number",
+      "description": "Maximum price (in currency inferred from country_code, or SGD by default)"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Number of results (max 100, default 20)",
+      "default": 20
+     },
+     "offset": {
+      "type": "integer",
+      "description": "Pagination offset",
+      "default": 0
+     },
+     "compact": {
+      "type": "boolean",
+      "description": "Return agent-optimized compact shape: structured_specs, comparison_attributes, normalized_price_usd. Reduces response size ~40%. Recommended for agent tool-use.",
+      "default": false
+     },
+     "category": {
+      "type": "string",
+      "description": "Filter by product category name (e.g. \"Laptops\", \"Smartphones\", \"Televisions\"). Use to exclude accessories and get actual products."
+     },
+     "mode": {
+      "type": "string",
+      "enum": [
+       "keyword",
+       "semantic",
+       "hybrid"
+      ],
+      "description": "Search mode: keyword=FTS only (default, matches REST /v1/products/search), semantic=vector only, hybrid=RRF blend of FTS+vector. Falls back to keyword if vector DB or FLOWAI_EMBED_API_KEY unavailable.",
+      "default": "keyword"
+     }
+    }
+   }
+  },
+  {
+   "name": "search_products_v2",
+   "description": "REQUIRED deliver_to. Search the BuyWhere product catalog by keyword. The deliver_to parameter is REQUIRED (ISO country code, e.g. \"SG\", \"US\") — it takes precedence over country_code/country and prevents all-market scans. Always pass deliver_to=\"SG\" (or your buyer's country). Returns product records with title, description, image, price, and merchant information. Covers e-commerce platforms across Singapore, Malaysia, Indonesia, Thailand, Vietnam, and US. Use compact=true for agent-optimized responses with structured_specs, comparison_attributes, and normalized_price_usd fields.",
+   "inputSchema": {
+    "type": "object",
+    "required": [
+     "deliver_to"
+    ],
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Keyword search query"
+     },
+     "query": {
+      "type": "string",
+      "description": "Alias for q (accepted for agent convenience; use q). Without this, callers passing `query` get 0 rows and the reltuples-derived total — see BUY-75287."
+     },
+     "domain": {
+      "type": "string",
+      "description": "Filter by merchant platform (e.g. lazada, shopee, amazon)"
+     },
+     "region": {
+      "type": "string",
+      "description": "Filter by region (sea, us, eu, au)"
+     },
+     "country_code": {
+      "type": "string",
+      "enum": [
+       "SG",
+       "US",
+       "VN",
+       "TH",
+       "MY"
+      ],
+      "description": "Filter by ISO country code. Also infers default currency for price filters (SG→SGD, US→USD, VN→VND, TH→THB, MY→MYR)."
+     },
+     "deliver_to": {
+      "type": "string",
+      "description": "REQUIRED. Buyer delivery country/market (ISO country code, e.g. \"SG\", \"US\")."
+     },
+     "country": {
+      "type": "string",
+      "description": "Alias for country_code (deprecated, use country_code)"
+     },
+     "min_price": {
+      "type": "number",
+      "description": "Minimum price (in currency inferred from country_code, or SGD by default)"
+     },
+     "max_price": {
+      "type": "number",
+      "description": "Maximum price (in currency inferred from country_code, or SGD by default)"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Number of results (max 100, default 20)",
+      "default": 20
+     },
+     "offset": {
+      "type": "integer",
+      "description": "Pagination offset",
+      "default": 0
+     },
+     "compact": {
+      "type": "boolean",
+      "description": "Return agent-optimized compact shape: structured_specs, comparison_attributes, normalized_price_usd. Reduces response size ~40%. Recommended for agent tool-use.",
+      "default": false
+     },
+     "category": {
+      "type": "string",
+      "description": "Filter by product category name (e.g. \"Laptops\", \"Smartphones\", \"Televisions\"). Use to exclude accessories and get actual products."
+     },
+     "mode": {
+      "type": "string",
+      "enum": [
+       "keyword",
+       "semantic",
+       "hybrid"
+      ],
+      "description": "Search mode: keyword=FTS only (default, matches REST /v1/products/search), semantic=vector only, hybrid=RRF blend of FTS+vector. Falls back to keyword if vector DB or FLOWAI_EMBED_API_KEY unavailable.",
+      "default": "keyword"
+     }
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,363 @@
+{
+ "server": "Scope by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "approve_change_order",
+   "title": "approve change order",
+   "description": "Apply one proposed change order after the freelancer explicitly approves that order. Pass confirmed true only then. This is the path that may discount a rate or add work. Calling it is not a substitute for the freelancer's approval.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "changeOrderId": {
+      "$ref": "#/properties/engagementId"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "engagementId",
+     "changeOrderId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "approve_scope",
+   "title": "approve scope",
+   "description": "Mark the current draft as the approved scope. Pass confirmed true only after the freelancer explicitly approves the current items, rates, and deadlines.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "engagementId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "create_engagement",
+   "title": "create engagement",
+   "description": "Create a draft engagement. Draft terms are not an approved commitment until approve_scope.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "clientName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "title": {
+      "$ref": "#/properties/clientName"
+     },
+     "summary": {
+      "type": "string",
+      "maxLength": 4000
+     },
+     "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+     }
+    },
+    "required": [
+     "clientName",
+     "title",
+     "currency"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "file_change_order",
+   "title": "file change order",
+   "description": "Record a proposed change order. This does not change scope, rates, or deadlines. kind add_work requires workTitle and workDescription. kind discount_rate requires rateCode and a lower amountMinor. kind add_rate requires rateCode, rateLabel, amountMinor, and unit. kind move_deadline requires scopeItemId and dueOn.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "add_work",
+       "discount_rate",
+       "add_rate",
+       "move_deadline"
+      ]
+     },
+     "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     },
+     "workTitle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "workDescription": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12000
+     },
+     "rateCode": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+     },
+     "rateLabel": {
+      "$ref": "#/properties/workTitle"
+     },
+     "amountMinor": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 1000000000000
+     },
+     "unit": {
+      "type": "string",
+      "enum": [
+       "hour",
+       "day",
+       "fixed"
+      ]
+     },
+     "scopeItemId": {
+      "$ref": "#/properties/engagementId"
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "required": [
+     "engagementId",
+     "kind",
+     "summary"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_approved_record",
+   "title": "get approved record",
+   "description": "Read the approved scope, rates, deadlines, and change orders before answering. Quote only this record. Draft status is not an approved commitment. Proposed change orders do not authorize a discount or extra work.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     }
+    },
+    "required": [
+     "engagementId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_engagements",
+   "title": "list engagements",
+   "description": "List the signed-in freelancer's engagements. Use a returned id with get_approved_record. Do not guess an engagement.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "default": 0
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_deadline",
+   "title": "save deadline",
+   "description": "Set or move the deadline for one scope item. The date is a calendar day in YYYY-MM-DD form.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "scopeItemId": {
+      "$ref": "#/properties/engagementId"
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "required": [
+     "engagementId",
+     "scopeItemId",
+     "dueOn"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_rate",
+   "title": "save rate",
+   "description": "Set a draft rate, or update an approved rate without lowering it or changing its unit. A lower amount is a discount and is refused. A new rate code after approval is refused. Use file_change_order and approve_change_order for those.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+     },
+     "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "amountMinor": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 1000000000000
+     },
+     "unit": {
+      "type": "string",
+      "enum": [
+       "hour",
+       "day",
+       "fixed"
+      ]
+     }
+    },
+    "required": [
+     "engagementId",
+     "code",
+     "label",
+     "amountMinor",
+     "unit"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_scope_item",
+   "title": "save scope item",
+   "description": "Add or update a scope item the freelancer has accepted. After approval, a new item is refused until approve_change_order adds that work. Renaming approved work is refused.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "engagementId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "scopeItemId": {
+      "$ref": "#/properties/engagementId"
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12000
+     }
+    },
+    "required": [
+     "engagementId",
+     "title",
+     "description"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

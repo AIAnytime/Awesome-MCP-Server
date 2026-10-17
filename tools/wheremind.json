@@ -1,0 +1,212 @@
+{
+ "server": "Wheremind",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "directions",
+   "title": "Directions / routes",
+   "description": "Compute a route from origin to destination by DRIVE, WALK, BICYCLE, TRANSIT, or TWO_WHEELER. Use when the user asks how to get somewhere, how far it is, or how long it takes. Origin and destination may be an address string, \"lat,lng\", or an object with place_id. Returns total duration and distance, an encoded polyline, and per-leg turn-by-turn steps (maneuver, instruction text, distance, duration, start/end lat/lng).",
+   "inputSchema": {
+    "properties": {
+     "alternatives": {
+      "type": "boolean"
+     },
+     "destination": {
+      "description": "Address string, 'lat,lng', or {address|place_id|latitude,longitude}"
+     },
+     "field_mask": {
+      "description": "Optional Routes X-Goog-FieldMask override. Default includes turn-by-turn navigationInstruction without Pro fields (localizedValues, travelAdvisory).",
+      "type": "string"
+     },
+     "intermediates": {
+      "type": "array"
+     },
+     "language_code": {
+      "type": "string"
+     },
+     "origin": {
+      "description": "Address string, 'lat,lng', or {address|place_id|latitude,longitude}"
+     },
+     "travel_mode": {
+      "description": "DRIVE, WALK, BICYCLE, TRANSIT, TWO_WHEELER",
+      "type": "string"
+     }
+    },
+    "required": [
+     "origin",
+     "destination"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "geocode",
+   "title": "Geocode",
+   "description": "Convert an address to lat/lng (forward: pass address), or lat/lng to an address (reverse: pass latitude and longitude). Use when the user needs coordinates or a normalized address, or before places_nearby. To find businesses use places_search_text; directions accepts addresses directly, so geocoding first is not required. Returns formatted address, lat/lng, place_id, types, and plus code.",
+   "inputSchema": {
+    "properties": {
+     "address": {
+      "description": "Address to forward-geocode",
+      "type": "string"
+     },
+     "field_mask": {
+      "type": "string"
+     },
+     "language_code": {
+      "type": "string"
+     },
+     "latitude": {
+      "description": "Latitude for reverse geocode",
+      "type": "number"
+     },
+     "longitude": {
+      "description": "Longitude for reverse geocode",
+      "type": "number"
+     }
+    },
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "places_details",
+   "title": "Place details",
+   "description": "Get details for one known place by place_id (from places_search_text or places_nearby). Use when the user asks for a specific place's phone number, website, opening hours, or rating. Returns name, formatted address, lat/lng, rating, opening hours, phone, website, and attributions.",
+   "inputSchema": {
+    "properties": {
+     "field_mask": {
+      "type": "string"
+     },
+     "language_code": {
+      "type": "string"
+     },
+     "place_id": {
+      "description": "Place id, with or without the places/ prefix",
+      "type": "string"
+     }
+    },
+    "required": [
+     "place_id"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "places_nearby",
+   "title": "Places nearby search",
+   "description": "List places within a radius (meters) of a lat/lng you already have, such as the user's location or a geocode result, optionally filtered by Places types (e.g. [\"restaurant\"]) and ranked by DISTANCE or POPULARITY. For free-text, name, or city queries use places_search_text instead. Returns place_id, name, formatted address, lat/lng, types, rating, opening hours, and attributions.",
+   "inputSchema": {
+    "properties": {
+     "field_mask": {
+      "type": "string"
+     },
+     "included_types": {
+      "description": "Places types, e.g. [\"restaurant\"]",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "language_code": {
+      "type": "string"
+     },
+     "latitude": {
+      "type": "number"
+     },
+     "longitude": {
+      "type": "number"
+     },
+     "max_result_count": {
+      "type": "integer"
+     },
+     "radius": {
+      "description": "Circle radius in meters",
+      "type": "number"
+     },
+     "rank_preference": {
+      "description": "DISTANCE or POPULARITY",
+      "type": "string"
+     }
+    },
+    "required": [
+     "latitude",
+     "longitude",
+     "radius"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "places_search_text",
+   "title": "Places text search",
+   "description": "Find places by free text: a business name, a category, or \"X in/near Y\" (e.g. \"coffee in Porto\", \"pharmacies near Lisbon Oriente\"). Default choice for finding places. Use places_nearby only when you already have exact coordinates. Returns up to 20 places, each with place_id, name, formatted address, lat/lng, types, rating, opening hours (open_now and weekly hours), and attributions. Pass a place_id to places_details for phone or website.",
+   "inputSchema": {
+    "properties": {
+     "field_mask": {
+      "type": "string"
+     },
+     "included_type": {
+      "description": "Optional Places type filter",
+      "type": "string"
+     },
+     "language_code": {
+      "type": "string"
+     },
+     "latitude": {
+      "description": "Optional location bias latitude",
+      "type": "number"
+     },
+     "longitude": {
+      "description": "Optional location bias longitude",
+      "type": "number"
+     },
+     "max_result_count": {
+      "description": "1-20",
+      "type": "integer"
+     },
+     "query": {
+      "description": "Free-text query, e.g. 'coffee in Austin'",
+      "type": "string"
+     },
+     "radius": {
+      "description": "Optional location bias radius in meters",
+      "type": "number"
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,567 @@
+{
+ "server": "Invoice by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "accept_invoice_change",
+   "title": "accept invoice change",
+   "description": "Apply one suggested invoice change after the freelancer explicitly approves that change. Pass confirmed true only then. This is the path that may add a line, change a rate, apply a discount, or move the due date. Calling it is not a substitute for the freelancer's approval.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "changeId": {
+      "$ref": "#/properties/invoiceId"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "invoiceId",
+     "changeId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "begin_invoice",
+   "title": "begin invoice",
+   "description": "Start a draft invoice. Draft figures are not an approved commitment until seal_invoice. Currency is a three-letter code. Amounts later are minor units of that currency and are the freelancer's figures.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "clientName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "title": {
+      "$ref": "#/properties/clientName"
+     },
+     "number": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+     },
+     "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3
+     }
+    },
+    "required": [
+     "clientName",
+     "title",
+     "number",
+     "currency"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "describe_line",
+   "title": "describe line",
+   "description": "Correct a line description while the invoice is still a draft. After approval, a different description is refused. Use suggest_invoice_change with add_line for a different line.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "lineId": {
+      "$ref": "#/properties/invoiceId"
+     },
+     "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     }
+    },
+    "required": [
+     "invoiceId",
+     "lineId",
+     "description"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_invoices",
+   "title": "list invoices",
+   "description": "List the signed-in freelancer's invoices. Use a returned id with read_invoice. Do not guess an invoice.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "default": 0
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "offer_discount",
+   "title": "offer discount",
+   "description": "Record a discount the freelancer is putting on the invoice. kind none uses value 0. kind percent takes a whole number from 1 to 100. kind fixed takes a whole number of minor units. After the invoice is sealed, a different discount is refused until accept_invoice_change applies an apply_discount suggestion. Do not invent a discount.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "none",
+       "percent",
+       "fixed"
+      ]
+     },
+     "value": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000000
+     },
+     "note": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     }
+    },
+    "required": [
+     "invoiceId",
+     "kind",
+     "value",
+     "note"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "place_line",
+   "title": "place line",
+   "description": "Add one line: description, quantity, rate in whole minor units, and unit hour, each, or day. After the invoice is sealed, a new line is refused until accept_invoice_change applies an add_line suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     },
+     "quantity": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+     },
+     "rateMinor": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000000
+     },
+     "unit": {
+      "type": "string",
+      "enum": [
+       "hour",
+       "each",
+       "day"
+      ]
+     }
+    },
+    "required": [
+     "invoiceId",
+     "description",
+     "quantity",
+     "rateMinor",
+     "unit"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "quote_line_rate",
+   "title": "quote line rate",
+   "description": "Set the rate already chosen for one line, as a whole number of minor units in the invoice currency. After the invoice is sealed, a different rate is refused until accept_invoice_change applies a change_rate suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "lineId": {
+      "$ref": "#/properties/invoiceId"
+     },
+     "rateMinor": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000000
+     }
+    },
+    "required": [
+     "invoiceId",
+     "lineId",
+     "rateMinor"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "read_invoice",
+   "title": "read invoice",
+   "description": "Read the invoice before answering. Quote only this record. Draft status is not an approved commitment. Proposed changes do not authorize a new line, a different rate, a discount, or a new due date.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     }
+    },
+    "required": [
+     "invoiceId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "seal_invoice",
+   "title": "seal invoice",
+   "description": "Mark the current draft as the approved invoice. Pass confirmed true only after the freelancer explicitly approves the lines, quantities, rates, due date, late terms, and any discount already on the draft.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "invoiceId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "set_invoice_due",
+   "title": "set invoice due",
+   "description": "Set the due date as a calendar day in YYYY-MM-DD form. After the invoice is sealed, a different date is refused until accept_invoice_change applies a move_due_date suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "required": [
+     "invoiceId",
+     "dueOn"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "set_line_quantity",
+   "title": "set line quantity",
+   "description": "Set the quantity on one line. After the invoice is sealed, a different quantity is refused until accept_invoice_change applies an adjust_quantity suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "lineId": {
+      "$ref": "#/properties/invoiceId"
+     },
+     "quantity": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+     }
+    },
+    "required": [
+     "invoiceId",
+     "lineId",
+     "quantity"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "suggest_invoice_change",
+   "title": "suggest invoice change",
+   "description": "Record a suggested change. This does not change the invoice. kind add_line requires description, quantity, rateMinor, and unit. kind change_rate requires lineId and rateMinor. kind apply_discount requires discountKind, discountValue, and discountNote. kind move_due_date requires dueOn. kind adjust_quantity requires lineId and quantity. kind revise_late_terms requires graceDays, lateBasis, feeMinor, latePercent, and lateNote.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "add_line",
+       "change_rate",
+       "apply_discount",
+       "move_due_date",
+       "adjust_quantity",
+       "revise_late_terms"
+      ]
+     },
+     "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     },
+     "lineId": {
+      "$ref": "#/properties/invoiceId"
+     },
+     "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     },
+     "quantity": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+     },
+     "rateMinor": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000000
+     },
+     "unit": {
+      "type": "string",
+      "enum": [
+       "hour",
+       "each",
+       "day"
+      ]
+     },
+     "discountKind": {
+      "type": "string",
+      "enum": [
+       "none",
+       "percent",
+       "fixed"
+      ]
+     },
+     "discountValue": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000000
+     },
+     "discountNote": {
+      "$ref": "#/properties/summary"
+     },
+     "dueOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "graceDays": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 365
+     },
+     "lateBasis": {
+      "type": "string",
+      "enum": [
+       "none",
+       "flat_fee",
+       "percent_per_period"
+      ]
+     },
+     "feeMinor": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000000
+     },
+     "latePercent": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+     },
+     "lateNote": {
+      "$ref": "#/properties/summary"
+     }
+    },
+    "required": [
+     "invoiceId",
+     "kind",
+     "summary"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "write_late_terms",
+   "title": "write late terms",
+   "description": "Record late terms: grace days, and a basis of none, flat_fee, or percent_per_period. flat_fee uses feeMinor and a percent of 0. percent_per_period uses percent and a fee of 0. After approval, a different basis, grace, fee, or percent is refused until an accepted revise_late_terms suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "graceDays": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 365
+     },
+     "basis": {
+      "type": "string",
+      "enum": [
+       "none",
+       "flat_fee",
+       "percent_per_period"
+      ]
+     },
+     "feeMinor": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000000
+     },
+     "percent": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+     },
+     "note": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     }
+    },
+    "required": [
+     "invoiceId",
+     "graceDays",
+     "basis",
+     "feeMinor",
+     "percent",
+     "note"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

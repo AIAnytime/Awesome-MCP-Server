@@ -1,0 +1,3293 @@
+{
+ "server": "Magic Hour",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "account_retrieve",
+   "title": "Get account details",
+   "description": "Get the current credit balance and subscription details of the account that owns the API key.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "required": []
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "ai_clothes_changer_create_image",
+   "title": "AI Clothes Changer",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nChange outfits in photos in seconds with just a photo reference. Each photo costs 25 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Clothes Changer - dateTime",
+      "example": "My Clothes Changer image"
+     },
+     "assets": {
+      "required": [
+       "person_file_path",
+       "garment_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "person_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The image with the person. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/model.png"
+       },
+       "garment_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The image of the outfit. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/outfit.png"
+       },
+       "garment_type": {
+        "enum": [
+         "entire_outfit",
+         "upper_body",
+         "lower_body",
+         "dresses"
+        ],
+        "type": "string",
+        "description": "Type of clothing item to swap. If not provided, swaps the entire outfit. \n* `upper_body` - for shirts/jackets \n* `lower_body` - for pants/skirts \n* `dresses` - for entire outfit (deprecated, use `entire_outfit` instead) \n* `entire_outfit` - for entire outfit",
+        "example": "entire_outfit"
+       }
+      },
+      "description": "Provide the assets for clothes changer"
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_face_editor_edit_image",
+   "title": "AI Face Editor",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nEdit facial features of an image using AI. Each edit costs 1 frame. The height/width of the output image depends on your subscription. Please refer to our [pricing](https://magichour.ai/pricing) page for more details",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Face Editor - dateTime",
+      "example": "My Face Editor image"
+     },
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "This is the image whose face will be edited. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for face editor"
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "enhance_face": {
+        "type": "boolean",
+        "description": "Enhance face features",
+        "default": false,
+        "example": false
+       },
+       "eyebrow_direction": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Eyebrow direction (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "eye_gaze_horizontal": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Horizontal eye gaze (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "eye_gaze_vertical": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Vertical eye gaze (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "eye_open_ratio": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Eye open ratio (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "lip_open_ratio": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Lip open ratio (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "head_roll": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Head roll (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "mouth_grim": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Mouth grim (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "mouth_pout": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Mouth pout (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "mouth_purse": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Mouth purse (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "mouth_smile": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Mouth smile (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "mouth_position_horizontal": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Horizontal mouth position (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "mouth_position_vertical": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Vertical mouth position (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "head_pitch": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Head pitch (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       },
+       "head_yaw": {
+        "multipleOf": 5.0,
+        "maximum": 100.0,
+        "minimum": -100.0,
+        "type": "number",
+        "description": "Head yaw (-100 to 100), in increments of 5",
+        "default": 0,
+        "example": 0
+       }
+      },
+      "description": "Face editing parameters"
+     }
+    },
+    "required": [
+     "assets",
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_gif_generator_create_image",
+   "title": "AI GIF Generator",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n\nCreate an AI GIF. Each GIF costs 50 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your gif a custom name for easy identification.",
+      "default": "Ai Gif - dateTime",
+      "example": "My Ai Gif gif"
+     },
+     "style": {
+      "required": [
+       "prompt"
+      ],
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "maxLength": 500,
+        "minLength": 1,
+        "type": "string",
+        "description": "The prompt used for the GIF.",
+        "example": "Cute dancing cat, pixel art"
+       }
+      }
+     },
+     "output_format": {
+      "enum": [
+       "gif",
+       "mp4",
+       "webm"
+      ],
+      "type": "string",
+      "description": "The output file format for the generated animation.",
+      "default": "gif",
+      "example": "gif"
+     }
+    },
+    "required": [
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "ai_headshot_generator_create_image",
+   "title": "AI Headshot Generator",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nCreate an AI headshot. Each headshot costs 50 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Ai Headshot - dateTime",
+      "example": "My Ai Headshot image"
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "type": "string",
+        "description": "Prompt used to guide the style of your headshot. We recommend omitting the prompt unless you want to customize your headshot. You can visit [AI headshot generator](https://magichour.ai/create/ai-headshot-generator) to view an example of a good prompt used for our 'Professional' style.",
+        "example": "Professional studio headshot with soft lighting and a neutral background"
+       }
+      }
+     },
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The image used to generate the headshot. This image must contain one detectable face. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for headshot photo"
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_image_editor_create_image",
+   "title": "AI Image Editor",
+   "description": "MCP guidance:\n- Requires one or more source images in `assets.image_file_paths`. For prompt-only creation, use `ai_image_generator_create_image` instead.\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nEdit images with AI.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Ai Image Editor - dateTime",
+      "example": "My Ai Image Editor image"
+     },
+     "image_count": {
+      "enum": [
+       1,
+       4,
+       9,
+       16
+      ],
+      "type": "number",
+      "description": "Number of images to generate. Maximum varies by model. Defaults to 1 if not specified.",
+      "default": 1,
+      "example": 1
+     },
+     "model": {
+      "enum": [
+       "default",
+       "qwen-image-2.1",
+       "qwen-edit",
+       "flux-2-klein",
+       "nano-banana-2-lite",
+       "nano-banana-2",
+       "nano-banana-2.1",
+       "krea-2",
+       "gpt-image-2.5-flare",
+       "gpt-image-2",
+       "seedream-v5-pro",
+       "seedream-v4.5",
+       "seedream-v4",
+       "nano-banana",
+       "nano-banana-pro"
+      ],
+      "type": "string",
+      "description": "The AI model to use for image editing. Each model has different capabilities and costs.\n\n**Models:**\n- `default` - Use the model we recommend, which will change over time. This is recommended unless you need a specific model. This is the default behavior.\n- `flux-2-klein` - from 5 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Max additional input images: 5\n- `gpt-image-2` - from 50 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `gpt-image-2.5-flare` - from 100 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `krea-2` - from 10 credits/image\n  - Supported resolutions: 640px, 1k\n  - Available for tiers: free, creator, pro, business\n  - Max additional input images: 1\n- `nano-banana` - from 50 credits/image\n  - Supported resolutions: 640px, 1k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `nano-banana-2` - from 100 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `nano-banana-2-lite` - from 50 credits/image\n  - Supported resolutions: 640px, 1k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `nano-banana-2.1` - from 50 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `nano-banana-pro` - from 150 credits/image\n  - Supported resolutions: 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `qwen-edit` - from 10 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Max additional input images: 2\n- `qwen-image-2.1` - from 10 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Max additional input images: 2\n- `seedream-v4` - from 40 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `seedream-v4.5` - from 50 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n- `seedream-v5-pro` - from 75 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: creator, pro, business\n  - Max additional input images: 9\n",
+      "example": "flux-2-klein"
+     },
+     "aspect_ratio": {
+      "enum": [
+       "auto",
+       "16:9",
+       "9:16",
+       "4:3",
+       "3:2",
+       "1:1",
+       "4:5",
+       "2:3"
+      ],
+      "type": "string",
+      "description": "The aspect ratio of the output image(s). If not specified, defaults to `auto`.",
+      "example": "1:1"
+     },
+     "resolution": {
+      "enum": [
+       "auto",
+       "640px",
+       "1k",
+       "2k",
+       "4k"
+      ],
+      "type": "string",
+      "description": "Maximum resolution (longest edge) for the output image.\n\n**Options:**\n- `640px` — up to 640px\n- `1k` — up to 1024px\n- `2k` — up to 2048px\n- `4k` — up to 4096px\n- `auto` — **Deprecated.** Mapped server-side from your subscription tier to the best matching resolution the model supports\n\n**Per-model support:**\n- `flux-2-klein` - 640px, 1k, 2k\n- `gpt-image-2` - 640px, 1k, 2k, 4k\n- `gpt-image-2.5-flare` - 640px, 1k, 2k, 4k\n- `krea-2` - 640px, 1k\n- `nano-banana` - 640px, 1k\n- `nano-banana-2` - 640px, 1k, 2k, 4k\n- `nano-banana-2-lite` - 640px, 1k\n- `nano-banana-2.1` - 640px, 1k, 2k, 4k\n- `nano-banana-pro` - 1k, 2k, 4k\n- `qwen-edit` - 640px, 1k, 2k\n- `qwen-image-2.1` - 640px, 1k, 2k\n- `seedream-v4` - 640px, 1k, 2k, 4k\n- `seedream-v4.5` - 640px, 1k, 2k, 4k\n- `seedream-v5-pro` - 640px, 1k, 2k\n\nNote: Resolution availability depends on the model and your subscription tier.",
+      "example": "640px"
+     },
+     "style": {
+      "required": [
+       "prompt"
+      ],
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "maxLength": 15000,
+        "minLength": 1,
+        "type": "string",
+        "description": "The prompt used to edit the image.",
+        "example": "Give me sunglasses"
+       }
+      }
+     },
+     "assets": {
+      "type": "object",
+      "properties": {
+       "image_file_paths": {
+        "maxItems": 10,
+        "type": "array",
+        "items": {
+         "minLength": 1,
+         "type": "string"
+        },
+        "description": "The image(s) used in the edit, maximum of 10 images. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": [
+         "api-assets/id/1234.png",
+         "api-assets/id/1235.png"
+        ]
+       }
+      },
+      "description": "Provide the assets for image edit"
+     }
+    },
+    "required": [
+     "style",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_image_generator_create_image",
+   "title": "AI Image Generator",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n\nCreate an AI image with advanced model selection and quality controls.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Ai Image - dateTime",
+      "example": "My Ai Image image"
+     },
+     "image_count": {
+      "maximum": 16.0,
+      "minimum": 1.0,
+      "type": "integer",
+      "description": "Number of images to generate. Maximum varies by model.",
+      "example": 1
+     },
+     "model": {
+      "enum": [
+       "default",
+       "z-image-turbo",
+       "qwen-image-2.1",
+       "flux-2-klein",
+       "nano-banana-2-lite",
+       "nano-banana-2",
+       "nano-banana-2.1",
+       "krea-2",
+       "gpt-image-2.5-flare",
+       "gpt-image-2",
+       "seedream-v5-pro",
+       "seedream-v4",
+       "nano-banana",
+       "nano-banana-pro",
+       "flux-schnell",
+       "seedream"
+      ],
+      "type": "string",
+      "description": "The AI model to use for image generation. Each model has different capabilities and costs.\n\n**Models:**\n- `default` - Use the model we recommend, which will change over time. This is recommended unless you need a specific model. This is the default behavior.\n- `flux-2-klein` - from 5 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Image count allowed: 1\n- `flux-schnell` - from 5 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `gpt-image-2` - from 50 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `gpt-image-2.5-flare` - from 100 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `krea-2` - from 10 credits/image\n  - Supported resolutions: 640px, 1k\n  - Available for tiers: free, creator, pro, business\n  - Image count allowed: 1\n- `nano-banana` - from 50 credits/image\n  - Supported resolutions: 640px, 1k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `nano-banana-2` - from 100 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 4, 9, 16\n- `nano-banana-2-lite` - from 50 credits/image\n  - Supported resolutions: 640px, 1k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `nano-banana-2.1` - from 50 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 4, 9, 16\n- `nano-banana-pro` - from 150 credits/image\n  - Supported resolutions: 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 4, 9, 16\n- `qwen-image-2.1` - from 10 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `seedream-v4` - from 40 credits/image\n  - Supported resolutions: 640px, 1k, 2k, 4k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `seedream-v5-pro` - from 75 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n- `z-image-turbo` - from 5 credits/image\n  - Supported resolutions: 640px, 1k, 2k\n  - Available for tiers: free, creator, pro, business\n  - Image count allowed: 1, 2, 3, 4\n\n**Deprecated Enum Values:**\n- `seedream` - Use `seedream-v4` instead.\n",
+      "example": "z-image-turbo"
+     },
+     "aspect_ratio": {
+      "enum": [
+       "1:1",
+       "16:9",
+       "9:16"
+      ],
+      "type": "string",
+      "description": "The aspect ratio of the output image(s). If not specified, defaults to `1:1` (square).",
+      "example": "1:1"
+     },
+     "resolution": {
+      "enum": [
+       "auto",
+       "640px",
+       "1k",
+       "2k",
+       "4k"
+      ],
+      "type": "string",
+      "description": "Maximum resolution (longest edge) for the output image.\n\n**Options:**\n- `640px` — up to 640px\n- `1k` — up to 1024px\n- `2k` — up to 2048px\n- `4k` — up to 4096px\n- `auto` — **Deprecated.** Mapped server-side from your subscription tier to the best matching resolution the model supports\n\n**Per-model support:**\n- `flux-2-klein` - 640px, 1k, 2k\n- `flux-schnell` - 640px, 1k, 2k\n- `gpt-image-2` - 640px, 1k, 2k, 4k\n- `gpt-image-2.5-flare` - 640px, 1k, 2k, 4k\n- `krea-2` - 640px, 1k\n- `nano-banana` - 640px, 1k\n- `nano-banana-2` - 640px, 1k, 2k, 4k\n- `nano-banana-2-lite` - 640px, 1k\n- `nano-banana-2.1` - 640px, 1k, 2k, 4k\n- `nano-banana-pro` - 1k, 2k, 4k\n- `qwen-image-2.1` - 640px, 1k, 2k\n- `seedream-v4` - 640px, 1k, 2k, 4k\n- `seedream-v5-pro` - 640px, 1k, 2k\n- `z-image-turbo` - 640px, 1k, 2k\n\nNote: Resolution availability depends on the model and your subscription tier.",
+      "default": "auto",
+      "example": "640px"
+     },
+     "style": {
+      "required": [
+       "prompt"
+      ],
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The prompt used for the image(s).",
+        "example": "Cool image"
+       },
+       "tool": {
+        "enum": [
+         "ai-anime-generator",
+         "ai-art-generator",
+         "ai-background-generator",
+         "ai-character-generator",
+         "ai-face-generator",
+         "ai-fashion-generator",
+         "ai-icon-generator",
+         "ai-illustration-generator",
+         "ai-interior-design-generator",
+         "ai-landscape-generator",
+         "ai-logo-generator",
+         "ai-manga-generator",
+         "ai-outfit-generator",
+         "ai-pattern-generator",
+         "ai-photo-generator",
+         "ai-sketch-generator",
+         "ai-tattoo-generator",
+         "album-cover-generator",
+         "animated-characters-generator",
+         "architecture-generator",
+         "book-cover-generator",
+         "comic-book-generator",
+         "dark-fantasy-ai",
+         "disney-ai-generator",
+         "dnd-ai-art-generator",
+         "emoji-generator",
+         "fantasy-map-generator",
+         "graffiti-generator",
+         "movie-poster-generator",
+         "optical-illusion-generator",
+         "pokemon-generator",
+         "south-park-character-generator",
+         "superhero-generator",
+         "thumbnail-maker",
+         "general"
+        ],
+        "type": "string",
+        "description": "The art style to use for image generation. Defaults to 'general' if not provided.",
+        "default": "general",
+        "example": "ai-anime-generator"
+       }
+      },
+      "description": "The art style to use for image generation."
+     }
+    },
+    "required": [
+     "image_count",
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "ai_image_upscaler_create_image",
+   "title": "AI Image Upscaler",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nUpscale your image using AI. Each 2x upscale costs 50 credits for balanced/creative modes, and 25 credits for preserve. 4x upscale costs 200 and 100 credits respectively.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Image Upscaler - dateTime",
+      "example": "My Image Upscaler image"
+     },
+     "scale_factor": {
+      "type": "number",
+      "description": "How much to scale the image. Must be either 2 or 4.\n            \nNote: 4x upscale is only available on Creator, Pro, or Business tier.",
+      "example": 2
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "mode": {
+        "enum": [
+         "pro",
+         "preserve",
+         "balanced",
+         "creative"
+        ],
+        "type": "string",
+        "description": "The upscaling mode. `\"preserve\"` uses the fast pro pipeline (1× credit multiplier). `\"balanced\"` and `\"creative\"` use the creative pipeline (2× credit multiplier). `\"pro\"` is deprecated and maps to `\"preserve\"`. Defaults to `\"balanced\"`.",
+        "example": "preserve"
+       },
+       "prompt": {
+        "type": "string",
+        "description": "A prompt to guide the final image. Only used when mode is `creative`.",
+        "example": "Enhance fine details and keep the image natural"
+       }
+      },
+      "description": "Style settings for the upscale. Use `mode` (`\"preserve\"`, `\"balanced\"`, or `\"creative\"`). Defaults to `\"balanced\"`.",
+      "default": {},
+      "example": {
+       "mode": "preserve"
+      }
+     },
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The image to upscale. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n. The maximum input image size is 4096x4096px.",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for upscaling"
+     }
+    },
+    "required": [
+     "scale_factor",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_meme_generator_create_image",
+   "title": "AI Meme Generator",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n\nCreate an AI generated meme. Each meme costs 10 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "The name of the meme.",
+      "example": "My Funny Meme"
+     },
+     "style": {
+      "required": [
+       "topic",
+       "template"
+      ],
+      "type": "object",
+      "properties": {
+       "topic": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string",
+        "description": "The topic of the meme.",
+        "example": "When the code finally works"
+       },
+       "template": {
+        "enum": [
+         "Random"
+        ],
+        "type": "string",
+        "description": "Select a random meme template."
+       },
+       "searchWeb": {
+        "type": "boolean",
+        "description": "Whether to search the web for meme content.",
+        "default": false,
+        "example": false
+       }
+      }
+     }
+    },
+    "required": [
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_qr_code_generator_create_image",
+   "title": "AI QR Code Generator",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n\nCreate an AI QR code. Each QR code costs 0 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Qr Code - dateTime",
+      "example": "My Qr Code image"
+     },
+     "content": {
+      "type": "string",
+      "description": "The content of the QR code.",
+      "example": "https://magichour.ai"
+     },
+     "style": {
+      "required": [
+       "art_style"
+      ],
+      "type": "object",
+      "properties": {
+       "art_style": {
+        "type": "string",
+        "description": "To use our templates, pass in one of Watercolor, Cyberpunk City, Ink Landscape, Interior Painting, Japanese Street, Mech, Minecraft, Picasso Painting, Game Map, Spaceship, Chinese Painting, Winter Village, or pass any custom art style.",
+        "example": "Watercolor"
+       }
+      }
+     }
+    },
+    "required": [
+     "content",
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "ai_talking_photo_create_talking_photo",
+   "title": "AI Talking Photo",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nCreate a talking photo video from an image and an audio file.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Talking Photo - dateTime",
+      "example": "My Talking Photo video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "The start time of the input audio in seconds. Maximum clip length depends on style.generation_mode: realistic 300s, prompted 45s.",
+      "format": "float",
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "The end time of the input audio in seconds. Maximum clip length depends on style.generation_mode: realistic 300s, prompted 45s.",
+      "format": "float",
+      "example": 5
+     },
+     "assets": {
+      "required": [
+       "image_file_path",
+       "audio_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The source image to animate. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "audio_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The audio file to sync with the image. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp3"
+       }
+      },
+      "description": "Provide the assets for creating a talking photo"
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "generation_mode": {
+        "enum": [
+         "realistic",
+         "prompted",
+         "pro",
+         "standard",
+         "stable",
+         "expressive"
+        ],
+        "type": "string",
+        "description": "Controls overall motion style.\n* `realistic` - Maintains likeness well, high quality, and reliable.\n* `prompted` - Slightly lower likeness; allows option to prompt scene.\n\n**Deprecated values (maintained for backward compatibility):**\n* `pro` - Deprecated: use `realistic`\n* `standard` - Deprecated: use `prompted`\n* `stable` - Deprecated: use `realistic`\n* `expressive` - Deprecated: use `prompted`",
+        "default": "realistic",
+        "example": "realistic"
+       },
+       "prompt": {
+        "type": "string",
+        "description": "A text prompt to guide the generation. Only applicable when generation_mode is `prompted`.\nThis field is ignored for other modes.",
+        "example": "A person smiling and speaking naturally to the camera"
+       }
+      },
+      "description": "Attributes used to dictate the style of the output"
+     },
+     "max_resolution": {
+      "type": "integer",
+      "description": "Constrains the larger dimension (height or width) of the output video. Allows you to set a lower resolution than your plan's maximum if desired. The value is capped by your plan's max resolution.",
+      "example": 512
+     }
+    },
+    "required": [
+     "start_seconds",
+     "end_seconds",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_ugc_ad_create_video",
+   "title": "AI UGC Ad Generator",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nCreate a spoken UGC video from a prepared image and script. Returns a project ID; poll GET /v1/video-projects/{id} for status and downloads. To compose an image, generate the image separately with the Image Editor API and supply its download URL.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Prepared image to animate. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/image.jpg"
+       }
+      },
+      "additionalProperties": false
+     },
+     "script": {
+      "minLength": 1,
+      "type": "string",
+      "description": "The words the actor should speak. Character limits apply after trimming:\n* kling-3.0: 2500 characters.\n* ltx-2.5: 1981 characters.\n* veo3.1: 2500 characters.\nLTX's dialogue wrapper counts toward its model prompt limit.",
+      "example": "Meet your new everyday essential."
+     },
+     "end_seconds": {
+      "minimum": 1.0,
+      "type": "number",
+      "description": "Video duration in seconds. Supported values by model:\n* kling-3.0: 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 seconds.\n* ltx-2.5: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 seconds.\n* veo3.1: 4, 6, 8, 15, 22, 29, 36, 43, 50, 57, 64, 71, 78, 85, 92, 99, 106, 113, 120, 127, 134, 141 seconds.\nFree plans are limited to 5 seconds unless a credit pack has been purchased.",
+      "example": 4
+     },
+     "model": {
+      "enum": [
+       "kling-3.0",
+       "ltx-2.5",
+       "veo3.1"
+      ],
+      "type": "string",
+      "description": "Defaults to kling-3.0 on paid plans and ltx-2.5 on free plans."
+     },
+     "resolution": {
+      "enum": [
+       "480p",
+       "720p",
+       "1080p"
+      ],
+      "type": "string",
+      "description": "Defaults to 720p on paid plans and 480p on free plans. Unsupported model/resolution combinations and resolutions unavailable for your plan are rejected."
+     }
+    },
+    "required": [
+     "assets",
+     "script",
+     "end_seconds"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_video_editor_create_video",
+   "title": "AI Video Editor",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Video Editor you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding video editor into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a video editor job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/ai-video-editor).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Video Editor - dateTime",
+      "example": "My Video Editor video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "default": 0,
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip in seconds. Must be greater than `start_seconds`. Minimum duration depends on model: `gemini-omni-1.1`: 3s, LTX 2.5: 0.5s. Maximum duration depends on model: `gemini-omni-1.1`: 10s, LTX 2.5: 20s.",
+      "format": "float",
+      "example": 5
+     },
+     "model": {
+      "enum": [
+       "gemini-omni-1.1",
+       "gemini-omni",
+       "ltx-2.5",
+       "ltx-2.3"
+      ],
+      "type": "string",
+      "description": "Editing model. Defaults to LTX 2.5 for free tier and `gemini-omni-1.1` for paid. `gemini-omni` is deprecated; use `gemini-omni-1.1` instead.",
+      "example": "ltx-2.5"
+     },
+     "resolution": {
+      "enum": [
+       "480p",
+       "720p",
+       "1080p"
+      ],
+      "type": "string",
+      "description": "Output resolution. Defaults to `480p` for free tier and `720p` for paid. `gemini-omni-1.1` and deprecated `gemini-omni` support 720p and 1080p; LTX 2.5 supports 480p, 720p, and 1080p.",
+      "example": "480p"
+     },
+     "style": {
+      "required": [
+       "prompt"
+      ],
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The prompt used to edit the video.",
+        "example": "Change the car color to blue"
+       }
+      }
+     },
+     "assets": {
+      "required": [
+       "video_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "video_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The video to edit. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       }
+      },
+      "description": "Provide the assets for video editing."
+     }
+    },
+    "required": [
+     "end_seconds",
+     "style",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ai_video_translator_create_video",
+   "title": "AI Video Translator",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Video Translator you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding video translator into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a video translator job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/ai-video-translator).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Video Translator - dateTime",
+      "example": "My Video Translator video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "default": 0,
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds. The clip must be 1-30 seconds long.",
+      "format": "float",
+      "example": 5
+     },
+     "target_language": {
+      "enum": [
+       "English",
+       "Chinese (Simplified)",
+       "Hindi",
+       "Spanish",
+       "Arabic",
+       "French",
+       "Afrikaans",
+       "Bengali",
+       "Bulgarian",
+       "Catalan",
+       "Croatian",
+       "Czech",
+       "Danish",
+       "Dutch",
+       "Estonian",
+       "Finnish",
+       "German",
+       "Greek",
+       "Gujarati",
+       "Hebrew",
+       "Hungarian",
+       "Indonesian",
+       "Italian",
+       "Japanese",
+       "Kannada",
+       "Kazakh",
+       "Korean",
+       "Latvian",
+       "Lithuanian",
+       "Malay",
+       "Malayalam",
+       "Marathi",
+       "Norwegian",
+       "Persian",
+       "Polish",
+       "Portuguese",
+       "Punjabi",
+       "Romanian",
+       "Russian",
+       "Serbian",
+       "Slovak",
+       "Slovenian",
+       "Swahili",
+       "Swedish",
+       "Tamil",
+       "Telugu",
+       "Thai",
+       "Chinese (Traditional)",
+       "Turkish",
+       "Ukrainian",
+       "Urdu",
+       "Vietnamese",
+       "Welsh"
+      ],
+      "type": "string",
+      "description": "Language to translate the video's speech into.",
+      "example": "Spanish"
+     },
+     "resolution": {
+      "enum": [
+       "480p",
+       "720p",
+       "1080p"
+      ],
+      "type": "string",
+      "description": "Output video resolution. Defaults to 480p. 720p and 1080p require a paid plan.",
+      "example": "480p"
+     },
+     "assets": {
+      "required": [
+       "video_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "video_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Source video containing the speech to translate. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       }
+      },
+      "description": "Source video for the translation job."
+     }
+    },
+    "required": [
+     "end_seconds",
+     "target_language",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "animation_create_video",
+   "title": "Animation",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nCreate a Animation video. The estimated frame cost is calculated based on the `fps` and `end_seconds` input.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Animation - dateTime",
+      "example": "My Animation video"
+     },
+     "fps": {
+      "minimum": 1.0,
+      "type": "number",
+      "description": "The desire output video frame rate",
+      "example": 12
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "This value determines the duration of the output video.",
+      "format": "float",
+      "example": 5
+     },
+     "height": {
+      "minimum": 64.0,
+      "type": "integer",
+      "description": "The height of the final output video. The maximum height depends on your subscription. Please refer to our [pricing page](https://magichour.ai/pricing) for more details",
+      "example": 512
+     },
+     "width": {
+      "minimum": 64.0,
+      "type": "integer",
+      "description": "The width of the final output video. The maximum width depends on your subscription. Please refer to our [pricing page](https://magichour.ai/pricing) for more details",
+      "example": 512
+     },
+     "style": {
+      "required": [
+       "art_style",
+       "camera_effect",
+       "prompt_type",
+       "transition_speed"
+      ],
+      "type": "object",
+      "properties": {
+       "art_style": {
+        "enum": [
+         "Custom",
+         "Painterly Illustration",
+         "Vibrant Matte Illustration",
+         "Traditional Watercolor",
+         "Cyberpunk",
+         "Ink and Watercolor Portrait",
+         "Intricate Abstract Lines Portrait",
+         "3D Render",
+         "Old School Comic",
+         "Bold Colored Illustration",
+         "Synthwave",
+         "Minimal Cold Futurism",
+         "Futuristic Anime",
+         "Cinematic Miyazaki",
+         "Studio Ghibli Film Still",
+         "Soft Delicate Matte Portrait",
+         "Cinematic Landscape",
+         "Landscape Painting",
+         "Photograph",
+         "Jackson Pollock",
+         "Cubist",
+         "Abstract Minimalist",
+         "Impressionism",
+         "Van Gogh",
+         "Woodcut",
+         "Oil Painting",
+         "Vintage Japanese Anime",
+         "Pixar",
+         "Cosmic",
+         "Pixel Art",
+         "Fantasy",
+         "Arcane",
+         "Sin City",
+         "Double Exposure",
+         "Painted Cityscape",
+         "90s Streets",
+         "Overgrown",
+         "Postapocalyptic",
+         "Spooky",
+         "Miniatures",
+         "Low Poly",
+         "Art Deco",
+         "Inkpunk",
+         "Dark Graphic Illustration",
+         "Dark Watercolor",
+         "Faded Illustration",
+         "Directed by AI"
+        ],
+        "type": "string",
+        "description": "The art style used to create the output video",
+        "example": "Painterly Illustration"
+       },
+       "art_style_custom": {
+        "type": "string",
+        "description": "Describe custom art style. This field is required if `art_style` is `Custom`",
+        "example": "Watercolor painting with soft pastel colors"
+       },
+       "camera_effect": {
+        "enum": [
+         "Simple Zoom Out",
+         "Simple Zoom In",
+         "Bounce Out",
+         "Spin Bounce",
+         "Rolling Bounces",
+         "Rise and Climb",
+         "Dramatic Zoom In",
+         "Dramatic Zoom Out",
+         "Sway Out",
+         "Boost Zoom In",
+         "Boost Zoom Out",
+         "Heartbeat",
+         "Bounce in Place",
+         "Earthquake Bounce",
+         "Slice Bounce",
+         "Bounce In And Out",
+         "Jump",
+         "Road Trip",
+         "Traverse",
+         "Rubber Band",
+         "Rodeo",
+         "Accelerate",
+         "Speed of Light",
+         "Drift Spin",
+         "Vertigo",
+         "Cog in the Machine",
+         "Quadrant",
+         "Tron",
+         "Pusher",
+         "Roll In",
+         "Hesitate In",
+         "Zoom In - Audio Sync",
+         "Pulse - Audio Sync",
+         "Aggressive Zoom In - Audio Sync",
+         "Roll In - Audio Sync",
+         "Zoom Out - Audio Sync",
+         "Aggressive Zoom Out - Audio Sync",
+         "Sway Out - Audio Sync",
+         "Bounce and Spin - Audio Sync",
+         "Zoom In and Spin - Audio Sync",
+         "Vertigo - Audio Sync",
+         "Bounce Out - Audio Sync",
+         "Earthquake Bounce - Audio Sync",
+         "Pusher - Audio Sync",
+         "Evolve - Audio Sync",
+         "Devolve - Audio Sync",
+         "Slideshow",
+         "Pan Left",
+         "Pan Right",
+         "Tilt Up",
+         "Tilt Down",
+         "Directed by AI"
+        ],
+        "type": "string",
+        "description": "The camera effect used to create the output video",
+        "example": "Simple Zoom In"
+       },
+       "prompt_type": {
+        "enum": [
+         "custom",
+         "use_lyrics",
+         "ai_choose"
+        ],
+        "type": "string",
+        "description": "\n* `custom` - Use your own prompt for the video.\n* `use_lyrics` - Use the lyrics of the audio to create the prompt. If this option is selected, then `assets.audio_source` must be `file` or `youtube`.\n* `ai_choose` - Let AI write the prompt. If this option is selected, then `assets.audio_source` must be `file` or `youtube`.",
+        "example": "custom"
+       },
+       "prompt": {
+        "type": "string",
+        "description": "The prompt used for the video. Prompt is required if `prompt_type` is `custom`. Otherwise this value is ignored",
+        "example": "Cyberpunk city"
+       },
+       "transition_speed": {
+        "maximum": 10.0,
+        "minimum": 1.0,
+        "type": "integer",
+        "description": "Change determines how quickly the video's content changes across frames. \n* Higher = more rapid transitions.\n* Lower = more stable visual experience.",
+        "example": 5
+       }
+      },
+      "description": "Defines the style of the output video"
+     },
+     "assets": {
+      "required": [
+       "audio_source"
+      ],
+      "type": "object",
+      "properties": {
+       "audio_source": {
+        "enum": [
+         "none",
+         "file",
+         "youtube"
+        ],
+        "type": "string",
+        "description": "Optionally add an audio source if you'd like to incorporate audio into your video",
+        "example": "file"
+       },
+       "audio_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The path of the input audio. This field is required if `audio_source` is `file`. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp3"
+       },
+       "youtube_url": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Using a youtube video as the input source. This field is required if `audio_source` is `youtube`",
+        "format": "uri"
+       },
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "An initial image to use a the first frame of the video. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for animation.",
+      "example": {
+       "audio_source": "file",
+       "audio_file_path": "api-assets/id/1234.mp3",
+       "image_file_path": "api-assets/id/1234.png"
+      }
+     }
+    },
+    "required": [
+     "fps",
+     "end_seconds",
+     "height",
+     "width",
+     "style",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "audio_projects_delete",
+   "title": "Delete audio",
+   "description": "Permanently delete the rendered audio file(s). This action is not reversible, please be sure before deleting.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "cuid-example",
+      "description": "Unique ID of the audio project. This value is returned by all of the POST APIs that create an audio."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "audio_projects_retrieve_details",
+   "title": "Get audio details",
+   "description": "MCP guidance:\n- Use this after a create tool to poll job status. When status is `complete`, surface the `downloads` URLs to the user; if status is `error`, surface the error message.\n- Each `downloads[n].url` is already the full signed download URL. Use it exactly as returned. Do not shorten it, strip query parameters, or append `expires_at` onto the URL string.\n\nCheck the progress of a audio project. The `downloads` field is populated after a successful render.\n  \n**Statuses**\n- `queued` — waiting to start\n- `rendering` — in progress\n- `complete` — ready; see `downloads`\n- `error` — a failure occurred (see `error`)\n- `canceled` — user canceled\n- `draft` — not used",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "cuid-example",
+      "description": "Unique ID of the audio project. This value is returned by all of the POST APIs that create an audio."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "audio_to_video_create_video",
+   "title": "Audio-to-Video",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Audio To Video you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding audio to video into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a audio to video job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/audio-to-video).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Audio To Video - dateTime",
+      "example": "My Audio To Video video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "default": 0,
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds.",
+      "format": "float",
+      "example": 5
+     },
+     "resolution": {
+      "enum": [
+       "480p",
+       "720p",
+       "1080p"
+      ],
+      "type": "string",
+      "description": "Output video resolution. Defaults to `720p` on paid tiers and `480p` on free tiers.",
+      "example": "480p"
+     },
+     "assets": {
+      "required": [
+       "audio_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "audio_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The path of the audio file. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp3"
+       },
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Reference image for the initial frame of the video. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the audio file and an optional reference image."
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "type": "string",
+        "description": "Prompt to guide the visual style of the video.",
+        "example": "Car driving through a city"
+       }
+      },
+      "description": "Attributes used to dictate the style of the output"
+     }
+    },
+    "required": [
+     "end_seconds",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "auto_subtitle_generator_create_video",
+   "title": "Auto Subtitle Generator",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nAutomatically generate subtitles for your video in multiple languages.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Auto Subtitle - dateTime",
+      "example": "My Auto Subtitle video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds.",
+      "format": "float",
+      "example": 5
+     },
+     "assets": {
+      "required": [
+       "video_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "video_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "This is the video used to add subtitles. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       }
+      },
+      "description": "Provide the assets for auto subtitle generator"
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "template": {
+        "enum": [
+         "karaoke",
+         "cinematic",
+         "minimalist",
+         "highlight"
+        ],
+        "type": "string",
+        "description": "Preset subtitle templates. Please visit https://magichour.ai/create/auto-subtitle-generator to see the style of the existing templates.",
+        "example": "karaoke"
+       },
+       "custom_config": {
+        "type": "object",
+        "properties": {
+         "font": {
+          "type": "string",
+          "description": "Font name from Google Fonts. Not all fonts support all languages or character sets. \nWe recommend verifying language support and appearance directly on https://fonts.google.com before use.",
+          "example": "Noto Sans"
+         },
+         "font_size": {
+          "type": "number",
+          "description": "Font size in pixels. If not provided, the font size is automatically calculated based on the video resolution.",
+          "example": 24
+         },
+         "font_style": {
+          "type": "string",
+          "description": "Font style (e.g., normal, italic, bold)",
+          "example": "normal"
+         },
+         "text_color": {
+          "type": "string",
+          "description": "Primary text color in hex format",
+          "example": "#FFFFFF"
+         },
+         "highlighted_text_color": {
+          "type": "string",
+          "description": "Color used to highlight the current spoken text",
+          "example": "#FFD700"
+         },
+         "stroke_color": {
+          "type": "string",
+          "description": "Stroke (outline) color of the text",
+          "example": "#000000"
+         },
+         "stroke_width": {
+          "type": "number",
+          "description": "Width of the text stroke in pixels. If `stroke_color` is provided, but `stroke_width` is not, the `stroke_width` will be calculated automatically based on the font size.",
+          "example": 1
+         },
+         "vertical_position": {
+          "type": "string",
+          "description": "Vertical alignment of the text (e.g., top, center, bottom)",
+          "example": "bottom"
+         },
+         "horizontal_position": {
+          "type": "string",
+          "description": "Horizontal alignment of the text (e.g., left, center, right)",
+          "example": "center"
+         }
+        },
+        "description": "Custom subtitle configuration."
+       }
+      },
+      "description": "Style of the subtitle. At least one of `.style.template` or `.style.custom_config` must be provided. \n* If only `.style.template` is provided, default values for the template will be used.\n* If both are provided, the fields in `.style.custom_config` will be used to overwrite the fields in `.style.template`.\n* If only `.style.custom_config` is provided, then all fields in `.style.custom_config` will be used.\n\nTo use custom config only, the following `custom_config` params are required:\n* `.style.custom_config.font`\n* `.style.custom_config.text_color`\n* `.style.custom_config.vertical_position`\n* `.style.custom_config.horizontal_position`\n"
+     }
+    },
+    "required": [
+     "start_seconds",
+     "end_seconds",
+     "assets",
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "body_swap_create_image",
+   "title": "Body Swap",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nSwap a person into a scene image using Nano Banana 2 Lite (640px/1k) or Nano Banana 2 (2k/4k). Credits depend on `resolution` (from 50 credits at 640px upward).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Body Swap - dateTime",
+      "example": "My Body Swap image"
+     },
+     "resolution": {
+      "enum": [
+       "640px",
+       "1k",
+       "2k",
+       "4k"
+      ],
+      "type": "string",
+      "description": "Output resolution. Determines credits charged for the run.",
+      "example": "640px"
+     },
+     "assets": {
+      "required": [
+       "person_file_path",
+       "scene_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "person_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Image of the person to place into the scene. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "scene_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Original scene image (background). This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/5678.png"
+       }
+      },
+      "description": "Person image and scene image for body swap"
+     }
+    },
+    "required": [
+     "resolution",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "character_replace_create_video",
+   "title": "Character Replace",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Character Replace you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding character replace into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a character replace job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/character-replace).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Character Replace - dateTime",
+      "example": "My Character Replace video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "default": 0,
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds.",
+      "format": "float",
+      "example": 5
+     },
+     "model": {
+      "enum": [
+       "wan-animate",
+       "kling-3.0"
+      ],
+      "type": "string",
+      "description": "Model to use. Defaults to `wan-animate`.\n\n* **`wan-animate`**: 480p, 720p. Supports `points` subject selection.\n* **`kling-3.0`**: 720p, 1080p. Clips of 3–10 seconds in `replace` mode or 3–30 seconds in `animate` mode. Picks the main person automatically, so `points` are rejected.",
+      "default": "wan-animate",
+      "example": "wan-animate"
+     },
+     "resolution": {
+      "enum": [
+       "480p",
+       "720p",
+       "1080p"
+      ],
+      "type": "string",
+      "description": "Output video resolution. Must be supported by `model`. Defaults to the lowest resolution available on your plan for that model.",
+      "example": "480p"
+     },
+     "assets": {
+      "required": [
+       "video_file_path",
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "video_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Source video containing the subject to replace or animate. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       },
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Reference character image used as the replacement or animation target. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/5678.png"
+       }
+      },
+      "description": "Source video and reference character image for the job."
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "mode": {
+        "enum": [
+         "replace",
+         "animate"
+        ],
+        "type": "string",
+        "description": "Processing mode. `replace` swaps the detected subject with your reference character. `animate` transfers motion from the video onto your character image.",
+        "example": "replace"
+       },
+       "selection_mode": {
+        "enum": [
+         "auto",
+         "point"
+        ],
+        "type": "string",
+        "description": "How to locate the subject in the source video. `auto` detects a person automatically. `point` uses your `points` to mark the subject and is supported by `wan-animate`. Defaults to `auto`.",
+        "example": "auto"
+       },
+       "points": {
+        "type": "array",
+        "items": {
+         "required": [
+          "position_x",
+          "position_y",
+          "time_seconds"
+         ],
+         "type": "object",
+         "properties": {
+          "position_x": {
+           "minimum": 0.0,
+           "type": "integer",
+           "description": "Horizontal pixel coordinate in the source video frame at `time_seconds`, measured from the left edge.",
+           "example": 320
+          },
+          "position_y": {
+           "minimum": 0.0,
+           "type": "integer",
+           "description": "Vertical pixel coordinate in the source video frame at `time_seconds`, measured from the top edge.",
+           "example": 180
+          },
+          "time_seconds": {
+           "minimum": 0.0,
+           "type": "number",
+           "description": "Timestamp on the source video timeline in seconds. Uses the same clock as `start_seconds` and `end_seconds`.",
+           "format": "float",
+           "example": 2.5
+          }
+         }
+        },
+        "description": "On-frame markers for manual subject selection. Required when `selection_mode` is `point`. Ignored when `selection_mode` is `auto` or omitted. Rejected for models without subject selection (supported by `wan-animate`)."
+       }
+      },
+      "description": "Optional style controls for replace vs animate mode and subject selection.",
+      "example": {
+       "mode": "replace",
+       "selection_mode": "auto"
+      }
+     }
+    },
+    "required": [
+     "end_seconds",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "face_detection_detect_faces",
+   "title": "Face Detection",
+   "description": "MCP guidance:\n- This starts an async face-detection task and returns an `id`. Use the face-detection details endpoint with that id to retrieve detected faces before doing individual face swaps.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nDetect faces in an image or video. \n      \nUse this API to get the list of faces detected in the image or video to use in the [face swap photo](https://docs.magichour.ai/api-reference/image-projects/face-swap-photo) or [face swap video](https://docs.magichour.ai/api-reference/video-projects/face-swap-video) API calls for multi-face swaps.\n\nNote: Face detection is free to use for the near future. Pricing may change in the future.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "confidence_score": {
+      "multipleOf": 0.05,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Confidence threshold for filtering detected faces. \n* Higher values (e.g., 0.9) include only faces detected with high certainty, reducing false positives. \n* Lower values (e.g., 0.3) include more faces, but may increase the chance of incorrect detections.",
+      "default": 0.5,
+      "example": 0.5
+     },
+     "assets": {
+      "required": [
+       "target_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "target_file_path": {
+        "type": "string",
+        "description": "This is the image or video where the face will be detected. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for face detection"
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "face_detection_retrieve_details",
+   "title": "Get face detection details",
+   "description": "Get the details of a face detection task. \n\nUse this API to get the list of faces detected in the image or video to use in the [face swap photo](https://docs.magichour.ai/api-reference/image-projects/face-swap-photo) or [face swap video](https://docs.magichour.ai/api-reference/video-projects/face-swap-video) API calls for multi-face swaps.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "uuid-example",
+      "description": "The id of the task. This value is returned by the [face detection API](https://docs.magichour.ai/api-reference/files/face-detection#response-id)."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "face_swap_create_video",
+   "title": "Face Swap Video",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Face Swap you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding face swap into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a face swap job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/face-swap).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Face Swap - dateTime",
+      "example": "My Face Swap video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds.",
+      "format": "float",
+      "example": 5
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "version": {
+        "enum": [
+         "v1",
+         "v2",
+         "default"
+        ],
+        "type": "string",
+        "description": "* `v1` - May preserve skin detail and texture better, but weaker identity preservation.\n* `v2` - Faster, sharper, better handling of hair and glasses. stronger identity preservation.\n* `default` - Use the version we recommend, which will change over time. This is recommended unless you need a specific earlier version. This is the default behavior.",
+        "example": "default"
+       }
+      },
+      "description": "Style of the face swap video.",
+      "example": {
+       "version": "default"
+      }
+     },
+     "assets": {
+      "required": [
+       "video_source"
+      ],
+      "type": "object",
+      "properties": {
+       "face_swap_mode": {
+        "enum": [
+         "all-faces",
+         "individual-faces"
+        ],
+        "type": "string",
+        "description": "Choose how to swap faces:\n- **all-faces** (recommended) — swap all detected faces using one source image (`source_file_path` required)\n- **individual-faces** — specify exact mappings using `face_mappings`",
+        "default": "all-faces",
+        "example": "all-faces"
+       },
+       "image_file_path": {
+        "type": "string",
+        "description": "The path of the input image with the face to be swapped.  The value is required if `face_swap_mode` is `all-faces`.\n\nThis value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "face_mappings": {
+        "maxItems": 5,
+        "type": "array",
+        "items": {
+         "required": [
+          "original_face",
+          "new_face"
+         ],
+         "type": "object",
+         "properties": {
+          "original_face": {
+           "type": "string",
+           "description": "The face detected from the image in `target_file_path`. The file name is in the format of `<face_frame>-<face_index>.png`. This value is corresponds to the response in the [face detection API](https://docs.magichour.ai/api-reference/files/get-face-detection-details).\n\n* The face_frame is the frame number of the face in the target image. For images, the frame number is always 0.\n* The face_index is the index of the face in the target image, starting from 0 going left to right.",
+           "example": "api-assets/id/0-0.png"
+          },
+          "new_face": {
+           "type": "string",
+           "description": "The face image that will be used to replace the face in the `original_face`. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+           "example": "api-assets/id/1234.png"
+          }
+         }
+        },
+        "description": "This is the array of face mappings used for multiple face swap. The value is required if `face_swap_mode` is `individual-faces`.",
+        "example": [
+         {
+          "original_face": "api-assets/id/0-0.png",
+          "new_face": "api-assets/id/1234.png"
+         }
+        ]
+       },
+       "video_source": {
+        "enum": [
+         "file",
+         "youtube"
+        ],
+        "type": "string",
+        "description": "Choose your video source.",
+        "example": "file"
+       },
+       "video_file_path": {
+        "type": "string",
+        "description": "Your video file. Required if `video_source` is `file`. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       },
+       "youtube_url": {
+        "type": "string",
+        "description": "YouTube URL (required if `video_source` is `youtube`).",
+        "format": "uri"
+       }
+      },
+      "description": "Provide the assets for face swap. For video, The `video_source` field determines whether `video_file_path` or `youtube_url` field is used",
+      "example": {
+       "face_swap_mode": "all-faces",
+       "image_file_path": "api-assets/id/1234.png",
+       "video_source": "file",
+       "video_file_path": "api-assets/id/1234.mp4"
+      }
+     }
+    },
+    "required": [
+     "start_seconds",
+     "end_seconds",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "face_swap_photo_create_image",
+   "title": "Face Swap Photo",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nCreate a face swap photo. Each photo costs 10 credits. The height/width of the output image depends on your subscription. Please refer to our [pricing](https://magichour.ai/pricing) page for more details",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Face Swap - dateTime",
+      "example": "My Face Swap image"
+     },
+     "assets": {
+      "required": [
+       "target_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "face_swap_mode": {
+        "enum": [
+         "all-faces",
+         "individual-faces"
+        ],
+        "type": "string",
+        "description": "Choose how to swap faces:\n- **all-faces** (recommended) — swap all detected faces using one source image (`source_file_path` required)\n- **individual-faces** — specify exact mappings using `face_mappings`",
+        "default": "all-faces",
+        "example": "all-faces"
+       },
+       "source_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "This is the image from which the face is extracted. The value is required if `face_swap_mode` is `all-faces`.\n\nThis value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "face_mappings": {
+        "maxItems": 5,
+        "type": "array",
+        "items": {
+         "required": [
+          "original_face",
+          "new_face"
+         ],
+         "type": "object",
+         "properties": {
+          "original_face": {
+           "type": "string",
+           "description": "The face detected from the image in `target_file_path`. The file name is in the format of `<face_frame>-<face_index>.png`. This value is corresponds to the response in the [face detection API](https://docs.magichour.ai/api-reference/files/get-face-detection-details).\n\n* The face_frame is the frame number of the face in the target image. For images, the frame number is always 0.\n* The face_index is the index of the face in the target image, starting from 0 going left to right.",
+           "example": "api-assets/id/0-0.png"
+          },
+          "new_face": {
+           "type": "string",
+           "description": "The face image that will be used to replace the face in the `original_face`. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+           "example": "api-assets/id/1234.png"
+          }
+         }
+        },
+        "description": "This is the array of face mappings used for multiple face swap. The value is required if `face_swap_mode` is `individual-faces`.",
+        "example": [
+         {
+          "original_face": "api-assets/id/0-0.png",
+          "new_face": "api-assets/id/1234.png"
+         }
+        ]
+       },
+       "target_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "This is the image where the face from the source image will be placed. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for face swap photo",
+      "example": {
+       "face_swap_mode": "all-faces",
+       "source_file_path": "api-assets/id/1234.png",
+       "target_file_path": "api-assets/id/1234.png"
+      }
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "fetch_audio_download",
+   "title": "Fetch Audio Download",
+   "description": "Fetch a audio `downloads[n].url` from a completed audio project and return it as inline MCP audio content for compatible clients. Pass the exact full signed URL from `downloads[n].url` without trimming query parameters; `expires_at` is separate metadata, not part of the URL. Inline media is capped at 8 MiB; use the signed URL directly for larger downloads.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "download_url": {
+      "type": "string"
+     },
+     "max_bytes": {
+      "default": 8388608,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "download_url"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "fetch_image_download",
+   "title": "Fetch Image Download",
+   "description": "Fetch a image `downloads[n].url` from a completed image project and return it as inline MCP image content for compatible clients. Pass the exact full signed URL from `downloads[n].url` without trimming query parameters; `expires_at` is separate metadata, not part of the URL. Inline media is capped at 8 MiB; use the signed URL directly for larger downloads.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "download_url": {
+      "type": "string"
+     },
+     "max_bytes": {
+      "default": 8388608,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "download_url"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "fetch_video_download",
+   "title": "Fetch Video Download",
+   "description": "Fetch a video `downloads[n].url` from a completed video project and return it as an embedded MCP binary resource for compatible clients. Pass the exact full signed URL from `downloads[n].url` without trimming query parameters; `expires_at` is separate metadata, not part of the URL. Inline media is capped at 8 MiB; use the signed URL directly for larger downloads.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "download_url": {
+      "type": "string"
+     },
+     "max_bytes": {
+      "default": 8388608,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "download_url"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "head_swap_create_image",
+   "title": "Head Swap",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nSwap a head onto a body image. Each image costs 10 credits. Output resolution depends on your subscription; you may set `max_resolution` lower than your plan maximum if desired.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Head Swap - dateTime",
+      "example": "My Head Swap image"
+     },
+     "max_resolution": {
+      "type": "integer",
+      "description": "Constrains the larger dimension (height or width) of the output. Omit to use the maximum allowed for your plan (capped at 2048px). Values above your plan maximum are clamped down to your plan's maximum.",
+      "example": 1024
+     },
+     "assets": {
+      "required": [
+       "body_file_path",
+       "head_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "body_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Image that receives the swapped head. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "head_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Image of the head to place on the body. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/5678.png"
+       }
+      },
+      "description": "Provide the body and head images for head swap"
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "image_background_remover_create_image",
+   "title": "Image Background Remover",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nRemove background from image. Each image costs 5 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Background Remover - dateTime",
+      "example": "My Background Remover image"
+     },
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "type": "string",
+        "description": "The image to remove the background. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "background_image_file_path": {
+        "type": "string",
+        "description": "The image used as the new background for the image_file_path. This image will be resized to match the image in image_file_path. Please make sure the resolution between the images are similar.\n\nThis value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for background removal"
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "image_projects_delete",
+   "title": "Delete image",
+   "description": "Permanently delete the rendered image(s). This action is not reversible, please be sure before deleting.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "cuid-example",
+      "description": "Unique ID of the image project. This value is returned by all of the POST APIs that create an image."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "image_projects_retrieve_details",
+   "title": "Get image details",
+   "description": "MCP guidance:\n- Use this after a create tool to poll job status. When status is `complete`, surface the `downloads` URLs to the user; if status is `error`, surface the error message.\n- Each `downloads[n].url` is already the full signed download URL. Use it exactly as returned. Do not shorten it, strip query parameters, or append `expires_at` onto the URL string.\n\nCheck the progress of a image project. The `downloads` field is populated after a successful render.\n  \n**Statuses**\n- `queued` — waiting to start\n- `rendering` — in progress\n- `complete` — ready; see `downloads`\n- `error` — a failure occurred (see `error`)\n- `canceled` — user canceled\n- `draft` — not used",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "cuid-example",
+      "description": "Unique ID of the image project. This value is returned by all of the POST APIs that create an image."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "image_to_video_create_video",
+   "title": "Image-to-Video",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Image To Video you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding image to video into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a image to video job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/image-to-video).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Image To Video - dateTime",
+      "example": "My Image To Video video"
+     },
+     "end_seconds": {
+      "maximum": 60.0,
+      "minimum": 1.0,
+      "type": "number",
+      "description": "The total duration of the output video in seconds. Supported durations depend on the chosen model:\n\n* **`gemini-omni-1.1`**: any integer from 3 to 10\n* **`kling-2.6`**: 5, 10\n* **`kling-3.0`**: any integer from 3 to 15\n* **`ltx-2.5`**: any integer from 1 to 60\n* **`minimax-h3`**: any integer from 1 to 30\n* **`seedance-1.5`**: any integer from 4 to 12\n* **`seedance-2.0`**: any integer from 4 to 15\n* **`seedance-2.0-mini`**: any integer from 4 to 15\n* **`seedance-2.5`**: any integer from 4 to 30\n* **`veo3.1`**: 4, 6, 8, 16, 24, 32, 40, 48, 56\n* **`veo3.1-lite`**: 4, 6, 8, 16, 24, 32, 40, 48, 56\n* **`wan-2.2`**: 3, 4, 5, 6, 7, 8, 9, 10, 15\n* **`wan-3.0`**: 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30\n",
+      "format": "float",
+      "example": 5
+     },
+     "model": {
+      "enum": [
+       "default",
+       "kling-3.0",
+       "ltx-2.5",
+       "seedance-2.0-mini",
+       "wan-3.0",
+       "seedance-2.5",
+       "gemini-omni-1.1",
+       "minimax-h3",
+       "wan-2.2",
+       "seedance-1.5",
+       "seedance-2.0",
+       "veo3.1-lite",
+       "sora-2",
+       "veo3.1",
+       "kling-2.6",
+       "ltx-2.3",
+       "ltx-2",
+       "kling-2.5",
+       "kling-1.6",
+       "seedance",
+       "kling-2.5-audio",
+       "veo3.1-audio"
+      ],
+      "type": "string",
+      "description": "The AI model to use for video generation.\n\n* `default`: uses our currently recommended model for general use. For paid tiers, defaults to `kling-3.0`. For free tiers, it defaults to `ltx-2.5`.\n* `gemini-omni-1.1`: Best for precise short clips, first/last frames, and high-resolution output.\n* `kling-2.6`: Best for action, motion blur, and controlled camera moves.\n* `kling-3.0`: Best for cinematic stories, references, and optional audio.\n* `ltx-2.5`: Fastest for general scenes, long clips, audio, and rapid iteration.\n* `minimax-h3`: Great for reference-driven clips with native audio and longer durations.\n* `seedance-1.5`: Best for smooth, consistent motion with an end frame.\n* `seedance-2.0`: Best for reference-led clips with precise subject control.\n* `seedance-2.0-mini`: Faster reference-led clips with consistent motion and audio.\n* `seedance-2.5`: Best for premium realism, detail, and natural motion.\n* `veo3.1`: Best for romantic interactions and expressive action, with realistic detail.\n* `veo3.1-lite`: Balanced realism and audio at a lower cost than Veo 3.1.\n* `wan-2.2`: Best for physical motion, action, and camera movement.\n* `wan-3.0`: High-quality video with native audio, long clips, and end-frame control.\n\nIf you specify the deprecated model value that includes the `-audio` suffix, this will be the same as included `audio` as `true`.",
+      "default": "default",
+      "example": "ltx-2.5"
+     },
+     "resolution": {
+      "enum": [
+       "360p",
+       "480p",
+       "720p",
+       "1080p",
+       "4k"
+      ],
+      "type": "string",
+      "description": "Controls the output video resolution. Defaults to `720p` on paid tiers and `480p` on free tiers.\n\n* **`gemini-omni-1.1`**: Supports 360p, 720p, 1080p, 4k.\n* **`kling-2.6`**: Supports 720p, 1080p.\n* **`kling-3.0`**: Supports 720p, 1080p, 4k.\n* **`ltx-2.5`**: Supports 480p, 720p, 1080p.\n* **`minimax-h3`**: Supports 480p, 720p, 1080p.\n* **`seedance-1.5`**: Supports 480p, 720p, 1080p.\n* **`seedance-2.0`**: Supports 480p, 720p, 1080p, 4k.\n* **`seedance-2.0-mini`**: Supports 480p, 720p.\n* **`seedance-2.5`**: Supports 480p, 720p, 1080p.\n* **`veo3.1`**: Supports 720p, 1080p.\n* **`veo3.1-lite`**: Supports 720p, 1080p.\n* **`wan-2.2`**: Supports 480p, 720p, 1080p.\n* **`wan-3.0`**: Supports 480p, 720p, 1080p.\n",
+      "example": "480p"
+     },
+     "audio": {
+      "type": "boolean",
+      "description": "Whether to include audio in the video. Defaults to `false` if not specified.\n\nAudio support varies by model:\n* **`gemini-omni-1.1`**: Not supported\n* **`kling-2.6`**: Not supported\n* **`kling-3.0`**: Toggle-able: audio adds extra credits when enabled\n* **`ltx-2.5`**: Toggle-able: no additional credits for audio\n* **`minimax-h3`**: Toggle-able: no additional credits for audio\n* **`seedance-1.5`**: Toggle-able: audio adds extra credits when enabled\n* **`seedance-2.0`**: Toggle-able: no additional credits for audio\n* **`seedance-2.0-mini`**: Toggle-able: no additional credits for audio\n* **`seedance-2.5`**: Toggle-able: no additional credits for audio\n* **`veo3.1`**: Toggle-able: audio adds extra credits when enabled\n* **`veo3.1-lite`**: Toggle-able: audio adds extra credits when enabled\n* **`wan-2.2`**: Not supported\n* **`wan-3.0`**: Toggle-able: no additional credits for audio\n",
+      "example": true
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "type": "string",
+        "description": "The prompt used for the video.",
+        "example": "a dog running"
+       }
+      },
+      "description": "Attributed used to dictate the style of the output"
+     },
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The path of the image file. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       },
+       "end_image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The image to use as the last frame of the video.\n\n* **`gemini-omni-1.1`**: Supports 360p, 720p, 1080p, 4k.\n* **`kling-2.6`**: Supports 1080p.\n* **`kling-3.0`**: Supports 720p, 1080p, 4k.\n* **`ltx-2.5`**: Supports 480p, 720p, 1080p.\n* **`minimax-h3`**: Supports 480p, 720p, 1080p.\n* **`seedance-1.5`**: Supports 480p, 720p, 1080p.\n* **`seedance-2.0`**: Supports 480p, 720p, 1080p, 4k.\n* **`seedance-2.0-mini`**: Supports 480p, 720p.\n* **`seedance-2.5`**: Supports 480p, 720p, 1080p.\n* **`veo3.1`**: Supports 720p, 1080p. Requires a duration of 8 seconds or less.\n* **`veo3.1-lite`**: Supports 720p, 1080p. Requires a duration of 8 seconds or less.\n* **`wan-2.2`**: Not supported\n* **`wan-3.0`**: Supports 480p, 720p, 1080p.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for image-to-video."
+     }
+    },
+    "required": [
+     "end_seconds",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "lip_sync_create_video",
+   "title": "Lip Sync",
+   "description": "Use only with the user's own likeness or content they are authorized to use. Do not use for impersonation, deception, sexual content, or content involving minors.\n\nMCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Lip Sync you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding lip sync into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a lip sync job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/lip-sync).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Lip Sync - dateTime",
+      "example": "My Lip Sync video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds.",
+      "format": "float",
+      "example": 5
+     },
+     "max_fps_limit": {
+      "minimum": 1.0,
+      "type": "number",
+      "description": "Defines the maximum FPS (frames per second) for the output video. If the input video's FPS is lower than this limit, the output video will retain the input FPS. This is useful for reducing unnecessary frame usage in scenarios where high FPS is not required.",
+      "example": 12
+     },
+     "assets": {
+      "required": [
+       "audio_file_path",
+       "video_source"
+      ],
+      "type": "object",
+      "properties": {
+       "audio_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The path of the audio file. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp3"
+       },
+       "video_source": {
+        "enum": [
+         "file",
+         "youtube"
+        ],
+        "type": "string",
+        "description": "Choose your video source.",
+        "example": "file"
+       },
+       "video_file_path": {
+        "type": "string",
+        "description": "Your video file. Required if `video_source` is `file`. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       },
+       "youtube_url": {
+        "type": "string",
+        "description": "YouTube URL (required if `video_source` is `youtube`).",
+        "format": "uri"
+       }
+      },
+      "description": "Provide the assets for lip-sync. For video, The `video_source` field determines whether `video_file_path` or `youtube_url` field is used",
+      "example": {
+       "audio_file_path": "api-assets/id/1234.mp3",
+       "video_source": "file",
+       "video_file_path": "api-assets/id/1234.mp4"
+      }
+     },
+     "style": {
+      "type": "object",
+      "properties": {
+       "generation_mode": {
+        "enum": [
+         "lite",
+         "standard",
+         "pro"
+        ],
+        "type": "string",
+        "description": "A specific version of our lip sync system, optimized for different needs.\n* `lite` -  Fast lip sync - best for simple videos. Costs 1 credit per frame of video.\n* `standard` -  Natural, accurate lip sync - best for most creators. Requires visible mouth movement in the opening seconds of the input video. Costs 1 credit per frame of video.\n* `pro` -  Premium fidelity with enhanced detail - best for professionals. Requires visible mouth movement in the opening seconds of the input video. Costs 2 credits per frame of video.\n\nIf your source is a still image, including a still image saved as a static video, use [AI Talking Photo](https://docs.magichour.ai/api-reference/video-projects/ai-talking-photo) with the original image and your audio instead.\n\nNote: `pro` is only available for users on Creator, Pro, and Business tiers.\n              ",
+        "default": "lite",
+        "example": "lite"
+       }
+      },
+      "description": "Attributes used to dictate the style of the output"
+     }
+    },
+    "required": [
+     "start_seconds",
+     "end_seconds",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "photo_colorizer_create_image",
+   "title": "Photo Colorizer",
+   "description": "MCP guidance:\n- Starts an async image job; returns `id` and `credits_charged`. For finished results, call `wait_for_image_project` with that id or poll `GET /v1/image-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nColorize image. Each image costs 10 credits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your image a custom name for easy identification.",
+      "default": "Photo Colorizer - dateTime",
+      "example": "My Photo Colorizer image"
+     },
+     "assets": {
+      "required": [
+       "image_file_path"
+      ],
+      "type": "object",
+      "properties": {
+       "image_file_path": {
+        "minLength": 1,
+        "type": "string",
+        "description": "The image used to generate the colorized image. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.png"
+       }
+      },
+      "description": "Provide the assets for photo colorization"
+     }
+    },
+    "required": [
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "ping",
+   "title": "Ping",
+   "description": "Check that the Magic Hour MCP server is reachable.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {},
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "saved_items_list",
+   "title": "List saved items",
+   "description": "Returns active saved items owned by the authenticated account, newest first. Each item includes every saved asset with a durable file_path for reuse in compatible generation APIs and a temporary signed URL for previewing or downloading. Filter by type to find characters, references, voices, moodboards, or brand kits. To fetch the next page, pass the response's next_cursor as cursor.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "type": {
+      "enum": [
+       "character",
+       "reference",
+       "voice",
+       "moodboard",
+       "brand_kit"
+      ],
+      "type": "string",
+      "example": "character",
+      "description": "Only return saved items of this type."
+     },
+     "limit": {
+      "maximum": 100.0,
+      "minimum": 1.0,
+      "type": "integer",
+      "default": 20,
+      "example": 20,
+      "description": "Maximum number of saved items to return. Defaults to 20."
+     },
+     "cursor": {
+      "minLength": 1,
+      "type": "string",
+      "description": "Opaque pagination cursor from the previous response's next_cursor."
+     }
+    },
+    "required": []
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "text_to_video_create_video",
+   "title": "Text-to-Video",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n\n**What this API does**\n\nCreate the same Text To Video you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding text to video into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a text to video job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/text-to-video).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Text To Video - dateTime",
+      "example": "My Text To Video video"
+     },
+     "end_seconds": {
+      "maximum": 60.0,
+      "minimum": 1.0,
+      "type": "number",
+      "description": "The total duration of the output video in seconds. Supported durations depend on the chosen model:\n\n* **`gemini-omni-1.1`**: any integer from 3 to 10\n* **`kling-2.6`**: 5, 10\n* **`kling-3.0`**: any integer from 3 to 15\n* **`ltx-2.5`**: any integer from 1 to 60\n* **`minimax-h3`**: any integer from 1 to 30\n* **`seedance-1.5`**: any integer from 4 to 12\n* **`seedance-2.0`**: any integer from 4 to 15\n* **`seedance-2.0-mini`**: any integer from 4 to 15\n* **`seedance-2.5`**: any integer from 4 to 30\n* **`veo3.1`**: 4, 6, 8, 16, 24, 32, 40, 48, 56\n* **`veo3.1-lite`**: 4, 6, 8, 16, 24, 32, 40, 48, 56\n* **`wan-2.2`**: 3, 4, 5, 6, 7, 8, 9, 10, 15\n* **`wan-3.0`**: 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30\n",
+      "format": "float",
+      "example": 5
+     },
+     "aspect_ratio": {
+      "enum": [
+       "16:9",
+       "9:16",
+       "1:1"
+      ],
+      "type": "string",
+      "description": "Determines the aspect ratio of the output video.\n\n* **`gemini-omni-1.1`**: Supports 16:9, 9:16.\n* **`kling-2.6`**: Supports 9:16, 16:9, 1:1.\n* **`kling-3.0`**: Supports 9:16, 16:9, 1:1.\n* **`ltx-2.5`**: Supports 9:16, 16:9, 1:1.\n* **`minimax-h3`**: Supports 16:9, 9:16, 1:1.\n* **`seedance-1.5`**: Supports 9:16, 16:9, 1:1.\n* **`seedance-2.0`**: Supports 9:16, 16:9, 1:1.\n* **`seedance-2.0-mini`**: Supports 9:16, 16:9, 1:1.\n* **`seedance-2.5`**: Supports 9:16, 16:9, 1:1.\n* **`veo3.1`**: Supports 9:16, 16:9.\n* **`veo3.1-lite`**: Supports 9:16, 16:9.\n* **`wan-2.2`**: Supports 9:16, 16:9, 1:1.\n* **`wan-3.0`**: Supports 16:9, 9:16, 1:1.\n",
+      "example": "16:9"
+     },
+     "resolution": {
+      "enum": [
+       "360p",
+       "480p",
+       "720p",
+       "1080p",
+       "4k"
+      ],
+      "type": "string",
+      "description": "Controls the output video resolution. Defaults to `720p` on paid tiers and `480p` on free tiers.\n\n* **`gemini-omni-1.1`**: Supports 360p, 720p, 1080p, 4k.\n* **`kling-2.6`**: Supports 720p, 1080p.\n* **`kling-3.0`**: Supports 720p, 1080p, 4k.\n* **`ltx-2.5`**: Supports 480p, 720p, 1080p.\n* **`minimax-h3`**: Supports 480p, 720p, 1080p.\n* **`seedance-1.5`**: Supports 480p, 720p, 1080p.\n* **`seedance-2.0`**: Supports 480p, 720p, 1080p, 4k.\n* **`seedance-2.0-mini`**: Supports 480p, 720p.\n* **`seedance-2.5`**: Supports 480p, 720p, 1080p.\n* **`veo3.1`**: Supports 720p, 1080p.\n* **`veo3.1-lite`**: Supports 720p, 1080p.\n* **`wan-2.2`**: Supports 480p, 720p, 1080p.\n* **`wan-3.0`**: Supports 480p, 720p, 1080p.\n",
+      "example": "480p"
+     },
+     "model": {
+      "enum": [
+       "default",
+       "kling-3.0",
+       "ltx-2.5",
+       "seedance-2.0-mini",
+       "wan-3.0",
+       "seedance-2.5",
+       "gemini-omni-1.1",
+       "minimax-h3",
+       "wan-2.2",
+       "seedance-1.5",
+       "seedance-2.0",
+       "veo3.1-lite",
+       "sora-2",
+       "veo3.1",
+       "kling-2.6",
+       "ltx-2.3",
+       "ltx-2",
+       "kling-2.5",
+       "kling-1.6",
+       "seedance",
+       "kling-2.5-audio",
+       "veo3.1-audio"
+      ],
+      "type": "string",
+      "description": "The AI model to use for video generation.\n\n* `default`: uses our currently recommended model for general use. For paid tiers, defaults to `kling-3.0`. For free tiers, it defaults to `ltx-2.5`.\n* `gemini-omni-1.1`: Best for precise short clips, first/last frames, and high-resolution output.\n* `kling-2.6`: Best for action, motion blur, and controlled camera moves.\n* `kling-3.0`: Best for cinematic stories, references, and optional audio.\n* `ltx-2.5`: Fastest for general scenes, long clips, audio, and rapid iteration.\n* `minimax-h3`: Great for reference-driven clips with native audio and longer durations.\n* `seedance-1.5`: Best for smooth, consistent motion with an end frame.\n* `seedance-2.0`: Best for reference-led clips with precise subject control.\n* `seedance-2.0-mini`: Faster reference-led clips with consistent motion and audio.\n* `seedance-2.5`: Best for premium realism, detail, and natural motion.\n* `veo3.1`: Best for romantic interactions and expressive action, with realistic detail.\n* `veo3.1-lite`: Balanced realism and audio at a lower cost than Veo 3.1.\n* `wan-2.2`: Best for physical motion, action, and camera movement.\n* `wan-3.0`: High-quality video with native audio, long clips, and end-frame control.\n\nIf you specify the deprecated model value that includes the `-audio` suffix, this will be the same as included `audio` as `true`.",
+      "default": "default",
+      "example": "ltx-2.5"
+     },
+     "audio": {
+      "type": "boolean",
+      "description": "Whether to include audio in the video. Defaults to `false` if not specified.\n\nAudio support varies by model:\n* **`gemini-omni-1.1`**: Not supported\n* **`kling-2.6`**: Not supported\n* **`kling-3.0`**: Toggle-able: audio adds extra credits when enabled\n* **`ltx-2.5`**: Toggle-able: no additional credits for audio\n* **`minimax-h3`**: Toggle-able: no additional credits for audio\n* **`seedance-1.5`**: Toggle-able: audio adds extra credits when enabled\n* **`seedance-2.0`**: Toggle-able: no additional credits for audio\n* **`seedance-2.0-mini`**: Toggle-able: no additional credits for audio\n* **`seedance-2.5`**: Toggle-able: no additional credits for audio\n* **`veo3.1`**: Toggle-able: audio adds extra credits when enabled\n* **`veo3.1-lite`**: Toggle-able: audio adds extra credits when enabled\n* **`wan-2.2`**: Not supported\n* **`wan-3.0`**: Toggle-able: no additional credits for audio\n",
+      "example": true
+     },
+     "style": {
+      "required": [
+       "prompt"
+      ],
+      "type": "object",
+      "properties": {
+       "prompt": {
+        "maxLength": 20000,
+        "minLength": 1,
+        "type": "string",
+        "description": "The prompt used for the video.",
+        "example": "a dog running"
+       }
+      }
+     },
+     "references": {
+      "maxItems": 10,
+      "minItems": 1,
+      "type": "array",
+      "items": {
+       "required": [
+        "name",
+        "file_path"
+       ],
+       "type": "object",
+       "properties": {
+        "name": {
+         "pattern": "^[A-Za-z][\\w-]*$",
+         "type": "string",
+         "example": "hero"
+        },
+        "file_path": {
+         "minLength": 1,
+         "type": "string",
+         "example": "api-assets/id/1234.png"
+        }
+       }
+      },
+      "description": "Reference media for video generation. Name references without @ and refer to them as @name in style.prompt. Maximum 10 references total.\n\nSupported models and reference media:\n* **`kling-3.0`**: Supports images, videos.\n* **`minimax-h3`**: Supports images, videos, audio.\n* **`seedance-2.0`**: Supports images, videos, audio.\n* **`seedance-2.0-mini`**: Supports images, videos, audio.\n* **`seedance-2.5`**: Supports images, videos, audio.\n* **`wan-3.0`**: Supports images, videos, audio."
+     }
+    },
+    "required": [
+     "end_seconds",
+     "style"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "video_assets_generate_presigned_url",
+   "title": "Generate asset upload urls",
+   "description": "MCP guidance:\n- This only creates presigned upload URLs. For local files, upload the raw bytes to each returned `upload_url` outside the generation call, then pass the matching `file_path` into the create tool.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\nGenerates a list of pre-signed upload URLs for the assets required. This API is only necessary if you want to upload to Magic Hour's storage. Refer to the [Input Files Guide](https://docs.magichour.ai/integration/inputs-and-outputs) for more details.\n\nThe response array will match the order of items in the request body.\n\n**Valid file extensions per asset type**:\n- video: mp4, m4v, mov, webm\n- audio: mp3, wav, aac, flac, webm, weba, m4a, opus, ogg, oga, aiff, amr\n- image: png, jpg, jpeg, jfif, heic, heif, webp, avif, jp2, tiff, tif, bmp\n- gif: gif, webp, webm\n\n> Note: `gif` is only supported for face swap API `video_file_path` field.\n\nOnce you receive an upload URL, send a `PUT` request to upload the file directly.\n\nExample:\n\n```\ncurl -X PUT --data '@/path/to/file/video.mp4' \\\n  https://videos.magichour.ai/api-assets/id/video.mp4?<auth params from the API response>\n```",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "items": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+       "required": [
+        "type",
+        "extension"
+       ],
+       "type": "object",
+       "properties": {
+        "type": {
+         "enum": [
+          "video",
+          "audio",
+          "image"
+         ],
+         "type": "string",
+         "description": "The type of asset to upload. Possible types are video, audio, image",
+         "example": "video"
+        },
+        "extension": {
+         "pattern": "^[a-z0-9]+$",
+         "type": "string",
+         "description": "The extension of the file to upload. Do not include the dot (.) before the extension. Possible extensions are mp4,m4v,mov,webm,mp3,wav,aac,flac,webm,weba,m4a,opus,ogg,oga,aiff,amr,png,jpg,jpeg,jfif,heic,heif,webp,avif,jp2,tiff,tif,bmp,gif,webp,webm",
+         "example": "mp4"
+        }
+       }
+      },
+      "description": "The list of assets to upload. The response array will match the order of items in the request body.",
+      "example": [
+       {
+        "type": "video",
+        "extension": "mp4"
+       },
+       {
+        "type": "audio",
+        "extension": "mp3"
+       }
+      ]
+     }
+    },
+    "required": [
+     "items"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "video_projects_delete",
+   "title": "Delete video",
+   "description": "Permanently delete the rendered video. This action is not reversible, please be sure before deleting.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "cuid-example",
+      "description": "Unique ID of the video project. This value is returned by all of the POST APIs that create a video."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "video_projects_retrieve_details",
+   "title": "Get video details",
+   "description": "MCP guidance:\n- Use this after a create tool to poll job status. When status is `complete`, surface the `downloads` URLs to the user; if status is `error`, surface the error message.\n- Each `downloads[n].url` is already the full signed download URL. Use it exactly as returned. Do not shorten it, strip query parameters, or append `expires_at` onto the URL string.\n\nCheck the progress of a video project. The `downloads` field is populated after a successful render.\n  \n**Statuses**\n- `queued` — waiting to start\n- `rendering` — in progress\n- `complete` — ready; see `downloads`\n- `error` — a failure occurred (see `error`)\n- `canceled` — user canceled\n- `draft` — not used",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "example": "cuid-example",
+      "description": "Unique ID of the video project. This value is returned by all of the POST APIs that create a video."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "video_to_video_create_video",
+   "title": "Video-to-Video",
+   "description": "MCP guidance:\n- Starts an async video job; returns `id` and `credits_charged`. For finished results, call `wait_for_video_project` with that id or poll `GET /v1/video-projects/{id}` until `complete`, `error`, or `canceled`. Results include `downloads`; wait helpers add `exact_download_urls`. Preserve signed URLs and query parameters; never append expiration metadata.\n- For `*_file_path`, use an existing Magic Hour path or the upload-URL endpoint's `file_path` after uploading raw bytes to its presigned URL. Direct public media URLs may work if stable and fetchable as raw bytes; hotlinked URLs can fail. Prefer the upload-URL endpoint when unsure.\n\n**What this API does**\n\nCreate the same Video To Video you can make in the browser, but programmatically, so you can automate it, run it at scale, or connect it to your own app or workflow.\n    \n**Good for**\n- Automation and batch processing  \n- Adding video to video into apps, pipelines, or tools  \n\n**How it works (3 steps)**\n1) Upload your inputs (video, image, or audio) with [Generate Upload URLs](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls) and copy the `file_path`.  \n2) Send a request to create a video to video job with the basic fields.  \n3) Check the job status until it's `complete`, then download the result from `downloads`.\n\n**Key options**\n- Inputs: usually a file, sometimes a YouTube link, depending on project type  \n- Resolution: free users are limited to 576px; higher plans unlock HD and larger sizes  \n- Extra fields: e.g. `face_swap_mode`, `start_seconds`/`end_seconds`, or a text prompt  \n\n**Cost**  \nCredits are only charged for the frames that actually render. You'll see an estimate when the job is queued, and the final total after it's done.\n\nFor detailed examples, see the [product page](https://magichour.ai/products/video-to-video).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Give your video a custom name for easy identification.",
+      "default": "Video To Video - dateTime",
+      "example": "My Video To Video video"
+     },
+     "start_seconds": {
+      "minimum": 0.0,
+      "type": "number",
+      "description": "Start time of your clip (seconds). Must be ≥ 0.",
+      "format": "float",
+      "example": 0
+     },
+     "end_seconds": {
+      "minimum": 0.1,
+      "type": "number",
+      "description": "End time of your clip (seconds). Must be greater than start_seconds.",
+      "format": "float",
+      "example": 5
+     },
+     "fps_resolution": {
+      "enum": [
+       "FULL",
+       "HALF"
+      ],
+      "type": "string",
+      "description": "Determines whether the resulting video will have the same frame per second as the original video, or half.\n* `FULL` - the result video will have the same FPS as the input video\n* `HALF` - the result video will have half the FPS as the input video",
+      "default": "HALF",
+      "example": "HALF"
+     },
+     "style": {
+      "required": [
+       "art_style"
+      ],
+      "type": "object",
+      "properties": {
+       "art_style": {
+        "enum": [
+         "Minecraft",
+         "Watercolor",
+         "Pixel",
+         "Retro Sci-Fi",
+         "Lego",
+         "Origami",
+         "Ghost",
+         "Sub-Zero",
+         "Studio Ghibli",
+         "Comic",
+         "Impressionism",
+         "Master Chief",
+         "Solid Snake",
+         "Street Fighter",
+         "Hologram",
+         "GTA",
+         "Clay",
+         "Mystique",
+         "Dragonball Z",
+         "Mario",
+         "Samurai",
+         "Spartan",
+         "Boba Fett",
+         "3D Render",
+         "Airbender",
+         "Android",
+         "Anime Warrior",
+         "Armored Knight",
+         "Assassin's Creed",
+         "Avatar",
+         "Black Spiderman",
+         "Bold Anime",
+         "Celestial Skin",
+         "Chinese Swordsmen",
+         "Cyberpunk",
+         "Cypher",
+         "Dark Fantasy",
+         "Future Bot",
+         "Futuristic Fantasy",
+         "Ghibli Anime",
+         "Gundam",
+         "Illustration",
+         "Ink",
+         "Ink Poster",
+         "Jinx",
+         "Knight",
+         "Link",
+         "Marble",
+         "Mech",
+         "Naruto",
+         "Neon Dream",
+         "No Art Style",
+         "Oil Painting",
+         "On Fire",
+         "Painterly Anime",
+         "Pixar",
+         "Power Armor",
+         "Power Ranger",
+         "Radiant Anime",
+         "Realistic Anime",
+         "Realistic Pixar",
+         "Retro Anime",
+         "Samurai Bot",
+         "Sharp Anime",
+         "Soft Anime",
+         "Starfield",
+         "The Void",
+         "Tomb Raider",
+         "Underwater",
+         "Van Gogh",
+         "Viking",
+         "Western Anime",
+         "Wu Kong",
+         "Wuxia Anime",
+         "Zelda"
+        ],
+        "type": "string",
+        "example": "Minecraft"
+       },
+       "version": {
+        "enum": [
+         "v1",
+         "v2",
+         "default"
+        ],
+        "type": "string",
+        "description": "* `v1` - more detail, closer prompt adherence, and frame-by-frame previews.\n* `v2` - faster, more consistent, and less noisy.\n* `default` - use the selected art style's default version. Some art styles default to v3, which is unavailable through this API. For `Studio Ghibli`, explicitly set `version` to `v2` to use its supported preset.",
+        "default": "default",
+        "example": "default"
+       },
+       "prompt_type": {
+        "enum": [
+         "default",
+         "custom",
+         "append_default"
+        ],
+        "type": "string",
+        "description": "* `default` - Use the default recommended prompt for the art style.\n* `custom` - Only use the prompt passed in the API. Note: for v1, lora prompt will still be auto added to apply the art style properly.\n* `append_default` - Add the default recommended prompt to the end of the prompt passed in the API.",
+        "default": "default",
+        "example": "default"
+       },
+       "prompt": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "The prompt used for the video. Prompt is required if `prompt_type` is `custom` or `append_default`. If `prompt_type` is `default`, then the `prompt` value passed will be ignored.",
+        "example": "A cinematic scene with warm lighting"
+       },
+       "model": {
+        "enum": [
+         "Dreamshaper",
+         "Absolute Reality",
+         "Flat 2D Anime",
+         "Soft Anime",
+         "Kaywaii",
+         "Western Anime",
+         "3D Anime",
+         "default"
+        ],
+        "type": "string",
+        "description": "* `Dreamshaper` - a good all-around model that works for both animations as well as realism.\n* `Absolute Reality` - better at realism, but you'll often get similar results with Dreamshaper as well.\n* `Flat 2D Anime` - best for a flat illustration style that's common in most anime.\n* `default` - use the default recommended model for the selected art style.",
+        "default": "default",
+        "example": "default"
+       }
+      }
+     },
+     "assets": {
+      "required": [
+       "video_source"
+      ],
+      "type": "object",
+      "properties": {
+       "video_source": {
+        "enum": [
+         "file",
+         "youtube"
+        ],
+        "type": "string",
+        "description": "Choose your video source.",
+        "example": "file"
+       },
+       "video_file_path": {
+        "type": "string",
+        "description": "Your video file. Required if `video_source` is `file`. This value is either\n- a direct URL to the video file\n- `file_path` field from the response of the [upload urls API](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls).\n\nSee the [file upload guide](https://docs.magichour.ai/api-reference/files/generate-asset-upload-urls#input-file) for details.\n",
+        "example": "api-assets/id/1234.mp4"
+       },
+       "youtube_url": {
+        "type": "string",
+        "description": "YouTube URL (required if `video_source` is `youtube`).",
+        "format": "uri"
+       }
+      },
+      "description": "Provide the assets for video-to-video. For video, The `video_source` field determines whether `video_file_path` or `youtube_url` field is used",
+      "example": {
+       "video_source": "file",
+       "video_file_path": "api-assets/id/1234.mp4"
+      }
+     }
+    },
+    "required": [
+     "start_seconds",
+     "end_seconds",
+     "style",
+     "assets"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "wait_for_audio_project",
+   "title": "Wait for Audio Project",
+   "description": "Poll an audio project until it completes, errors, is canceled, or times out. After a timeout, resume with the same id; do not create another generation. Returns the final project JSON and, when complete, attempts to inline audio downloads for Inspector or compatible clients. Returns sanitized download fields. Use `exact_download_urls[n]` or `downloads[n].url` exactly as returned; do not shorten it, remove query parameters, or append expiration metadata. Inline previews share an 8 MiB limit; all download URLs remain available.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "poll_interval_seconds": {
+      "default": 2.0,
+      "type": "number"
+     },
+     "timeout_seconds": {
+      "default": 180.0,
+      "type": "number"
+     },
+     "include_inline_downloads": {
+      "default": true,
+      "type": "boolean"
+     },
+     "max_inline_downloads": {
+      "default": 4,
+      "type": "integer"
+     },
+     "max_bytes_per_download": {
+      "default": 8388608,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "wait_for_image_project",
+   "title": "Wait for Image Project",
+   "description": "Poll an image project until it completes, errors, is canceled, or times out. After a timeout, resume with the same id; do not create another generation. Returns the final project JSON and, when complete, attempts to inline image downloads for Inspector or compatible clients. Returns sanitized download fields. Use `exact_download_urls[n]` or `downloads[n].url` exactly as returned; do not shorten it, remove query parameters, or append expiration metadata. Inline previews share an 8 MiB limit; all download URLs remain available.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "poll_interval_seconds": {
+      "default": 2.0,
+      "type": "number"
+     },
+     "timeout_seconds": {
+      "default": 180.0,
+      "type": "number"
+     },
+     "include_inline_downloads": {
+      "default": true,
+      "type": "boolean"
+     },
+     "max_inline_downloads": {
+      "default": 4,
+      "type": "integer"
+     },
+     "max_bytes_per_download": {
+      "default": 8388608,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "wait_for_video_project",
+   "title": "Wait for Video Project",
+   "description": "Poll a video project until it completes, errors, is canceled, or times out. After a timeout, resume with the same id; do not create another generation. Returns sanitized download fields. Use `exact_download_urls[n]` or `downloads[n].url` exactly as returned; do not shorten it, remove query parameters, or append expiration metadata. Inline previews share an 8 MiB limit; all download URLs remain available.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "poll_interval_seconds": {
+      "default": 2.0,
+      "type": "number"
+     },
+     "timeout_seconds": {
+      "default": 300.0,
+      "type": "number"
+     },
+     "include_inline_downloads": {
+      "default": false,
+      "type": "boolean"
+     },
+     "max_inline_downloads": {
+      "default": 0,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "workflow_guide_retrieve",
+   "title": "Choose a media workflow",
+   "description": "Read Magic Hour workflow guidance for face swap, image editing, image-to-video, video generation, lip sync, UGC ads, talking photos or API integration. Returns product and documentation URLs, exact tool names and review criteria; does not generate media, spend credits or check account access.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "workflow": {
+      "enum": [
+       "video-face-swap",
+       "image-editor",
+       "image-to-video",
+       "video-generator",
+       "lip-sync",
+       "ugc-ads",
+       "talking-photo",
+       "media-apis"
+      ],
+      "type": "string"
+     }
+    },
+    "required": [
+     "workflow"
+    ],
+    "type": "object"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "openWorldHint": false
+   }
+  }
+ ],
+ "resources": [
+  {
+   "name": "Magic Hour workflow index",
+   "uri": "magic-hour://workflows/index",
+   "description": "Discover task-specific workflow guides and their resource URIs.",
+   "mimeType": "application/json"
+  },
+  {
+   "name": "Magic Hour project result",
+   "uri": "ui://magic-hour/project-result-v1.html",
+   "description": "Render completed or terminal Magic Hour project results in MCP Apps hosts.",
+   "mimeType": "text/html;profile=mcp-app"
+  }
+ ],
+ "prompts": []
+}

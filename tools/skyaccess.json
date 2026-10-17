@@ -1,0 +1,222 @@
+{
+ "server": "SkyAccess",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "booking_handoff",
+   "title": "Get the booking link for an empty leg flight",
+   "description": "Return the public SkyAccess listing page link for a specific empty leg flight, where the traveler can review the flight and continue on skyaccess.com. This is read-only: it creates no booking, hold or payment, and it does not modify or cancel anything. It sends no traveler details to SkyAccess and does not ask a specialist to make contact.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "flightId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The SkyAccess empty leg flight id, as given in the `flightId` field of a flight listing"
+     }
+    },
+    "required": [
+     "flightId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_charter_estimate",
+   "title": "Get charter price estimate",
+   "description": "Returns an indicative price range (min/max USD) for a private charter flight between two locations. Optionally filter by aircraft category and passenger count. When no category is specified, returns estimates for each aircraftCategory value that suits the route and group size.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "origin": {
+      "type": "string",
+      "description": "Departure city or airport code (required), e.g. \"Los Angeles\" or \"KLAX\""
+     },
+     "destination": {
+      "type": "string",
+      "description": "Arrival city or airport code (required), e.g. \"New York\" or \"KJFK\""
+     },
+     "passengers": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Number of passengers (used to filter suitable aircraft)"
+     },
+     "aircraftCategory": {
+      "type": "string",
+      "enum": [
+       "TURBOPROP",
+       "LIGHT_JET",
+       "MID_SIZE_JET",
+       "SUPER_MID_SIZE_JET",
+       "HEAVY_JET",
+       "ULTRA_LONG_RANGE",
+       "VERY_LIGHT_JET"
+      ],
+      "description": "Preferred aircraft category. One of: TURBOPROP, LIGHT_JET, MID_SIZE_JET, SUPER_MID_SIZE_JET, HEAVY_JET, ULTRA_LONG_RANGE, VERY_LIGHT_JET. When omitted, estimates for all suitable categories are returned."
+     }
+    },
+    "required": [
+     "origin",
+     "destination"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_flight",
+   "title": "Get a single empty leg flight by id",
+   "description": "Look up one empty leg flight by its id and return its route, departure time, whole-aircraft price (taxes and fees shown at checkout), aircraft type, available seats, amenities and a booking link, as currently published. Returns a not-available message if the flight is no longer published.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "flightId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The SkyAccess empty leg flight id, as given in the `flightId` field of a flight listing"
+     }
+    },
+    "required": [
+     "flightId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_routes",
+   "title": "List popular private jet routes",
+   "description": "List popular SkyAccess private jet routes, each with its origin, destination and minPrice: the lowest whole-aircraft empty leg price currently listed on the route, in USD (taxes and fees shown at checkout), or null when no flight on the route currently has a listed price. Results are stable, not a live ranking: the list is a curated catalogue, six featured routes first and then the routes travelers searched most over the last 30 days, served from a cache refreshed about every 30 minutes, so repeated calls return the same routes. Pass a route to search_empty_legs to see its flights.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "request_booking",
+   "title": "Request a charter booking",
+   "description": "Submit a charter flight booking request to SkyAccess. This sends the traveler's name, email and trip details (route, date, passengers and any notes) to SkyAccess so a specialist can follow up. A SkyAccess specialist will follow up with the requester by email shortly to confirm availability and pricing. No payment is taken and no booking is created: this only starts the enquiry. Privacy policy: https://skyaccess.com/privacy",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "origin": {
+      "type": "string",
+      "description": "Departure city or airport (required), e.g. \"Los Angeles\" or \"LAX\""
+     },
+     "destination": {
+      "type": "string",
+      "description": "Arrival city or airport (required), e.g. \"Miami\" or \"KMIA\""
+     },
+     "departureDate": {
+      "type": "string",
+      "description": "Departure date in ISO format (required), e.g. \"2026-08-15\""
+     },
+     "passengers": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Number of passengers (required)"
+     },
+     "name": {
+      "type": "string",
+      "description": "Full name of the requester (required)"
+     },
+     "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address of the requester (required). A specialist will reply here."
+     },
+     "notes": {
+      "type": "string",
+      "description": "Optional notes or special requests (e.g. catering, pet, preferred aircraft)"
+     }
+    },
+    "required": [
+     "origin",
+     "destination",
+     "departureDate",
+     "passengers",
+     "name",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_empty_legs",
+   "title": "Search empty leg flights",
+   "description": "Search available empty leg flights by origin, destination, date range, passenger count, and an optional max_price ceiling. Returns up to 5 matching flights with route, departure time, whole-aircraft price (taxes and fees shown at checkout), aircraft type, available seats, and a booking link. Empty legs are discounted private jet availability on specific routes. A flight with price: null has no published price (shown on SkyAccess as \"Contact for price\"). Such flights are included even when max_price is set, because their price is unknown; they are not confirmed to be within the cap.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "origin": {
+      "type": "string",
+      "description": "Departure city or airport code (e.g. \"Los Angeles\" or \"LAX\")"
+     },
+     "destination": {
+      "type": "string",
+      "description": "Arrival city or airport code (e.g. \"Las Vegas\" or \"KLAS\")"
+     },
+     "departureDateFrom": {
+      "type": "string",
+      "description": "Earliest departure date in ISO format (e.g. \"2026-07-10\")"
+     },
+     "departureDateTo": {
+      "type": "string",
+      "description": "Latest departure date in ISO format"
+     },
+     "passengers": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Number of passengers"
+     },
+     "max_price": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Optional price ceiling in USD (whole-aircraft price; taxes and fees shown at checkout). Legs priced above this figure are excluded. Legs with no published price (price: null, shown as \"Contact for price\") are still included because their price is unknown; they are not confirmed to be within the cap."
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,454 @@
+{
+ "server": "BlockVectra",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "data_api_get",
+   "title": "Query Data API",
+   "description": "Query the BlockVectra Data API for a specified chain and path using your BlockVectra API key. For endpoint schemas and parameter specifications, see the OpenAPI contract at https://docs.blockvectra.com/openapi/data.yaml. Requires the 'x-api-key' or 'Authorization: Bearer <key>' HTTP header in your MCP client configuration (keys must not be passed in tool parameters or chat). Returns the HTTP status and JSON response body.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "description": "Target blockchain network slug (e.g. 'robinhood_mainnet')."
+     },
+     "path": {
+      "type": "string",
+      "description": "Path after '/v1/data/{chain}/' (e.g. 'status/freshness', 'address/0x.../balances'). Must not start with '/', and cannot contain '..', '//', '?', '#', or '%'."
+     },
+     "query": {
+      "type": "object",
+      "description": "Optional URL query parameters as key-value pairs.",
+      "additionalProperties": {
+       "type": "string"
+      }
+     }
+    },
+    "required": [
+     "chain",
+     "path"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "estimate_usage",
+   "title": "Estimate Usage and Cost",
+   "description": "Calculate projected daily and billing cycle Compute Units (CU) and USD costs for planned call volumes across one or more methods, factoring in method weights and free credit allowances from /v1/plans. Available without an API key. Estimates the API key count for planned traffic under key_defaults. Use this tool for volume budget calculations and capacity planning. For looking up raw system pricing tables, use get_pricing instead. For checking whether a single method is supported on a specific chain, use get_method_info instead. Accepts 'lines' array of {method, calls_per_day} or single 'method' and 'calls_per_day'.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "lines": {
+      "type": "array",
+      "description": "List of methods and daily call volumes to estimate.",
+      "items": {
+       "type": "object",
+       "properties": {
+        "method": {
+         "type": "string",
+         "description": "Method name (e.g. 'eth_call', 'eth_getLogs', 'eth_blockNumber', 'data.address_balances')."
+        },
+        "calls_per_day": {
+         "type": "integer",
+         "minimum": 0,
+         "description": "Expected daily call volume (non-negative integer)."
+        }
+       },
+       "required": [
+        "method",
+        "calls_per_day"
+       ]
+      }
+     },
+     "method": {
+      "type": "string",
+      "description": "Exact method name (e.g. 'eth_call', 'eth_getLogs', 'eth_blockNumber', 'data.address_balances'). Single-method mode."
+     },
+     "calls_per_day": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Expected daily call volume (non-negative integer). Single-method mode."
+     }
+    }
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "explain_error",
+   "title": "Explain Error Code or Reason",
+   "description": "Lookup error code, reason, or HTTP status in the official error reference catalog. Returns meaning, billing implications (whether the call was billed), retryability, retry delay, recommended agent action, and documentation URL.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "reason": {
+      "type": "string",
+      "description": "Error reason slug (e.g. 'invalid_request', 'key_rate_limit', 'insufficient_balance', 'not_found')."
+     },
+     "code": {
+      "type": [
+       "number",
+       "string"
+      ],
+      "description": "Error code (e.g. -32600, -32005, -32020, or console code string like 'siwe_invalid')."
+     },
+     "http_status": {
+      "type": "number",
+      "description": "HTTP status code (e.g. 200, 400, 402, 404, 429, 500, 503)."
+     },
+     "lang": {
+      "type": "string",
+      "enum": [
+       "zh",
+       "en",
+       "ja",
+       "es",
+       "pt-br",
+       "ko",
+       "vi",
+       "zh-hant",
+       "id",
+       "tr",
+       "de",
+       "fr",
+       "ru",
+       "th",
+       "uk"
+      ],
+      "description": "Response language (case-insensitive). Defaults to 'en'."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_account",
+   "title": "Get Account Balance and Limits",
+   "description": "Get the API key's own balance, Compute Units (CU), rate limits, and key parameters from GET /v1/account using your BlockVectra API key. Free and unbilled. Requires the 'x-api-key' or 'Authorization: Bearer <key>' HTTP header in your MCP client configuration (never pass keys in tool parameters or chat). Returns the account's key_id, plan, balance_units, balance_cu, balance_as_of_age_ms, and key limits.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_deposit_address",
+   "title": "Get Deposit Address and Open Networks",
+   "description": "Requires an API key. Get your account's dedicated on-chain deposit address and open networks to top up balance; only transfer to the listed networks and tokens.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_method_info",
+   "title": "Get Method Information",
+   "description": "Inspect a single method's chain-by-chain availability, Compute Unit (CU) weight, price per million calls, and documentation link. Check JSON-RPC method policy and Data API dataset coverage separately. JSON-RPC follows methods.allow and methods.deny from /v1/chains. Data API coverage follows data_features in GET /v1/status, with data enabled in /v1/chains. Pricing comes from /v1/plans. For the full system-wide pricing schedule and rate card, use get_pricing instead. For calculating projected bills for expected call volumes across methods, use estimate_usage instead.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "method": {
+      "type": "string",
+      "description": "Method name (e.g. 'eth_call', 'eth_getBalance', 'debug_traceBlockByNumber', 'data.address_balances')."
+     },
+     "chain": {
+      "type": "string",
+      "description": "Optional chain slug (e.g. 'robinhood_mainnet'). If specified, only availability for this chain is returned."
+     }
+    },
+    "required": [
+     "method"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_pricing",
+   "title": "Get Plans and Pricing",
+   "description": "Live prices and plan limits from `GET /v1/plans`. Use before estimating cost or when asked about free credits, rate limits or per-method prices. Units: 1 billing unit = `pricing.cu_per_unit` CU; 1 USD buys `pricing.units_per_usd` units. `method_weights` includes JSON-RPC and Data API CU per call, `push.log` / `push.native_transfer` / `push.token_transfer` per delivered data event, `push.history` per successful history request and `push.address_day` per billable address-day; resolve a method by exact match, then the longest prefix rule ending in `*`, then the `*` row (JSON-RPC only; Data API and push operations have no default). `free.*` values are in billing units; `key_defaults` are per-key CU/s and burst CU. `promo.ends_at` is a sign-up coverage cutoff, not the end of the offer. For a single method's chain support and documentation use get_method_info instead; for projecting cycle costs use estimate_usage instead.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_status",
+   "title": "Get Service and Network Status",
+   "description": "Live operational status and network health from `GET /v1/status`. Confirm chain `status` is 'ok' before calling methods; see `list_chains` for static chain capabilities and method policies. For Data API, `data_status` can be 'ok', 'syncing' (queryable and billed normally, but indexing is lagging behind latest block time), or 'unavailable'.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "how_to_get_api_key",
+   "title": "How to Get API Key",
+   "description": "Get instructions and endpoints for obtaining a BlockVectra API key via preferred programmatic SIWE sign-up or browser handoff, plus authentication header and URL formats for JSON-RPC and Data API.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "lang": {
+      "type": "string",
+      "enum": [
+       "zh",
+       "en",
+       "ja",
+       "es",
+       "pt-br",
+       "ko",
+       "vi",
+       "zh-hant",
+       "id",
+       "tr",
+       "de",
+       "fr",
+       "ru",
+       "th",
+       "uk"
+      ],
+      "description": "Response language (case-insensitive). Defaults to 'en'."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_chains",
+   "title": "List Supported Chains",
+   "description": "Fetch supported blockchain networks and static parameters from `GET /v1/chains`. `methods.allow` and `methods.deny` support wildcard patterns where `deny` takes precedence over `allow`. `state_window_blocks` indicates the historical state window in blocks for state queries (null when full history is available); `max_logs_block_range` limits `eth_getLogs`: the range is inclusive, so `toBlock - fromBlock + 1` must not exceed it, otherwise the call fails with `logs_range_too_large`. `public` describes the keyless endpoint: `public.url` serves only the methods in `public.methods`, and `public.history_blocks` is how far back a block reference may reach on that endpoint (it does not add methods). Pass `chain` (a slug such as `base_mainnet`) to return only that chain.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "description": "Optional chain slug (exact match, e.g. 'base_mainnet'). When set, only that chain is returned; unknown slugs return an error listing the available ones. Omit to list all chains."
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_docs",
+   "title": "List Documentation Pages",
+   "description": "List all available documentation pages, relative paths, and titles from the static documentation index, including webhook push subscriptions, signatures, delivery and billing. Available without an API key.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "lang": {
+      "type": "string",
+      "description": "Published documentation language (case-insensitive, e.g. zh-hant or zh-Hant). Omit for English; unavailable languages return an error.",
+      "enum": [
+       "en",
+       "zh",
+       "de",
+       "es",
+       "fr",
+       "id",
+       "ja",
+       "ko",
+       "pt-br",
+       "ru",
+       "th",
+       "tr",
+       "uk",
+       "vi",
+       "zh-hant"
+      ]
+     }
+    },
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "read_doc",
+   "title": "Read Documentation Page",
+   "description": "Read the raw Markdown content of a documentation page from /md/{lang}/{path}.md. Path must be an internal relative path (e.g. 'quickstart', 'guides/ai-agents', 'api/json-rpc', 'chains').",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string",
+      "description": "Internal relative documentation path (e.g. 'quickstart', 'guides/ai-agents', 'api/json-rpc'). Do not include protocol, hostname, query string, fragment, or '..'."
+     },
+     "lang": {
+      "type": "string",
+      "description": "Published documentation language (case-insensitive, e.g. zh-hant or zh-Hant). Omit for English; unavailable languages return an error.",
+      "enum": [
+       "en",
+       "zh",
+       "de",
+       "es",
+       "fr",
+       "id",
+       "ja",
+       "ko",
+       "pt-br",
+       "ru",
+       "th",
+       "tr",
+       "uk",
+       "vi",
+       "zh-hant"
+      ]
+     }
+    },
+    "required": [
+     "path"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "rpc_call",
+   "title": "Call JSON-RPC Method",
+   "description": "Execute a read-only JSON-RPC 2.0 method on a specified blockchain network using your BlockVectra API key, or via the keyless public endpoint if available on the chain. Chain slugs look like 'base_mainnet'; take them from list_chains. Without a key the call goes to the keyless endpoint `/v1/{chain}/public` (the chain's `public.url` in list_chains), which only serves the methods listed in that chain's `public.methods`. Write methods (such as 'eth_sendRawTransaction') are not supported in rpc_call; use 'send_raw_transaction' instead. Consult the Ethereum JSON-RPC specification (https://ethereum.org/en/developers/docs/apis/json-rpc/) and the BlockVectra method reference (https://docs.blockvectra.com/en/api/json-rpc/methods/). With a key, set the 'x-api-key' or 'Authorization: Bearer <key>' HTTP header in your MCP client configuration for full access (keys must not be passed in tool parameters or chat). Returns the raw JSON-RPC response from the server.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "description": "Target blockchain network slug (e.g. 'base_mainnet'). Must exist in GET /v1/chains; list_chains returns the valid slugs."
+     },
+     "method": {
+      "type": "string",
+      "description": "JSON-RPC 2.0 method name (e.g. 'eth_blockNumber', 'eth_call', 'eth_getLogs'). Write methods are not accepted."
+     },
+     "params": {
+      "type": "array",
+      "description": "Optional JSON-RPC parameter array. Defaults to []."
+     }
+    },
+    "required": [
+     "chain",
+     "method"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_docs",
+   "title": "Search Documentation",
+   "description": "Find documentation by topic or task keywords when the page path is unknown. Searches page titles, navigation titles, relative paths, and page summaries, returning titles, relative paths, and summaries. Read a result with read_doc using its path and the same lang; use read_doc directly for a known path or list_docs to browse the documentation catalog. Omit lang for English; limit is 1-20 (default 5). If no results match, try broader keywords or browse list_docs. Available without an API key.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Keywords to search for in documentation titles, navigation titles, paths, and summaries."
+     },
+     "lang": {
+      "type": "string",
+      "description": "Published documentation language (case-insensitive, e.g. zh-hant or zh-Hant). Omit for English; unavailable languages return an error.",
+      "enum": [
+       "en",
+       "zh",
+       "de",
+       "es",
+       "fr",
+       "id",
+       "ja",
+       "ko",
+       "pt-br",
+       "ru",
+       "th",
+       "tr",
+       "uk",
+       "vi",
+       "zh-hant"
+      ]
+     },
+     "limit": {
+      "type": "number",
+      "description": "Maximum number of search results to return (1-20, default 5)."
+     }
+    },
+    "required": [
+     "query"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "send_raw_transaction",
+   "title": "Send Raw Transaction",
+   "description": "Broadcast a signed raw transaction to a specified blockchain network via eth_sendRawTransaction. Requires the 'x-api-key' or 'Authorization: Bearer <key>' HTTP header in your MCP client configuration for full access, or uses the keyless public endpoint if permitted on the chain (keys must not be passed in tool parameters or chat). Returns the transaction hash or JSON-RPC error.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "description": "Target blockchain network slug (e.g. 'robinhood_mainnet'). Must exist in GET /v1/chains."
+     },
+     "raw_tx": {
+      "type": "string",
+      "pattern": "^0x([0-9a-fA-F]{2})+$",
+      "description": "Signed raw transaction data as a 0x-prefixed hex string (the RLP-encoded raw transaction)."
+     }
+    },
+    "required": [
+     "chain",
+     "raw_tx"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

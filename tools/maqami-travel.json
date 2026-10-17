@@ -1,0 +1,2005 @@
+{
+ "server": "MAQAMI Travel",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "cancelExperienceBooking",
+   "title": "Cancel tour booking",
+   "description": "Cancel a confirmed tour or activity booking. First show the customer the refund from `getExperienceBookingCancelPreview` and wait for a clear yes.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "MAQAMI experience booking ID from the booking confirmation"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "cancel_hotel_booking",
+   "title": "Cancel hotel booking",
+   "description": "Cancel a confirmed hotel booking. First check the cancellation policy with `get_bookings_bookingid` and confirm with the customer: a non-refundable booking, or one past its free-cancellation deadline, can be charged in full.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The unique booking identifier to cancel"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "getExperienceBooking",
+   "title": "Get tour booking",
+   "description": "Look up a tour or activity booking: status, booking details and the voucher once it is confirmed.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "MAQAMI experience booking ID from the booking confirmation"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "getExperienceBookingCancelPreview",
+   "title": "Preview tour cancellation",
+   "description": "## Overview\n\nPreview the refund amount and cancellation fee for a booking before committing to cancel it.\n\n## When to Use\n\n- **Cancellation confirmation screens** - Show the guest exactly what they'll be refunded\n- **Support tooling** - Check whether a booking is still cancellable before offering a refund\n\n## What You Get\n\n- **`cancellable`** - Whether the booking can currently be cancelled\n- **`policy`** - `cancellationFee`, `refundAmount`, `refundType`, `estimateConfidence`, `currency`, `sellingPrice`\n\n## Quick Start\n\nUse this with the `bookingId` from `POST /experiences/bookings`. This does not cancel the booking - `cancelExperienceBooking` cancels it.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "MAQAMI experience booking ID from the booking confirmation"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "getHotelTaxSchema",
+   "title": "Get hotel tax rules",
+   "description": "## Overview\n\nReturns the tax schema of a hotel as normalized static data, independent of the supply provider the rules were learned from. Each entry describes one tax or fee: whether it is already included in the room rate, whether it is a percentage of the rate or a fixed amount, and how fixed amounts scale (per adult and/or per night).\n\n## When to Use\n\n- **Price transparency** - Show guests which taxes and fees apply at a property\n- **Amount-due-at-property estimates** - Excluded taxes are typically collected at the hotel\n- **Tax auditing** - Compare supplier-declared taxes against the reference schema\n\n## Notes\n\n- Fixed amounts are expressed in USD\n- Percentage rates apply to the room rate (e.g. 13.5 means 13.5%)\n- The schema is learned by an offline pipeline; hotels without learned data return 404\n- When the direct (hotel-declared) source is enabled, taxes declared by the hotel in MAQAMI Cloud take precedence over learned rules and each entry carries `source`, `chargeType`, `appliedPer`, `appliedOn`, `payAtProperty` and validity dates",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelId": {
+      "type": "string",
+      "description": "Unique identifier of the hotel, in 'lp' format or numeric."
+     }
+    },
+    "required": [
+     "hotelId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_bookings_bookingid",
+   "title": "Get hotel booking",
+   "description": "Look up a confirmed hotel booking: status, hotel, dates, rooms, guests, price and cancellation policy.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The unique booking identifier (e.g. '2rSJvdDru')"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_chains",
+   "title": "List hotel chains",
+   "description": "## Overview\n\nGet all available hotel chains (e.g., Marriott, Hilton, IHG). Use chain IDs to filter hotel searches by brand.\n\n## When to Use\n\n- **Chain filters** - Filter hotels by chain/brand\n- **Brand selection** - Let users search for specific hotel chains\n- **Reference data** - Get chain IDs for use in search filters\n\n## What You Get\n\n- **Chain list** - All available hotel chains\n- **Chain IDs** - Numeric IDs for use in search filters\n- **Chain names** - Hotel chain/brand names\n\n## Quick Start\n\nNo parameters required. Returns all hotel chains with IDs. Use chain IDs in hotel search filters.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_cities",
+   "title": "List cities",
+   "description": "## Overview\n\nGet a list of all cities within a specific country. Perfect for building location dropdowns and city selection interfaces.\n\n## When to Use\n\n- **City dropdowns** - Populate city selection lists\n- **Location filters** - Filter hotels by city\n- **Geographic data** - Get city lists for specific countries\n- **Form autocomplete** - Build city autocomplete features\n\n## What You Get\n\n- **City list** - All cities in the specified country\n- **City names** - Formatted city names ready for display\n\n## Quick Start\n\nProvide the `countryCode` in ISO-2 format (e.g., \"US\", \"GB\"). Returns all cities in that country. Use the [Get Country List endpoint](/v3.0.0/reference/get_data-countries) to get country codes.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "countryCode": {
+      "type": "string",
+      "description": "Country code in iso-2 format (example: SG)"
+     },
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     }
+    },
+    "required": [
+     "countryCode"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_countries",
+   "title": "List countries",
+   "description": "## Overview\n\nGet a complete list of all countries available in the system with their ISO-2 country codes. Essential for building country selection interfaces.\n\n## When to Use\n\n- **Country dropdowns** - Populate country selection lists\n- **Location filters** - Filter hotels or searches by country\n- **Form inputs** - Build country selection forms\n- **Reference data** - Get country codes for use in other endpoints\n\n## What You Get\n\n- **Country list** - All available countries\n- **ISO-2 codes** - Standard country codes (e.g., \"US\", \"GB\", \"FR\")\n- **Country names** - Full country names\n\n## Quick Start\n\nNo parameters required. Returns all countries with their ISO-2 codes.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_currencies",
+   "title": "List currencies",
+   "description": "## Overview\n\nGet all available currencies with their codes, names, and the countries where each currency is used. Perfect for building currency selection interfaces.\n\n## When to Use\n\n- **Currency dropdowns** - Populate currency selection lists\n- **Price display** - Show prices in different currencies\n- **Currency conversion** - Get currency information for conversion\n- **Reference data** - Get currency codes for use in booking endpoints\n\n## What You Get\n\n- **Currency list** - All available currencies\n- **Currency codes** - ISO currency codes (e.g., \"USD\", \"EUR\", \"GBP\")\n- **Currency names** - Full currency names\n- **Country mapping** - Countries where each currency is used\n\n## Quick Start\n\nNo parameters required. Returns all currencies with codes, names, and country mappings.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_facilities",
+   "title": "List hotel facilities",
+   "description": "## Overview\n\nGet all available hotel facilities (amenities) with multi-language translations. Use these facility IDs to filter hotel searches by amenities.\n\n## When to Use\n\n- **Facility filters** - Build amenity filtering in hotel searches\n- **Facility display** - Show available facilities with translated names\n- **Multi-language support** - Display facilities in user's language\n- **Reference data** - Get facility IDs for use in search filters\n\n## What You Get\n\n- **Facility list** - All available hotel facilities\n- **Facility IDs** - Numeric IDs for use in search filters\n- **Multi-language names** - Facility names in multiple languages\n- **Translations** - Localized facility names\n\n## Quick Start\n\nNo parameters required. Returns all facilities with IDs and multi-language translations. Use facility IDs in hotel search filters.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_flights_airlines",
+   "title": "List airlines",
+   "description": "## Overview\n\nRetrieve a list of airlines with optional filtering by name, alliance, and active status.\n\n## When to Use\n\n- **Airline directory** - Build a searchable list of airlines for display or filtering\n- **Alliance filtering** - Filter airlines by alliance membership (Star Alliance, oneworld, SkyTeam)\n- **Active airlines** - Retrieve only currently operating airlines\n\n## What You Get\n\n- **Full airline records** including name, IATA/ICAO codes, country, alliance, and logo URL\n- **Alliance membership** for each airline\n- **Active status** to identify currently operating carriers\n- **Filtered results** based on query, alliance, and active status parameters\n\n## Quick Start\n\nCall with no parameters to get all airlines. Use `q` to search by name, `alliance` to filter by alliance, and `activeOnly=true` to exclude inactive carriers.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Search query (e.g., 'AA' or 'American')"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum number of results"
+     },
+     "activeOnly": {
+      "type": "boolean",
+      "description": "Only return currently active airlines"
+     },
+     "alliance": {
+      "type": "string",
+      "enum": [
+       "star_alliance",
+       "oneworld",
+       "skyteam",
+       "vanilla_alliance"
+      ],
+      "description": "Filter by airline alliance"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_flights_airlines_iatas",
+   "title": "List airline IATA codes",
+   "description": "## Overview\n\nRetrieve a lightweight list of airline IATA codes with names for autocomplete and lookup purposes.\n\n## When to Use\n\n- **Autocomplete dropdowns** - Populate airline search inputs with a minimal list\n- **Client-side filtering** - Download the full list once and filter locally\n- **Code validation** - Build a lookup table of valid airline codes\n\n## What You Get\n\n- **IATA codes** for all airlines in the database\n- **Airline names** paired with each code\n- **Active filtering** available via the `activeOnly` parameter\n\n## Quick Start\n\nCall with no parameters to get all airline IATA codes and names. Use `activeOnly=true` to filter out inactive airlines.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "activeOnly": {
+      "type": "boolean",
+      "description": "Only return currently active airlines"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_flights_airlines_iatas_iatacode",
+   "title": "Get airline by IATA code",
+   "description": "## Overview\n\nRetrieve full details for a specific airline using its 2-letter IATA code.\n\n## When to Use\n\n- **Airline display** - Show airline name, logo, and alliance for a given IATA code\n- **Flight result enrichment** - Fetch airline details to display alongside search results\n- **Data validation** - Verify an airline code and retrieve its metadata\n\n## What You Get\n\n- **Airline details** including name, IATA/ICAO codes, and country\n- **Alliance membership** (Star Alliance, oneworld, SkyTeam, or Vanilla Alliance)\n- **Logo URL** for displaying the airline's logo in your UI\n- **Active status** indicating whether the airline is currently operating\n\n## Quick Start\n\nProvide the 2-letter IATA code (e.g., `AA` for American Airlines) in the URL path.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "iataCode": {
+      "type": "string",
+      "description": "2-letter IATA airline code (e.g., AA)"
+     }
+    },
+    "required": [
+     "iataCode"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_flights_airports",
+   "title": "List airports",
+   "description": "## Overview\n\nSearch for airports by name, city, or IATA code using a text query. Returns matching airports for use in autocomplete and search inputs.\n\n## When to Use\n\n- **Airport autocomplete** - Power origin/destination search inputs with type-ahead suggestions\n- **Airport discovery** - Find airports in a city or region by name\n- **Search validation** - Look up airports before constructing a flight search request\n\n## What You Get\n\n- **Matching airports** ranked by relevance to the query\n- **IATA codes** for `legs[].origin` and `legs[].destination` in `post_flights_rates`\n- **City and country** details for display purposes\n- **Geographic coordinates** for map-based interfaces\n\n## Quick Start\n\nProvide a `q` query string (minimum 2 characters) to search by airport name, city, or code. Returns matching airports ordered by relevance.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Search query (minimum 2 characters, e.g., 'JFK' or 'New York')"
+     }
+    },
+    "required": [
+     "q"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_flights_airports_iatas",
+   "title": "List airport IATA codes",
+   "description": "## Overview\n\nRetrieve a lightweight list of airport IATA codes with names for autocomplete and lookup purposes.\n\n## When to Use\n\n- **Autocomplete dropdowns** - Populate airport search inputs with a full list of codes and names\n- **Client-side filtering** - Download the full list once and filter locally\n- **Code validation** - Build a lookup table of valid airport codes\n\n## What You Get\n\n- **IATA codes** for all airports in the database\n- **Airport names** paired with each code\n- **Filtered results** when the `q` query parameter is provided\n\n## Quick Start\n\nCall with no parameters to get all airport codes and names. Use the `q` parameter to filter by name or code.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "q": {
+      "type": "string",
+      "description": "Search query"
+     }
+    },
+    "required": [
+     "q"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_flights_airports_iatas_iatacode",
+   "title": "Get airport by IATA code",
+   "description": "## Overview\n\nRetrieve detailed information for a specific airport using its 3-letter IATA code.\n\n## When to Use\n\n- **Airport display** - Show airport name, city, and country for a given IATA code\n- **Flight result enrichment** - Fetch airport details to display alongside origin/destination in search results\n- **Autocomplete validation** - Verify an airport code and retrieve its full details\n\n## What You Get\n\n- **Airport details** including name, city, country, and timezone\n- **IATA and ICAO codes** for the airport\n- **Geographic coordinates** (latitude and longitude)\n- **Country and city** information for display purposes\n\n## Quick Start\n\nProvide the 3-letter IATA code (e.g., `JFK` for John F. Kennedy International) in the URL path.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "iataCode": {
+      "type": "string",
+      "description": "3-letter IATA airport code (e.g., JFK)"
+     }
+    },
+    "required": [
+     "iataCode"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hotel",
+   "title": "Get hotel details",
+   "description": "## Overview\n\nGet comprehensive details about a specific hotel including descriptions, amenities, images, location, and ratings. Perfect for displaying hotel detail pages.\n\n## When to Use\n\n- **Hotel detail pages** - Show complete hotel information\n- **Booking pages** - Display hotel details before booking\n- **Hotel profiles** - Build rich hotel information pages\n- **Content display** - Show descriptions, amenities, and images\n\n## What You Get\n\n- **Complete hotel information** - Name, address, description, and ratings\n- **Amenities list** - All available facilities and services\n- **Image gallery** - Hotel photos and images\n- **Location details** - Address, coordinates, and location information\n- **Hotel metadata** - Star rating, chain information, and classifications\n\n## Quick Start\n\nProvide the `hotelId` as a query parameter. Returns complete hotel details including all metadata, amenities, and images.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelId": {
+      "type": "string",
+      "description": "Unique ID of a hotel"
+     },
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     },
+     "language": {
+      "type": "string",
+      "description": "The language code, indicating in which language the results should be returned. e.g. 'fr'"
+     },
+     "advancedAccessibilityOnly": {
+      "type": "boolean",
+      "description": "If `true`, accessibility section will be returned"
+     }
+    },
+    "required": [
+     "hotelId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hotel_ask",
+   "title": "Ask about a hotel",
+   "description": "## Overview\n\n**Beta Feature** - Ask natural language questions about a specific hotel and get AI-powered answers based on the hotel's information.\n\n## When to Use\n\n- **Hotel Q&A** - Answer customer questions about hotels\n- **Information lookup** - Get specific details about amenities, services, or features\n- **Conversational interfaces** - Build chat interfaces for hotel information\n- **Detailed inquiries** - Ask about specific aspects like restaurants, parking, or amenities\n\n## What You Get\n\n- **AI-generated answers** - Relevant responses to your questions\n- **Hotel-specific information** - Answers based on the hotel's actual data\n- **Natural language responses** - Human-readable answers\n\n## Example Questions\n\n- \"What amenities does this hotel have?\"\n- \"Is there parking available?\"\n- \"What does a meal at the restaurant look like?\"\n\n## Key Features\n\n- **Web search option** - Enable `allowWebSearch` to get additional information from the web\n- **Hotel context** - Answers are specific to the hotel you're asking about\n- **Natural language** - Ask questions conversationally\n\n## Quick Start\n\nProvide the `hotelId` and your `question`. Optionally enable `allowWebSearch` for web-enhanced answers.\n\n**Note:** This is a beta feature and may be subject to changes.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelId": {
+      "type": "string",
+      "description": "Unique ID of the hotel (MAQAMI format)"
+     },
+     "query": {
+      "type": "string",
+      "description": "The question to ask about the hotel"
+     },
+     "allowWebSearch": {
+      "type": "boolean",
+      "description": "Whether to allow web search for additional information. Default is false."
+     }
+    },
+    "required": [
+     "hotelId",
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hotel_search",
+   "title": "Find hotels by name or place",
+   "description": "Find hotels by name or place with a semantic text search. Returns up to 5 matches (set `limit` for more) with name, address, city, country and a relevance score. Check the name and city before using an `id`. For an exact hotel name, `get_data_hotels` with `hotelName` and `cityName` or `countryCode` is more precise.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "The semantic search query (e.g. 'Burj Jumeirah Dubai')."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "description": "Maximum number of matches to return. Defaults to 5."
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hotels",
+   "title": "List hotels",
+   "description": "## Overview\n\nSearch and retrieve hotel listings based on various criteria. Get hotel metadata including names, addresses, ratings, amenities, and images for display in your application.\n\n## When to Use\n\n- **Hotel listings** - Display hotel search results\n- **Location-based search** - Find hotels by city, coordinates, or Place ID\n- **Hotel discovery** - Browse hotels in specific areas\n- **Metadata retrieval** - Get hotel information for display\n\n## What You Get\n\n- **Hotel list** - Matching hotels with complete metadata\n- **Basic information** - Names, addresses, ratings, and locations\n- **Amenities** - Available facilities and features\n- **Images** - Hotel photos for display\n- **Identifiers** - Hotel IDs for use in rate searches\n\n## Search Options\n\n- **By city** - Search hotels in a specific city\n- **By coordinates** - Find hotels near latitude/longitude with radius\n- **By Place ID** - Get hotels within a specific place boundary\n- **By hotel IDs** - Retrieve specific hotels by their IDs\n\n## Quick Start\n\nProvide search criteria (city, coordinates+radius, placeId, or hotelIds). Returns matching hotels with complete metadata.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "countryCode": {
+      "type": "string",
+      "description": "Country code ISO-2 code - example (SG)"
+     },
+     "cityName": {
+      "type": "string",
+      "description": "Name of the city"
+     },
+     "hotelName": {
+      "type": "string",
+      "description": "Name of the hotel (loose match, case-insensitive, e.g. 'hilton')"
+     },
+     "offset": {
+      "type": "integer",
+      "description": "Specifies the number of rows to skip before starting to return rows"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Specifies the maximum number of results to return. By default, this is set to 200, even if not explicitly defined. If a higher limit is specified, the maximum allowed is 5000 results"
+     },
+     "lastUpdatedAt": {
+      "type": "string",
+      "description": "Retrieve only the hotels that have been updated since the provided date and time (using the RFC3339 format)"
+     },
+     "longitude": {
+      "type": "number",
+      "description": "Longitude geo coordinates"
+     },
+     "latitude": {
+      "type": "number",
+      "description": "Latitude geo coordinates"
+     },
+     "radius": {
+      "type": "integer",
+      "description": "radius in meters (min 1000m)"
+     },
+     "aiSearch": {
+      "type": "string",
+      "description": "Search term for AI search. Uses semantic search to find hotels matching the query intent. Examples: 'Romantic getaway with Italian vibes in London near the London Eye', 'Hotels near the Eiffel tower'"
+     },
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     },
+     "zip": {
+      "type": "string",
+      "description": "ZIP code of the location"
+     },
+     "minRating": {
+      "type": "number",
+      "description": "Minimum rating of the hotel. e.g. 8.6"
+     },
+     "minReviewsCount": {
+      "type": "number",
+      "description": "Minimum number of reviews. e.g. 100"
+     },
+     "facilityIds": {
+      "type": "string",
+      "description": "Comma-separated list of facilities. e.g. '1,2,3'"
+     },
+     "hotelTypeIds": {
+      "type": "string",
+      "description": "Comma-separated list of hotel types. e.g. '201,204,208'"
+     },
+     "chainIds": {
+      "type": "string",
+      "description": "Comma-separated list of hotel chain ids. e.g. '14675,14677'"
+     },
+     "strictFacilitiesFiltering": {
+      "type": "boolean",
+      "description": "If `true`, only hotels with all the specified facilities will be returned"
+     },
+     "starRating": {
+      "type": "string",
+      "description": "Comma-separated list of star ratings. Note: star ratings have 2 allowed decimals '.0' and '.5' from 1 to 5. e.g. '3.5,4.0,5.0'"
+     },
+     "placeId": {
+      "type": "string",
+      "description": "Unique ID of a place retrieved from the `/data/places` endpoint. When provided, the API fetches place details and searches for hotels within a 1km radius of the place location center, or a specific hotel when the placeId refers to a property. The response includes a `place` object containing the place information used in the search."
+     },
+     "language": {
+      "type": "string",
+      "description": "The language code, indicating in which language the results should be returned. e.g. 'fr'"
+     },
+     "hotelIds": {
+      "type": "string",
+      "description": "Comma-separated list of hotel IDs (e.g., 'lp1897,lp1343') to fetch specific hotels by their IDs. This is a valid main query parameter that can be used instead of other search criteria."
+     },
+     "advancedAccessibilityOnly": {
+      "type": "boolean",
+      "description": "If `true`, only hotels with advanced accessibility will be returned"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hotels_room_search",
+   "title": "Search hotel rooms by style",
+   "description": "## Overview\n\n**Beta Feature** - Search hotel rooms using visual and text-based queries. Uses image search technology to match your query against room images and find hotels with rooms that match your visual preferences, amenities, or style.\n\n## When to Use\n\n- **Visual room search** - Find rooms based on visual characteristics like \"luxury modernist comfort\" or \"blue accessible bathroom\"\n- **Style-based search** - Search for rooms by design style like \"art deco hotel room\" or \"brutalist room\"\n- **Amenity-focused search** - Find rooms with specific features like \"twin room with a city view\" or \"room with a skylight\"\n- **Geographic filtering** - Limit results to hotels near a specific location using coordinates or Place ID\n- **City and country filtering** - Filter results by city and/or country\n\n## What You Get\n\n- **Matching hotels** - Hotels grouped by hotel ID with rooms that match your query\n- **Room details** - Room name, image URL, and similarity score (rounded to 3 decimals) for each matching room\n- **Hotel metadata** - ID, name, address, city, country, and rating for each hotel\n- **Geographic filtering** - Optionally limit results to a specific area using coordinates or Place ID\n- **City and country filters** - Filter results by city and/or country code\n\n## Example Queries\n\n- \"luxury modernist comfort\"\n- \"an extremely fun room or art deco hotel room\"\n- \"luxurious accessible bathroom or blue accessible bathroom with walk in shower\"\n- \"twin room with a city view\"\n- \"a room filled with paintings\"\n- \"a hotel room with a skylight\"\n\n## Geographic Filtering\n\nYou can optionally limit search results to a specific geographic area:\n\n- **Using coordinates**: Provide `latitude`, `longitude`, and optionally `radius` (in kilometers, default: 12km)\n- **Using Place ID**: Provide `placeId` - the place's location will be automatically fetched and the search will use the place's viewport boundaries (or the provided `radius` if viewport is unavailable)\n- **Using city/country**: Provide `city` and/or `country` to filter results by location\n\n## Quick Start\n\nProvide a `query` parameter describing the room you're looking for. Optionally add geographic filtering with `latitude`/`longitude` or `placeId` to limit results to a specific area.\n\n**Note:** This is a beta feature and may be subject to changes.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Search query describing the room you're looking for. Can be visual (e.g., 'luxury modernist comfort', 'blue accessible bathroom'), amenity-based (e.g., 'twin room with a city view'), or style-based (e.g., 'art deco hotel room', 'brutalist room')"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum number of results to return (maps to top_k in the API)"
+     },
+     "placeId": {
+      "type": "string",
+      "description": "Place ID. If provided, the search will be limited to hotels within the place's viewport boundaries (or the provided `radius` if viewport is unavailable). The place's latitude and longitude will be automatically fetched."
+     },
+     "latitude": {
+      "type": "number",
+      "description": "Latitude coordinate for geographic filtering. Must be provided together with longitude. Ignored if placeId is provided."
+     },
+     "longitude": {
+      "type": "number",
+      "description": "Longitude coordinate for geographic filtering. Must be provided together with latitude. Ignored if placeId is provided."
+     },
+     "radius": {
+      "type": "number",
+      "description": "Search radius in kilometers. Only used when latitude/longitude is provided, or when placeId is provided but the place does not have viewport information. When placeId is provided and viewport is available, the viewport boundaries are used instead of this radius. Default is 12km."
+     },
+     "city": {
+      "type": "string",
+      "description": "Filter results by city name. Can be used alone or together with country."
+     },
+     "country": {
+      "type": "string",
+      "description": "Filter results by country code (ISO 3166-1 alpha-2 format, e.g., 'FR', 'US'). Can be used alone or together with city."
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hotels_semantic_search",
+   "title": "Search hotels by description",
+   "description": "## Overview\n\n**Beta Feature** - Search hotels using natural language queries. Uses AI to understand search intent and find hotels that match the meaning, not just keywords.\n\n## When to Use\n\n- **Natural language search** - Let users search with phrases like \"romantic getaway in London\"\n- **Intent-based matching** - Find hotels matching the vibe or style, not just location\n- **Conversational search** - Support natural language hotel discovery\n- **Semantic matching** - Get hotels that semantically match the query\n\n## What You Get\n\n- **Matching hotels** - Hotels that semantically match your query\n- **Semantic attributes** - Tags, persona, style, location_type, and story for each hotel\n- **Relevance scores** - How well each hotel matches the query\n- **Hotel metadata** - ID, name, photos, address, city, country\n\n## Example Queries\n\n- \"Romantic getaway in London with Italian vibes\"\n- \"Hotels near Paris\"\n- \"Family-friendly beachfront hotels\"\n\n## Quick Start\n\nProvide a natural language `query` parameter. Returns hotels with semantic matching scores and attributes.\n\n**Note:** This is a beta feature and may be subject to changes.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Semantic search query. This can be a natural language description of what you're looking for, e.g. 'romantic getaway in london with italian vibes'"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum number of results to return. Default is 3."
+     },
+     "min_rating": {
+      "type": "number",
+      "description": "Minimum hotel rating to filter results. Default is 0 (no minimum rating filter)."
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_hoteltypes",
+   "title": "List hotel types",
+   "description": "## Overview\n\nGet all available hotel type classifications (e.g., resort, boutique, business hotel). Use type IDs to filter hotel searches.\n\n## When to Use\n\n- **Type filters** - Filter hotels by type in search\n- **Type display** - Show hotel type classifications\n- **Reference data** - Get hotel type IDs for filtering\n\n## What You Get\n\n- **Hotel type list** - All available hotel types\n- **Type IDs** - Numeric IDs for use in search filters\n- **Type names** - Hotel type classifications\n\n## Quick Start\n\nNo parameters required. Returns all hotel types with IDs. Use type IDs in hotel search filters.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_iatacodes",
+   "title": "List IATA codes",
+   "description": "## Overview\n\nGet IATA (International Air Transport Association) airport codes with airport names, coordinates, and country information. Useful for airport-based hotel searches.\n\n## When to Use\n\n- **Airport searches** - Find hotels near airports\n- **Location selection** - Let users search by airport codes\n- **Geographic data** - Get airport locations and coordinates\n- **Reference data** - Get IATA codes for use in hotel searches\n\n## What You Get\n\n- **Airport list** - All available airports with IATA codes\n- **Airport names** - Full airport names\n- **Coordinates** - Latitude and longitude for each airport\n- **Country codes** - ISO-2 country codes for each airport\n\n## Quick Start\n\nNo parameters required. Returns all airports with IATA codes, names, coordinates, and country information.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_languages",
+   "title": "List languages",
+   "description": "## Overview\n\nGet all supported languages for hotel translations and content localization. Use language codes to request hotel data in specific languages.\n\n## When to Use\n\n- **Language selection** - Display available languages to users\n- **Content localization** - Get language codes for API requests\n- **Multi-language support** - Build language switchers in your application\n- **Reference data** - Validate language codes before making requests\n\n## What You Get\n\n- **Language list** - All supported and enabled languages\n- **Language codes** - ISO 639-1 codes (e.g., 'en', 'es', 'fr')\n- **Language names** - Human-readable language names in English\n\n## Quick Start\n\nNo parameters required. Returns all supported languages with codes and names. Use language codes in hotel search and detail requests.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_data_reviews",
+   "title": "Get hotel reviews",
+   "description": "## Overview\n\nRetrieve guest reviews and ratings for a specific hotel. Display authentic feedback from previous guests to help users make informed booking decisions.\n\n## When to Use\n\n- **Review display** - Show guest reviews on hotel detail pages\n- **Rating aggregation** - Display average ratings and review counts\n- **Trust building** - Show authentic guest feedback\n- **Decision support** - Help users evaluate hotels before booking\n\n## What You Get\n\n- **Guest reviews** - Individual review text and ratings\n- **Review dates** - When each review was written\n- **Ratings** - Numerical and textual ratings\n- **Guest feedback** - Detailed comments from previous guests\n\n## Quick Start\n\nProvide the `hotelId` as a query parameter. Returns all reviews for that hotel with ratings and comments.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelId": {
+      "type": "string",
+      "description": "Unique ID of a hotel"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Specifies the maximum number of results to return. By default, this is set to 200, even if not explicitly defined. If a higher limit is specified, the maximum allowed is 5000 results"
+     },
+     "offset": {
+      "type": "integer",
+      "description": "Specifies the number of reviews to skip, defaults to 0"
+     },
+     "timeout": {
+      "type": "number",
+      "description": "request timeout in seconds"
+     },
+     "getSentiment": {
+      "type": "boolean",
+      "description": "If set to true, an AI sentiment analysis of the last 1000 reviews will be returned"
+     },
+     "language": {
+      "type": "string",
+      "description": "ISO 639-1 language code (e.g., 'fr', 'es', 'de') to translate reviews using AI. If not provided, the reviews will be returned in the default language (en). When this parameter is provided, the maximum number of reviews returned is 10."
+     }
+    },
+    "required": [
+     "hotelId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_flights_bookings_bookingid",
+   "title": "Get flight booking",
+   "description": "Look up a confirmed flight booking: status, passengers, flights, booking references, fare rules and price.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The unique flight booking identifier"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_flights_bookings_bookingid_cancellations",
+   "title": "Get flight cancellation status",
+   "description": "## Overview\n\nReturns refund eligibility, estimated refund amounts, and penalty details for a booking **without actually cancelling it**. Useful before `post_flights_bookings_bookingid_cancellations` to understand the financial impact of cancellation.\n\n## When to Use\n\n- **Pre-cancellation review** — Show the customer the potential maximum refund (not guaranteed) before they confirm cancellation\n- **Refund estimation** — Display potential maximum refund and penalty amounts in the booking management UI (refund is not granted until cancel completes)\n- **Eligibility check** — Determine whether the booking is within the void window (`isVoidable`) or eligible for a partial refund (`isRefundable`)\n\n## What You Get\n\n- **`confidence`** — How reliable the quote is (`confirmed`, `estimated`, `heuristic`, `unknown`)\n- **`isRefundable` / `isVoidable`** — Quick eligibility flags\n- **`refund` / `penalty`** — Aggregate amounts with margin applied. `refund` is the potential maximum the airline may refund — not a granted/guaranteed amount\n- **`penalties[]`** — Itemised penalty breakdown when available\n- **`tickets[]`** — Per-ticket detail when available\n- **`destination`** — Where the refund goes\n- **`vouchers[]`** — Airline travel vouchers / credit-shells when `destination` is `voucher`; omitted when absent. Distinct from MAQAMI discount `voucherCode` on prebook\n\n## Concurrent cancellation\n\nIf a cancellation was already submitted and is still awaiting provider confirmation, this endpoint returns **HTTP 409** with code `49007` (`CONCURRENT_OPERATION`). A new quote is not available until that cancellation completes or fails.\n\n## Refund amount caveat\n\nThe `refund` amount on a cancellation quote is the **potential maximum** the airline may refund if cancellation proceeds under the quoted conditions. It is an estimate for decision-making only and is **not granted** — the final refund (if any) is determined when cancellation completes and may be lower or zero. The refund may arrive asynchronously once the airline determines the final amount.\n\n## Key Features\n\n- **Non-destructive** — Does not cancel the booking; safe to call before user confirmation\n- **Margin-applied pricing** — All amounts (including voucher `pricing.display`) reflect the same margin applied at booking time\n\n## Quick Start\n\nProvide the `bookingId` from the flight booking confirmation. Each call checks the airline live.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The unique booking identifier"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_flights_bookings_bookingid_services",
+   "title": "Get flight booking extras",
+   "description": "## Overview\n\nRetrieve the ancillary services (seats, baggage) for an existing flight booking: services that are **already booked** together with the live catalog of services that **can still be booked**.\n\n## When to Use\n\n- **Post-booking upsell** - Show the passenger which seats and bags they can still add after the booking was created\n- **Booking management** - Display the services already attached to the booking with the prices that were charged\n- **Availability refresh** - The bookable catalog is fetched live from the provider on every call\n\n## What You Get\n\n- **`groups`** - Bookable services grouped by category (seat, baggage) with post-margin prices and encoded `serviceId`s\n- **`bookedServices`** - Services already attached to the booking; entries booked through the API carry the exact price that was charged at attach time\n- **`expiresAt`** - Validity window of the bookable catalog\n\n## Key Features\n\n- **Read-only**: Safe to call at any time; the catalog reflects live availability\n- **Consistent pricing**: Booked services echo the post-margin amounts the user actually paid\n\n## Quick Start\n\nProvide the `bookingId` from the flight booking confirmation.\n\nOn a ticketed booking (status `CONFIRMED`) `groups` lists only what can be sold after ticketing (provider-dependent, usually baggage) and only when `canAddServicesAfterTicketing` is true; buy them with `POST /flights/bookings/{bookingId}/services` and `/services/confirm`.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The unique booking identifier"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     },
+     "forceRefresh": {
+      "type": "boolean",
+      "description": "Bypass the provider's 15-minute services cache"
+     },
+     "includeServicesHistory": {
+      "type": "boolean",
+      "description": "Include non-confirmed bookedServices rows (pending, requested, failed, replaced, dropped). By default only confirmed rows are returned."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_prebooks_prebookid",
+   "title": "Get locked hotel rate",
+   "description": "Retrieve a hotel prebook by its `prebookId`: final price, cancellation terms, room details and the `checkoutUrl` (`https://book.maqami.co/booking?prebookId=...`). Bookings are paid and confirmed only on MAQAMI's website, through the `checkoutUrl`.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "prebookId": {
+      "type": "string",
+      "description": "(Required) The unique identifier of the prebook session."
+     }
+    },
+    "required": [
+     "prebookId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "listBookings",
+   "title": "Find bookings by email and last name",
+   "description": "Find a customer's hotel bookings by the email address and last name used to book.\n\nBoth must match the booking holder; nothing is returned otherwise. Returns each booking with its `bookingId`, status, hotel, dates, guests, price and cancellation policy.\n\nTo look up, change or cancel one booking, use its `bookingId` with the same `email` in the booking tools.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the bookings."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name."
+     }
+    },
+    "required": [
+     "email",
+     "lastName"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_bookings_bookingid_alternative_prebooks",
+   "title": "Find alternative hotel rates",
+   "description": "## Overview\n\n**Hard Amendment** — Search for alternative rates at the same hotel and create prebook sessions for a confirmed booking. Used when the guest needs to change their check-in/check-out dates or room occupancy.\n\n## When to Use\n\n- **Date changes** — Guest needs different check-in or check-out dates\n- **Occupancy changes** — Guest needs a different number of adults or children\n- **Hard amendments** — Situations where the booking must be cancelled and re-booked with new parameters\n\n## How It Works\n\n1. The system searches for live availability at the same hotel with the new parameters.\n2. Up to `maxPrebooks` alternative rates are selected (sorted by price ascending). Defaults to 3 when omitted; capped at 10 (any larger value is silently clamped to 10).\n3. A prebook session is created for each rate.\n4. The caller receives a list of `prebookId` values with prices to show the guest.\n\n## What You Get\n\n- **Up to `maxPrebooks` prebook sessions** — Each with a `prebookId`, final pricing, cancellation policies, and room details\n- **Price comparison** — `priceDifferencePercent` shows how each alternative compares to the **original booking's selling price** (negative = cheaper than what the guest paid, positive = more expensive)\n- **Policy change flags** — `cancellationChanged` and `boardChanged` highlight any policy differences\n\n## Key Notes\n\n- The booking must be in **CONFIRMED** status.\n- If the original booking is non-refundable, only non-refundable alternatives are returned (unless overridden with `refundableRatesOnly`).\n- The nationality and currency of the original booking are used for the availability search.\n\n## Quick Start\n\n1. Call this endpoint with the `bookingId` and new `occupancies`/dates — get back up to `maxPrebooks` `prebookId` values.\n\n**On this server**: rebooking is not available, so use this only to show the guest alternative prices. To change a booking, cancel it if its policy allows and make a new booking, or contact MAQAMI support.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "(Required) The unique identifier of the confirmed booking to amend."
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     },
+     "occupancies": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "adults": {
+         "type": "integer",
+         "description": "Number of adults for this room."
+        },
+        "children": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         },
+         "description": "Ages of children for this room (empty array if no children)."
+        }
+       },
+       "required": [
+        "adults"
+       ],
+       "additionalProperties": false
+      },
+      "description": "The desired room occupancies for the amended stay. One entry per room."
+     },
+     "checkin": {
+      "type": "string",
+      "description": "The new check-in date in YYYY-MM-DD format. Must be before `checkout`."
+     },
+     "checkout": {
+      "type": "string",
+      "description": "The new check-out date in YYYY-MM-DD format. Must be after `checkin`."
+     },
+     "refundableRatesOnly": {
+      "type": "boolean",
+      "description": "When true, only fully refundable alternative rates are returned. Defaults to false (or true if the original booking was refundable)."
+     },
+     "boardType": {
+      "type": "string",
+      "description": "Filter results by board/meal-plan type (e.g. `RO` for Room Only, `BB` for Bed & Breakfast). Leave empty to return all board types."
+     },
+     "maxPrebooks": {
+      "type": "integer",
+      "description": "Maximum number of alternative prebook sessions to create. Defaults to 3 when omitted. Values above 10 are silently capped at 10; values ≤ 0 fall back to the default. The response may contain fewer entries when the hotel does not have enough distinct alternative offers."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email",
+     "occupancies"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_data_hotel_highlights",
+   "title": "Get hotel highlights",
+   "description": "## Overview\n\nGenerate short, AI-written \"Smart Highlight\" cards for a hotel. Each highlight is a title plus a one or two sentence description, generated directly in the requested language.\n\n**Pricing**: $0.02 per request\n\n**Rate Limiting**: This endpoint is rate-limited to **10 requests per minute**. Exceeding this limit will result in a `429 Too Many Requests` response.\n\n## When to Use\n\n- **Hotel detail pages** - Show a few compelling reasons to consider a property\n- **Partner-specific tone** - Adjust voice and emphasis per surface via `tone`, `style` and per-highlight `context`\n\n## What You Get\n\n- Exactly `count` highlights, always, in the requested order\n- `type` echoed back from the request so you can map each card to your own UI\n- `generated` indicating whether the copy is AI-generated or template fallback\n\n## Behaviour\n\nHotel facts are resolved server-side from `hotelId`; the caller never supplies them. The model sees the name, city, country, street address, parking, and description, plus a sample of facilities, rooms, policies, and nearby places (with a server-computed distance phrase: on the property, short walk, short drive, or longer drive; farther places are omitted), guest sentiment strengths when stored (not drawbacks), and classification (star rating, hotel type, chain). Generated copy is grounded in those facts. Straight apostrophes in titles and descriptions are normalized to typographic apostrophes. Enterprise API keys also omit wifi and the phrase modern amenities from the facts and from the copy, and they omit review-style wording such as guests say. Other API keys still return wifi and connectivity copy when the request asks for it. When `tone` or `style` specify length or format, those rules override the default title and description lengths.\n\nIf AI generation fails, the endpoint still returns `200` with the requested number of neutral template highlights and `generated: false`. It never returns an empty array for a valid hotel.\n\nResults are cached, so repeated calls with an identical request body return identical copy.\n\n`tone` and `style` are truncated to 200 characters (5,000 for enterprise accounts). Each highlight `context` is truncated to 300 characters (10,000 for enterprise accounts).",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelId": {
+      "type": "string",
+      "description": "Unique ID of the hotel (MAQAMI format)"
+     },
+     "language": {
+      "type": "string",
+      "description": "Language code. Highlights are generated directly in this language."
+     },
+     "count": {
+      "type": "integer",
+      "description": "Number of highlights to generate. If `highlights` is supplied, `count` must equal its length."
+     },
+     "tone": {
+      "type": "string",
+      "description": "Global writing guidance, e.g. `professional and inviting` or `calm and practical`. Truncated to 200 characters (5,000 for enterprise accounts)."
+     },
+     "style": {
+      "type": "string",
+      "description": "Formatting preferences such as title or description length. When supplied, these rules override the default title (2-4 words) and description (~180 characters) lengths. Truncated to 200 characters (5,000 for enterprise accounts)."
+     },
+     "highlights": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string",
+         "description": "Partner-defined category label, echoed back in the response."
+        },
+        "context": {
+         "type": "string",
+         "description": "Free-text guidance describing what this highlight should emphasise. Treated as topic guidance only; claims not supported by the hotel's data will not be invented. Truncated to 300 characters (10,000 for enterprise accounts)."
+        }
+       },
+       "additionalProperties": false
+      },
+      "description": "Per-highlight guidance. Omit for generic generation. When supplied, its length must equal `count` and the response preserves this order."
+     }
+    },
+    "required": [
+     "hotelId",
+     "language"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_flights_bookings_bookingid_cancellations",
+   "title": "Cancel flight booking",
+   "description": "Cancel a confirmed flight booking. First show the customer the refund estimate from `get_flights_bookings_bookingid_cancellations` and wait for a clear yes.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The flight booking identifier to cancel"
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address used to make the booking. The server checks it against the booking before returning or changing anything."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_flights_rates",
+   "title": "Search flights",
+   "description": "## Overview\n\nSearch for available flights with real-time pricing from multiple providers. The itinerary **must** be sent as a non-empty `legs` array. Each leg follows the provider **SearchLeg** shape: required `origin`, `destination`, and `date` (YYYY-MM-DD); optional `direction` (`OUTBOUND` or `INBOUND`); optional per-leg `filters` that override global `filters` for that leg only.\n\n**Not supported:** top-level `origin`, `destination`, `departureDate`, or `returnDate` — use `legs` only.\n\n## When to Use\n\n- **Listings** — live prices for search results UI\n- **One-way, round-trip, or multi-city** — one leg per segment, in order\n- **Filtering** — cabin class, stops, price, refundability, times (globally or per leg)\n\n## What You Get\n\n- Offers from multiple providers\n- Itineraries with segments, layovers, and durations\n- Price breakdown (fares, taxes, fees) and baggage hints\n\n## Key Features\n\n- Multi-provider aggregation in one request\n- Global `filters`, `sort`\n\n## Quick Start\n\n**Required:** `legs` (at least one object with `origin`, `destination`, `date`), `adults` (≥ 1), `currency`\n\n**Date limit:** each leg `date` must not be more than 11 months from today.\n\n**Round-trip:** two legs (e.g. outbound then return with `direction` `OUTBOUND` / `INBOUND`). **One-way:** one leg.\n\n## Booking\n\nThe response includes `searchUrl`, the same search on book.maqami.co. Flights are booked and paid only on MAQAMI's website: `post_flights_verify` re-prices the chosen offer and returns its `checkoutUrl`.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "legs": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "origin": {
+         "type": "string",
+         "description": "Origin airport or city IATA code for this leg"
+        },
+        "destination": {
+         "type": "string",
+         "description": "Destination airport or city IATA code for this leg"
+        },
+        "date": {
+         "type": "string",
+         "description": "Departure date for this leg (YYYY-MM-DD). Must not be more than 11 months from today."
+        },
+        "direction": {
+         "type": "string",
+         "enum": [
+          "OUTBOUND",
+          "INBOUND"
+         ]
+        },
+        "filters": {
+         "type": "object",
+         "properties": {
+          "departureTimeAfter": {
+           "type": "string",
+           "description": "Departure after this local time (HH:MM, 24h)"
+          },
+          "departureTimeBefore": {
+           "type": "string",
+           "description": "Departure before this local time (HH:MM, 24h)"
+          },
+          "arrivalTimeAfter": {
+           "type": "string",
+           "description": "Arrival after this local time (HH:MM, 24h)"
+          },
+          "arrivalTimeBefore": {
+           "type": "string",
+           "description": "Arrival before this local time (HH:MM, 24h)"
+          },
+          "excludeConnectionAirports": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           },
+           "description": "Exclude layovers at these airports (e.g. IST, DOH)"
+          },
+          "excludeAirlines": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           },
+           "description": "Exclude airlines on this leg only (2-character IATA airline codes, case-insensitive): a journey is removed when a flight on this leg is marketed or operated by one of them. Replaces the top-level filters.excludeAirlines on this leg; airlines excluded on your account are always excluded."
+          },
+          "excludeOvernight": {
+           "type": "boolean",
+           "description": "Exclude red-eye flights and overnight layovers"
+          },
+          "flightNumbers": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           },
+           "description": "Filter by flight numbers (e.g. SK500, AF123)"
+          },
+          "flightNumbersMatch": {
+           "type": "string",
+           "enum": [
+            "any",
+            "all"
+           ]
+          },
+          "maxDuration": {
+           "type": "integer",
+           "description": "Max leg duration in minutes"
+          },
+          "maxStops": {
+           "type": "integer",
+           "description": "Max stops for this leg. Counts connections between segments and en-route technical stops inside a segment (segments[].stopCount); 0 = genuinely non-stop."
+          }
+         },
+         "additionalProperties": false,
+         "description": "Optional per-leg filters overriding global `filters` for this leg"
+        }
+       },
+       "required": [
+        "origin",
+        "destination",
+        "date"
+       ],
+       "additionalProperties": false
+      },
+      "description": "Ordered itinerary legs (provider SearchLeg). One-way: one entry. Round-trip: outbound then inbound. Multi-city / open-jaw: additional legs in travel order."
+     },
+     "adults": {
+      "type": "integer",
+      "description": "Number of adults (12+)"
+     },
+     "children": {
+      "type": "integer",
+      "description": "Number of children (2-11)"
+     },
+     "infants": {
+      "type": "integer",
+      "description": "Number of infants (<2)"
+     },
+     "childrenAges": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      },
+      "description": "Age of each child (2–11 inclusive, per IATA). Length must equal children count. Optional — omit if ages are not relevant."
+     },
+     "infantAges": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      },
+      "description": "Age of each infant (under 2, per IATA). Length must equal infants count. Optional — omit if ages are not relevant."
+     },
+     "cabinClass": {
+      "type": "string",
+      "enum": [
+       "ECONOMY",
+       "PREMIUM_ECONOMY",
+       "BUSINESS",
+       "FIRST"
+      ],
+      "description": "Cabin class (provider SearchFilters codes only). Same enum as filters.cabinClass."
+     },
+     "currency": {
+      "type": "string",
+      "description": "ISO 4217 currency code"
+     },
+     "country": {
+      "type": "string",
+      "description": "Optional ISO 3166-1 alpha-2 country code for point of sale"
+     },
+     "filters": {
+      "type": "object",
+      "properties": {
+       "arrivalTimeBefore": {
+        "type": "string",
+        "description": "Filter journeys arriving before this time (HH:MM, 24h)"
+       },
+       "cabinClass": {
+        "type": "string",
+        "enum": [
+         "ECONOMY",
+         "PREMIUM_ECONOMY",
+         "BUSINESS",
+         "FIRST",
+         "Economy",
+         "Business",
+         "First"
+        ]
+       },
+       "cabinClassMatch": {
+        "type": "string",
+        "enum": [
+         "exactly",
+         "at_least"
+        ]
+       },
+       "changeableOnly": {
+        "type": "boolean",
+        "description": "When true, only show offers with changeable (modifiable) fares"
+       },
+       "departureTimeBefore": {
+        "type": "string",
+        "description": "Filter journeys departing before this time (HH:MM, 24h)"
+       },
+       "excludeConnectionAirports": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Exclude layovers at these airports (e.g. IST, DOH)"
+       },
+       "excludeAirlines": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Exclude airlines (2-character IATA airline codes, case-insensitive): a journey is removed when any of its flights is marketed or operated by one of them (codeshares included), and an offer is removed when one of them is its validating (ticketing) carrier. A leg's own filters.excludeAirlines replaces this list on that leg. Airlines excluded on your account are always excluded in addition to this list."
+       },
+       "excludeOvernight": {
+        "type": "boolean",
+        "description": "Exclude red-eye flights and overnight layovers"
+       },
+       "flightNumbers": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Filter by flight numbers (e.g. SK500, AF123)"
+       },
+       "flightNumbersMatch": {
+        "type": "string",
+        "enum": [
+         "any",
+         "all"
+        ]
+       },
+       "includesCarryOnBag": {
+        "type": "boolean",
+        "description": "Only show offers with carry-on included"
+       },
+       "includesCheckedBag": {
+        "type": "boolean",
+        "description": "Only show offers with checked bag included"
+       },
+       "legDurations": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "direction": {
+           "type": "string",
+           "enum": [
+            "OUTBOUND",
+            "INBOUND"
+           ]
+          },
+          "maxMinutes": {
+           "type": "integer",
+           "description": "Maximum leg duration in minutes (inclusive)"
+          }
+         },
+         "required": [
+          "direction",
+          "maxMinutes"
+         ],
+         "additionalProperties": false
+        },
+        "description": "Per-leg max duration constraints. Each entry limits one direction (OUTBOUND or INBOUND) independently."
+       },
+       "maxDuration": {
+        "type": "integer",
+        "description": "Maximum total journey duration in minutes (inclusive). Journeys exceeding this duration are excluded."
+       },
+       "maxPrice": {
+        "type": "number",
+        "description": "Maximum total price (offer total, in search currency)"
+       },
+       "minPrice": {
+        "type": "number",
+        "description": "Minimum total price (offer total, in search currency)"
+       },
+       "maxStops": {
+        "type": "integer",
+        "description": "Maximum number of stops: -1 or omit = any, 0 = genuinely non-stop, 1 = 1 or fewer, 2 = 2 or fewer. Stops include both connections between segments and en-route technical stops inside a segment (segments[].stopCount), so a single flight number with a technical landing is excluded by maxStops: 0."
+       },
+       "refundableOnly": {
+        "type": "boolean",
+        "description": "When true, only show offers with refundable fares"
+       },
+       "showCheapestOfferOnly": {
+        "type": "boolean",
+        "description": "Return only cheapest offer per journey"
+       }
+      },
+      "additionalProperties": false,
+      "description": "Optional filters to refine search results"
+     },
+     "sort": {
+      "type": "object",
+      "properties": {
+       "sortBy": {
+        "type": "string",
+        "enum": [
+         "price",
+         "duration",
+         "departure",
+         "arrival",
+         "stops"
+        ]
+       },
+       "sortOrder": {
+        "type": "string",
+        "enum": [
+         "asc",
+         "desc"
+        ]
+       }
+      },
+      "additionalProperties": false,
+      "description": "Sort options for results"
+     }
+    },
+    "required": [
+     "legs",
+     "adults",
+     "currency"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_flights_verify",
+   "title": "Confirm flight price and get checkout link",
+   "description": "## Overview\n\nConfirm a flight offer is still available and retrieve the latest pricing before proceeding to booking. Returns the checkout link for the verified offer.\n\n## When to Use\n\n- **Pre-booking validation** - Confirm offer availability after user selects a flight\n- **Price confirmation** - Show users the guaranteed price\n- **Fare rule retrieval** - Get the latest cancellation and change policies\n\n## What You Get\n\n- **Verified pricing** with up-to-date fare breakdown\n- **`changes`** (when present) — cabin/fare flags, human-readable `messages`, and **`pricing`** (`old` / `new` full OfferPricing) instead of deprecated scalar currency/prices\n- **Journey `pricing`** — `original` (provider/PCC) and `display` (customer) price breakdown per provider FlattenedJourney\n- **Fare family details** including name and included amenities\n- **Baggage policy** for each passenger type and segment\n- **Booking terms** including cancellation and change fee rules\n\n## Key Features\n\n- **Real-time price check**: Confirms current availability and price with the provider\n- **Updated baggage info**: Returns the latest baggage allowances at time of verification\n- **Fare rules**: Includes cancellation and change fee policies before commitment\n\n## Quick Start\n\nProvide the `offerId` from `post_flights_rates` search results. The verified offer data gives the customer a booking summary.\n\n## Booking\n\nThe response includes `checkoutUrl` (`https://book.maqami.co/flights/booking?offerId=...`). Flights are booked and paid only on MAQAMI's website: the `checkoutUrl` opens checkout for this fare, where the customer enters passenger details, pays securely and receives the confirmation. This tool takes no card or passport details.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offerId": {
+      "type": "string",
+      "description": "The offerId from the search results"
+     }
+    },
+    "required": [
+     "offerId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_hotels_min_rates",
+   "title": "Get lowest hotel prices",
+   "description": "## Overview\n\nGet the cheapest available rate for each hotel in your list. Perfect for displaying price comparisons without loading full rate details.\n\n## When to Use\n\n- **Show price ranges** on hotel listing pages\n- **Quick price comparisons** across multiple hotels\n- **Optimize performance** when you only need the lowest price, not all rate options\n- **Build price filters** or sorting by price\n\n## What You Get\n\n- **Minimum rate per hotel** - the cheapest available room option\n- **Basic rate information** - price, currency, and availability\n- **Fast response** - optimized for quick price lookups\n\n## Key Features\n\n- **Lightweight** - Returns only the minimum rate, not all options\n- **Same parameters** as the main rates endpoint for consistency\n- **Perfect for listings** - Ideal when displaying multiple hotels where users just need to see starting prices\n\n## Quick Start\n\nProvide a list of hotel IDs, dates, and guest occupancy. The endpoint returns the cheapest rate available for each hotel.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelIds": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "List of hotel IDs"
+     },
+     "occupancies": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "adults": {
+         "type": "integer",
+         "description": "Number of adults in each selected room"
+        },
+        "children": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         },
+         "description": "The ages of children of each selected room"
+        }
+       },
+       "required": [
+        "adults"
+       ],
+       "additionalProperties": false
+      }
+     },
+     "checkin": {
+      "type": "string",
+      "description": "Check in date in YYYY-MM-DD (ISO 8601) format"
+     },
+     "checkout": {
+      "type": "string",
+      "description": "Check out date in YYYY-MM-DD (ISO 8601) format"
+     },
+     "currency": {
+      "type": "string",
+      "description": "Booking currency"
+     },
+     "guestNationality": {
+      "type": "string",
+      "description": "Guest nationality (ISO 2-code)"
+     },
+     "timeout": {
+      "type": "number",
+      "description": "Request timeout in seconds"
+     }
+    },
+    "required": [
+     "hotelIds",
+     "occupancies",
+     "checkin",
+     "checkout",
+     "currency",
+     "guestNationality"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_hotels_rates",
+   "title": "Search hotel rates",
+   "description": "## Overview\n\nSearch for hotel rates and availability across multiple hotels. This is your primary endpoint for finding bookable hotel rooms with real-time pricing.\n\n## When to Use\n\n- **Display hotel listings** with prices on your search results page\n- **Show detailed rate options** for specific hotels users are viewing\n- **Support multi-room bookings** for families or groups\n- **Filter hotels** by location, amenities, ratings, or AI-powered semantic search\n\n## What You Get\n\n- **Real-time rates** with availability and pricing\n- **Multiple room options** per hotel, sorted by price\n- **Complete booking details** including cancellation policies, meal plans, and room types\n- **Hotel information** (name, photos, address, ratings) when searching by filters\n\n## Key Features\n\n- **Multiple search methods**: Search by hotel IDs, city/country, coordinates, Place ID, IATA code, or natural language (AI search)\n- **Flexible filtering**: Filter by star rating, facilities, hotel chains, accessibility, and more\n- **Multi-room support**: Book multiple rooms with different guest configurations in one request\n- **Performance optimized**: Default limit of 200 hotels (expandable to 5,000), recommended timeout of 6-12 seconds\n- **Price consistency**: Optional `sessionId` ensures rates stay consistent across listing and detail searches within a user session\n\n## Quick Start\n\n**Required fields**: `checkin`, `checkout`, `currency`, `guestNationality`, `occupancies`, plus one location method (hotel IDs, city/country, coordinates, Place ID, or IATA code)\n\n**Tip**: When searching by filters (like `aiSearch` or `cityName`), hotel data is automatically included. For direct hotel ID searches, set `includeHotelData=true` to include hotel names and photos.\n\n**Price consistency**: Generate a unique `sessionId` per user search session and include it on every rates request in that session, using the same `checkin`, and `checkout`.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "hotelIds": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "An array of hotel IDs to search for availability and pricing. Get them from `get_data_hotels` or `get_data_hotel_search`."
+     },
+     "occupancies": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "adults": {
+         "type": "integer",
+         "description": "Number of adults in each selected room"
+        },
+        "children": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         },
+         "description": "The ages of children of each selected room"
+        }
+       },
+       "required": [
+        "adults"
+       ],
+       "additionalProperties": false
+      },
+      "description": "An array of objects specifying the number of guests per room. Required."
+     },
+     "currency": {
+      "type": "string",
+      "description": "The currency in which the prices will be displayed."
+     },
+     "guestNationality": {
+      "type": "string",
+      "description": "The guest's nationality in ISO 2-letter country code format."
+     },
+     "checkin": {
+      "type": "string",
+      "description": "The check-in date in YYYY-MM-DD format (ISO 8601)."
+     },
+     "checkout": {
+      "type": "string",
+      "description": "The check-out date in YYYY-MM-DD format (ISO 8601)."
+     },
+     "timeout": {
+      "type": "integer",
+      "description": "The maximum time in seconds before the request times out. This is when the live request for rates will cut off responses; it will take a few more ms to return the value."
+     },
+     "maxRatesPerHotel": {
+      "type": "integer",
+      "description": "The number of room rates to return per hotel, sorted by price (cheapest first). Set to 1 to just get the cheapest rate for each hotel, this is helpful for listing pages. Try increasing this if you are missing rate types, and be aware that the cap is applied before room mapping."
+     },
+     "boardType": {
+      "type": "string",
+      "description": "Filter results by board type(s). Can be a single value (e.g., 'BI') or comma-separated values (e.g., 'BI,HB') for OR logic. Example values: RO (Room Only), BI (Breakfast Included), HB (Half Board), FB (Full Board), AI (All Inclusive), DI (Dinner Included), LI (Lunch Included), BDI (Breakfast and Dinner Included), BLI (Breakfast and Lunch Included), LDI (Lunch and Dinner Included)."
+     },
+     "refundableRatesOnly": {
+      "type": "boolean",
+      "description": "If true, only refundable rates (RFN) will be included in the response."
+     },
+     "roomAmenities": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "description": "Legacy room-level amenity filter. Only rates from rooms that match the specified amenities will be returned. Use amenityFilterLogic to control flat AND/OR behavior. If roomAmenitiesFilter is provided, it takes precedence over this field."
+     },
+     "roomAmenitiesFilter": {
+      "type": "string",
+      "description": "Grouped room-level amenity filter. Use '-' for OR within a group and ',' for AND across groups. Example: '1-2,3-4' means (1 OR 2) AND (3 OR 4). If provided, this field takes precedence over roomAmenities and amenityFilterLogic."
+     },
+     "amenityFilterLogic": {
+      "type": "string",
+      "enum": [
+       "AND",
+       "OR"
+      ],
+      "description": "Legacy logic applied to roomAmenities. 'AND': room must have all specified amenities. 'OR': room must have at least one specified amenity. Ignored when roomAmenitiesFilter is provided."
+     },
+     "bedTypes": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Filter results by bed types extracted from room names. Only rates from rooms matching the specified bed types will be returned. Example values: 'double', 'twin', 'king', 'queen', 'single'."
+     },
+     "sort": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "field": {
+         "type": "string",
+         "enum": [
+          "top_picks",
+          "price",
+          "revenue"
+         ]
+        },
+        "direction": {
+         "type": "string",
+         "enum": [
+          "ascending",
+          "descending"
+         ]
+        }
+       },
+       "required": [
+        "field"
+       ],
+       "additionalProperties": false
+      },
+      "description": "Sorting criteria for the results. Multiple criteria can be provided, processed in order. The default sorting is by top picks (weighted by search popularity, review quality, and content completeness). Use 'revenue' to sort by historical booking value and monetary performance."
+     },
+     "roomMapping": {
+      "type": "boolean",
+      "description": "Enable room mapping to retrieve the mappedRoomId for each room. This allows you to link a rate to its specific room by combining it with hotel details, providing access to room images and additional information"
+     },
+     "hotelName": {
+      "type": "string",
+      "description": "A case-insensitive search for a hotel's name (e.g., 'Hilton')."
+     },
+     "countryCode": {
+      "type": "string",
+      "description": "The country code in ISO 2-letter format (e.g., 'SG' for Singapore). Instead of using hotel IDs, you can search by country/city. This is a valid main query."
+     },
+     "cityName": {
+      "type": "string",
+      "description": "The name of the city to search for hotels in. Pairs with countryCode to do a country/city search."
+     },
+     "latitude": {
+      "type": "number",
+      "description": "The latitude coordinate for location-based hotel searches.  Instead of using hotel IDs, you can search by lat/long and a radius around that spot. This is a valid main query."
+     },
+     "longitude": {
+      "type": "number",
+      "description": "The longitude coordinate for location-based hotel searches. Pairs with latitude to do a lat/long search."
+     },
+     "radius": {
+      "type": "integer",
+      "description": "The search radius in meters for location-based searches. Pairs with latitude to do a lat/long search."
+     },
+     "iataCode": {
+      "type": "string",
+      "description": "The IATA code of the search location, typically an airport code. Instead of using hotel IDs, you can search by IATA code. This is a valid main query."
+     },
+     "limit": {
+      "type": "integer",
+      "description": "The maximum number of results to return. Defaults to 200, max allowed is 5000."
+     },
+     "offset": {
+      "type": "integer",
+      "description": "The number of results to skip for pagination. This paginates the passed hotels not the results returned so the actual returned results will vary."
+     },
+     "aiSearch": {
+      "type": "string",
+      "description": "AI-powered hotel search based on a natural language query. Uses semantic search to find hotels matching the query intent. Examples: 'Romantic getaway with Italian vibes in London near the London Eye', 'hotels near Paris'. This is a valid main query."
+     },
+     "minReviewsCount": {
+      "type": "integer",
+      "description": "The minimum number of reviews a hotel must have to be included in results. This is a filter on top of the main query."
+     },
+     "minRating": {
+      "type": "number",
+      "description": "The minimum rating (on a scale of 0-5) required for hotels in search results. This is a filter on top of the main query."
+     },
+     "zip": {
+      "type": "string",
+      "description": "The zip code of the search location. This is a filter on top of the main query."
+     },
+     "placeId": {
+      "type": "string",
+      "description": "The unique Place ID of the search location. Instead of using hotel IDs, pass a Place ID to get all the hotels in the specified region. This is a valid main query."
+     },
+     "starRating": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "description": "An array of hotel star ratings to include. Ratings are rounded to the nearest half-star (e.g., [3.5, 4.0, 4.5, 5.0]). This is a filter on top of the main query."
+     },
+     "hotelTypeIds": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "description": "An array of hotel type IDs to filter the search results. This is a filter on top of the main query."
+     },
+     "chainIds": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "description": "An array of hotel chain IDs to filter the search results. This is a filter on top of the main query."
+     },
+     "facilities": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "description": "An array of facility IDs. Results will include hotels with at least one of these facilities by default. This is a filter on top of the main query."
+     },
+     "strictFacilityFiltering": {
+      "type": "boolean",
+      "description": "If enabled, only hotels with all specified facilities will be returned."
+     },
+     "stream": {
+      "type": "boolean",
+      "description": "If true, enables streaming mode where response data is sent incrementally instead of as a single payload."
+     },
+     "advancedAccessibilityOnly": {
+      "type": "boolean",
+      "description": "If true, only hotels with advanced accessibility features will be returned."
+     },
+     "feed": {
+      "type": "string",
+      "description": "Which rate feed to search. Leave unset to use the default feed."
+     },
+     "includeHotelData": {
+      "type": "boolean",
+      "description": "If `true`, includes hotel data (name, main photo, address, rating) in the response even when searching by direct hotel IDs. By default, hotel data is only included when searching by filters (e.g., using `aiSearch`, `countryCode`, `cityName`, etc.). Setting this to `true` enables hotel data inclusion for all search types."
+     },
+     "sessionId": {
+      "type": "string",
+      "description": "Optional client-generated session identifier that ensures price consistency for the user's search session. Pass the same `sessionId` with the same `checkin` and `checkout` across related requests in that session."
+     },
+     "loyaltyProgram": {
+      "type": "string",
+      "description": "Loyalty program identifier used to request loyalty-eligible rates from supported suppliers. When set, rates that support the program may return member pricing and benefits."
+     },
+     "loyaltyProgramDetails": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "membershipId": {
+         "type": "string",
+         "description": "The guest's membership ID for the loyalty program."
+        },
+        "programId": {
+         "type": "string",
+         "description": "The loyalty program identifier (e.g., 'HH' for Hilton Honors)."
+        }
+       },
+       "required": [
+        "membershipId",
+        "programId"
+       ],
+       "additionalProperties": false
+      },
+      "description": "Loyalty membership details forwarded to supported suppliers to unlock member rates and benefits. Provide one entry per loyalty program membership."
+     }
+    },
+    "required": [
+     "occupancies",
+     "currency",
+     "guestNationality",
+     "checkin",
+     "checkout"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "post_rates_prebook",
+   "title": "Lock hotel rate and get checkout link",
+   "description": "## Overview\n\nLocks the chosen hotel rate and returns the final price, cancellation terms and a checkout link on MAQAMI's website.\n\n## When to Use\n\nWhen the customer has chosen a hotel, room, dates and guests and reviewed the price and cancellation terms.\n\n## Quick Start\n\nPass the `offerId` from `post_hotels_rates` exactly as it was returned.\n\n## What You Get\n\n- **prebookId** - The locked rate\n- **Final price and cancellation terms** - For the customer to review\n- **checkoutUrl** - `https://book.maqami.co/booking?prebookId=...`\n\n## Payment\n\nBookings are paid and confirmed only on MAQAMI's website. The `checkoutUrl` opens checkout for this exact rate, where the customer enters guest details, pays securely and receives the confirmation. This tool takes no payment details and does not confirm the booking.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "timeout": {
+      "type": "integer"
+     },
+     "offerId": {
+      "type": "string",
+      "description": "The offerId from post_hotels_rates on this server, passed exactly as returned."
+     },
+     "voucherCode": {
+      "type": "string",
+      "description": "An optional voucher code to apply discounts to the booking. The vouchers API allows creation of these discounts"
+     },
+     "bedTypeIds": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      },
+      "description": "An optional array of bed type IDs to specify preferred bed configurations for the rooms being booked. The availability of specific bed types depends on the hotel's inventory."
+     }
+    },
+    "required": [
+     "offerId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "put_bookings_bookingid_amend",
+   "title": "Amend hotel booking",
+   "description": "Correct the booking holder's name, email or phone on a confirmed hotel booking, for example to fix a typo.\n\nIt does not change dates, rooms or guests. To show the customer prices for other dates or guests, use `post_bookings_bookingid_alternative_prebooks`.\n\nPass the `bookingId`, the `email` currently on the booking and the corrected `holder` (`firstName`, `lastName`, `email`, optional `phone`). Confirm the new details with the customer before calling.\n\nRequires the `bookingId` and the `email` used to book: the server only returns or changes a booking when they match.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "bookingId": {
+      "type": "string",
+      "description": "The booking ID from the booking confirmation."
+     },
+     "email": {
+      "type": "string",
+      "description": "The email address currently on the booking, used to verify the customer. A new email goes in holder.email."
+     },
+     "lastName": {
+      "type": "string",
+      "description": "The booking holder's last name, if the customer gives it. Optional."
+     },
+     "holder": {
+      "type": "object",
+      "description": "The corrected booking holder. Send firstName, lastName and email even if only one of them changes.",
+      "properties": {
+       "firstName": {
+        "type": "string",
+        "description": "The holder's first name."
+       },
+       "lastName": {
+        "type": "string",
+        "description": "The holder's last name."
+       },
+       "email": {
+        "type": "string",
+        "description": "The holder's email address."
+       },
+       "phone": {
+        "type": "string",
+        "description": "The holder's phone number."
+       }
+      },
+      "required": [
+       "firstName",
+       "lastName",
+       "email"
+      ],
+      "additionalProperties": false
+     },
+     "remarks": {
+      "type": "string",
+      "description": "Optional note for the amendment."
+     }
+    },
+    "required": [
+     "bookingId",
+     "email",
+     "holder"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

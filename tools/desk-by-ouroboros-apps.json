@@ -1,0 +1,596 @@
+{
+ "server": "Desk by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "create_support_desk",
+   "title": "create support desk",
+   "description": "Create a support desk when the user asks for a new policy home. Does not approve answers, refunds, features, or timelines.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 4000
+     }
+    },
+    "required": [
+     "name"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "evaluate_commitment",
+   "title": "evaluate commitment",
+   "description": "Decide whether a proposed refund, feature, or timeline is in the approved set. REFUSED means do not say it, do not invent a substitute, and draft for human review instead of promising the customer. APPROVED means sayOnly is the only permitted wording. Pass channel to also enforce the escalation limit.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "REFUND",
+       "FEATURE",
+       "TIMELINE"
+      ]
+     },
+     "proposal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     },
+     "channel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     }
+    },
+    "required": [
+     "deskId",
+     "kind",
+     "proposal"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "evaluate_escalation",
+   "title": "evaluate escalation",
+   "description": "Decide whether this channel may escalate or may promise a refund, feature, or timeline. REFUSED means do not escalate, do not invent a tier, and draft for human review instead of promising the customer. Permission to promise still requires evaluate_commitment for the exact wording.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "channel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     },
+     "action": {
+      "type": "string",
+      "enum": [
+       "PROMISE_REFUND",
+       "PROMISE_FEATURE",
+       "PROMISE_TIMELINE",
+       "ESCALATE"
+      ]
+     },
+     "targetTier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     }
+    },
+    "required": [
+     "deskId",
+     "channel",
+     "action"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_desk_context",
+   "title": "get desk context",
+   "description": "Retrieve selected approved answers for a customer question, plus the desk's approved refund rules, commitments, and escalation limits. This is evidence, not permission. A missing or RETIRED answer is not an invitation to invent one. Call evaluate_commitment before promising a refund, feature, or timeline. If tools fail or return gaps or REFUSED, draft for human review instead of promising the customer.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "question": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 8
+     }
+    },
+    "required": [
+     "deskId",
+     "question"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_approved_commitments",
+   "title": "list approved commitments",
+   "description": "Read approved feature and timeline statements. Listing them does not approve a different promise. Call evaluate_commitment with the exact wording before saying one.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "FEATURE",
+       "TIMELINE"
+      ]
+     },
+     "includeRetired": {
+      "type": "boolean",
+      "default": false
+     }
+    },
+    "required": [
+     "deskId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_escalation_limits",
+   "title": "list escalation limits",
+   "description": "Read escalation limits. A channel with no APPROVED limit cannot promise a refund, feature, or timeline and cannot be given an invented escalation path.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "includeRetired": {
+      "type": "boolean",
+      "default": false
+     }
+    },
+    "required": [
+     "deskId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_refund_rules",
+   "title": "list refund rules",
+   "description": "Read refund rules on a desk. Only APPROVED rules can authorize wording, and only through evaluate_commitment. Do not treat this list as permission to invent a refund.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "includeRetired": {
+      "type": "boolean",
+      "default": false
+     }
+    },
+    "required": [
+     "deskId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_support_desks",
+   "title": "list support desks",
+   "description": "List this team's support desks. Use the returned id. Do not guess a desk.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "default": 0
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_approved_answer",
+   "title": "save approved answer",
+   "description": "Store or revise an answer the user has explicitly approved. Identical retries keep the same revision. A changed answer requires expectedRevision from a previous read.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "topic": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "question": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     },
+     "answer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8000
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "APPROVED",
+       "RETIRED"
+      ],
+      "default": "APPROVED"
+     },
+     "expectedRevision": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+     }
+    },
+    "required": [
+     "deskId",
+     "topic",
+     "question",
+     "answer"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_approved_commitment",
+   "title": "save approved commitment",
+   "description": "Store a feature or timeline statement the user has explicitly approved. The statement is the only wording that can later pass evaluate_commitment. Do not save a date or a feature the user did not approve.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "FEATURE",
+       "TIMELINE"
+      ]
+     },
+     "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "APPROVED",
+       "RETIRED"
+      ],
+      "default": "APPROVED"
+     },
+     "expectedRevision": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+     }
+    },
+    "required": [
+     "deskId",
+     "kind",
+     "name",
+     "statement"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_escalation_limit",
+   "title": "save escalation limit",
+   "description": "Store the escalation limit the user has explicitly approved for one channel. maxTier must be on tierLadder. Promise flags default closed unless the user sets them true. A limit does not itself approve refund, feature, or timeline wording.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "channel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     },
+     "tierLadder": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 80
+      },
+      "minItems": 1,
+      "maxItems": 8
+     },
+     "maxTier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     },
+     "allowRefundPromise": {
+      "type": "boolean",
+      "default": false
+     },
+     "allowFeaturePromise": {
+      "type": "boolean",
+      "default": false
+     },
+     "allowTimelinePromise": {
+      "type": "boolean",
+      "default": false
+     },
+     "notes": {
+      "type": "string",
+      "maxLength": 4000
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "APPROVED",
+       "RETIRED"
+      ],
+      "default": "APPROVED"
+     },
+     "expectedRevision": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+     }
+    },
+    "required": [
+     "deskId",
+     "name",
+     "channel",
+     "tierLadder",
+     "maxTier"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_refund_rule",
+   "title": "save refund rule",
+   "description": "Store a refund rule the user has explicitly approved. matchTerms must name a specific situation. The word refund alone is not a rule. remedy is the only wording that may later be approved. decision ALLOW grants that wording. decision DENY refuses a refund and records the denial script.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "matchTerms": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 120
+      },
+      "minItems": 1,
+      "maxItems": 12
+     },
+     "decision": {
+      "type": "string",
+      "enum": [
+       "ALLOW",
+       "DENY"
+      ]
+     },
+     "remedy": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+     },
+     "windowDays": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3650
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "APPROVED",
+       "RETIRED"
+      ],
+      "default": "APPROVED"
+     },
+     "expectedRevision": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+     }
+    },
+    "required": [
+     "deskId",
+     "name",
+     "matchTerms",
+     "decision",
+     "remedy"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "search_approved_answers",
+   "title": "search approved answers",
+   "description": "Look up approved answers by topic, question, or answer text. An empty result means there is no approved answer. Draft for human review; do not invent one or promise the customer. Page with offset.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "deskId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "query": {
+      "type": "string",
+      "maxLength": 200,
+      "default": ""
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "default": 0
+     },
+     "includeRetired": {
+      "type": "boolean",
+      "default": false
+     }
+    },
+    "required": [
+     "deskId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ]
+}

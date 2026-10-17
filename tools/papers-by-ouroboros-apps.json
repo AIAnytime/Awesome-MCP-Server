@@ -1,0 +1,172 @@
+{
+ "server": "Papers by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "find_related_papers",
+   "title": "Find related papers",
+   "description": "List papers that cite a work (relation cited_by) or papers that work cites (relation references). Every row is an API hit. An empty list means the API returned none, not that none exist.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "identifier": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 300
+     },
+     "relation": {
+      "type": "string",
+      "enum": [
+       "cited_by",
+       "references"
+      ]
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+     }
+    },
+    "required": [
+     "identifier",
+     "relation"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "format_citation",
+   "title": "Format citation",
+   "description": "Format a real paper in APA, MLA, Chicago author-date, or BibTeX using metadata fetched for the identifier. Titles are kept as the source provided them. Author particles may need a human check because display names are split mechanically. If the paper cannot be resolved, do not hand-write a citation.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "identifier": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 300
+     },
+     "style": {
+      "type": "string",
+      "enum": [
+       "apa",
+       "mla",
+       "chicago",
+       "bibtex"
+      ]
+     }
+    },
+    "required": [
+     "identifier",
+     "style"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_paper",
+   "title": "Get paper",
+   "description": "Fetch one paper's title, authors, year, venue, and abstract by DOI, PMID, arXiv id, or OpenAlex work id. Metadata comes from the API that resolved the identifier. If no source returns a record, say so. Do not guess the abstract.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "identifier": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 300,
+      "description": "DOI, PMID, arXiv id, or OpenAlex work id"
+     }
+    },
+    "required": [
+     "identifier"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "search_papers",
+   "title": "Search papers",
+   "description": "Search peer-reviewed and preprint records by question or keywords. Filters: year_from, year_to, field, open_access, and source (openalex, semantic_scholar, pubmed, crossref, arxiv, or all). Returns only works those APIs returned, each with a source link and an identifier. An empty list means the APIs returned nothing. Do not invent papers to fill a gap.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 400,
+      "description": "Question or keywords"
+     },
+     "year_from": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+     },
+     "year_to": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+     },
+     "field": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 80,
+      "description": "Subject area, such as Medicine or Computer Science"
+     },
+     "open_access": {
+      "type": "boolean"
+     },
+     "source": {
+      "type": "string",
+      "enum": [
+       "openalex",
+       "semantic_scholar",
+       "pubmed",
+       "crossref",
+       "arxiv",
+       "all"
+      ],
+      "description": "Index to search. Defaults to all, which mixes sources."
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "description": "Maximum papers to return. Defaults to 8."
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

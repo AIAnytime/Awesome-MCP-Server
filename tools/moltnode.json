@@ -1,0 +1,369 @@
+{
+ "server": "MoltNode by Chord",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "chord_find_token",
+   "title": "Find a token (Chord)",
+   "description": "Find a token by symbol, name or address on a chain Chord trades on (base, ethereum, monad, bnb, avalanche, arbitrum, robinhood, arc). Returns addresses, decimals and whether the token is verified; similar tickers are common, so compare addresses.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "enum": [
+       "base",
+       "ethereum",
+       "monad",
+       "bnb",
+       "avalanche",
+       "arbitrum",
+       "robinhood",
+       "arc"
+      ],
+      "description": "Chord chain key."
+     },
+     "query": {
+      "type": "string",
+      "description": "Symbol, name or 0x address."
+     }
+    },
+    "required": [
+     "chain",
+     "query"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "chord_swap_quote",
+   "title": "Swap quote and unsigned transaction (Chord)",
+   "description": "Best swap route from Chord (getchord.xyz) across the DEXs of the chain, with the UNSIGNED transaction to sign, the ERC-20 approval it needs (as a ready transaction) and a simulation run from the taker wallet. Amounts are integer strings in the token's smallest unit; the zero address is the native coin. Nothing is sent: sign with your own key, then send_raw_transaction.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "enum": [
+       "base",
+       "ethereum",
+       "monad",
+       "bnb",
+       "avalanche",
+       "arbitrum",
+       "robinhood",
+       "arc"
+      ],
+      "description": "Chord chain key."
+     },
+     "tokenIn": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]{40}$",
+      "description": "Token sold (zero address = native coin)."
+     },
+     "tokenOut": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]{40}$",
+      "description": "Token bought (zero address = native coin)."
+     },
+     "amount": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "description": "Amount of tokenIn in its smallest unit, e.g. '10000000' = 10 USDC."
+     },
+     "taker": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]{40}$",
+      "description": "The wallet that will sign. With it the answer carries tx + approval + a simulation from that wallet."
+     },
+     "slippageBps": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5000,
+      "description": "Slippage in basis points (default 50)."
+     }
+    },
+    "required": [
+     "chain",
+     "tokenIn",
+     "tokenOut",
+     "amount"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_balance",
+   "title": "Native balance",
+   "description": "The native-coin balance of an address on an EVM chain, in wei and in whole coins.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "enum": [
+       "monad",
+       "ethereum",
+       "base",
+       "arbitrum",
+       "optimism",
+       "polygon",
+       "bnb",
+       "avalanche",
+       "hyperevm",
+       "berachain",
+       "abstract",
+       "sei",
+       "sonic",
+       "mantle",
+       "taiko",
+       "zksync",
+       "zetachain",
+       "opbnb",
+       "bob",
+       "edge",
+       "stable",
+       "katana",
+       "morph",
+       "swell",
+       "0g",
+       "tac",
+       "xlayer",
+       "gnosis",
+       "fantom"
+      ],
+      "description": "EVM chain slug."
+     },
+     "address": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]{40}$",
+      "description": "Account address."
+     }
+    },
+    "required": [
+     "chain",
+     "address"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_block_number",
+   "title": "Latest block number",
+   "description": "The latest block number of an EVM chain, as a decimal integer.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "enum": [
+       "monad",
+       "ethereum",
+       "base",
+       "arbitrum",
+       "optimism",
+       "polygon",
+       "bnb",
+       "avalanche",
+       "hyperevm",
+       "berachain",
+       "abstract",
+       "sei",
+       "sonic",
+       "mantle",
+       "taiko",
+       "zksync",
+       "zetachain",
+       "opbnb",
+       "bob",
+       "edge",
+       "stable",
+       "katana",
+       "morph",
+       "swell",
+       "0g",
+       "tac",
+       "xlayer",
+       "gnosis",
+       "fantom"
+      ],
+      "description": "EVM chain slug."
+     }
+    },
+    "required": [
+     "chain"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_chains",
+   "title": "List chains",
+   "description": "List every chain MoltNode serves (slug, name, chainId, family, native coin, endpoint) and which ones Chord trades on. Call this first for valid chain slugs.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "required": [],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "rpc_call",
+   "title": "JSON-RPC call",
+   "description": "Call any JSON-RPC 2.0 method on a chain through MoltNode, no API key. EVM chains use eth_* methods; Solana and Sui use their own.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "enum": [
+       "monad",
+       "ethereum",
+       "base",
+       "arbitrum",
+       "optimism",
+       "polygon",
+       "bnb",
+       "solana",
+       "avalanche",
+       "hyperevm",
+       "berachain",
+       "abstract",
+       "sei",
+       "sonic",
+       "mantle",
+       "taiko",
+       "zksync",
+       "zetachain",
+       "opbnb",
+       "bob",
+       "edge",
+       "stable",
+       "katana",
+       "morph",
+       "swell",
+       "0g",
+       "tac",
+       "xlayer",
+       "gnosis",
+       "fantom",
+       "sui"
+      ],
+      "description": "Chain slug, e.g. 'ethereum', 'base', 'monad', 'solana'."
+     },
+     "method": {
+      "type": "string",
+      "description": "JSON-RPC method, e.g. 'eth_call', 'eth_getLogs', 'getBalance'."
+     },
+     "params": {
+      "type": "array",
+      "items": {},
+      "description": "JSON-RPC params array. Defaults to []."
+     }
+    },
+    "required": [
+     "chain",
+     "method"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "send_raw_transaction",
+   "title": "Broadcast a signed transaction",
+   "description": "Broadcast a signed transaction (0x-prefixed raw bytes) on an EVM chain through MoltNode. Returns the transaction hash and an explorer link.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "chain": {
+      "type": "string",
+      "enum": [
+       "monad",
+       "ethereum",
+       "base",
+       "arbitrum",
+       "optimism",
+       "polygon",
+       "bnb",
+       "avalanche",
+       "hyperevm",
+       "berachain",
+       "abstract",
+       "sei",
+       "sonic",
+       "mantle",
+       "taiko",
+       "zksync",
+       "zetachain",
+       "opbnb",
+       "bob",
+       "edge",
+       "stable",
+       "katana",
+       "morph",
+       "swell",
+       "0g",
+       "tac",
+       "xlayer",
+       "gnosis",
+       "fantom"
+      ],
+      "description": "EVM chain slug."
+     },
+     "signedTransaction": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]+$",
+      "description": "The signed transaction, RLP-encoded, 0x-prefixed."
+     }
+    },
+    "required": [
+     "chain",
+     "signedTransaction"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

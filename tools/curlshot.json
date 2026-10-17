@@ -1,0 +1,170 @@
+{
+ "server": "CurlShot",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "list_devices",
+   "title": "List device presets",
+   "description": "List the device presets accepted by the viewport_device argument of take_screenshot. Needs no access key.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "take_screenshot",
+   "title": "Take a screenshot",
+   "description": "Render a public web page and return it as an image (or a PDF, or a video of the page scrolling). Uses one screenshot of the account quota; cache hits and failed renders are free. Prefer jpeg or webp to keep the image small. A result over 6 MB comes back as a download link (valid for about a day) instead of inline data.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "Full address of the page, starting with http:// or https://."
+     },
+     "format": {
+      "type": "string",
+      "enum": [
+       "png",
+       "jpeg",
+       "webp",
+       "pdf",
+       "mp4",
+       "webm",
+       "gif"
+      ],
+      "default": "jpeg",
+      "description": "File format of the result. mp4, webm and gif record a video of the page scrolling from top to bottom."
+     },
+     "full_page": {
+      "type": "boolean",
+      "default": false,
+      "description": "Capture the whole page, not just the first screen."
+     },
+     "viewport_device": {
+      "type": "string",
+      "enum": [
+       "iphone_se",
+       "iphone_12",
+       "iphone_13",
+       "iphone_13_mini",
+       "iphone_14",
+       "iphone_14_plus",
+       "iphone_14_pro",
+       "iphone_14_pro_max",
+       "iphone_15",
+       "iphone_15_plus",
+       "iphone_15_pro",
+       "iphone_15_pro_max",
+       "iphone_16",
+       "iphone_16_plus",
+       "iphone_16_pro",
+       "iphone_16_pro_max",
+       "pixel_5",
+       "pixel_7",
+       "pixel_8",
+       "pixel_8_pro",
+       "pixel_9",
+       "pixel_9_pro",
+       "galaxy_s23",
+       "galaxy_s24",
+       "galaxy_s24_ultra",
+       "galaxy_a54",
+       "ipad",
+       "ipad_mini",
+       "ipad_air",
+       "ipad_pro_11",
+       "ipad_pro_13",
+       "galaxy_tab_s9",
+       "pixel_tablet",
+       "macbook_air_13",
+       "macbook_pro_14",
+       "macbook_pro_16",
+       "laptop_hd",
+       "laptop_hidpi",
+       "desktop_hd",
+       "desktop_full_hd",
+       "desktop_qhd",
+       "desktop_4k",
+       "imac_24"
+      ],
+      "description": "Emulate a device preset (see list_devices)."
+     },
+     "viewport_width": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 3840,
+      "default": 1280,
+      "description": "Width of the browser window in pixels."
+     },
+     "viewport_height": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 4320,
+      "default": 1024,
+      "description": "Height of the browser window in pixels."
+     },
+     "dark_mode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Ask the page for its dark theme."
+     },
+     "block_ads": {
+      "type": "boolean",
+      "default": true,
+      "description": "Block requests to ad networks."
+     },
+     "block_cookie_banners": {
+      "type": "boolean",
+      "default": true,
+      "description": "Hide cookie consent banners."
+     },
+     "selector": {
+      "type": "string",
+      "description": "Capture only the first element matching this CSS selector."
+     },
+     "wait_until": {
+      "type": "string",
+      "enum": [
+       "load",
+       "domcontentloaded",
+       "networkidle",
+       "commit"
+      ],
+      "default": "load",
+      "description": "Page event that marks the page as loaded."
+     },
+     "delay": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 30,
+      "default": 0,
+      "description": "Extra seconds to wait after the page has loaded."
+     },
+     "cache": {
+      "type": "boolean",
+      "default": false,
+      "description": "Reuse a stored copy when the same request was made before."
+     }
+    },
+    "required": [
+     "url"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

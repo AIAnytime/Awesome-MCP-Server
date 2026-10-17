@@ -1,0 +1,396 @@
+{
+ "server": "Pocket Drives",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "drives_airport_search",
+   "title": "Airport search",
+   "description": "Search airports for delivery pickup with delivery fee information.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Airport name or IATA code to search"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum results"
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_get_quote",
+   "title": "Get rental quote",
+   "description": "Calculate a full rental quote including daily breakdown, taxes, deposit, and total for a date range.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "asset_rental_id": {
+      "type": "string",
+      "description": "Rental asset ID from search or detail results"
+     },
+     "date_start": {
+      "type": "string",
+      "description": "Rental start date (YYYY-MM-DD)"
+     },
+     "date_end": {
+      "type": "string",
+      "description": "Rental end date (YYYY-MM-DD)"
+     }
+    },
+    "required": [
+     "asset_rental_id",
+     "date_start",
+     "date_end"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_host_showroom",
+   "title": "Host showroom profile",
+   "description": "Get a host profile page with bio, locations, team, and social links by username.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "username": {
+      "type": "string",
+      "description": "Host username slug, e.g. \"luxury-garage-miami\""
+     }
+    },
+    "required": [
+     "username"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_location_suggest",
+   "title": "Location suggestions",
+   "description": "Autocomplete cities, airports, and venues for search location input.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Partial location text to autocomplete"
+     },
+     "mode": {
+      "type": "string",
+      "description": "Suggestion mode filter"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum suggestions per category"
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_search_vehicles",
+   "title": "Search vehicles",
+   "description": "Search the Pocket Drives marketplace for available rental vehicles by location, dates, category, and filters.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "location": {
+      "type": "string",
+      "description": "City or region name, e.g. \"Miami, FL\""
+     },
+     "lat": {
+      "type": "number",
+      "description": "Latitude for radius search"
+     },
+     "lng": {
+      "type": "number",
+      "description": "Longitude for radius search"
+     },
+     "radius": {
+      "type": "integer",
+      "description": "Search radius in miles when using lat/lng"
+     },
+     "date_start": {
+      "type": "string",
+      "description": "Rental start date (YYYY-MM-DD)"
+     },
+     "date_end": {
+      "type": "string",
+      "description": "Rental end date (YYYY-MM-DD)"
+     },
+     "page": {
+      "type": "integer",
+      "description": "Page number (default 1)"
+     },
+     "per_page": {
+      "type": "integer",
+      "description": "Results per page (default 20)"
+     },
+     "sort_by": {
+      "type": "string",
+      "description": "Sort order, e.g. price_asc, price_desc, featured"
+     },
+     "query": {
+      "type": "string",
+      "description": "Text search across make, model, and title"
+     },
+     "make": {
+      "type": "string",
+      "description": "Vehicle make filter"
+     },
+     "model": {
+      "type": "string",
+      "description": "Vehicle model filter"
+     },
+     "body_type": {
+      "type": "string",
+      "description": "Body type filter, e.g. coupe, suv"
+     },
+     "category": {
+      "type": "string",
+      "description": "Category filter, e.g. luxury, sports, electric"
+     },
+     "year_min": {
+      "type": "integer",
+      "description": "Minimum model year"
+     },
+     "year_max": {
+      "type": "integer",
+      "description": "Maximum model year"
+     },
+     "min_price": {
+      "type": "integer",
+      "description": "Minimum daily price"
+     },
+     "max_price": {
+      "type": "integer",
+      "description": "Maximum daily price"
+     },
+     "transmission": {
+      "type": "string",
+      "description": "Transmission filter, e.g. automatic, manual"
+     },
+     "fuel_type": {
+      "type": "string",
+      "description": "Fuel type filter, e.g. gasoline, electric"
+     },
+     "drivetrain": {
+      "type": "string",
+      "description": "Drivetrain filter, e.g. awd, rwd"
+     },
+     "seats_min": {
+      "type": "integer",
+      "description": "Minimum seat count"
+     },
+     "features": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Required feature keys"
+     },
+     "instant_booking": {
+      "type": "boolean",
+      "description": "Only vehicles with instant booking"
+     },
+     "featured_only": {
+      "type": "boolean",
+      "description": "Only featured vehicles"
+     },
+     "airport_iata_code": {
+      "type": "string",
+      "description": "Filter by airport IATA code for delivery"
+     },
+     "airport_id": {
+      "type": "string",
+      "description": "Filter by airport ID for delivery"
+     },
+     "venue_id": {
+      "type": "string",
+      "description": "Filter by venue ID for delivery"
+     },
+     "organization_id": {
+      "type": "string",
+      "description": "Filter to a specific host organization"
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_vehicle_availability",
+   "title": "Vehicle availability",
+   "description": "Get a monthly availability calendar with daily rates for a vehicle.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "asset_rental_id": {
+      "type": "string",
+      "description": "Rental asset ID from search or detail results"
+     },
+     "month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12,
+      "description": "Month number (1-12); defaults to current month"
+     },
+     "year": {
+      "type": "integer",
+      "description": "Four-digit year; defaults to current year"
+     }
+    },
+    "required": [
+     "asset_rental_id"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_vehicle_detail",
+   "title": "Vehicle detail",
+   "description": "Get full details for a specific vehicle including rates, host info, and organization policies.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "asset_id": {
+      "type": "string",
+      "description": "Vehicle asset ID from search results"
+     },
+     "organization_id": {
+      "type": "string",
+      "description": "Host organization ID from search results"
+     }
+    },
+    "required": [
+     "asset_id",
+     "organization_id"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_vehicle_reviews",
+   "title": "Vehicle reviews",
+   "description": "List published renter reviews for a vehicle. Uses asset_id (not asset_rental_id) per the GraphQL schema.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "asset_id": {
+      "type": "string",
+      "description": "Vehicle asset ID from search or detail results"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum reviews to return (default server limit)"
+     },
+     "skip": {
+      "type": "integer",
+      "description": "Number of reviews to skip for pagination"
+     },
+     "published_only": {
+      "type": "boolean",
+      "description": "Only return published reviews (default true)"
+     }
+    },
+    "required": [
+     "asset_id"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "drives_venue_search",
+   "title": "Venue search",
+   "description": "Search stadiums, arenas, and venues for delivery pickup with delivery fee information.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "Venue name or city to search"
+     },
+     "limit": {
+      "type": "integer",
+      "description": "Maximum results"
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,391 @@
+{
+ "server": "Playable Gift",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "create_custom_game",
+   "title": "Save a custom game",
+   "description": "Saves a supplied self-contained HTML game as a free private draft. Returns a preview URL and private management token. Accepted games have inline code and embedded assets, keyboard and touch controls, a goal and restart. Network requests, payments and personal-data collection are prohibited. Repeated requests with the same idempotency key return the existing draft.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "recipient": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+     },
+     "sender": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     },
+     "concept": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     },
+     "occasion": {
+      "default": "just-because",
+      "type": "string",
+      "enum": [
+       "birthday",
+       "anniversary",
+       "thank-you",
+       "just-because"
+      ]
+     },
+     "theme": {
+      "default": "sunshine",
+      "type": "string",
+      "enum": [
+       "sunshine",
+       "midnight",
+       "rose"
+      ]
+     },
+     "message": {
+      "default": "",
+      "type": "string",
+      "maxLength": 2000
+     },
+     "recipientEmail": {
+      "default": "",
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 254,
+        "format": "email",
+        "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+       },
+       {
+        "type": "string",
+        "const": ""
+       }
+      ]
+     },
+     "game": {
+      "type": "object",
+      "properties": {
+       "html": {
+        "type": "string",
+        "minLength": 100,
+        "maxLength": 120000,
+        "description": "Complete self-contained HTML game with inline CSS/JS and embedded assets. External dependencies, fetches, forms, popups, payments and personal-data collection are prohibited. Supported controls are canvas or DOM with keyboard and touch input. The game includes restart and clear win/lose states. Completion notification is parent.postMessage({type:'playablegift:complete'}, '*')."
+       }
+      },
+      "required": [
+       "html"
+      ],
+      "additionalProperties": false
+     },
+     "idempotencyKey": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+     }
+    },
+    "required": [
+     "recipient",
+     "sender",
+     "title",
+     "concept",
+     "game",
+     "idempotencyKey"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "export_gift",
+   "title": "Export a draft",
+   "description": "Returns a private draft as portable JSON containing its complete self-contained game HTML. The recipient's email address and private tokens are excluded. An optional revision number selects a retained revision instead of the current version.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "managementToken": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+     },
+     "revision": {
+      "description": "A retained revision number. The default is the current revision.",
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+     }
+    },
+    "required": [
+     "managementToken"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_gift",
+   "title": "Read a draft",
+   "description": "Returns a private draft's metadata, current revision, preview link and status for the supplied management token. Game HTML is excluded.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "managementToken": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+     }
+    },
+    "required": [
+     "managementToken"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_gift_catalog",
+   "title": "Read custom game rules",
+   "description": "Returns the supported formats, capabilities, requirements and limits for saving custom HTML games as private drafts.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {}
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_gift_history",
+   "title": "Read draft history",
+   "description": "Returns the last five retained revisions of a private draft for the supplied management token. Revision metadata may contain the sender's personal content. Game HTML is excluded.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "managementToken": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+     }
+    },
+    "required": [
+     "managementToken"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_made_game",
+   "title": "Check game progress",
+   "description": "Returns the current stage of a game generation job identified by its private idempotency key. A completed job includes the title, cast, recipient play link and sender management link. Management links grant private sender access.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "idempotencyKey": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+     }
+    },
+    "required": [
+     "idempotencyKey"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "make_game",
+   "title": "Make a game",
+   "description": "Starts generation of a small browser game about one person from the sender's supplied habits or inside jokes. Returns immediately with build progress. Games are free within a daily allowance. When the assistant allowance runs out, returns an OAuth sign-in request or a handoff URL. It never charges anyone or sends messages.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "brief": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 2000,
+      "description": "The sender's supplied details about the recipient, including two or three specific habits, catchphrases or inside jokes."
+     },
+     "friend": {
+      "default": "",
+      "description": "The recipient's name.",
+      "type": "string",
+      "maxLength": 60
+     },
+     "from": {
+      "default": "",
+      "description": "The sender's name, shown in the game. Optional.",
+      "type": "string",
+      "maxLength": 40
+     },
+     "idempotencyKey": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Private request identifier containing 64 random lowercase hex characters."
+     }
+    },
+    "required": [
+     "brief",
+     "idempotencyKey"
+    ]
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "revise_custom_game",
+   "title": "Revise a custom game",
+   "description": "Replaces an existing private draft with supplied HTML and game details. Requires the draft's management token and current revision number. A stale expectedRevision is rejected to prevent overwriting another edit.",
+   "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+     "recipient": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+     },
+     "sender": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     },
+     "concept": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     },
+     "occasion": {
+      "default": "just-because",
+      "type": "string",
+      "enum": [
+       "birthday",
+       "anniversary",
+       "thank-you",
+       "just-because"
+      ]
+     },
+     "theme": {
+      "default": "sunshine",
+      "type": "string",
+      "enum": [
+       "sunshine",
+       "midnight",
+       "rose"
+      ]
+     },
+     "message": {
+      "default": "",
+      "type": "string",
+      "maxLength": 2000
+     },
+     "recipientEmail": {
+      "default": "",
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 254,
+        "format": "email",
+        "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+       },
+       {
+        "type": "string",
+        "const": ""
+       }
+      ]
+     },
+     "game": {
+      "type": "object",
+      "properties": {
+       "html": {
+        "type": "string",
+        "minLength": 100,
+        "maxLength": 120000,
+        "description": "Complete self-contained HTML game with inline CSS/JS and embedded assets. External dependencies, fetches, forms, popups, payments and personal-data collection are prohibited. Supported controls are canvas or DOM with keyboard and touch input. The game includes restart and clear win/lose states. Completion notification is parent.postMessage({type:'playablegift:complete'}, '*')."
+       }
+      },
+      "required": [
+       "html"
+      ],
+      "additionalProperties": false
+     },
+     "expectedRevision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+     },
+     "managementToken": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+     }
+    },
+    "required": [
+     "recipient",
+     "sender",
+     "title",
+     "concept",
+     "game",
+     "expectedRevision",
+     "managementToken"
+    ],
+    "additionalProperties": false
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  }
+ ],
+ "resources": [
+  {
+   "uri": "https://playablegift.com/SKILL.md",
+   "name": "gift-guide",
+   "mimeType": "text/markdown",
+   "description": "How to make a Playable Gift through an AI assistant, and how to share it safely."
+  }
+ ],
+ "prompts": []
+}

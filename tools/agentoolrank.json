@@ -1,0 +1,266 @@
+{
+ "server": "AgentoolRank",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "get_alternatives",
+   "description": "[Tool directory] Use this when you need alternatives to a known AI agent tool, not launch directories. Pass slug, the tool identifier returned by search_tools (for example, dify), not a URL or directory domain. Returns the source tool slug and its recorded alternatives with GitHub stats for comparison.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "get_submission_status",
+   "description": "[Tool directory] Use this when checking the AgentoolRank review status of a tool you submitted via submit_tool. Requires submission_id and status_token from that submission; returns review status, queue position and listing URL when available. Not for launch-directory progress — that is my_progress.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "submission_id": {
+      "type": "number"
+     },
+     "status_token": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "submission_id",
+     "status_token"
+    ]
+   }
+  },
+  {
+   "name": "get_tool",
+   "description": "[Tool directory] Get details for one tool by slug (from search_tools): GitHub stats, capabilities, best-for, limitations and alternatives.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug"
+    ]
+   }
+  },
+  {
+   "name": "my_progress",
+   "description": "[Launch directories] Use this after report_result or to resume a session; requires the Submit Kit key. Returns product_type, cap, sites, progress_page and counts: issued (total handed out), unreported, submitted, listed_reported, rejected, failed and skipped. Outstanding sites have status 'issued' in sites. Remaining allowance is cap minus issued, not a returned field or a guarantee of matching directories. Not for AgentoolRank listing review status — that is get_submission_status.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "key": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "key"
+    ]
+   }
+  },
+  {
+   "name": "next_directory",
+   "description": "[Launch directories] Use this when working through launch directories with a required Submit Kit key. Returns exactly one next directory when available; submit there, then call report_result. May return report_first or done instead. At most 3 unreported sites, up to 50 per key; product_type is bound on first issuance. For a free overview list, use recommend_directories.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "key": {
+      "type": "string",
+      "description": "Submit Kit key"
+     },
+     "product_type": {
+      "type": "string",
+      "enum": [
+       "ai_tool",
+       "mcp_server",
+       "dev_tool",
+       "saas",
+       "other"
+      ],
+      "description": "Needed on the first call only"
+     }
+    },
+    "required": [
+     "key"
+    ]
+   }
+  },
+  {
+   "name": "recommend_directories",
+   "description": "[Launch directories] Use this when you need a free overview of the best-fit launch directories for a product_type: top 5, no key required, with conditions and submission steps. An optional valid Submit Kit key ($29) returns the full overview and directories to avoid. To work through the full list one directory at a time with a Submit Kit key, use next_directory instead.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "product_type": {
+      "type": "string",
+      "enum": [
+       "ai_tool",
+       "mcp_server",
+       "dev_tool",
+       "saas",
+       "other"
+      ]
+     },
+     "languages": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Directory languages to include, default ['en'] (also: zh, fr)"
+     },
+     "open_source": {
+      "type": "boolean",
+      "description": "Include directories that only list open-source projects"
+     },
+     "key": {
+      "type": "string",
+      "description": "Submit Kit key for the full list (optional)"
+     }
+    },
+    "required": [
+     "product_type"
+    ]
+   }
+  },
+  {
+   "name": "report_result",
+   "description": "[Launch directories] Use this when recording an outcome for a domain issued by next_directory, not submitting a tool to AgentoolRank. Requires the same Submit Kit key, that domain and status: submitted, listed, rejected, failed or skipped; listing_url and note are optional. Records the outcome and clears that site's unreported slot. Reporting 'listed' is only a lead: it counts toward listing rate only after our daily check finds it live.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "key": {
+      "type": "string"
+     },
+     "domain": {
+      "type": "string"
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "submitted",
+       "listed",
+       "rejected",
+       "failed",
+       "skipped"
+      ]
+     },
+     "listing_url": {
+      "type": "string",
+      "description": "Optional: the live listing URL"
+     },
+     "note": {
+      "type": "string",
+      "description": "Optional, max 300 chars"
+     }
+    },
+    "required": [
+     "key",
+     "domain",
+     "status"
+    ]
+   }
+  },
+  {
+   "name": "search_tools",
+   "description": "[Tool directory] Search open-source AI agent tools (frameworks, coding agents, memory, RAG, observability, MCP servers) ranked by GitHub activity. Returns stars, 30-day star growth, capabilities and alternatives.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string",
+      "description": "What you need, e.g. 'multi-agent framework in TypeScript' or 'RAG'"
+     },
+     "limit": {
+      "type": "number",
+      "description": "Max results (1-20, default 10)"
+     }
+    },
+    "required": [
+     "query"
+    ]
+   }
+  },
+  {
+   "name": "submit_tool",
+   "description": "[Tool directory] List an AI agent tool (framework, coding agent, MCP server, memory/RAG, evals, browser agent...) on AgentoolRank for free. The free listing is queued; the response lists every paid option (price, days to go live, checkout_url for your human to pay) and recommends the cheapest one that fits max_budget_usd / deadline_days. Returns submission_id + status_token for get_submission_status, and message_for_human: a summary to forward to your human.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "Product website (https://...)"
+     },
+     "name": {
+      "type": "string"
+     },
+     "tagline": {
+      "type": "string",
+      "description": "One sentence, max 160 chars"
+     },
+     "email": {
+      "type": "string",
+      "description": "Maker's email, used only to say when the listing is live"
+     },
+     "github_url": {
+      "type": "string",
+      "description": "https://github.com/owner/repo if open source"
+     },
+     "max_budget_usd": {
+      "type": "number",
+      "description": "Optional: the most your human will pay"
+     },
+     "deadline_days": {
+      "type": "number",
+      "description": "Optional: must be live within this many days"
+     },
+     "want_featured": {
+      "type": "boolean",
+      "description": "Optional: wants homepage placement"
+     }
+    },
+    "required": [
+     "url",
+     "name",
+     "tagline",
+     "email"
+    ]
+   }
+  }
+ ],
+ "resources": [
+  {
+   "uri": "agentoolrank://about",
+   "name": "about",
+   "mimeType": "text/markdown",
+   "description": "How AgentoolRank ranks tools and what this server offers"
+  },
+  {
+   "uri": "agentoolrank://top-tools",
+   "name": "top-tools",
+   "mimeType": "text/markdown",
+   "description": "Current top 20 open-source AI agent tools by GitHub activity"
+  }
+ ],
+ "prompts": [
+  {
+   "name": "compare_tools",
+   "description": "Compare two open-source AI agent tools side by side."
+  },
+  {
+   "name": "find_alternatives",
+   "description": "Find open-source alternatives to a tool, ranked by live GitHub activity."
+  },
+  {
+   "name": "launch_plan",
+   "description": "Plan where to list a new product: which launch directories fit it and which to skip."
+  }
+ ]
+}

@@ -1,0 +1,528 @@
+{
+ "server": "Milestone by Ouroboros Apps",
+ "checked": "2026-10-17",
+ "tools": [
+  {
+   "name": "accept_milestone_change",
+   "title": "accept milestone change",
+   "description": "Apply one suggested milestone change after the freelancer explicitly approves that change. Pass confirmed true only then. This is the path for an extra deliverable, a new acceptance criterion, or new saved work after approval. Calling it is not a substitute for the freelancer's approval.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "changeId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "changeId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "approve_milestones",
+   "title": "approve milestones",
+   "description": "Approve the draft milestone definitions and acceptance criteria. Pass confirmed true only after the freelancer explicitly approves them. A draft is not a commitment.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "confirmed": {
+      "type": "boolean",
+      "const": true
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "confirmed"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "declare_milestone_complete",
+   "title": "declare milestone complete",
+   "description": "State that a milestone is complete. Refuses unless the milestones are approved and every saved acceptance criterion on that milestone was met. Do not tell the client a milestone is complete when this tool refuses.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "declare_next_payment_released",
+   "title": "declare next payment released",
+   "description": "State that the next payment for a milestone is released. Refuses unless the milestones are approved, every saved acceptance criterion on that milestone was met, and the milestone is complete. Do not tell the client the next payment is released when this tool refuses.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "define_milestone",
+   "title": "define milestone",
+   "description": "Add one milestone to a draft set: a title and the definition of that milestone. After milestones are approved, a new milestone is refused until accept_milestone_change applies an add_milestone suggestion.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "definition": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "title",
+     "definition"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_milestone_sets",
+   "title": "list milestone sets",
+   "description": "List the signed-in freelancer's milestone sets. Use a returned id with read_milestone_set. Do not guess a set.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "default": 0
+     }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "mark_work_done",
+   "title": "mark work done",
+   "description": "Mark one saved work item done. Refuses when the work item was not saved. Do not mark unsaved work done.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "workItemId": {
+      "$ref": "#/properties/milestoneSetId"
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId",
+     "workItemId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "open_milestone_set",
+   "title": "open milestone set",
+   "description": "Open a draft milestone set for one client project. Draft definitions are not an approved commitment until approve_milestones.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "clientName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "projectTitle": {
+      "$ref": "#/properties/clientName"
+     },
+     "reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+     }
+    },
+    "required": [
+     "clientName",
+     "projectTitle",
+     "reference"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "read_milestone_set",
+   "title": "read milestone set",
+   "description": "Read the milestone set before answering. Quote only this record. mayTellClient and clientWording are what the assistant may tell the client. Do not say a milestone is complete unless complete is true. Do not say the next payment is released unless paymentReleased is true. Do not invent a deliverable. Do not mark unsaved work done. Proposed changes are not authorization.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     }
+    },
+    "required": [
+     "milestoneSetId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "record_criterion_met",
+   "title": "record criterion met",
+   "description": "Record that one saved acceptance criterion was met. The criterion must already be saved. This does not by itself tell the client the milestone is complete or that the next payment is released.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "criterionId": {
+      "$ref": "#/properties/milestoneSetId"
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId",
+     "criterionId"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_acceptance_criterion",
+   "title": "save acceptance criterion",
+   "description": "Save one acceptance criterion, which is what done means for that milestone. After milestones are approved, a new criterion is refused until an accepted add_criterion suggestion. This does not mark the milestone complete.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId",
+     "statement"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_deliverable",
+   "title": "save deliverable",
+   "description": "Save one deliverable that belongs to a milestone. After milestones are approved, an extra deliverable is refused until an accepted add_deliverable suggestion. Do not invent a deliverable that was not saved.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "detail": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId",
+     "title",
+     "detail"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "save_work_item",
+   "title": "save work item",
+   "description": "Save one piece of work under a milestone so it can later be marked done. After milestones are approved, new work is refused until an accepted add_work_item suggestion. Unsaved work cannot be marked done.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "milestoneId",
+     "title"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "suggest_milestone_change",
+   "title": "suggest milestone change",
+   "description": "Record a suggested change. This does not change the milestones. kind add_milestone requires title and definition. kind add_criterion requires milestoneId and statement. kind add_deliverable requires milestoneId, title, and detail. kind add_work_item requires milestoneId and title. kind revise_client_wording requires wording.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "add_milestone",
+       "add_criterion",
+       "add_deliverable",
+       "add_work_item",
+       "revise_client_wording"
+      ]
+     },
+     "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     },
+     "milestoneId": {
+      "$ref": "#/properties/milestoneSetId"
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "definition": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     },
+     "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+     },
+     "detail": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+     },
+     "wording": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "kind",
+     "summary"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "write_client_wording",
+   "title": "write client wording",
+   "description": "Record what the assistant may tell the client about milestones, what done means, completion, and payment release. After approval, different wording is refused until an accepted revise_client_wording suggestion. The assistant must not go beyond this wording and the facts in read_milestone_set.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "milestoneSetId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "wording": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "milestoneSetId",
+     "wording"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+   },
+   "annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  }
+ ]
+}
