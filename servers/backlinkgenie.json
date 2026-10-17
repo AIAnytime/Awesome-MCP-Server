@@ -1,0 +1,9 @@
+{
+  "name": "BacklinkGenie",
+  "url": "https://backlinkgenie.com/mcp/",
+  "category": "marketing",
+  "transport": "http",
+  "description": "Link-building outreach agent: find blog posts and roundups where your product fits, review and approve pitches, read editor replies, and track earned backlinks. OAuth sign-in or API key. Endpoint: `https://app.backlinkgenie.com/mcp` · Registry: `com.backlinkgenie/backlinkgenie`",
+  "endpoint": "https://app.backlinkgenie.com/mcp",
+  "registry": "com.backlinkgenie/backlinkgenie"
+}
